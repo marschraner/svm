@@ -19,13 +19,25 @@ public class KursServiceImpl implements KursService {
 
   @Override
   @Transactional(readOnly = true)
-  public boolean existsKurseByKursortId(int kursortId) {
+  public boolean existsKursByKursortId(int kursortId) {
     return kursRepository.countByKursortId(kursortId) > 0;
   }
 
   @Override
   @Transactional(readOnly = true)
-  public boolean existsKurseByKurstypId(int kurstypId) {
+  public boolean existsKursByKurstypId(int kurstypId) {
     return kursRepository.countByKurstypId(kurstypId) > 0;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public boolean existsKursByLektionslaenge(int lektionslaenge) {
+    return kursRepository.findAll().stream()
+        .anyMatch(
+            kurs -> {
+              int kurslaenge =
+                  (int) ((kurs.getZeitEnde().getTime() - kurs.getZeitBeginn().getTime()) / 60000);
+              return kurslaenge == lektionslaenge;
+            });
   }
 }

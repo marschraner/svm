@@ -3,8 +3,10 @@ package ch.metzenthin.svm.ui.control;
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenTableData;
+import ch.metzenthin.svm.service.result.DeleteLektionsgebuehrenResult;
 import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
 import ch.metzenthin.svm.ui.components.LektionsgebuehrenErfassenDialog;
 import java.awt.event.ActionEvent;
@@ -16,7 +18,7 @@ import javax.swing.*;
 /**
  * @author Martin Schraner
  */
-public class LektionsgebuehrenController {
+public class LektionsgebuehrenController implements DialogClosedListener {
   private final SvmContext svmContext;
   private final LektionsgebuehrenModel lektionsgebuehrenModel;
   private LektionsgebuehrenTableModel lektionsgebuehrenTableModel;
@@ -75,7 +77,8 @@ public class LektionsgebuehrenController {
             lektionsgebuehrenModel,
             0,
             false,
-            "Neuer Lektionsgebuehren");
+            "Neuer Lektionsgebuehren",
+            this);
     lektionsgebuehrenErfassenDialog.pack();
     lektionsgebuehrenErfassenDialog.setVisible(true);
     lektionsgebuehrenTableModel.fireTableDataChanged();
@@ -101,7 +104,8 @@ public class LektionsgebuehrenController {
             lektionsgebuehrenModel,
             lektionsgebuehrenTable.getSelectedRow(),
             true,
-            "Lektionsgebuehren bearbeiten");
+            "Lektionsgebuehren bearbeiten",
+            this);
     lektionsgebuehrenErfassenDialog.pack();
     lektionsgebuehrenErfassenDialog.setVisible(true);
     lektionsgebuehrenTableModel.fireTableDataChanged();
@@ -120,19 +124,30 @@ public class LektionsgebuehrenController {
 
   private void onLoeschen() {
     btnLoeschen.setFocusPainted(true);
-    if (lektionsgebuehrenModel.checkIfLektionslaengeInVerwendung(
-        lektionsgebuehrenTableModel, lektionsgebuehrenTable.getSelectedRow())) {
-      JOptionPane.showMessageDialog(
-          null,
-          "Die Lektionsgebühren können nicht gelöscht werden,\n"
-              + "weil Kurse mit dieser Lektionslänge existieren.",
-          "Fehler",
-          JOptionPane.ERROR_MESSAGE);
-    } else {
-      lektionsgebuehrenModel.eintragLoeschen(
-          svmContext, lektionsgebuehrenTableModel, lektionsgebuehrenTable.getSelectedRow());
-      lektionsgebuehrenTableModel.fireTableDataChanged();
-      lektionsgebuehrenTable.addNotify();
+    DeleteLektionsgebuehrenResult result =
+        lektionsgebuehrenModel.eintragLoeschen(
+            lektionsgebuehrenTableModel, lektionsgebuehrenTable.getSelectedRow());
+    switch (result) {
+      case LEKTIONSGEBUEHREN_VON_KURS_REFERENZIERT -> {
+        JOptionPane.showMessageDialog(
+            null,
+            "Die Lektionsgebühren können nicht gelöscht werden,\n"
+                + "weil Kurse mit dieser Lektionslänge existieren.",
+            "Fehler",
+            JOptionPane.ERROR_MESSAGE);
+        btnLoeschen.setFocusPainted(false);
+      }
+      case LEKTIONSGEBUEHREN_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+        reloadTableModel();
+        JOptionPane.showMessageDialog(
+            null,
+            "Die Lektionsgebühren können nicht gelöscht werden, da der Eintrag "
+                + "unterdessen durch \n"
+                + "einen anderen Benutzer verändert oder gelöscht wurde.",
+            "Fehler",
+            JOptionPane.ERROR_MESSAGE);
+      }
+      case LOESCHEN_ERFOLGREICH -> reloadTableModel();
     }
     btnLoeschen.setFocusPainted(false);
     enableBtnLoeschen(false);
@@ -157,5 +172,19 @@ public class LektionsgebuehrenController {
 
   public void addCloseListener(ActionListener closeListener) {
     this.closeListener = closeListener;
+  }
+
+  @Override
+  public void onDialogClosed() {
+    reloadTableModel();
+  }
+
+  private void reloadTableModel() {
+    // TableData mit von der Datenbank upgedateten Lektionsgebühren updaten
+    lektionsgebuehrenTableModel
+        .getLektionsgebuehrenTableData()
+        .setLektionsgebuehrenList(svmContext.getSvmModel().getLektionsgebuehrenAllList());
+    lektionsgebuehrenTableModel.fireTableDataChanged();
+    lektionsgebuehrenTable.addNotify();
   }
 }

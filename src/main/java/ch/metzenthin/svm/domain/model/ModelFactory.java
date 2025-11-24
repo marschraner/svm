@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
+import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
@@ -90,7 +91,8 @@ public interface ModelFactory {
 
   LektionsgebuehrenModel createLektionsgebuehrenModel();
 
-  LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel();
+  LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel(
+      Optional<Lektionsgebuehren> lektionsgebuehrenToBeModifiedOptional);
 
   SemesterrechnungenSuchenModel createSemesterrechnungenSuchenModel();
 

@@ -47,7 +47,7 @@ public class KursortServiceImpl implements KursortService {
   @Override
   @Transactional
   public void deleteKursort(Kursort kursort) throws EntityStillReferencedException {
-    if (kursService.existsKurseByKursortId(kursort.getKursortId())) {
+    if (kursService.existsKursByKursortId(kursort.getKursortId())) {
       throw new EntityStillReferencedException();
     }
 

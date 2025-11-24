@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenErfassenModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenModel;
 import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
@@ -12,7 +13,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 
-@SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
+@SuppressWarnings({"java:S100", "java:S1171", "java:S1450", "FieldCanBeLocal"})
 public class LektionsgebuehrenErfassenDialog extends JDialog {
 
   // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
@@ -44,7 +45,8 @@ public class LektionsgebuehrenErfassenDialog extends JDialog {
       LektionsgebuehrenModel lektionsgebuehrenModel,
       int indexBearbeiten,
       boolean isBearbeiten,
-      String title) {
+      String title,
+      DialogClosedListener dialogClosedListener) {
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
@@ -57,7 +59,8 @@ public class LektionsgebuehrenErfassenDialog extends JDialog {
         lektionsgebuehrenTableModel,
         lektionsgebuehrenModel,
         indexBearbeiten,
-        isBearbeiten);
+        isBearbeiten,
+        dialogClosedListener);
   }
 
   private void createLektionsgebuehrenErfassenController(
@@ -65,18 +68,20 @@ public class LektionsgebuehrenErfassenDialog extends JDialog {
       LektionsgebuehrenTableModel lektionsgebuehrenTableModel,
       LektionsgebuehrenModel lektionsgebuehrenModel,
       int indexBearbeiten,
-      boolean isBearbeiten) {
+      boolean isBearbeiten,
+      DialogClosedListener dialogClosedListener) {
     LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel =
-        (isBearbeiten
-            ? lektionsgebuehrenModel.getLektionsgebuehrenErfassenModel(svmContext, indexBearbeiten)
-            : svmContext.getModelFactory().createLektionsgebuehrenErfassenModel());
+        (isBearbeiten)
+            ? lektionsgebuehrenModel.createLektionsgebuehrenErfassenModel(
+                svmContext, lektionsgebuehrenTableModel, indexBearbeiten)
+            : lektionsgebuehrenModel.createLektionsgebuehrenErfassenModel(
+                svmContext, lektionsgebuehrenTableModel);
     LektionsgebuehrenErfassenController lektionsgebuehrenErfassenController =
         new LektionsgebuehrenErfassenController(
-            svmContext,
-            lektionsgebuehrenTableModel,
             lektionsgebuehrenErfassenModel,
             isBearbeiten,
-            DEFAULT_BUTTON_ENABLED);
+            DEFAULT_BUTTON_ENABLED,
+            dialogClosedListener);
     lektionsgebuehrenErfassenController.setLektionsgebuehrenErfassenDialog(this);
     lektionsgebuehrenErfassenController.setContentPane(contentPane);
     lektionsgebuehrenErfassenController.setTxtLektionslaenge(txtLektionslaenge);

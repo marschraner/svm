@@ -1,65 +1,73 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.DeleteLektionsgebuehrenCommand;
-import ch.metzenthin.svm.domain.commands.FindKurseCommand;
-import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
+import ch.metzenthin.svm.service.LektionsgebuehrenService;
+import ch.metzenthin.svm.service.result.DeleteLektionsgebuehrenResult;
 import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
-import java.util.List;
+import jakarta.persistence.OptimisticLockException;
+import java.util.Optional;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
  * @author Martin Schraner
  */
 public class LektionsgebuehrenModelImpl extends AbstractModel implements LektionsgebuehrenModel {
 
-  @Override
-  public boolean checkIfLektionslaengeInVerwendung(
-      LektionsgebuehrenTableModel lektionsgebuehrenTableModel,
-      int indexLektionsgebuehrenToBeRemoved) {
-    Lektionsgebuehren lektionsgebuehrenToBeRemoved =
-        lektionsgebuehrenTableModel
-            .getLektionsgebuehrenList()
-            .get(indexLektionsgebuehrenToBeRemoved);
-    FindKurseCommand findKurseCommand = new FindKurseCommand(null, null, null, null);
-    getCommandInvoker().executeCommand(findKurseCommand);
-    for (Kurs kurs : findKurseCommand.getKurseFound()) {
-      if (kurs.getKurslaenge() == lektionsgebuehrenToBeRemoved.getLektionslaenge()) {
-        return true;
-      }
-    }
-    return false;
+  private final LektionsgebuehrenService lektionsgebuehrenService;
+
+  public LektionsgebuehrenModelImpl(LektionsgebuehrenService lektionsgebuehrenService) {
+    this.lektionsgebuehrenService = lektionsgebuehrenService;
   }
 
   @Override
-  public void eintragLoeschen(
+  public DeleteLektionsgebuehrenResult eintragLoeschen(
+      LektionsgebuehrenTableModel lektionsgebuehrenTableModel,
+      int indexLektionsgebuehrenToBeRemoved) {
+    Lektionsgebuehren lektionsgebuehrenToBeDeleted =
+        getSelectedLektionsgebuehren(
+            lektionsgebuehrenTableModel, indexLektionsgebuehrenToBeRemoved);
+    DeleteLektionsgebuehrenResult deleteLektionsgebuehrenResult;
+    try {
+      lektionsgebuehrenService.deleteLektionsgebuehren(lektionsgebuehrenToBeDeleted);
+      deleteLektionsgebuehrenResult = DeleteLektionsgebuehrenResult.LOESCHEN_ERFOLGREICH;
+    } catch (EntityStillReferencedException e) {
+      deleteLektionsgebuehrenResult =
+          DeleteLektionsgebuehrenResult.LEKTIONSGEBUEHREN_VON_KURS_REFERENZIERT;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      deleteLektionsgebuehrenResult =
+          DeleteLektionsgebuehrenResult.LEKTIONSGEBUEHREN_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+    return deleteLektionsgebuehrenResult;
+  }
+
+  @Override
+  public LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel(
+      SvmContext svmContext, LektionsgebuehrenTableModel lektionsgebuehrenTableModel) {
+    return svmContext.getModelFactory().createLektionsgebuehrenErfassenModel(Optional.empty());
+  }
+
+  @Override
+  public LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel(
       SvmContext svmContext,
       LektionsgebuehrenTableModel lektionsgebuehrenTableModel,
-      int indexLektionsgebuehrenToBeRemoved) {
-    List<Lektionsgebuehren> lektionsgebuehren =
-        svmContext.getSvmModel().getLektionsgebuehrenAllList();
-    CommandInvoker commandInvoker = getCommandInvoker();
-    DeleteLektionsgebuehrenCommand deleteLektionsgebuehrenCommand =
-        new DeleteLektionsgebuehrenCommand(lektionsgebuehren, indexLektionsgebuehrenToBeRemoved);
-    commandInvoker.executeCommandAsTransaction(deleteLektionsgebuehrenCommand);
-    // TableData mit von der Datenbank upgedateten Lektionsgebühren updaten
-    lektionsgebuehrenTableModel
-        .getLektionsgebuehrenTableData()
-        .setLektionsgebuehrenList(svmContext.getSvmModel().getLektionsgebuehrenAllList());
+      int indexLektionsgebuehrenToBeModified) {
+    Lektionsgebuehren lektionsgebuehrenToBeModified =
+        getSelectedLektionsgebuehren(
+            lektionsgebuehrenTableModel, indexLektionsgebuehrenToBeModified);
+    return svmContext
+        .getModelFactory()
+        .createLektionsgebuehrenErfassenModel(Optional.of(lektionsgebuehrenToBeModified));
   }
 
-  @Override
-  public LektionsgebuehrenErfassenModel getLektionsgebuehrenErfassenModel(
-      SvmContext svmContext, int indexLektionsgebuehrenToBeModified) {
-    LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel =
-        svmContext.getModelFactory().createLektionsgebuehrenErfassenModel();
-    List<Lektionsgebuehren> lektionsgebuehrens =
-        svmContext.getSvmModel().getLektionsgebuehrenAllList();
-    lektionsgebuehrenErfassenModel.setLektionsgebuehrenOrigin(
-        lektionsgebuehrens.get(indexLektionsgebuehrenToBeModified));
-    return lektionsgebuehrenErfassenModel;
+  private static Lektionsgebuehren getSelectedLektionsgebuehren(
+      LektionsgebuehrenTableModel lektionsgebuehrenTableModel, int selectedIndex) {
+    return lektionsgebuehrenTableModel
+        .getLektionsgebuehrenTableData()
+        .getLektionsgebuehrenList()
+        .get(selectedIndex);
   }
 
   @Override

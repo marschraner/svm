@@ -1,19 +1,22 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CheckLektionslaengeBereitsErfasstCommand;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.SaveOrUpdateLektionsgebuehrenCommand;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
-import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
+import ch.metzenthin.svm.service.LektionsgebuehrenService;
+import ch.metzenthin.svm.service.result.SaveLektionsgebuehrenResult;
+import jakarta.persistence.OptimisticLockException;
 import java.math.BigDecimal;
+import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class LektionsgebuehrenErfassenModelImpl extends AbstractModel
     implements LektionsgebuehrenErfassenModel {
 
@@ -22,17 +25,15 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel
   private static final BigDecimal MIN_VALID_VALUE = new BigDecimal("0.00");
   private static final BigDecimal MAX_VALID_VALUE = new BigDecimal("999.95");
 
-  private final Lektionsgebuehren lektionsgebuehren = new Lektionsgebuehren();
-  private Lektionsgebuehren lektionsgebuehrenOrigin;
+  private final Lektionsgebuehren lektionsgebuehren;
+  private final LektionsgebuehrenService lektionsgebuehrenService;
 
-  @Override
-  public Lektionsgebuehren getLektionsgebuehren() {
-    return lektionsgebuehren;
-  }
-
-  @Override
-  public void setLektionsgebuehrenOrigin(Lektionsgebuehren lektionsgebuehrenOrigin) {
-    this.lektionsgebuehrenOrigin = lektionsgebuehrenOrigin;
+  public LektionsgebuehrenErfassenModelImpl(
+      Optional<Lektionsgebuehren> lektionsgebuehrenToBeModifiedOptional,
+      LektionsgebuehrenService lektionsgebuehrenService) {
+    this.lektionsgebuehren =
+        lektionsgebuehrenToBeModifiedOptional.orElseGet(Lektionsgebuehren::new);
+    this.lektionsgebuehrenService = lektionsgebuehrenService;
   }
 
   private final IntegerModelAttribute lektionslaengeModelAttribute =
@@ -60,7 +61,13 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel
 
   @Override
   public void setLektionslaenge(String lektionslaenge) throws SvmValidationException {
-    lektionslaengeModelAttribute.setNewValue(true, lektionslaenge, isBulkUpdate());
+    setLektionslaenge(lektionslaenge, false);
+  }
+
+  private void setLektionslaenge(String lektionslaenge, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    lektionslaengeModelAttribute.setNewValue(
+        true, lektionslaenge, isBulkUpdate(), enforcePropertyChangeEvent);
   }
 
   private final PreisModelAttribute betrag1KindModelAttribute =
@@ -88,7 +95,13 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel
 
   @Override
   public void setBetrag1Kind(String betrag1Kind) throws SvmValidationException {
-    betrag1KindModelAttribute.setNewValue(true, betrag1Kind, isBulkUpdate());
+    setBetrag1Kind(betrag1Kind, false);
+  }
+
+  private void setBetrag1Kind(String betrag1Kind, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    betrag1KindModelAttribute.setNewValue(
+        true, betrag1Kind, isBulkUpdate(), enforcePropertyChangeEvent);
   }
 
   private final PreisModelAttribute betrag2KinderModelAttribute =
@@ -116,7 +129,13 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel
 
   @Override
   public void setBetrag2Kinder(String betrag2Kinder) throws SvmValidationException {
-    betrag2KinderModelAttribute.setNewValue(true, betrag2Kinder, isBulkUpdate());
+    setBetrag2Kinder(betrag2Kinder, false);
+  }
+
+  private void setBetrag2Kinder(String betrag2Kinder, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    betrag2KinderModelAttribute.setNewValue(
+        true, betrag2Kinder, isBulkUpdate(), enforcePropertyChangeEvent);
   }
 
   private final PreisModelAttribute betrag3KinderModelAttribute =
@@ -144,7 +163,13 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel
 
   @Override
   public void setBetrag3Kinder(String betrag3Kinder) throws SvmValidationException {
-    betrag3KinderModelAttribute.setNewValue(true, betrag3Kinder, isBulkUpdate());
+    setBetrag3Kinder(betrag3Kinder, false);
+  }
+
+  private void setBetrag3Kinder(String betrag3Kinder, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    betrag3KinderModelAttribute.setNewValue(
+        true, betrag3Kinder, isBulkUpdate(), enforcePropertyChangeEvent);
   }
 
   private final PreisModelAttribute betrag4KinderModelAttribute =
@@ -172,7 +197,13 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel
 
   @Override
   public void setBetrag4Kinder(String betrag4Kinder) throws SvmValidationException {
-    betrag4KinderModelAttribute.setNewValue(true, betrag4Kinder, isBulkUpdate());
+    setBetrag4Kinder(betrag4Kinder, false);
+  }
+
+  private void setBetrag4Kinder(String betrag4Kinder, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    betrag4KinderModelAttribute.setNewValue(
+        true, betrag4Kinder, isBulkUpdate(), enforcePropertyChangeEvent);
   }
 
   private final PreisModelAttribute betrag5KinderModelAttribute =
@@ -200,7 +231,13 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel
 
   @Override
   public void setBetrag5Kinder(String betrag5Kinder) throws SvmValidationException {
-    betrag5KinderModelAttribute.setNewValue(true, betrag5Kinder, isBulkUpdate());
+    setBetrag5Kinder(betrag5Kinder, false);
+  }
+
+  private void setBetrag5Kinder(String betrag5Kinder, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    betrag5KinderModelAttribute.setNewValue(
+        true, betrag5Kinder, isBulkUpdate(), enforcePropertyChangeEvent);
   }
 
   private final PreisModelAttribute betrag6KinderModelAttribute =
@@ -228,45 +265,42 @@ public class LektionsgebuehrenErfassenModelImpl extends AbstractModel
 
   @Override
   public void setBetrag6Kinder(String betrag6Kinder) throws SvmValidationException {
-    betrag6KinderModelAttribute.setNewValue(true, betrag6Kinder, isBulkUpdate());
+    setBetrag6Kinder(betrag6Kinder, false);
+  }
+
+  private void setBetrag6Kinder(String betrag6Kinder, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    betrag6KinderModelAttribute.setNewValue(
+        true, betrag6Kinder, isBulkUpdate(), enforcePropertyChangeEvent);
   }
 
   @Override
-  public boolean checkLektionslaengeBereitsErfasst(SvmModel svmModel) {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    CheckLektionslaengeBereitsErfasstCommand checkLektionslaengeBereitsErfasstCommand =
-        new CheckLektionslaengeBereitsErfasstCommand(
-            lektionsgebuehren, lektionsgebuehrenOrigin, svmModel.getLektionsgebuehrenAllList());
-    commandInvoker.executeCommand(checkLektionslaengeBereitsErfasstCommand);
-    return checkLektionslaengeBereitsErfasstCommand.isBereitsErfasst();
-  }
-
-  @Override
-  public void speichern(
-      SvmModel svmModel, LektionsgebuehrenTableModel lektionsgebuehrenTableModel) {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    SaveOrUpdateLektionsgebuehrenCommand saveOrUpdateLektionsgebuehrenCommand =
-        new SaveOrUpdateLektionsgebuehrenCommand(
-            lektionsgebuehren, lektionsgebuehrenOrigin, svmModel.getLektionsgebuehrenAllList());
-    commandInvoker.executeCommandAsTransaction(saveOrUpdateLektionsgebuehrenCommand);
-    // TableData mit von der Datenbank upgedateten Lektionsgebühren updaten
-    lektionsgebuehrenTableModel
-        .getLektionsgebuehrenTableData()
-        .setLektionsgebuehrenList(svmModel.getLektionsgebuehrenAllList());
+  public SaveLektionsgebuehrenResult speichern() {
+    SaveLektionsgebuehrenResult saveLektionsgebuehrenResult;
+    try {
+      lektionsgebuehrenService.saveLektionsgebuehren(lektionsgebuehren);
+      saveLektionsgebuehrenResult = SaveLektionsgebuehrenResult.SPEICHERN_ERFOLGREICH;
+    } catch (EntityAlreadyExistsException e) {
+      saveLektionsgebuehrenResult = SaveLektionsgebuehrenResult.LEKTIONSGEBUEHREN_BEREITS_ERFASST;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      saveLektionsgebuehrenResult =
+          SaveLektionsgebuehrenResult.LEKTIONSGEBUEHREN_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+    return saveLektionsgebuehrenResult;
   }
 
   @Override
   public void initializeCompleted() {
-    if (lektionsgebuehrenOrigin != null) {
+    if (lektionsgebuehren.getId() != null) {
       setBulkUpdate(true);
       try {
-        setLektionslaenge(Integer.toString(lektionsgebuehrenOrigin.getLektionslaenge()));
-        setBetrag1Kind(lektionsgebuehrenOrigin.getBetrag1Kind().toString());
-        setBetrag2Kinder(lektionsgebuehrenOrigin.getBetrag2Kinder().toString());
-        setBetrag3Kinder(lektionsgebuehrenOrigin.getBetrag3Kinder().toString());
-        setBetrag4Kinder(lektionsgebuehrenOrigin.getBetrag4Kinder().toString());
-        setBetrag5Kinder(lektionsgebuehrenOrigin.getBetrag5Kinder().toString());
-        setBetrag6Kinder(lektionsgebuehrenOrigin.getBetrag6Kinder().toString());
+        setLektionslaenge(Integer.toString(lektionsgebuehren.getLektionslaenge()), true);
+        setBetrag1Kind(lektionsgebuehren.getBetrag1Kind().toString(), true);
+        setBetrag2Kinder(lektionsgebuehren.getBetrag2Kinder().toString(), true);
+        setBetrag3Kinder(lektionsgebuehren.getBetrag3Kinder().toString(), true);
+        setBetrag4Kinder(lektionsgebuehren.getBetrag4Kinder().toString(), true);
+        setBetrag5Kinder(lektionsgebuehren.getBetrag5Kinder().toString(), true);
+        setBetrag6Kinder(lektionsgebuehren.getBetrag6Kinder().toString(), true);
       } catch (SvmValidationException e) {
         LOGGER.error(e.getMessage());
       }

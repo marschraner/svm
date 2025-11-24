@@ -18,5 +18,5 @@ INSERT INTO svmtest.Kursort(kursort_id, version, bezeichnung, selektierbar, crea
 INSERT INTO svmtest.Kurs(kurs_id, version, semester_id, kurstyp_id, altersbereich, stufe, wochentag,
                          zeit_beginn, zeit_ende, kursort_id, bemerkungen, creation_date, last_modified)
     VALUES (101, 0, 1, 11, '3 - 4 J', 'Vorkindergarten',
-            'Montag', '14:00:00', '15:00:00', 51, NULL,
+            'MONTAG', '14:00:00', '15:00:00', 51, NULL,
             '2025-10-01', '2025-10-01');

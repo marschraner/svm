@@ -5,7 +5,9 @@ package ch.metzenthin.svm.service;
  */
 public interface KursService {
 
-  boolean existsKurseByKursortId(int kursortId);
+  boolean existsKursByKursortId(int kursortId);
 
-  boolean existsKurseByKurstypId(int kurstypId);
+  boolean existsKursByKurstypId(int kurstypId);
+
+  boolean existsKursByLektionslaenge(int lektionslaenge);
 }

@@ -3,12 +3,14 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
+import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 import ch.metzenthin.svm.service.ElternmithilfeCodeService;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.KurstypService;
+import ch.metzenthin.svm.service.LektionsgebuehrenService;
 import ch.metzenthin.svm.service.MitarbeiterCodeService;
 import ch.metzenthin.svm.service.SchuelerCodeService;
 import ch.metzenthin.svm.service.SemesterrechnungCodeService;
@@ -28,6 +30,7 @@ public class ModelFactoryImpl implements ModelFactory {
   private final MitarbeiterCodeService mitarbeiterCodeService;
   private final ElternmithilfeCodeService elternmithilfeCodeService;
   private final SemesterrechnungCodeService semesterrechnungCodeService;
+  private final LektionsgebuehrenService lektionsgebuehrenService;
 
   public ModelFactoryImpl(
       KursortService kursortService,
@@ -35,13 +38,15 @@ public class ModelFactoryImpl implements ModelFactory {
       SchuelerCodeService schuelerCodeService,
       MitarbeiterCodeService mitarbeiterCodeService,
       ElternmithilfeCodeService elternmithilfeCodeService,
-      SemesterrechnungCodeService semesterrechnungCodeService) {
+      SemesterrechnungCodeService semesterrechnungCodeService,
+      LektionsgebuehrenService lektionsgebuehrenService) {
     this.kursortService = kursortService;
     this.kurstypService = kurstypService;
     this.schuelerCodeService = schuelerCodeService;
     this.mitarbeiterCodeService = mitarbeiterCodeService;
     this.elternmithilfeCodeService = elternmithilfeCodeService;
     this.semesterrechnungCodeService = semesterrechnungCodeService;
+    this.lektionsgebuehrenService = lektionsgebuehrenService;
   }
 
   @Override
@@ -52,7 +57,8 @@ public class ModelFactoryImpl implements ModelFactory {
         schuelerCodeService,
         mitarbeiterCodeService,
         elternmithilfeCodeService,
-        semesterrechnungCodeService);
+        semesterrechnungCodeService,
+        lektionsgebuehrenService);
   }
 
   @Override
@@ -236,12 +242,14 @@ public class ModelFactoryImpl implements ModelFactory {
 
   @Override
   public LektionsgebuehrenModel createLektionsgebuehrenModel() {
-    return new LektionsgebuehrenModelImpl();
+    return new LektionsgebuehrenModelImpl(lektionsgebuehrenService);
   }
 
   @Override
-  public LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel() {
-    return new LektionsgebuehrenErfassenModelImpl();
+  public LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel(
+      Optional<Lektionsgebuehren> lektionsgebuehrenToBeModifiedOptional) {
+    return new LektionsgebuehrenErfassenModelImpl(
+        lektionsgebuehrenToBeModifiedOptional, lektionsgebuehrenService);
   }
 
   @Override

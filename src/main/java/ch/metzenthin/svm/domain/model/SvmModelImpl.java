@@ -5,6 +5,7 @@ import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.service.ElternmithilfeCodeService;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.KurstypService;
+import ch.metzenthin.svm.service.LektionsgebuehrenService;
 import ch.metzenthin.svm.service.MitarbeiterCodeService;
 import ch.metzenthin.svm.service.SchuelerCodeService;
 import ch.metzenthin.svm.service.SemesterrechnungCodeService;
@@ -24,6 +25,7 @@ public class SvmModelImpl implements SvmModel {
   private final MitarbeiterCodeService mitarbeiterCodeService;
   private final ElternmithilfeCodeService elternmithilfeCodeService;
   private final SemesterrechnungCodeService semesterrechnungCodeService;
+  private final LektionsgebuehrenService lektionsgebuehrenService;
 
   public SvmModelImpl(
       KursortService kursortService,
@@ -31,13 +33,15 @@ public class SvmModelImpl implements SvmModel {
       SchuelerCodeService schuelerCodeService,
       MitarbeiterCodeService mitarbeiterCodeService,
       ElternmithilfeCodeService elternmithilfeCodeService,
-      SemesterrechnungCodeService semesterrechnungCodeService) {
+      SemesterrechnungCodeService semesterrechnungCodeService,
+      LektionsgebuehrenService lektionsgebuehrenService) {
     this.kursortService = kursortService;
     this.kurstypService = kurstypService;
     this.schuelerCodeService = schuelerCodeService;
     this.mitarbeiterCodeService = mitarbeiterCodeService;
     this.elternmithilfeCodeService = elternmithilfeCodeService;
     this.semesterrechnungCodeService = semesterrechnungCodeService;
+    this.lektionsgebuehrenService = lektionsgebuehrenService;
   }
 
   @Override
@@ -170,9 +174,6 @@ public class SvmModelImpl implements SvmModel {
 
   @Override
   public List<Lektionsgebuehren> getLektionsgebuehrenAllList() {
-    FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand =
-        new FindAllLektionsgebuehrenCommand();
-    commandInvoker.executeCommand(findAllLektionsgebuehrenCommand);
-    return findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllList();
+    return lektionsgebuehrenService.findAllLektionsgebuehren();
   }
 }

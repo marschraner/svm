@@ -2,16 +2,17 @@ package ch.metzenthin.svm.ui.control;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenErfassenModel;
-import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
+import ch.metzenthin.svm.service.result.SaveLektionsgebuehrenResult;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 import javax.swing.*;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,11 +30,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
   private static final boolean MODEL_VALIDATION_MODE = false;
 
-  private final LektionsgebuehrenTableModel lektionsgebuehrenTableModel;
   private final LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel;
   private final boolean isBearbeiten;
   private final boolean defaultButtonEnabled;
-  private final SvmContext svmContext;
+  private final DialogClosedListener dialogClosedListener;
   private JDialog lektionsgebuehrenErfassenDialog;
   private JTextField txtLektionslaenge;
   private JTextField txtBetrag1Kind;
@@ -42,27 +42,25 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   private JTextField txtBetrag4Kinder;
   private JTextField txtBetrag5Kinder;
   private JTextField txtBetrag6Kinder;
-  private JLabel errLblLektionslaenge;
-  private JLabel errLblBetrag1Kind;
-  private JLabel errLblBetrag2Kinder;
-  private JLabel errLblBetrag3Kinder;
-  private JLabel errLblBetrag4Kinder;
-  private JLabel errLblBetrag5Kinder;
-  private JLabel errLblBetrag6Kinder;
+  @Setter private JLabel errLblLektionslaenge;
+  @Setter private JLabel errLblBetrag1Kind;
+  @Setter private JLabel errLblBetrag2Kinder;
+  @Setter private JLabel errLblBetrag3Kinder;
+  @Setter private JLabel errLblBetrag4Kinder;
+  @Setter private JLabel errLblBetrag5Kinder;
+  @Setter private JLabel errLblBetrag6Kinder;
   private JButton btnSpeichern;
 
   public LektionsgebuehrenErfassenController(
-      SvmContext svmContext,
-      LektionsgebuehrenTableModel lektionsgebuehrenTableModel,
       LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel,
       boolean isBearbeiten,
-      boolean defaultButtonEnabled) {
+      boolean defaultButtonEnabled,
+      DialogClosedListener dialogClosedListener) {
     super(lektionsgebuehrenErfassenModel);
-    this.svmContext = svmContext;
-    this.lektionsgebuehrenTableModel = lektionsgebuehrenTableModel;
     this.lektionsgebuehrenErfassenModel = lektionsgebuehrenErfassenModel;
     this.isBearbeiten = isBearbeiten;
     this.defaultButtonEnabled = defaultButtonEnabled;
+    this.dialogClosedListener = dialogClosedListener;
     this.lektionsgebuehrenErfassenModel.addPropertyChangeListener(this);
     this.lektionsgebuehrenErfassenModel.addDisableFieldsListener(this);
     this.lektionsgebuehrenErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -492,34 +490,6 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     }
   }
 
-  public void setErrLblLektionslaenge(JLabel errLblLektionslaenge) {
-    this.errLblLektionslaenge = errLblLektionslaenge;
-  }
-
-  public void setErrLblBetrag1Kind(JLabel errLblBetrag1Kind) {
-    this.errLblBetrag1Kind = errLblBetrag1Kind;
-  }
-
-  public void setErrLblBetrag2Kinder(JLabel errLblBetrag2Kinder) {
-    this.errLblBetrag2Kinder = errLblBetrag2Kinder;
-  }
-
-  public void setErrLblBetrag3Kinder(JLabel errLblBetrag3Kinder) {
-    this.errLblBetrag3Kinder = errLblBetrag3Kinder;
-  }
-
-  public void setErrLblBetrag4Kinder(JLabel errLblBetrag4Kinder) {
-    this.errLblBetrag4Kinder = errLblBetrag4Kinder;
-  }
-
-  public void setErrLblBetrag5Kinder(JLabel errLblBetrag5Kinder) {
-    this.errLblBetrag5Kinder = errLblBetrag5Kinder;
-  }
-
-  public void setErrLblBetrag6Kinder(JLabel errLblBetrag6Kinder) {
-    this.errLblBetrag6Kinder = errLblBetrag6Kinder;
-  }
-
   public void setBtnSpeichern(JButton btnSpeichern) {
     this.btnSpeichern = btnSpeichern;
     if (isModelValidationMode()) {
@@ -533,18 +503,27 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
       btnSpeichern.setFocusPainted(false);
       return;
     }
-    if (lektionsgebuehrenErfassenModel.checkLektionslaengeBereitsErfasst(
-        svmContext.getSvmModel())) {
-      JOptionPane.showMessageDialog(
-          lektionsgebuehrenErfassenDialog,
-          "Lektionslänge bereits erfasst.",
-          "Fehler",
-          JOptionPane.ERROR_MESSAGE);
-      btnSpeichern.setFocusPainted(false);
-    } else {
-      lektionsgebuehrenErfassenModel.speichern(
-          svmContext.getSvmModel(), lektionsgebuehrenTableModel);
-      lektionsgebuehrenErfassenDialog.dispose();
+    SaveLektionsgebuehrenResult saveLektionsgebuehrenResult =
+        lektionsgebuehrenErfassenModel.speichern();
+    switch (saveLektionsgebuehrenResult) {
+      case LEKTIONSGEBUEHREN_BEREITS_ERFASST -> {
+        JOptionPane.showMessageDialog(
+            lektionsgebuehrenErfassenDialog,
+            "Lektionslänge bereits erfasst.",
+            "Fehler",
+            JOptionPane.ERROR_MESSAGE);
+        btnSpeichern.setFocusPainted(false);
+      }
+      case LEKTIONSGEBUEHREN_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+        closeDialog();
+        JOptionPane.showMessageDialog(
+            lektionsgebuehrenErfassenDialog,
+            "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
+                + "einen anderen Benutzer verändert oder gelöscht wurde.",
+            "Fehler",
+            JOptionPane.ERROR_MESSAGE);
+      }
+      case SPEICHERN_ERFOLGREICH -> closeDialog();
     }
   }
 
@@ -553,7 +532,12 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   }
 
   private void onAbbrechen() {
+    closeDialog();
+  }
+
+  private void closeDialog() {
     lektionsgebuehrenErfassenDialog.dispose();
+    dialogClosedListener.onDialogClosed();
   }
 
   private void onLektionsgebuehrenErfassenModelCompleted(boolean completed) {

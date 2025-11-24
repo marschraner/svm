@@ -10,6 +10,8 @@
     <file url="file://$PROJECT_DIR$/src/test/resources/KursortRepositoryTest_Delete.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/KurstypRepositoryTest_Create.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/KurstypRepositoryTest_Delete.sql" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/src/test/resources/LektionsgebuehrenRepositoryTest_Create.sql" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/src/test/resources/LektionsgebuehrenRepositoryTest_Delete.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/MaercheneinteilungRepositoryTest_Create.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/MaercheneinteilungRepositoryTest_Delete.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/MitarbeiterCodeRepositoryTest_Create.sql" dialect="MariaDB" />

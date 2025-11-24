@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * @author Hans Stamm
  */
+@SuppressWarnings("ClassCanBeRecord")
 public class PreisModelAttribute {
 
   private static final Logger LOGGER = LogManager.getLogger(PreisModelAttribute.class);
@@ -48,7 +49,14 @@ public class PreisModelAttribute {
     return nullAsEmptyString(getValue().toString());
   }
 
+  @SuppressWarnings("SameParameterValue")
   void setNewValue(boolean isRequired, String newValue, boolean isBulkUpdate)
+      throws SvmValidationException {
+    setNewValue(isRequired, newValue, isBulkUpdate, false);
+  }
+
+  void setNewValue(
+      boolean isRequired, String newValue, boolean isBulkUpdate, boolean enforcePropertyChangeEvent)
       throws SvmValidationException {
     String newValueTrimmed = (newValue != null) ? newValue.trim() : "";
     if (!isBulkUpdate) {
@@ -75,7 +83,7 @@ public class PreisModelAttribute {
         checkMaxValidValue(newValueAsBigDecimal);
       }
     }
-    String oldValue = getValueAsString();
+    String oldValue = (enforcePropertyChangeEvent) ? "" : getValueAsString();
     attributeAccessor.setValue(newValueAsBigDecimal);
     if (newValueAsBigDecimal != null
         && !equalsNullSafe(newValueTrimmed, nullAsEmptyString(newValueAsBigDecimal.toString()))

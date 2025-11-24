@@ -47,7 +47,7 @@ public class KurstypServiceImpl implements KurstypService {
   @Override
   @Transactional
   public void deleteKurstyp(Kurstyp kurstyp) throws EntityStillReferencedException {
-    if (kursService.existsKurseByKurstypId(kurstyp.getKurstypId())) {
+    if (kursService.existsKursByKurstypId(kurstyp.getKurstypId())) {
       throw new EntityStillReferencedException();
     }
 

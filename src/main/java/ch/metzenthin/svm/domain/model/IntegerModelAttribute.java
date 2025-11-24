@@ -49,6 +49,12 @@ public class IntegerModelAttribute {
 
   void setNewValue(boolean isRequired, String newValue, boolean isBulkUpdate)
       throws SvmValidationException {
+    setNewValue(isRequired, newValue, isBulkUpdate, false);
+  }
+
+  void setNewValue(
+      boolean isRequired, String newValue, boolean isBulkUpdate, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
     String newValueTrimmed = (newValue != null) ? newValue.trim() : "";
     if (!isBulkUpdate) {
       checkRequired(isRequired, newValueTrimmed);
@@ -66,7 +72,7 @@ public class IntegerModelAttribute {
         checkMaxValidValue(newValueAsInteger);
       }
     }
-    String oldValue = getValueAsString();
+    String oldValue = (enforcePropertyChangeEvent) ? "" : getValueAsString();
     attributeAccessor.setValue(newValueAsInteger);
     if (newValueAsInteger != null
         && !equalsNullSafe(newValueTrimmed, nullAsEmptyString(Integer.toString(newValueAsInteger)))
