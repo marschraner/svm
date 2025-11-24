@@ -3,13 +3,13 @@
 
 -- Als svm auszuführen.
 
--- mysql -u svm -psvm 
+-- mysql -u svm -p
 -- mysql> source createTables.sql
 
 -- Auf Jenkins-Server (Immer durchführen wenn DB ändert, damit Tests durchlaufen!):
 -- ssh root@sinv-56059.edu.hsr.ch
 -- cd /var/lib/jenkins/workspace/SVM/
--- mysql -u svm -psvm < sql/createTables.sql
+-- mysql -u svm -p < sql/createTables.sql
 
 USE svm;
 
@@ -54,15 +54,18 @@ DROP TABLE IF EXISTS Lektionsgebuehren;
 -- *****************
 
 CREATE TABLE IF NOT EXISTS Lektionsgebuehren (
+    id                         INT           NOT NULL AUTO_INCREMENT,
     lektionslaenge             INT           NOT NULL,
+    version                    INT           NOT NULL,
     betrag_1_kind              DECIMAL(6,2)  NOT NULL,
     betrag_2_kinder            DECIMAL(6,2)  NOT NULL,  
     betrag_3_kinder            DECIMAL(6,2)  NOT NULL,  
     betrag_4_kinder            DECIMAL(6,2)  NOT NULL,  
     betrag_5_kinder            DECIMAL(6,2)  NOT NULL, 
-    betrag_6_kinder            DECIMAL(6,2)  NOT NULL, 
-    last_updated               TIMESTAMP     NOT NULL,
-    PRIMARY KEY (lektionslaenge));
+    betrag_6_kinder            DECIMAL(6,2)  NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
+    last_modified              TIMESTAMP     NOT NULL,
+    PRIMARY KEY (id));
      
 DESCRIBE Lektionsgebuehren;
 
@@ -72,11 +75,13 @@ DESCRIBE Lektionsgebuehren;
 
 CREATE TABLE IF NOT EXISTS Adresse (
     adresse_id                 INT           NOT NULL AUTO_INCREMENT,
+    version                    INT           NOT NULL,
     strasse                    VARCHAR(50),
     hausnummer                 VARCHAR(10),
     plz                        VARCHAR(10)   NOT NULL,
     ort                        VARCHAR(50)   NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
+    last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (adresse_id));
      
 DESCRIBE Adresse;
@@ -87,6 +92,7 @@ DESCRIBE Adresse;
 
 CREATE TABLE IF NOT EXISTS Person (
     person_id                  INT           NOT NULL AUTO_INCREMENT,
+    version                    INT           NOT NULL,
     discriminator              VARCHAR(30)   NOT NULL,
     anrede                     VARCHAR(5),
     vorname                    VARCHAR(50)   NOT NULL,
@@ -96,7 +102,8 @@ CREATE TABLE IF NOT EXISTS Person (
     natel                      VARCHAR(20),
     email                      VARCHAR(150),
     adresse_id                 INT,
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
+    last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id),
     FOREIGN KEY (adresse_id)   REFERENCES Adresse (adresse_id)); 
 
@@ -109,7 +116,6 @@ DESCRIBE Person;
 CREATE TABLE IF NOT EXISTS Angehoeriger (
     person_id                  INT           NOT NULL,
     wuenscht_emails            BOOLEAN,
-    last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id),
     FOREIGN KEY (person_id)    REFERENCES Person (person_id));
 
@@ -121,7 +127,6 @@ DESCRIBE Angehoeriger;
 
 CREATE TABLE IF NOT EXISTS ElternmithilfeDrittperson (
     person_id                  INT           NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id),
     FOREIGN KEY (person_id)    REFERENCES Person (person_id));
 
@@ -138,7 +143,6 @@ CREATE TABLE IF NOT EXISTS Schueler (
     mutter_id                  INT,
     rechnungsempfaenger_id     INT           NOT NULL,
     bemerkungen                TEXT,
-    last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id),
     FOREIGN KEY (person_id)    REFERENCES Person (person_id),
     FOREIGN KEY (vater_id)     REFERENCES Angehoeriger (person_id),
@@ -159,7 +163,6 @@ CREATE TABLE IF NOT EXISTS Mitarbeiter (
     vertretungsmoeglichkeiten  TEXT,
     bemerkungen                TEXT,
     aktiv                      BOOLEAN       NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id),
     FOREIGN KEY (person_id)    REFERENCES Person (person_id));
 
@@ -171,10 +174,12 @@ DESCRIBE Mitarbeiter;
 
 CREATE TABLE IF NOT EXISTS Anmeldung (
     anmeldung_id               INT           NOT NULL AUTO_INCREMENT,
+    version                    INT           NOT NULL,
     anmeldedatum               DATE          NOT NULL,
     abmeldedatum               DATE,
     schueler_id                INT           NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
+    last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (anmeldung_id),
     FOREIGN KEY (schueler_id)  REFERENCES Schueler (person_id));
 
@@ -186,12 +191,14 @@ DESCRIBE Anmeldung;
 
 CREATE TABLE IF NOT EXISTS Dispensation (
     dispensation_id            INT           NOT NULL AUTO_INCREMENT,
+    version                    INT           NOT NULL,
     dispensationsbeginn        DATE          NOT NULL,
     dispensationsende          DATE,
     voraussichtliche_dauer     TEXT,
     grund                      TEXT          NOT NULL,
     schueler_id                INT           NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
+    last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (dispensation_id),
     FOREIGN KEY (schueler_id)  REFERENCES Schueler (person_id));
 
@@ -203,11 +210,13 @@ DESCRIBE Dispensation;
 
 CREATE TABLE IF NOT EXISTS Code (
     code_id                    INT           NOT NULL AUTO_INCREMENT,
+    version                    INT           NOT NULL,
     discriminator              VARCHAR(20)   NOT NULL,
     kuerzel                    VARCHAR(5)    NOT NULL,
     beschreibung               VARCHAR(50)   NOT NULL,
     selektierbar               BOOLEAN       NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
+    last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (code_id));
 
 DESCRIBE Code;
@@ -218,7 +227,6 @@ DESCRIBE Code;
 
 CREATE TABLE IF NOT EXISTS SchuelerCode (
     code_id                    INT           NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (code_id),
     FOREIGN KEY (code_id)      REFERENCES Code (code_id));
 
@@ -231,7 +239,7 @@ DESCRIBE SchuelerCode;
 CREATE TABLE IF NOT EXISTS Schueler_SchuelerCode (
     person_id                  INT           NOT NULL,
     code_id                    INT           NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id, code_id),
     FOREIGN KEY (person_id)    REFERENCES Schueler (person_id),
     FOREIGN KEY (code_id)      REFERENCES SchuelerCode (code_id));
@@ -244,7 +252,6 @@ DESCRIBE Schueler_SchuelerCode;
 
 CREATE TABLE IF NOT EXISTS MitarbeiterCode (
     code_id                    INT           NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (code_id),
     FOREIGN KEY (code_id)      REFERENCES Code (code_id));
 
@@ -257,7 +264,7 @@ DESCRIBE MitarbeiterCode;
 CREATE TABLE IF NOT EXISTS Mitarbeiter_MitarbeiterCode (
     person_id                  INT           NOT NULL,
     code_id                    INT           NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id, code_id),
     FOREIGN KEY (person_id)    REFERENCES Mitarbeiter (person_id),
     FOREIGN KEY (code_id)      REFERENCES MitarbeiterCode (code_id));
@@ -270,7 +277,6 @@ DESCRIBE Mitarbeiter_MitarbeiterCode;
 
 CREATE TABLE IF NOT EXISTS ElternmithilfeCode (
     code_id                    INT           NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (code_id),
     FOREIGN KEY (code_id)      REFERENCES Code (code_id));
 
@@ -282,7 +288,6 @@ DESCRIBE ElternmithilfeCode;
 
 CREATE TABLE IF NOT EXISTS SemesterrechnungCode (
     code_id                    INT           NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
     PRIMARY KEY (code_id),
     FOREIGN KEY (code_id)      REFERENCES Code (code_id));
 
@@ -294,9 +299,11 @@ DESCRIBE SemesterrechnungCode;
 
 CREATE TABLE IF NOT EXISTS Kurstyp (
     kurstyp_id                 INT           NOT NULL AUTO_INCREMENT,
+    version                    INT           NOT NULL,
     bezeichnung                VARCHAR(50)   NOT NULL,
     selektierbar               BOOLEAN       NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
+    last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (kurstyp_id));
 
 DESCRIBE Kurstyp;
@@ -307,9 +314,11 @@ DESCRIBE Kurstyp;
 
 CREATE TABLE IF NOT EXISTS Kursort (
     kursort_id                 INT           NOT NULL AUTO_INCREMENT,
+    version                    INT           NOT NULL,
     bezeichnung                VARCHAR(50)   NOT NULL,
     selektierbar               BOOLEAN       NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
+    last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (kursort_id));
 
 DESCRIBE Kursort;
@@ -320,6 +329,7 @@ DESCRIBE Kursort;
 
 CREATE TABLE IF NOT EXISTS Semester (
     semester_id                INT           NOT NULL AUTO_INCREMENT,
+    version                    INT           NOT NULL,
     schuljahr                  VARCHAR(9)    NOT NULL,
     semesterbezeichnung        VARCHAR(20)   NOT NULL,
     semesterbeginn             DATE          NOT NULL,
@@ -328,7 +338,8 @@ CREATE TABLE IF NOT EXISTS Semester (
     ferienende1                DATE          NOT NULL,
     ferienbeginn2              DATE          NULL,
     ferienende2                DATE          NULL,
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
+    last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (semester_id));
 
 DESCRIBE Semester;
@@ -339,6 +350,7 @@ DESCRIBE Semester;
 
 CREATE TABLE IF NOT EXISTS Kurs (
     kurs_id                    INT           NOT NULL AUTO_INCREMENT,
+    version                    INT           NOT NULL,
     semester_id                INT           NOT NULL,
     kurstyp_id                 INT           NOT NULL,
     altersbereich              VARCHAR(20)   NOT NULL,
@@ -348,7 +360,8 @@ CREATE TABLE IF NOT EXISTS Kurs (
     zeit_ende                  TIME          NOT NULL,
     kursort_id                 INT           NOT NULL,
     bemerkungen                VARCHAR(100)  NULL,
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
+    last_modified               TIMESTAMP     NOT NULL,
     PRIMARY KEY (kurs_id),
     FOREIGN KEY (semester_id)  REFERENCES Semester (semester_id),
     FOREIGN KEY (kurstyp_id)   REFERENCES Kurstyp (kurstyp_id),
@@ -364,7 +377,7 @@ CREATE TABLE IF NOT EXISTS Kurs_Lehrkraft (
     kurs_id                    INT           NOT NULL,
     person_id                  INT           NOT NULL,
     lehrkraefte_ORDER          INT           NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
     PRIMARY KEY (kurs_id, person_id),
     FOREIGN KEY (kurs_id)      REFERENCES Kurs (kurs_id),
     FOREIGN KEY (person_id)    REFERENCES Mitarbeiter (person_id));
@@ -378,10 +391,12 @@ DESCRIBE Kurs_Lehrkraft;
 CREATE TABLE IF NOT EXISTS Kursanmeldung (
     person_id                  INT           NOT NULL,
     kurs_id                    INT           NOT NULL,
+    version                    INT           NOT NULL,
     anmeldedatum               DATE          NOT NULL,
     abmeldedatum               DATE,
     bemerkungen                VARCHAR(100),
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
+    last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id, kurs_id),
     FOREIGN KEY (person_id)    REFERENCES Schueler (person_id),
     FOREIGN KEY (kurs_id)      REFERENCES Kurs (kurs_id));
@@ -394,10 +409,12 @@ DESCRIBE Kursanmeldung;
 
 CREATE TABLE IF NOT EXISTS Maerchen (
     maerchen_id                INT           NOT NULL AUTO_INCREMENT,
+    version                    INT           NOT NULL,
     schuljahr                  VARCHAR(9)    NOT NULL,
     bezeichnung                VARCHAR(50)   NOT NULL,
     anzahl_vorstellungen       INT           NOT NULL,
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
+    last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (maerchen_id));
 
 DESCRIBE Maerchen;
@@ -409,6 +426,7 @@ DESCRIBE Maerchen;
 CREATE TABLE IF NOT EXISTS Maercheneinteilung (
     person_id                  INT           NOT NULL,
     maerchen_id                INT           NOT NULL,
+    version                    INT           NOT NULL,
     gruppe                     VARCHAR(1)    NOT NULL,
     rolle_1                    VARCHAR(60)   NOT NULL,
     bilder_rolle_1             VARCHAR(60),
@@ -430,7 +448,8 @@ CREATE TABLE IF NOT EXISTS Maercheneinteilung (
     zusatzattribut             VARCHAR(30),
     bemerkungen                VARCHAR(100),
     drittperson_id             INT,
-    last_updated               TIMESTAMP     NOT NULL,
+    creation_date              TIMESTAMP     NOT NULL,
+    last_modified              TIMESTAMP     NOT NULL,
     PRIMARY KEY (person_id, maerchen_id),
     FOREIGN KEY (person_id)    REFERENCES Schueler (person_id),
     FOREIGN KEY (maerchen_id)  REFERENCES Maerchen (maerchen_id),
@@ -446,6 +465,7 @@ DESCRIBE Maercheneinteilung;
 CREATE TABLE IF NOT EXISTS Semesterrechnung (
     semester_id                INT           NOT NULL,
     person_id                  INT           NOT NULL,
+    version                    INT           NOT NULL,
     stipendium                 VARCHAR(13),
     gratiskinder               BOOLEAN       NOT NULL,
     rechnungsdatum_vorrechnung       DATE,
@@ -477,7 +497,8 @@ CREATE TABLE IF NOT EXISTS Semesterrechnung (
     code_id                          INT,
     bemerkungen                      TEXT,
     deleted                          BOOLEAN       NOT NULL,
-    last_updated                     TIMESTAMP     NOT NULL,
+    creation_date                    TIMESTAMP     NOT NULL,
+    last_modified                    TIMESTAMP     NOT NULL,
     PRIMARY KEY (semester_id, person_id),
     FOREIGN KEY (semester_id)  REFERENCES Semester (semester_id),
     FOREIGN KEY (person_id)    REFERENCES Angehoeriger (person_id),

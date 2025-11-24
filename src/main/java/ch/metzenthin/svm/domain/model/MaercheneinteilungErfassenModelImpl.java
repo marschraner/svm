@@ -340,110 +340,110 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl
 
   @Override
   public void setKuchenVorstellung1(Boolean isSelected) {
-    Boolean oldValue = maercheneinteilung.getKuchenVorstellung1();
+    Boolean oldValue = maercheneinteilung.isKuchenVorstellung1();
     maercheneinteilung.setKuchenVorstellung1(isSelected);
     firePropertyChange(Field.KUCHEN_VORSTELLUNG1, oldValue, isSelected);
   }
 
   @Override
   public Boolean isKuchenVorstellung1() {
-    return maercheneinteilung.getKuchenVorstellung1();
+    return maercheneinteilung.isKuchenVorstellung1();
   }
 
   @Override
   public void setKuchenVorstellung2(Boolean isSelected) {
-    Boolean oldValue = maercheneinteilung.getKuchenVorstellung2();
+    Boolean oldValue = maercheneinteilung.isKuchenVorstellung2();
     maercheneinteilung.setKuchenVorstellung2(isSelected);
     firePropertyChange(Field.KUCHEN_VORSTELLUNG2, oldValue, isSelected);
   }
 
   @Override
   public Boolean isKuchenVorstellung2() {
-    return maercheneinteilung.getKuchenVorstellung2();
+    return maercheneinteilung.isKuchenVorstellung2();
   }
 
   @Override
   public void setKuchenVorstellung3(Boolean isSelected) {
-    Boolean oldValue = maercheneinteilung.getKuchenVorstellung3();
+    Boolean oldValue = maercheneinteilung.isKuchenVorstellung3();
     maercheneinteilung.setKuchenVorstellung3(isSelected);
     firePropertyChange(Field.KUCHEN_VORSTELLUNG3, oldValue, isSelected);
   }
 
   @Override
   public Boolean isKuchenVorstellung3() {
-    return maercheneinteilung.getKuchenVorstellung3();
+    return maercheneinteilung.isKuchenVorstellung3();
   }
 
   @Override
   public void setKuchenVorstellung4(Boolean isSelected) {
-    Boolean oldValue = maercheneinteilung.getKuchenVorstellung4();
+    Boolean oldValue = maercheneinteilung.isKuchenVorstellung4();
     maercheneinteilung.setKuchenVorstellung4(isSelected);
     firePropertyChange(Field.KUCHEN_VORSTELLUNG4, oldValue, isSelected);
   }
 
   @Override
   public Boolean isKuchenVorstellung4() {
-    return maercheneinteilung.getKuchenVorstellung4();
+    return maercheneinteilung.isKuchenVorstellung4();
   }
 
   @Override
   public void setKuchenVorstellung5(Boolean isSelected) {
-    Boolean oldValue = maercheneinteilung.getKuchenVorstellung5();
+    Boolean oldValue = maercheneinteilung.isKuchenVorstellung5();
     maercheneinteilung.setKuchenVorstellung5(isSelected);
     firePropertyChange(Field.KUCHEN_VORSTELLUNG5, oldValue, isSelected);
   }
 
   @Override
   public Boolean isKuchenVorstellung5() {
-    return maercheneinteilung.getKuchenVorstellung5();
+    return maercheneinteilung.isKuchenVorstellung5();
   }
 
   @Override
   public void setKuchenVorstellung6(Boolean isSelected) {
-    Boolean oldValue = maercheneinteilung.getKuchenVorstellung6();
+    Boolean oldValue = maercheneinteilung.isKuchenVorstellung6();
     maercheneinteilung.setKuchenVorstellung6(isSelected);
     firePropertyChange(Field.KUCHEN_VORSTELLUNG6, oldValue, isSelected);
   }
 
   @Override
   public Boolean isKuchenVorstellung6() {
-    return maercheneinteilung.getKuchenVorstellung6();
+    return maercheneinteilung.isKuchenVorstellung6();
   }
 
   @Override
   public void setKuchenVorstellung7(Boolean isSelected) {
-    Boolean oldValue = maercheneinteilung.getKuchenVorstellung7();
+    Boolean oldValue = maercheneinteilung.isKuchenVorstellung7();
     maercheneinteilung.setKuchenVorstellung7(isSelected);
     firePropertyChange(Field.KUCHEN_VORSTELLUNG7, oldValue, isSelected);
   }
 
   @Override
   public Boolean isKuchenVorstellung7() {
-    return maercheneinteilung.getKuchenVorstellung7();
+    return maercheneinteilung.isKuchenVorstellung7();
   }
 
   @Override
   public void setKuchenVorstellung8(Boolean isSelected) {
-    Boolean oldValue = maercheneinteilung.getKuchenVorstellung8();
+    Boolean oldValue = maercheneinteilung.isKuchenVorstellung8();
     maercheneinteilung.setKuchenVorstellung8(isSelected);
     firePropertyChange(Field.KUCHEN_VORSTELLUNG8, oldValue, isSelected);
   }
 
   @Override
   public Boolean isKuchenVorstellung8() {
-    return maercheneinteilung.getKuchenVorstellung8();
+    return maercheneinteilung.isKuchenVorstellung8();
   }
 
   @Override
   public void setKuchenVorstellung9(Boolean isSelected) {
-    Boolean oldValue = maercheneinteilung.getKuchenVorstellung9();
+    Boolean oldValue = maercheneinteilung.isKuchenVorstellung9();
     maercheneinteilung.setKuchenVorstellung9(isSelected);
     firePropertyChange(Field.KUCHEN_VORSTELLUNG9, oldValue, isSelected);
   }
 
   @Override
   public Boolean isKuchenVorstellung9() {
-    return maercheneinteilung.getKuchenVorstellung9();
+    return maercheneinteilung.isKuchenVorstellung9();
   }
 
   private final StringModelAttribute zusatzattributModelAttribute =
@@ -602,40 +602,40 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl
         setElternmithilfeCode(maercheneinteilungOrigin.getElternmithilfeCode());
         setKuchenVorstellung1(
             !maercheneinteilungOrigin
-                .getKuchenVorstellung1()); // damit PropertyChange ausgelöst wird!
-        setKuchenVorstellung1(maercheneinteilungOrigin.getKuchenVorstellung1());
+                .isKuchenVorstellung1()); // damit PropertyChange ausgelöst wird!
+        setKuchenVorstellung1(maercheneinteilungOrigin.isKuchenVorstellung1());
         setKuchenVorstellung2(
             !maercheneinteilungOrigin
-                .getKuchenVorstellung2()); // damit PropertyChange ausgelöst wird!
-        setKuchenVorstellung2(maercheneinteilungOrigin.getKuchenVorstellung2());
+                .isKuchenVorstellung2()); // damit PropertyChange ausgelöst wird!
+        setKuchenVorstellung2(maercheneinteilungOrigin.isKuchenVorstellung2());
         setKuchenVorstellung3(
             !maercheneinteilungOrigin
-                .getKuchenVorstellung3()); // damit PropertyChange ausgelöst wird!
-        setKuchenVorstellung3(maercheneinteilungOrigin.getKuchenVorstellung3());
+                .isKuchenVorstellung3()); // damit PropertyChange ausgelöst wird!
+        setKuchenVorstellung3(maercheneinteilungOrigin.isKuchenVorstellung3());
         setKuchenVorstellung4(
             !maercheneinteilungOrigin
-                .getKuchenVorstellung4()); // damit PropertyChange ausgelöst wird!
-        setKuchenVorstellung4(maercheneinteilungOrigin.getKuchenVorstellung4());
+                .isKuchenVorstellung4()); // damit PropertyChange ausgelöst wird!
+        setKuchenVorstellung4(maercheneinteilungOrigin.isKuchenVorstellung4());
         setKuchenVorstellung5(
             !maercheneinteilungOrigin
-                .getKuchenVorstellung5()); // damit PropertyChange ausgelöst wird!
-        setKuchenVorstellung5(maercheneinteilungOrigin.getKuchenVorstellung5());
+                .isKuchenVorstellung5()); // damit PropertyChange ausgelöst wird!
+        setKuchenVorstellung5(maercheneinteilungOrigin.isKuchenVorstellung5());
         setKuchenVorstellung6(
             !maercheneinteilungOrigin
-                .getKuchenVorstellung6()); // damit PropertyChange ausgelöst wird!
-        setKuchenVorstellung6(maercheneinteilungOrigin.getKuchenVorstellung6());
+                .isKuchenVorstellung6()); // damit PropertyChange ausgelöst wird!
+        setKuchenVorstellung6(maercheneinteilungOrigin.isKuchenVorstellung6());
         setKuchenVorstellung7(
             !maercheneinteilungOrigin
-                .getKuchenVorstellung7()); // damit PropertyChange ausgelöst wird!
-        setKuchenVorstellung7(maercheneinteilungOrigin.getKuchenVorstellung7());
+                .isKuchenVorstellung7()); // damit PropertyChange ausgelöst wird!
+        setKuchenVorstellung7(maercheneinteilungOrigin.isKuchenVorstellung7());
         setKuchenVorstellung8(
             !maercheneinteilungOrigin
-                .getKuchenVorstellung8()); // damit PropertyChange ausgelöst wird!
-        setKuchenVorstellung8(maercheneinteilungOrigin.getKuchenVorstellung8());
+                .isKuchenVorstellung8()); // damit PropertyChange ausgelöst wird!
+        setKuchenVorstellung8(maercheneinteilungOrigin.isKuchenVorstellung8());
         setKuchenVorstellung9(
             !maercheneinteilungOrigin
-                .getKuchenVorstellung9()); // damit PropertyChange ausgelöst wird!
-        setKuchenVorstellung9(maercheneinteilungOrigin.getKuchenVorstellung9());
+                .isKuchenVorstellung9()); // damit PropertyChange ausgelöst wird!
+        setKuchenVorstellung9(maercheneinteilungOrigin.isKuchenVorstellung9());
         setZusatzattribut(maercheneinteilungOrigin.getZusatzattribut());
         setBemerkungen(maercheneinteilungOrigin.getBemerkungen());
         ElternmithilfeDrittperson eltermithilfeDrittpersonOrigin =

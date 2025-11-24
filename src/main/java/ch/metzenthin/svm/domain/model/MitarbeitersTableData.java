@@ -75,9 +75,8 @@ public record MitarbeitersTableData(List<Mitarbeiter> mitarbeiters) {
           value = (!checkNotEmpty(mitarbeiter.getAhvNummer()) ? "" : mitarbeiter.getAhvNummer());
       case IBAN_NUMMER ->
           value = (!checkNotEmpty(mitarbeiter.getIbanNummer()) ? "" : mitarbeiter.getIbanNummer());
-      case LEHRKRAFT -> value = (mitarbeiter.getLehrkraft() ? "ja" : "nein");
-      case AKTIV ->
-          value = (mitarbeiter.getAktiv() != null && mitarbeiter.getAktiv()) ? "ja" : "nein";
+      case LEHRKRAFT -> value = (mitarbeiter.isLehrkraft() ? "ja" : "nein");
+      case AKTIV -> value = (mitarbeiter.isAktiv()) ? "ja" : "nein";
       case CODES -> value = mitarbeiter.getMitarbeiterCodesAsStr();
       case VERTRETUNGSMOEGLICHKEITEN ->
           value = mitarbeiter.getVertretungsmoeglichkeitenLineBreaksReplacedBySemicolonOrPeriod();

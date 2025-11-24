@@ -4,7 +4,9 @@ import ch.metzenthin.svm.domain.model.CodesTableData;
 import ch.metzenthin.svm.persistence.entities.Code;
 import java.io.Serial;
 import javax.swing.table.AbstractTableModel;
+import lombok.Getter;
 
+@Getter
 public class CodesTableModel extends AbstractTableModel {
 
   @Serial private static final long serialVersionUID = 1L;
@@ -39,10 +41,6 @@ public class CodesTableModel extends AbstractTableModel {
   @Override
   public Class<?> getColumnClass(int columnIndex) {
     return codesTableData.getColumnClass();
-  }
-
-  public CodesTableData getCodesTableData() {
-    return codesTableData;
   }
 
   public Code getCodeAt(int rowIndex) {

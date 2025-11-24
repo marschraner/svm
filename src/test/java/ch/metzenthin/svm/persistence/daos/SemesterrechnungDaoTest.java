@@ -131,7 +131,7 @@ public class SemesterrechnungDaoTest {
       assertEquals(new BigDecimal("20.00"), semesterrechnungFound.getZuschlagVorrechnung());
       assertEquals("versäumte Zahlung", semesterrechnungFound.getZuschlagsgrundVorrechnung());
       assertEquals(Stipendium.STIPENDIUM_70, semesterrechnungFound.getStipendium());
-      assertFalse(semesterrechnungFound.getGratiskinder());
+      assertFalse(semesterrechnungFound.isGratiskinder());
       assertEquals(Integer.valueOf(18), semesterrechnungFound.getAnzahlWochenVorrechnung());
       assertEquals(new BigDecimal("23.00"), semesterrechnungFound.getWochenbetragVorrechnung());
       assertEquals(
@@ -159,7 +159,7 @@ public class SemesterrechnungDaoTest {
           semesterrechnungFound.getDatumZahlung3Nachrechnung());
       assertEquals(new BigDecimal("146.00"), semesterrechnungFound.getBetragZahlung3Nachrechnung());
       assertEquals("Zahlt in Raten", semesterrechnungFound.getBemerkungen());
-      assertFalse(semesterrechnungFound.getDeleted());
+      assertFalse(semesterrechnungFound.isDeleted());
     } finally {
       if (tx != null) {
         tx.rollback();

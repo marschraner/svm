@@ -535,7 +535,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
     try {
       setSemesterrechnungCode(semesterrechnungOrigin.getSemesterrechnungCode());
       setStipendium(semesterrechnungOrigin.getStipendium());
-      setGratiskinder(semesterrechnungOrigin.getGratiskinder());
+      setGratiskinder(semesterrechnungOrigin.isGratiskinder());
       setRechnungsdatumVorrechnung(asString(semesterrechnungOrigin.getRechnungsdatumVorrechnung()));
       setErmaessigungVorrechnung(
           semesterrechnungOrigin.getErmaessigungVorrechnung() == null
@@ -755,7 +755,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
   }
 
   private boolean isSetGratiskinder() {
-    return semesterrechnung.getGratiskinder() != null && semesterrechnung.getGratiskinder();
+    return semesterrechnung.isGratiskinder();
   }
 
   private boolean isSetStipendium() {

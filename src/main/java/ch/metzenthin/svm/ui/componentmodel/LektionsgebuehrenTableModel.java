@@ -5,7 +5,9 @@ import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import java.io.Serial;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
+import lombok.Getter;
 
+@Getter
 public class LektionsgebuehrenTableModel extends AbstractTableModel {
 
   @Serial private static final long serialVersionUID = 1L;
@@ -44,9 +46,5 @@ public class LektionsgebuehrenTableModel extends AbstractTableModel {
 
   public List<Lektionsgebuehren> getLektionsgebuehrenList() {
     return lektionsgebuehrenTableData.getLektionsgebuehrenList();
-  }
-
-  public LektionsgebuehrenTableData getLektionsgebuehrenTableData() {
-    return lektionsgebuehrenTableData;
   }
 }
