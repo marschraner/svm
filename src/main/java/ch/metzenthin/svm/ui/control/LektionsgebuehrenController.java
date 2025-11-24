@@ -8,7 +8,7 @@ import ch.metzenthin.svm.domain.model.LektionsgebuehrenModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenTableData;
 import ch.metzenthin.svm.service.result.DeleteLektionsgebuehrenResult;
 import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
-import ch.metzenthin.svm.ui.components.LektionsgebuehrenErfassenDialog;
+import ch.metzenthin.svm.ui.components.CreateOrUpdateLektionsgebuehrenDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -70,8 +70,8 @@ public class LektionsgebuehrenController implements DialogClosedListener {
 
   private void onNeu() {
     btnNeu.setFocusPainted(true);
-    LektionsgebuehrenErfassenDialog lektionsgebuehrenErfassenDialog =
-        new LektionsgebuehrenErfassenDialog(
+    CreateOrUpdateLektionsgebuehrenDialog createOrUpdateLektionsgebuehrenDialog =
+        new CreateOrUpdateLektionsgebuehrenDialog(
             svmContext,
             lektionsgebuehrenTableModel,
             lektionsgebuehrenModel,
@@ -79,8 +79,8 @@ public class LektionsgebuehrenController implements DialogClosedListener {
             false,
             "Neuer Lektionsgebuehren",
             this);
-    lektionsgebuehrenErfassenDialog.pack();
-    lektionsgebuehrenErfassenDialog.setVisible(true);
+    createOrUpdateLektionsgebuehrenDialog.pack();
+    createOrUpdateLektionsgebuehrenDialog.setVisible(true);
     lektionsgebuehrenTableModel.fireTableDataChanged();
     btnNeu.setFocusPainted(false);
   }
@@ -97,8 +97,8 @@ public class LektionsgebuehrenController implements DialogClosedListener {
 
   private void onBearbeiten() {
     btnBearbeiten.setFocusPainted(true);
-    LektionsgebuehrenErfassenDialog lektionsgebuehrenErfassenDialog =
-        new LektionsgebuehrenErfassenDialog(
+    CreateOrUpdateLektionsgebuehrenDialog createOrUpdateLektionsgebuehrenDialog =
+        new CreateOrUpdateLektionsgebuehrenDialog(
             svmContext,
             lektionsgebuehrenTableModel,
             lektionsgebuehrenModel,
@@ -106,8 +106,8 @@ public class LektionsgebuehrenController implements DialogClosedListener {
             true,
             "Lektionsgebuehren bearbeiten",
             this);
-    lektionsgebuehrenErfassenDialog.pack();
-    lektionsgebuehrenErfassenDialog.setVisible(true);
+    createOrUpdateLektionsgebuehrenDialog.pack();
+    createOrUpdateLektionsgebuehrenDialog.setVisible(true);
     lektionsgebuehrenTableModel.fireTableDataChanged();
     btnBearbeiten.setFocusPainted(false);
   }

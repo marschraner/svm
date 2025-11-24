@@ -13,10 +13,10 @@ public interface LektionsgebuehrenModel extends Model {
       LektionsgebuehrenTableModel lektionsgebuehrenTableModel,
       int indexLektionsgebuehrenToBeRemoved);
 
-  LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel(
+  CreateOrUpdateLektionsgebuehrenModel createCreateOrUpdateLektionsgebuehrenModel(
       SvmContext svmContext, LektionsgebuehrenTableModel lektionsgebuehrenTableModel);
 
-  LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel(
+  CreateOrUpdateLektionsgebuehrenModel createCreateOrUpdateLektionsgebuehrenModel(
       SvmContext svmContext,
       LektionsgebuehrenTableModel lektionsgebuehrenTableModel,
       int indexBearbeiten);

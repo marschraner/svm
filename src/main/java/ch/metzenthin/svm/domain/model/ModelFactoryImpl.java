@@ -246,9 +246,9 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
-  public LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel(
+  public CreateOrUpdateLektionsgebuehrenModel createCreateOrUpdateLektionsgebuehrenModel(
       Optional<Lektionsgebuehren> lektionsgebuehrenToBeModifiedOptional) {
-    return new LektionsgebuehrenErfassenModelImpl(
+    return new CreateOrUpdateLektionsgebuehrenModelImpl(
         lektionsgebuehrenToBeModifiedOptional, lektionsgebuehrenService);
   }
 

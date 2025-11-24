@@ -2,10 +2,10 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.DialogClosedListener;
-import ch.metzenthin.svm.domain.model.LektionsgebuehrenErfassenModel;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateLektionsgebuehrenModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenModel;
 import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
-import ch.metzenthin.svm.ui.control.LektionsgebuehrenErfassenController;
+import ch.metzenthin.svm.ui.control.CreateOrUpdateLektionsgebuehrenController;
 import java.awt.*;
 import java.util.Locale;
 import javax.swing.*;
@@ -14,7 +14,7 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 
 @SuppressWarnings({"java:S100", "java:S1171", "java:S1450", "FieldCanBeLocal"})
-public class LektionsgebuehrenErfassenDialog extends JDialog {
+public class CreateOrUpdateLektionsgebuehrenDialog extends JDialog {
 
   // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
   private static final boolean DEFAULT_BUTTON_ENABLED = false;
@@ -39,7 +39,7 @@ public class LektionsgebuehrenErfassenDialog extends JDialog {
   private JButton btnSpeichern;
   private JButton btnAbbrechen;
 
-  public LektionsgebuehrenErfassenDialog(
+  public CreateOrUpdateLektionsgebuehrenDialog(
       SvmContext svmContext,
       LektionsgebuehrenTableModel lektionsgebuehrenTableModel,
       LektionsgebuehrenModel lektionsgebuehrenModel,
@@ -54,7 +54,7 @@ public class LektionsgebuehrenErfassenDialog extends JDialog {
     if (DEFAULT_BUTTON_ENABLED) {
       getRootPane().setDefaultButton(btnSpeichern);
     }
-    createLektionsgebuehrenErfassenController(
+    createCreateOrUpdateLektionsgebuehrenController(
         svmContext,
         lektionsgebuehrenTableModel,
         lektionsgebuehrenModel,
@@ -63,44 +63,44 @@ public class LektionsgebuehrenErfassenDialog extends JDialog {
         dialogClosedListener);
   }
 
-  private void createLektionsgebuehrenErfassenController(
+  private void createCreateOrUpdateLektionsgebuehrenController(
       SvmContext svmContext,
       LektionsgebuehrenTableModel lektionsgebuehrenTableModel,
       LektionsgebuehrenModel lektionsgebuehrenModel,
       int indexBearbeiten,
       boolean isBearbeiten,
       DialogClosedListener dialogClosedListener) {
-    LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel =
+    CreateOrUpdateLektionsgebuehrenModel createOrUpdateLektionsgebuehrenModel =
         (isBearbeiten)
-            ? lektionsgebuehrenModel.createLektionsgebuehrenErfassenModel(
+            ? lektionsgebuehrenModel.createCreateOrUpdateLektionsgebuehrenModel(
                 svmContext, lektionsgebuehrenTableModel, indexBearbeiten)
-            : lektionsgebuehrenModel.createLektionsgebuehrenErfassenModel(
+            : lektionsgebuehrenModel.createCreateOrUpdateLektionsgebuehrenModel(
                 svmContext, lektionsgebuehrenTableModel);
-    LektionsgebuehrenErfassenController lektionsgebuehrenErfassenController =
-        new LektionsgebuehrenErfassenController(
-            lektionsgebuehrenErfassenModel,
+    CreateOrUpdateLektionsgebuehrenController createOrUpdateLektionsgebuehrenController =
+        new CreateOrUpdateLektionsgebuehrenController(
+            createOrUpdateLektionsgebuehrenModel,
             isBearbeiten,
             DEFAULT_BUTTON_ENABLED,
             dialogClosedListener);
-    lektionsgebuehrenErfassenController.setLektionsgebuehrenErfassenDialog(this);
-    lektionsgebuehrenErfassenController.setContentPane(contentPane);
-    lektionsgebuehrenErfassenController.setTxtLektionslaenge(txtLektionslaenge);
-    lektionsgebuehrenErfassenController.setTxtBetrag1Kind(txtBetrag1Kind);
-    lektionsgebuehrenErfassenController.setTxtBetrag2Kinder(txtBetrag2Kinder);
-    lektionsgebuehrenErfassenController.setTxtBetrag3Kinder(txtBetrag3Kinder);
-    lektionsgebuehrenErfassenController.setTxtBetrag4Kinder(txtBetrag4Kinder);
-    lektionsgebuehrenErfassenController.setTxtBetrag5Kinder(txtBetrag5Kinder);
-    lektionsgebuehrenErfassenController.setTxtBetrag6Kinder(txtBetrag6Kinder);
-    lektionsgebuehrenErfassenController.setBtnSpeichern(btnSpeichern);
-    lektionsgebuehrenErfassenController.setBtnAbbrechen(btnAbbrechen);
-    lektionsgebuehrenErfassenController.setErrLblLektionslaenge(errLblLektionslaenge);
-    lektionsgebuehrenErfassenController.setErrLblBetrag1Kind(errLblBetrag1Kind);
-    lektionsgebuehrenErfassenController.setErrLblBetrag2Kinder(errLblBetrag2Kinder);
-    lektionsgebuehrenErfassenController.setErrLblBetrag3Kinder(errLblBetrag3Kinder);
-    lektionsgebuehrenErfassenController.setErrLblBetrag4Kinder(errLblBetrag4Kinder);
-    lektionsgebuehrenErfassenController.setErrLblBetrag5Kinder(errLblBetrag5Kinder);
-    lektionsgebuehrenErfassenController.setErrLblBetrag6Kinder(errLblBetrag6Kinder);
-    lektionsgebuehrenErfassenController.constructionDone();
+    createOrUpdateLektionsgebuehrenController.setCreateOrUpdateLektionsgebuehrenDialog(this);
+    createOrUpdateLektionsgebuehrenController.setContentPane(contentPane);
+    createOrUpdateLektionsgebuehrenController.setTxtLektionslaenge(txtLektionslaenge);
+    createOrUpdateLektionsgebuehrenController.setTxtBetrag1Kind(txtBetrag1Kind);
+    createOrUpdateLektionsgebuehrenController.setTxtBetrag2Kinder(txtBetrag2Kinder);
+    createOrUpdateLektionsgebuehrenController.setTxtBetrag3Kinder(txtBetrag3Kinder);
+    createOrUpdateLektionsgebuehrenController.setTxtBetrag4Kinder(txtBetrag4Kinder);
+    createOrUpdateLektionsgebuehrenController.setTxtBetrag5Kinder(txtBetrag5Kinder);
+    createOrUpdateLektionsgebuehrenController.setTxtBetrag6Kinder(txtBetrag6Kinder);
+    createOrUpdateLektionsgebuehrenController.setBtnSpeichern(btnSpeichern);
+    createOrUpdateLektionsgebuehrenController.setBtnAbbrechen(btnAbbrechen);
+    createOrUpdateLektionsgebuehrenController.setErrLblLektionslaenge(errLblLektionslaenge);
+    createOrUpdateLektionsgebuehrenController.setErrLblBetrag1Kind(errLblBetrag1Kind);
+    createOrUpdateLektionsgebuehrenController.setErrLblBetrag2Kinder(errLblBetrag2Kinder);
+    createOrUpdateLektionsgebuehrenController.setErrLblBetrag3Kinder(errLblBetrag3Kinder);
+    createOrUpdateLektionsgebuehrenController.setErrLblBetrag4Kinder(errLblBetrag4Kinder);
+    createOrUpdateLektionsgebuehrenController.setErrLblBetrag5Kinder(errLblBetrag5Kinder);
+    createOrUpdateLektionsgebuehrenController.setErrLblBetrag6Kinder(errLblBetrag6Kinder);
+    createOrUpdateLektionsgebuehrenController.constructionDone();
   }
 
   @SuppressWarnings("DuplicatedCode")

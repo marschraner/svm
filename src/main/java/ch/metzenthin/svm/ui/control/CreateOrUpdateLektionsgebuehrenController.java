@@ -5,8 +5,8 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateLektionsgebuehrenModel;
 import ch.metzenthin.svm.domain.model.DialogClosedListener;
-import ch.metzenthin.svm.domain.model.LektionsgebuehrenErfassenModel;
 import ch.metzenthin.svm.service.result.SaveLektionsgebuehrenResult;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -20,21 +20,21 @@ import org.apache.logging.log4j.Logger;
  * @author Martin Schraner
  */
 @SuppressWarnings("LoggingSimilarMessage")
-public class LektionsgebuehrenErfassenController extends AbstractController {
+public class CreateOrUpdateLektionsgebuehrenController extends AbstractController {
 
   private static final Logger LOGGER =
-      LogManager.getLogger(LektionsgebuehrenErfassenController.class);
+      LogManager.getLogger(CreateOrUpdateLektionsgebuehrenController.class);
   private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE =
       "Validierung wegen equalFieldAndModelValue";
 
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
   private static final boolean MODEL_VALIDATION_MODE = false;
 
-  private final LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel;
+  private final CreateOrUpdateLektionsgebuehrenModel createOrUpdateLektionsgebuehrenModel;
   private final boolean isBearbeiten;
   private final boolean defaultButtonEnabled;
   private final DialogClosedListener dialogClosedListener;
-  private JDialog lektionsgebuehrenErfassenDialog;
+  private JDialog createOrUpdatelektionsgebuehrenDialog;
   private JTextField txtLektionslaenge;
   private JTextField txtBetrag1Kind;
   private JTextField txtBetrag2Kinder;
@@ -51,33 +51,35 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   @Setter private JLabel errLblBetrag6Kinder;
   private JButton btnSpeichern;
 
-  public LektionsgebuehrenErfassenController(
-      LektionsgebuehrenErfassenModel lektionsgebuehrenErfassenModel,
+  public CreateOrUpdateLektionsgebuehrenController(
+      CreateOrUpdateLektionsgebuehrenModel createOrUpdateLektionsgebuehrenModel,
       boolean isBearbeiten,
       boolean defaultButtonEnabled,
       DialogClosedListener dialogClosedListener) {
-    super(lektionsgebuehrenErfassenModel);
-    this.lektionsgebuehrenErfassenModel = lektionsgebuehrenErfassenModel;
+    super(createOrUpdateLektionsgebuehrenModel);
+    this.createOrUpdateLektionsgebuehrenModel = createOrUpdateLektionsgebuehrenModel;
     this.isBearbeiten = isBearbeiten;
     this.defaultButtonEnabled = defaultButtonEnabled;
     this.dialogClosedListener = dialogClosedListener;
-    this.lektionsgebuehrenErfassenModel.addPropertyChangeListener(this);
-    this.lektionsgebuehrenErfassenModel.addDisableFieldsListener(this);
-    this.lektionsgebuehrenErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-    this.lektionsgebuehrenErfassenModel.addCompletedListener(
-        this::onLektionsgebuehrenErfassenModelCompleted);
+    this.createOrUpdateLektionsgebuehrenModel.addPropertyChangeListener(this);
+    this.createOrUpdateLektionsgebuehrenModel.addDisableFieldsListener(this);
+    this.createOrUpdateLektionsgebuehrenModel.addMakeErrorLabelsInvisibleListener(this);
+    this.createOrUpdateLektionsgebuehrenModel.addCompletedListener(
+        this::onCreateOrUpdateLektionsgebuehrenModelCompleted);
     this.setModelValidationMode(MODEL_VALIDATION_MODE);
   }
 
   public void constructionDone() {
-    lektionsgebuehrenErfassenModel.initializeCompleted();
+    createOrUpdateLektionsgebuehrenModel.initializeCompleted();
   }
 
-  public void setLektionsgebuehrenErfassenDialog(JDialog lektionsgebuehrenErfassenDialog) {
+  public void setCreateOrUpdateLektionsgebuehrenDialog(
+      JDialog createOrUpdateLektionsgebuehrenDialog) {
     // call onCancel() when cross is clicked
-    this.lektionsgebuehrenErfassenDialog = lektionsgebuehrenErfassenDialog;
-    lektionsgebuehrenErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    lektionsgebuehrenErfassenDialog.addWindowListener(
+    this.createOrUpdatelektionsgebuehrenDialog = createOrUpdateLektionsgebuehrenDialog;
+    createOrUpdateLektionsgebuehrenDialog.setDefaultCloseOperation(
+        WindowConstants.DO_NOTHING_ON_CLOSE);
+    createOrUpdateLektionsgebuehrenDialog.addWindowListener(
         new WindowAdapter() {
           @Override
           public void windowClosing(WindowEvent e) {
@@ -113,10 +115,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   }
 
   private void onLektionslaengeEvent(boolean showRequiredErrMsg) {
-    LOGGER.trace("LektionsgebuehrenErfassenController Event Lektionslaenge");
+    LOGGER.trace("CreateOrUpdateLektionsgebuehrenController Event Lektionslaenge");
     boolean equalFieldAndModelValue =
         equalsNullSafe(
-            txtLektionslaenge.getText(), lektionsgebuehrenErfassenModel.getLektionslaenge());
+            txtLektionslaenge.getText(), createOrUpdateLektionsgebuehrenModel.getLektionslaenge());
     try {
       setModelLektionslaenge(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -133,10 +135,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   private void setModelLektionslaenge(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.LEKTIONSLAENGE);
     try {
-      lektionsgebuehrenErfassenModel.setLektionslaenge(txtLektionslaenge.getText());
+      createOrUpdateLektionsgebuehrenModel.setLektionslaenge(txtLektionslaenge.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "LektionsgebuehrenErfassenController setModelLektionslaenge RequiredException={}",
+          "CreateOrUpdateLektionsgebuehrenController setModelLektionslaenge RequiredException={}",
           e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtLektionslaenge.setToolTipText(e.getMessage());
@@ -148,7 +150,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
       throw e;
     } catch (SvmValidationException e) {
       LOGGER.trace(
-          "LektionsgebuehrenErfassenController setModelLektionslaenge Exception={}",
+          "CreateOrUpdateLektionsgebuehrenController setModelLektionslaenge Exception={}",
           e.getMessage());
       showErrMsg(e);
       throw e;
@@ -170,9 +172,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   }
 
   private void onBetrag1KindEvent(boolean showRequiredErrMsg) {
-    LOGGER.trace("LektionsgebuehrenErfassenController Event Betrag1Kind");
+    LOGGER.trace("CreateOrUpdateLektionsgebuehrenController Event Betrag1Kind");
     boolean equalFieldAndModelValue =
-        equalsNullSafe(txtBetrag1Kind.getText(), lektionsgebuehrenErfassenModel.getBetrag1Kind());
+        equalsNullSafe(
+            txtBetrag1Kind.getText(), createOrUpdateLektionsgebuehrenModel.getBetrag1Kind());
     try {
       setModelBetrag1Kind(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -189,10 +192,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   private void setModelBetrag1Kind(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.BETRAG_1_KIND);
     try {
-      lektionsgebuehrenErfassenModel.setBetrag1Kind(txtBetrag1Kind.getText());
+      createOrUpdateLektionsgebuehrenModel.setBetrag1Kind(txtBetrag1Kind.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "LektionsgebuehrenErfassenController setModelBetrag1Kind RequiredException={}",
+          "CreateOrUpdateLektionsgebuehrenController setModelBetrag1Kind RequiredException={}",
           e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtBetrag1Kind.setToolTipText(e.getMessage());
@@ -204,7 +207,8 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
       throw e;
     } catch (SvmValidationException e) {
       LOGGER.trace(
-          "LektionsgebuehrenErfassenController setModelBetrag1Kind Exception={}", e.getMessage());
+          "CreateOrUpdateLektionsgebuehrenController setModelBetrag1Kind Exception={}",
+          e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -225,10 +229,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   }
 
   private void onBetrag2KinderEvent(boolean showRequiredErrMsg) {
-    LOGGER.trace("LektionsgebuehrenErfassenController Event Betrag2Kinder");
+    LOGGER.trace("CreateOrUpdateLektionsgebuehrenController Event Betrag2Kinder");
     boolean equalFieldAndModelValue =
         equalsNullSafe(
-            txtBetrag2Kinder.getText(), lektionsgebuehrenErfassenModel.getBetrag2Kinder());
+            txtBetrag2Kinder.getText(), createOrUpdateLektionsgebuehrenModel.getBetrag2Kinder());
     try {
       setModelBetrag2Kinder(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -245,10 +249,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   private void setModelBetrag2Kinder(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.BETRAG_2_KINDER);
     try {
-      lektionsgebuehrenErfassenModel.setBetrag2Kinder(txtBetrag2Kinder.getText());
+      createOrUpdateLektionsgebuehrenModel.setBetrag2Kinder(txtBetrag2Kinder.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "LektionsgebuehrenErfassenController setModelBetrag2Kinder RequiredException={}",
+          "CreateOrUpdateLektionsgebuehrenController setModelBetrag2Kinder RequiredException={}",
           e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtBetrag2Kinder.setToolTipText(e.getMessage());
@@ -260,7 +264,8 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
       throw e;
     } catch (SvmValidationException e) {
       LOGGER.trace(
-          "LektionsgebuehrenErfassenController setModelBetrag2Kinder Exception={}", e.getMessage());
+          "CreateOrUpdateLektionsgebuehrenController setModelBetrag2Kinder Exception={}",
+          e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -281,10 +286,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   }
 
   private void onBetrag3KinderEvent(boolean showRequiredErrMsg) {
-    LOGGER.trace("LektionsgebuehrenErfassenController Event Betrag3Kinder");
+    LOGGER.trace("CreateOrUpdateLektionsgebuehrenController Event Betrag3Kinder");
     boolean equalFieldAndModelValue =
         equalsNullSafe(
-            txtBetrag3Kinder.getText(), lektionsgebuehrenErfassenModel.getBetrag3Kinder());
+            txtBetrag3Kinder.getText(), createOrUpdateLektionsgebuehrenModel.getBetrag3Kinder());
     try {
       setModelBetrag3Kinder(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -301,10 +306,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   private void setModelBetrag3Kinder(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.BETRAG_3_KINDER);
     try {
-      lektionsgebuehrenErfassenModel.setBetrag3Kinder(txtBetrag3Kinder.getText());
+      createOrUpdateLektionsgebuehrenModel.setBetrag3Kinder(txtBetrag3Kinder.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "LektionsgebuehrenErfassenController setModelBetrag3Kinder RequiredException={}",
+          "CreateOrUpdateLektionsgebuehrenController setModelBetrag3Kinder RequiredException={}",
           e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtBetrag3Kinder.setToolTipText(e.getMessage());
@@ -316,7 +321,8 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
       throw e;
     } catch (SvmValidationException e) {
       LOGGER.trace(
-          "LektionsgebuehrenErfassenController setModelBetrag3Kinder Exception={}", e.getMessage());
+          "CreateOrUpdateLektionsgebuehrenController setModelBetrag3Kinder Exception={}",
+          e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -337,10 +343,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   }
 
   private void onBetrag4KinderEvent(boolean showRequiredErrMsg) {
-    LOGGER.trace("LektionsgebuehrenErfassenController Event Betrag4Kinder");
+    LOGGER.trace("CreateOrUpdateLektionsgebuehrenController Event Betrag4Kinder");
     boolean equalFieldAndModelValue =
         equalsNullSafe(
-            txtBetrag4Kinder.getText(), lektionsgebuehrenErfassenModel.getBetrag4Kinder());
+            txtBetrag4Kinder.getText(), createOrUpdateLektionsgebuehrenModel.getBetrag4Kinder());
     try {
       setModelBetrag4Kinder(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -357,10 +363,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   private void setModelBetrag4Kinder(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.BETRAG_4_KINDER);
     try {
-      lektionsgebuehrenErfassenModel.setBetrag4Kinder(txtBetrag4Kinder.getText());
+      createOrUpdateLektionsgebuehrenModel.setBetrag4Kinder(txtBetrag4Kinder.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "LektionsgebuehrenErfassenController setModelBetrag4Kinder RequiredException={}",
+          "CreateOrUpdateLektionsgebuehrenController setModelBetrag4Kinder RequiredException={}",
           e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtBetrag4Kinder.setToolTipText(e.getMessage());
@@ -372,7 +378,8 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
       throw e;
     } catch (SvmValidationException e) {
       LOGGER.trace(
-          "LektionsgebuehrenErfassenController setModelBetrag4Kinder Exception={}", e.getMessage());
+          "CreateOrUpdateLektionsgebuehrenController setModelBetrag4Kinder Exception={}",
+          e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -393,10 +400,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   }
 
   private void onBetrag5KinderEvent(boolean showRequiredErrMsg) {
-    LOGGER.trace("LektionsgebuehrenErfassenController Event Betrag5Kinder");
+    LOGGER.trace("CreateOrUpdateLektionsgebuehrenController Event Betrag5Kinder");
     boolean equalFieldAndModelValue =
         equalsNullSafe(
-            txtBetrag5Kinder.getText(), lektionsgebuehrenErfassenModel.getBetrag5Kinder());
+            txtBetrag5Kinder.getText(), createOrUpdateLektionsgebuehrenModel.getBetrag5Kinder());
     try {
       setModelBetrag5Kinder(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -413,10 +420,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   private void setModelBetrag5Kinder(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.BETRAG_5_KINDER);
     try {
-      lektionsgebuehrenErfassenModel.setBetrag5Kinder(txtBetrag5Kinder.getText());
+      createOrUpdateLektionsgebuehrenModel.setBetrag5Kinder(txtBetrag5Kinder.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "LektionsgebuehrenErfassenController setModelBetrag5Kinder RequiredException={}",
+          "CreateOrUpdateLektionsgebuehrenController setModelBetrag5Kinder RequiredException={}",
           e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtBetrag5Kinder.setToolTipText(e.getMessage());
@@ -428,7 +435,8 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
       throw e;
     } catch (SvmValidationException e) {
       LOGGER.trace(
-          "LektionsgebuehrenErfassenController setModelBetrag5Kinder Exception={}", e.getMessage());
+          "CreateOrUpdateLektionsgebuehrenController setModelBetrag5Kinder Exception={}",
+          e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -449,10 +457,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   }
 
   private void onBetrag6KinderEvent(boolean showRequiredErrMsg) {
-    LOGGER.trace("LektionsgebuehrenErfassenController Event Betrag6Kinder");
+    LOGGER.trace("CreateOrUpdateLektionsgebuehrenController Event Betrag6Kinder");
     boolean equalFieldAndModelValue =
         equalsNullSafe(
-            txtBetrag6Kinder.getText(), lektionsgebuehrenErfassenModel.getBetrag6Kinder());
+            txtBetrag6Kinder.getText(), createOrUpdateLektionsgebuehrenModel.getBetrag6Kinder());
     try {
       setModelBetrag6Kinder(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -469,10 +477,10 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   private void setModelBetrag6Kinder(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.BETRAG_6_KINDER);
     try {
-      lektionsgebuehrenErfassenModel.setBetrag6Kinder(txtBetrag6Kinder.getText());
+      createOrUpdateLektionsgebuehrenModel.setBetrag6Kinder(txtBetrag6Kinder.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "LektionsgebuehrenErfassenController setModelBetrag6Kinder RequiredException={}",
+          "CreateOrUpdateLektionsgebuehrenController setModelBetrag6Kinder RequiredException={}",
           e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtBetrag6Kinder.setToolTipText(e.getMessage());
@@ -484,7 +492,8 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
       throw e;
     } catch (SvmValidationException e) {
       LOGGER.trace(
-          "LektionsgebuehrenErfassenController setModelBetrag6Kinder Exception={}", e.getMessage());
+          "CreateOrUpdateLektionsgebuehrenController setModelBetrag6Kinder Exception={}",
+          e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -504,11 +513,11 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
       return;
     }
     SaveLektionsgebuehrenResult saveLektionsgebuehrenResult =
-        lektionsgebuehrenErfassenModel.speichern();
+        createOrUpdateLektionsgebuehrenModel.speichern();
     switch (saveLektionsgebuehrenResult) {
       case LEKTIONSGEBUEHREN_BEREITS_ERFASST -> {
         JOptionPane.showMessageDialog(
-            lektionsgebuehrenErfassenDialog,
+            createOrUpdatelektionsgebuehrenDialog,
             "Lektionslänge bereits erfasst.",
             "Fehler",
             JOptionPane.ERROR_MESSAGE);
@@ -517,7 +526,7 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
       case LEKTIONSGEBUEHREN_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
         closeDialog();
         JOptionPane.showMessageDialog(
-            lektionsgebuehrenErfassenDialog,
+            createOrUpdatelektionsgebuehrenDialog,
             "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
                 + "einen anderen Benutzer verändert oder gelöscht wurde.",
             "Fehler",
@@ -536,12 +545,12 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
   }
 
   private void closeDialog() {
-    lektionsgebuehrenErfassenDialog.dispose();
+    createOrUpdatelektionsgebuehrenDialog.dispose();
     dialogClosedListener.onDialogClosed();
   }
 
-  private void onLektionsgebuehrenErfassenModelCompleted(boolean completed) {
-    LOGGER.trace("LektionsgebuehrenErfassenModel completed={}", completed);
+  private void onCreateOrUpdateLektionsgebuehrenModelCompleted(boolean completed) {
+    LOGGER.trace("CreateOrUpdateLektionsgebuehrenModel completed={}", completed);
     if (completed) {
       btnSpeichern.setToolTipText(null);
       btnSpeichern.setEnabled(true);
@@ -557,37 +566,37 @@ public class LektionsgebuehrenErfassenController extends AbstractController {
     super.doPropertyChange(evt);
     if (checkIsFieldChange(Field.LEKTIONSLAENGE, evt)) {
       txtLektionslaenge.setText(
-          Integer.toString(lektionsgebuehrenErfassenModel.getLektionslaenge()));
+          Integer.toString(createOrUpdateLektionsgebuehrenModel.getLektionslaenge()));
     } else if (checkIsFieldChange(Field.BETRAG_1_KIND, evt)) {
       txtBetrag1Kind.setText(
-          lektionsgebuehrenErfassenModel.getBetrag1Kind() == null
+          createOrUpdateLektionsgebuehrenModel.getBetrag1Kind() == null
               ? null
-              : lektionsgebuehrenErfassenModel.getBetrag1Kind().toString());
+              : createOrUpdateLektionsgebuehrenModel.getBetrag1Kind().toString());
     } else if (checkIsFieldChange(Field.BETRAG_2_KINDER, evt)) {
       txtBetrag2Kinder.setText(
-          lektionsgebuehrenErfassenModel.getBetrag2Kinder() == null
+          createOrUpdateLektionsgebuehrenModel.getBetrag2Kinder() == null
               ? null
-              : lektionsgebuehrenErfassenModel.getBetrag2Kinder().toString());
+              : createOrUpdateLektionsgebuehrenModel.getBetrag2Kinder().toString());
     } else if (checkIsFieldChange(Field.BETRAG_3_KINDER, evt)) {
       txtBetrag3Kinder.setText(
-          lektionsgebuehrenErfassenModel.getBetrag3Kinder() == null
+          createOrUpdateLektionsgebuehrenModel.getBetrag3Kinder() == null
               ? null
-              : lektionsgebuehrenErfassenModel.getBetrag3Kinder().toString());
+              : createOrUpdateLektionsgebuehrenModel.getBetrag3Kinder().toString());
     } else if (checkIsFieldChange(Field.BETRAG_4_KINDER, evt)) {
       txtBetrag4Kinder.setText(
-          lektionsgebuehrenErfassenModel.getBetrag4Kinder() == null
+          createOrUpdateLektionsgebuehrenModel.getBetrag4Kinder() == null
               ? null
-              : lektionsgebuehrenErfassenModel.getBetrag4Kinder().toString());
+              : createOrUpdateLektionsgebuehrenModel.getBetrag4Kinder().toString());
     } else if (checkIsFieldChange(Field.BETRAG_5_KINDER, evt)) {
       txtBetrag5Kinder.setText(
-          lektionsgebuehrenErfassenModel.getBetrag5Kinder() == null
+          createOrUpdateLektionsgebuehrenModel.getBetrag5Kinder() == null
               ? null
-              : lektionsgebuehrenErfassenModel.getBetrag5Kinder().toString());
+              : createOrUpdateLektionsgebuehrenModel.getBetrag5Kinder().toString());
     } else if (checkIsFieldChange(Field.BETRAG_6_KINDER, evt)) {
       txtBetrag6Kinder.setText(
-          lektionsgebuehrenErfassenModel.getBetrag6Kinder() == null
+          createOrUpdateLektionsgebuehrenModel.getBetrag6Kinder() == null
               ? null
-              : lektionsgebuehrenErfassenModel.getBetrag6Kinder().toString());
+              : createOrUpdateLektionsgebuehrenModel.getBetrag6Kinder().toString());
     }
   }
 

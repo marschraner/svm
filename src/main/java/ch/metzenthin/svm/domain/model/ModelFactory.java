@@ -91,7 +91,7 @@ public interface ModelFactory {
 
   LektionsgebuehrenModel createLektionsgebuehrenModel();
 
-  LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel(
+  CreateOrUpdateLektionsgebuehrenModel createCreateOrUpdateLektionsgebuehrenModel(
       Optional<Lektionsgebuehren> lektionsgebuehrenToBeModifiedOptional);
 
   SemesterrechnungenSuchenModel createSemesterrechnungenSuchenModel();

@@ -17,18 +17,18 @@ import org.springframework.dao.OptimisticLockingFailureException;
  * @author Martin Schraner
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-public class LektionsgebuehrenErfassenModelImpl extends AbstractModel
-    implements LektionsgebuehrenErfassenModel {
+public class CreateOrUpdateLektionsgebuehrenModelImpl extends AbstractModel
+    implements CreateOrUpdateLektionsgebuehrenModel {
 
   private static final Logger LOGGER =
-      LogManager.getLogger(LektionsgebuehrenErfassenModelImpl.class);
+      LogManager.getLogger(CreateOrUpdateLektionsgebuehrenModelImpl.class);
   private static final BigDecimal MIN_VALID_VALUE = new BigDecimal("0.00");
   private static final BigDecimal MAX_VALID_VALUE = new BigDecimal("999.95");
 
   private final Lektionsgebuehren lektionsgebuehren;
   private final LektionsgebuehrenService lektionsgebuehrenService;
 
-  public LektionsgebuehrenErfassenModelImpl(
+  public CreateOrUpdateLektionsgebuehrenModelImpl(
       Optional<Lektionsgebuehren> lektionsgebuehrenToBeModifiedOptional,
       LektionsgebuehrenService lektionsgebuehrenService) {
     this.lektionsgebuehren =

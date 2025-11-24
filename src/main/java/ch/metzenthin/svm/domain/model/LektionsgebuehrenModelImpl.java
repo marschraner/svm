@@ -44,13 +44,15 @@ public class LektionsgebuehrenModelImpl extends AbstractModel implements Lektion
   }
 
   @Override
-  public LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel(
+  public CreateOrUpdateLektionsgebuehrenModel createCreateOrUpdateLektionsgebuehrenModel(
       SvmContext svmContext, LektionsgebuehrenTableModel lektionsgebuehrenTableModel) {
-    return svmContext.getModelFactory().createLektionsgebuehrenErfassenModel(Optional.empty());
+    return svmContext
+        .getModelFactory()
+        .createCreateOrUpdateLektionsgebuehrenModel(Optional.empty());
   }
 
   @Override
-  public LektionsgebuehrenErfassenModel createLektionsgebuehrenErfassenModel(
+  public CreateOrUpdateLektionsgebuehrenModel createCreateOrUpdateLektionsgebuehrenModel(
       SvmContext svmContext,
       LektionsgebuehrenTableModel lektionsgebuehrenTableModel,
       int indexLektionsgebuehrenToBeModified) {
@@ -59,7 +61,7 @@ public class LektionsgebuehrenModelImpl extends AbstractModel implements Lektion
             lektionsgebuehrenTableModel, indexLektionsgebuehrenToBeModified);
     return svmContext
         .getModelFactory()
-        .createLektionsgebuehrenErfassenModel(Optional.of(lektionsgebuehrenToBeModified));
+        .createCreateOrUpdateLektionsgebuehrenModel(Optional.of(lektionsgebuehrenToBeModified));
   }
 
   private static Lektionsgebuehren getSelectedLektionsgebuehren(

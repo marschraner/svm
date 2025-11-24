@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 /**
  * @author Martin Schraner
  */
-public interface LektionsgebuehrenErfassenModel extends Model {
+public interface CreateOrUpdateLektionsgebuehrenModel extends Model {
 
   Integer getLektionslaenge();
 
