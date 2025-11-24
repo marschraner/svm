@@ -2,17 +2,17 @@ package ch.metzenthin.svm.ui.control;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 
-import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CodeErfassenModel;
-import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
+import ch.metzenthin.svm.service.result.SaveCodeResult;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 import javax.swing.*;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,34 +27,28 @@ public class CodeErfassenController extends AbstractController {
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
   private static final boolean MODEL_VALIDATION_MODE = false;
 
-  private final CodesTableModel codesTableModel;
   private final CodeErfassenModel codeErfassenModel;
-  private final Codetyp codetyp;
   private final boolean isBearbeiten;
   private final boolean defaultButtonEnabled;
-  private final SvmContext svmContext;
+  private final DialogClosedListener dialogClosedListener;
   private JDialog codeErfassenDialog;
   private JTextField txtKuerzel;
   private JTextField txtBeschreibung;
   private JCheckBox checkBoxSelektierbar;
-  private JLabel errLblKuerzel;
-  private JLabel errLblBeschreibung;
+  @Setter private JLabel errLblKuerzel;
+  @Setter private JLabel errLblBeschreibung;
   private JButton btnSpeichern;
 
   public CodeErfassenController(
-      SvmContext svmContext,
-      CodesTableModel codesTableModel,
       CodeErfassenModel codeErfassenModel,
-      Codetyp codetyp,
       boolean isBearbeiten,
-      boolean defaultButtonEnabled) {
+      boolean defaultButtonEnabled,
+      DialogClosedListener dialogClosedListener) {
     super(codeErfassenModel);
-    this.svmContext = svmContext;
-    this.codesTableModel = codesTableModel;
     this.codeErfassenModel = codeErfassenModel;
-    this.codetyp = codetyp;
     this.isBearbeiten = isBearbeiten;
     this.defaultButtonEnabled = defaultButtonEnabled;
+    this.dialogClosedListener = dialogClosedListener;
     this.codeErfassenModel.addPropertyChangeListener(this);
     this.codeErfassenModel.addDisableFieldsListener(this);
     this.codeErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -212,14 +206,6 @@ public class CodeErfassenController extends AbstractController {
     setModelSelektierbar();
   }
 
-  public void setErrLblKuerzel(JLabel errLblKuerzel) {
-    this.errLblKuerzel = errLblKuerzel;
-  }
-
-  public void setErrLblBeschreibung(JLabel errLblBeschreibung) {
-    this.errLblBeschreibung = errLblBeschreibung;
-  }
-
   public void setBtnSpeichern(JButton btnSpeichern) {
     this.btnSpeichern = btnSpeichern;
     if (isModelValidationMode()) {
@@ -233,13 +219,27 @@ public class CodeErfassenController extends AbstractController {
       btnSpeichern.setFocusPainted(false);
       return;
     }
-    if (codeErfassenModel.checkCodeKuerzelBereitsInVerwendung(svmContext.getSvmModel(), codetyp)) {
-      JOptionPane.showMessageDialog(
-          codeErfassenDialog, "Kürzel bereits in Verwendung.", "Fehler", JOptionPane.ERROR_MESSAGE);
-      btnSpeichern.setFocusPainted(false);
-    } else {
-      codeErfassenModel.speichern(svmContext.getSvmModel(), codesTableModel, codetyp);
-      codeErfassenDialog.dispose();
+    String messageDialogTitle = "Fehler";
+    SaveCodeResult saveSchuelerCodeResult = codeErfassenModel.speichern();
+    switch (saveSchuelerCodeResult) {
+      case CODE_BEREITS_ERFASST -> {
+        JOptionPane.showMessageDialog(
+            codeErfassenDialog,
+            "Kürzel bereits in Verwendung.",
+            messageDialogTitle,
+            JOptionPane.ERROR_MESSAGE);
+        btnSpeichern.setFocusPainted(false);
+      }
+      case CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+        closeDialog();
+        JOptionPane.showMessageDialog(
+            codeErfassenDialog,
+            "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
+                + "einen anderen Benutzer verändert oder gelöscht wurde.",
+            messageDialogTitle,
+            JOptionPane.ERROR_MESSAGE);
+      }
+      case SPEICHERN_ERFOLGREICH -> closeDialog();
     }
   }
 
@@ -248,7 +248,12 @@ public class CodeErfassenController extends AbstractController {
   }
 
   private void onAbbrechen() {
+    closeDialog();
+  }
+
+  private void closeDialog() {
     codeErfassenDialog.dispose();
+    dialogClosedListener.onDialogClosed();
   }
 
   private void onCodeErfassenModelCompleted(boolean completed) {

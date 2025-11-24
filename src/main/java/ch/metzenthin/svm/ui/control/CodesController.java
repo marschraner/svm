@@ -5,32 +5,35 @@ import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnW
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Codetyp;
-import ch.metzenthin.svm.domain.commands.DeleteElternmithilfeCodeCommand;
-import ch.metzenthin.svm.domain.commands.DeleteMitarbeiterCodeCommand;
-import ch.metzenthin.svm.domain.commands.DeleteSchuelerCodeCommand;
-import ch.metzenthin.svm.domain.commands.DeleteSemesterrechnungCodeCommand;
 import ch.metzenthin.svm.domain.model.CodesModel;
 import ch.metzenthin.svm.domain.model.CodesTableData;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
+import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.service.result.DeleteCodeResult;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.CodeErfassenDialog;
 import ch.metzenthin.svm.ui.components.CodeSpecificHinzufuegenDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 import java.awt.event.*;
+import java.util.List;
 import javax.swing.*;
 
 /**
  * @author Martin Schraner
  */
-public class CodesController {
+public class CodesController implements DialogClosedListener {
 
   private static final String FEHLER = "Fehler";
   private static final String SOLL_DER_EINTRAG_AUS_DER_DATENBANK_GELOESCHT_WERDEN =
       "Soll der Eintrag aus der Datenbank gelöscht werden?";
+  private static final String WERT_KONNTE_NICHT_GESPEICHERT_WERDEN =
+      "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
+          + "einen anderen Benutzer verändert oder gelöscht wurde.";
 
   private final SvmContext svmContext;
   private final CodesModel codesModel;
@@ -232,7 +235,8 @@ public class CodesController {
           case SEMESTERRECHNUNG -> "Neuer Semesterrechnung-Code";
         };
     CodeErfassenDialog codeErfassenDialog =
-        new CodeErfassenDialog(svmContext, codesTableModel, codesModel, 0, false, titel, codetyp);
+        new CodeErfassenDialog(
+            svmContext, codesTableModel, codesModel, 0, false, titel, codetyp, this);
     codeErfassenDialog.pack();
     codeErfassenDialog.setVisible(true);
     codesTableModel.fireTableDataChanged();
@@ -316,7 +320,8 @@ public class CodesController {
             codesTable.getSelectedRow(),
             true,
             titel,
-            codetyp);
+            codetyp,
+            this);
     codeErfassenDialog.pack();
     codeErfassenDialog.setVisible(true);
     codesTableModel.fireTableDataChanged();
@@ -367,20 +372,25 @@ public class CodesController {
             options, // the titles of buttons
             options[1]); // default button title
     if (n == 0) {
-      DeleteSchuelerCodeCommand.Result result =
+      DeleteCodeResult result =
           codesModel.eintragLoeschenSchuelerCodesVerwalten(
-              svmContext, codesTableModel, codesTable.getSelectedRow());
-      if (result == DeleteSchuelerCodeCommand.Result.CODE_VON_SCHUELER_REFERENZIERT) {
-        JOptionPane.showMessageDialog(
-            null,
-            "Der Code wird durch mindestens einen Schüler referenziert und "
-                + "kann nicht gelöscht werden.",
-            FEHLER,
-            JOptionPane.ERROR_MESSAGE);
-        btnLoeschen.setFocusPainted(false);
-      } else if (result == DeleteSchuelerCodeCommand.Result.LOESCHEN_ERFOLGREICH) {
-        codesTableModel.fireTableDataChanged();
-        codesTable.addNotify();
+              codesTableModel, codesTable.getSelectedRow());
+      switch (result) {
+        case CODE_REFERENZIERT -> {
+          JOptionPane.showMessageDialog(
+              null,
+              "Der Code wird durch mindestens einen Schüler referenziert und "
+                  + "kann nicht gelöscht werden.",
+              FEHLER,
+              JOptionPane.ERROR_MESSAGE);
+          btnLoeschen.setFocusPainted(false);
+        }
+        case CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+          reloadTableModel();
+          JOptionPane.showMessageDialog(
+              null, WERT_KONNTE_NICHT_GESPEICHERT_WERDEN, FEHLER, JOptionPane.ERROR_MESSAGE);
+        }
+        case LOESCHEN_ERFOLGREICH -> reloadTableModel();
       }
     }
     btnLoeschen.setFocusPainted(false);
@@ -428,20 +438,25 @@ public class CodesController {
             options, // the titles of buttons
             options[1]); // default button title
     if (n == 0) {
-      DeleteMitarbeiterCodeCommand.Result result =
+      DeleteCodeResult result =
           codesModel.eintragLoeschenMitarbeiterCodesVerwalten(
-              svmContext, codesTableModel, codesTable.getSelectedRow());
-      if (result == DeleteMitarbeiterCodeCommand.Result.CODE_VON_MITARBEITER_REFERENZIERT) {
-        JOptionPane.showMessageDialog(
-            null,
-            "Der Code wird durch mindestens einen Mitarbeiter referenziert "
-                + "und kann nicht gelöscht werden.",
-            FEHLER,
-            JOptionPane.ERROR_MESSAGE);
-        btnLoeschen.setFocusPainted(false);
-      } else if (result == DeleteMitarbeiterCodeCommand.Result.LOESCHEN_ERFOLGREICH) {
-        codesTableModel.fireTableDataChanged();
-        codesTable.addNotify();
+              codesTableModel, codesTable.getSelectedRow());
+      switch (result) {
+        case CODE_REFERENZIERT -> {
+          JOptionPane.showMessageDialog(
+              null,
+              "Der Code wird durch mindestens einen Mitarbeiter referenziert "
+                  + "und kann nicht gelöscht werden.",
+              FEHLER,
+              JOptionPane.ERROR_MESSAGE);
+          btnLoeschen.setFocusPainted(false);
+        }
+        case CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+          reloadTableModel();
+          JOptionPane.showMessageDialog(
+              null, WERT_KONNTE_NICHT_GESPEICHERT_WERDEN, FEHLER, JOptionPane.ERROR_MESSAGE);
+        }
+        case LOESCHEN_ERFOLGREICH -> reloadTableModel();
       }
     }
     btnLoeschen.setFocusPainted(false);
@@ -477,21 +492,25 @@ public class CodesController {
             options, // the titles of buttons
             options[1]); // default button title
     if (n == 0) {
-      DeleteElternmithilfeCodeCommand.Result result =
+      DeleteCodeResult result =
           codesModel.eintragLoeschenElternmithilfeCodesVerwalten(
-              svmContext, codesTableModel, codesTable.getSelectedRow());
-      if (result
-          == DeleteElternmithilfeCodeCommand.Result.CODE_VON_MAERCHENEINTEILUNGEN_REFERENZIERT) {
-        JOptionPane.showMessageDialog(
-            null,
-            "Der Code wird durch mindestens eine Märcheneinteilung "
-                + "referenziert und kann nicht gelöscht werden.",
-            FEHLER,
-            JOptionPane.ERROR_MESSAGE);
-        btnLoeschen.setFocusPainted(false);
-      } else if (result == DeleteElternmithilfeCodeCommand.Result.LOESCHEN_ERFOLGREICH) {
-        codesTableModel.fireTableDataChanged();
-        codesTable.addNotify();
+              codesTableModel, codesTable.getSelectedRow());
+      switch (result) {
+        case CODE_REFERENZIERT -> {
+          JOptionPane.showMessageDialog(
+              null,
+              "Der Code wird durch mindestens eine Märcheneinteilung "
+                  + "referenziert und kann nicht gelöscht werden.",
+              FEHLER,
+              JOptionPane.ERROR_MESSAGE);
+          btnLoeschen.setFocusPainted(false);
+        }
+        case CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+          reloadTableModel();
+          JOptionPane.showMessageDialog(
+              null, WERT_KONNTE_NICHT_GESPEICHERT_WERDEN, FEHLER, JOptionPane.ERROR_MESSAGE);
+        }
+        case LOESCHEN_ERFOLGREICH -> reloadTableModel();
       }
     }
     btnLoeschen.setFocusPainted(false);
@@ -513,21 +532,25 @@ public class CodesController {
             options, // the titles of buttons
             options[1]); // default button title
     if (n == 0) {
-      DeleteSemesterrechnungCodeCommand.Result result =
+      DeleteCodeResult result =
           codesModel.eintragLoeschenSemesterrechnungCodesVerwalten(
-              svmContext, codesTableModel, codesTable.getSelectedRow());
-      if (result
-          == DeleteSemesterrechnungCodeCommand.Result.CODE_VON_SEMESTERRECHNUNGEN_REFERENZIERT) {
-        JOptionPane.showMessageDialog(
-            null,
-            "Der Code wird durch mindestens eine Semesterrechnung referenziert "
-                + "und kann nicht gelöscht werden.",
-            FEHLER,
-            JOptionPane.ERROR_MESSAGE);
-        btnLoeschen.setFocusPainted(false);
-      } else if (result == DeleteSemesterrechnungCodeCommand.Result.LOESCHEN_ERFOLGREICH) {
-        codesTableModel.fireTableDataChanged();
-        codesTable.addNotify();
+              codesTableModel, codesTable.getSelectedRow());
+      switch (result) {
+        case CODE_REFERENZIERT -> {
+          JOptionPane.showMessageDialog(
+              null,
+              "Der Code wird durch mindestens eine Semesterrechnung referenziert "
+                  + "und kann nicht gelöscht werden.",
+              FEHLER,
+              JOptionPane.ERROR_MESSAGE);
+          btnLoeschen.setFocusPainted(false);
+        }
+        case CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+          reloadTableModel();
+          JOptionPane.showMessageDialog(
+              null, WERT_KONNTE_NICHT_GESPEICHERT_WERDEN, FEHLER, JOptionPane.ERROR_MESSAGE);
+        }
+        case LOESCHEN_ERFOLGREICH -> reloadTableModel();
       }
     }
     btnLoeschen.setFocusPainted(false);
@@ -598,5 +621,35 @@ public class CodesController {
 
   public void addZurueckZuSchuelerSuchenListener(ActionListener zurueckZuSchuelerSuchenListener) {
     this.zurueckZuSchuelerSuchenListener = zurueckZuSchuelerSuchenListener;
+  }
+
+  @Override
+  public void onDialogClosed() {
+    reloadTableModel();
+  }
+
+  private void reloadTableModel() {
+    // TableData mit von der Datenbank upgedateten Codes updaten
+    codesTableModel.getCodesTableData().setCodes(getCodes());
+    codesTableModel.fireTableDataChanged();
+    codesTable.addNotify();
+  }
+
+  private List<? extends Code> getCodes() {
+    switch (codetyp) {
+      case SCHUELER -> {
+        return svmContext.getSvmModel().getSchuelerCodesAll();
+      }
+      case MITARBEITER -> {
+        return svmContext.getSvmModel().getMitarbeiterCodesAll();
+      }
+      case ELTERNMITHILFE -> {
+        return svmContext.getSvmModel().getElternmithilfeCodesAll();
+      }
+      case SEMESTERRECHNUNG -> {
+        return svmContext.getSvmModel().getSemesterrechnungCodesAll();
+      }
+    }
+    throw new UnsupportedOperationException();
   }
 }

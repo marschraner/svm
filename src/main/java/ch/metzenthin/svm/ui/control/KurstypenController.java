@@ -147,8 +147,8 @@ public class KurstypenController implements DialogClosedListener {
           reloadTableModel();
           JOptionPane.showMessageDialog(
               null,
-              "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
-                  + "einen anderen Benutzer verändert oder gelöscht wurde.",
+              "Der Kurstyp konnte nicht gelöscht werden, da der Eintrag unterdessen \n"
+                  + "durch einen anderen Benutzer verändert oder gelöscht wurde.",
               "Fehler",
               JOptionPane.ERROR_MESSAGE);
         }

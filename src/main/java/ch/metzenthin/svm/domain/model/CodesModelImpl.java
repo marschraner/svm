@@ -1,75 +1,113 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.datatypes.Codetyp;
+import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.service.ElternmithilfeCodeService;
+import ch.metzenthin.svm.service.MitarbeiterCodeService;
+import ch.metzenthin.svm.service.SchuelerCodeService;
+import ch.metzenthin.svm.service.SemesterrechnungCodeService;
+import ch.metzenthin.svm.service.result.DeleteCodeResult;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
+import jakarta.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
  * @author Martin Schraner
  */
 public class CodesModelImpl extends AbstractModel implements CodesModel {
 
-  @Override
-  public DeleteSchuelerCodeCommand.Result eintragLoeschenSchuelerCodesVerwalten(
-      SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved) {
-    List<SchuelerCode> schuelerCodes = svmContext.getSvmModel().getSchuelerCodesAll();
-    CommandInvoker commandInvoker = getCommandInvoker();
-    DeleteSchuelerCodeCommand deleteSchuelerCodeCommand =
-        new DeleteSchuelerCodeCommand(schuelerCodes, indexCodeToBeRemoved);
-    commandInvoker.executeCommandAsTransaction(deleteSchuelerCodeCommand);
-    // TableData mit von der Datenbank upgedateten SchülerCodes updaten
-    codesTableModel.getCodesTableData().setCodes(svmContext.getSvmModel().getSchuelerCodesAll());
-    return deleteSchuelerCodeCommand.getResult();
+  private final SchuelerCodeService schuelerCodeService;
+  private final MitarbeiterCodeService mitarbeiterCodeService;
+  private final ElternmithilfeCodeService elternmithilfeCodeService;
+  private final SemesterrechnungCodeService semesterrechnungCodeService;
+
+  public CodesModelImpl(
+      SchuelerCodeService schuelerCodeService,
+      MitarbeiterCodeService mitarbeiterCodeService,
+      ElternmithilfeCodeService elternmithilfeCodeService,
+      SemesterrechnungCodeService semesterrechnungCodeService) {
+    this.schuelerCodeService = schuelerCodeService;
+    this.mitarbeiterCodeService = mitarbeiterCodeService;
+    this.elternmithilfeCodeService = elternmithilfeCodeService;
+    this.semesterrechnungCodeService = semesterrechnungCodeService;
   }
 
+  @SuppressWarnings("DuplicatedCode")
   @Override
-  public DeleteMitarbeiterCodeCommand.Result eintragLoeschenMitarbeiterCodesVerwalten(
-      SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved) {
-    List<MitarbeiterCode> mitarbeiterCodes = svmContext.getSvmModel().getMitarbeiterCodesAll();
-    CommandInvoker commandInvoker = getCommandInvoker();
-    DeleteMitarbeiterCodeCommand deleteMitarbeiterCodeCommand =
-        new DeleteMitarbeiterCodeCommand(mitarbeiterCodes, indexCodeToBeRemoved);
-    commandInvoker.executeCommandAsTransaction(deleteMitarbeiterCodeCommand);
-    // TableData mit von der Datenbank upgedateten MitarbeiterCodes updaten
-    codesTableModel.getCodesTableData().setCodes(svmContext.getSvmModel().getMitarbeiterCodesAll());
-    return deleteMitarbeiterCodeCommand.getResult();
+  public DeleteCodeResult eintragLoeschenSchuelerCodesVerwalten(
+      CodesTableModel codesTableModel, int indexCodeToBeRemoved) {
+    SchuelerCode schuelerCodeToBeDeleted =
+        getSelectedSchuelerCode(codesTableModel, indexCodeToBeRemoved);
+    DeleteCodeResult deleteCodeResult;
+    try {
+      schuelerCodeService.deleteCode(schuelerCodeToBeDeleted);
+      deleteCodeResult = DeleteCodeResult.LOESCHEN_ERFOLGREICH;
+    } catch (EntityStillReferencedException e) {
+      deleteCodeResult = DeleteCodeResult.CODE_REFERENZIERT;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      deleteCodeResult = DeleteCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+    return deleteCodeResult;
   }
 
+  @SuppressWarnings("DuplicatedCode")
   @Override
-  public DeleteElternmithilfeCodeCommand.Result eintragLoeschenElternmithilfeCodesVerwalten(
-      SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved) {
-    List<ElternmithilfeCode> elternmithilfeCodes =
-        svmContext.getSvmModel().getElternmithilfeCodesAll();
-    CommandInvoker commandInvoker = getCommandInvoker();
-    DeleteElternmithilfeCodeCommand deleteElternmithilfeCodeCommand =
-        new DeleteElternmithilfeCodeCommand(elternmithilfeCodes, indexCodeToBeRemoved);
-    commandInvoker.executeCommandAsTransaction(deleteElternmithilfeCodeCommand);
-    // TableData mit von der Datenbank upgedateten ElternmithilfeCodes updaten
-    codesTableModel
-        .getCodesTableData()
-        .setCodes(svmContext.getSvmModel().getElternmithilfeCodesAll());
-    return deleteElternmithilfeCodeCommand.getResult();
+  public DeleteCodeResult eintragLoeschenMitarbeiterCodesVerwalten(
+      CodesTableModel codesTableModel, int indexCodeToBeRemoved) {
+    MitarbeiterCode mitarbeiterCodeToBeDeleted =
+        getSelectedMitarbeiterCode(codesTableModel, indexCodeToBeRemoved);
+    DeleteCodeResult deleteCodeResult;
+    try {
+      mitarbeiterCodeService.deleteCode(mitarbeiterCodeToBeDeleted);
+      deleteCodeResult = DeleteCodeResult.LOESCHEN_ERFOLGREICH;
+    } catch (EntityStillReferencedException e) {
+      deleteCodeResult = DeleteCodeResult.CODE_REFERENZIERT;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      deleteCodeResult = DeleteCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+    return deleteCodeResult;
   }
 
+  @SuppressWarnings("DuplicatedCode")
   @Override
-  public DeleteSemesterrechnungCodeCommand.Result eintragLoeschenSemesterrechnungCodesVerwalten(
-      SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved) {
-    List<SemesterrechnungCode> semesterrechnungCodes =
-        svmContext.getSvmModel().getSemesterrechnungCodesAll();
-    CommandInvoker commandInvoker = getCommandInvoker();
-    DeleteSemesterrechnungCodeCommand deleteSemesterrechnungCodeCommand =
-        new DeleteSemesterrechnungCodeCommand(semesterrechnungCodes, indexCodeToBeRemoved);
-    commandInvoker.executeCommandAsTransaction(deleteSemesterrechnungCodeCommand);
-    // TableData mit von der Datenbank upgedateten SemesterrechnungCodes updaten
-    codesTableModel
-        .getCodesTableData()
-        .setCodes(svmContext.getSvmModel().getSemesterrechnungCodesAll());
-    return deleteSemesterrechnungCodeCommand.getResult();
+  public DeleteCodeResult eintragLoeschenElternmithilfeCodesVerwalten(
+      CodesTableModel codesTableModel, int indexCodeToBeRemoved) {
+    ElternmithilfeCode elternmithilfeCodeToBeDeleted =
+        getSelectedElternmithilfeCode(codesTableModel, indexCodeToBeRemoved);
+    DeleteCodeResult deleteCodeResult;
+    try {
+      elternmithilfeCodeService.deleteCode(elternmithilfeCodeToBeDeleted);
+      deleteCodeResult = DeleteCodeResult.LOESCHEN_ERFOLGREICH;
+    } catch (EntityStillReferencedException e) {
+      deleteCodeResult = DeleteCodeResult.CODE_REFERENZIERT;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      deleteCodeResult = DeleteCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+    return deleteCodeResult;
+  }
+
+  @SuppressWarnings("DuplicatedCode")
+  @Override
+  public DeleteCodeResult eintragLoeschenSemesterrechnungCodesVerwalten(
+      CodesTableModel codesTableModel, int indexCodeToBeRemoved) {
+    SemesterrechnungCode semesterrechnungCodeToBeDeleted =
+        getSelectedSemesterrechnungCode(codesTableModel, indexCodeToBeRemoved);
+    DeleteCodeResult deleteCodeResult;
+    try {
+      semesterrechnungCodeService.deleteCode(semesterrechnungCodeToBeDeleted);
+      deleteCodeResult = DeleteCodeResult.LOESCHEN_ERFOLGREICH;
+    } catch (EntityStillReferencedException e) {
+      deleteCodeResult = DeleteCodeResult.CODE_REFERENZIERT;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      deleteCodeResult = DeleteCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+    return deleteCodeResult;
   }
 
   @Override
@@ -100,32 +138,93 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
   }
 
   @Override
-  public CodeErfassenModel getCodeErfassenModel(
-      SvmContext svmContext, int indexCodeToBeModified, Codetyp codetyp) {
-    CodeErfassenModel codeErfassenModel = svmContext.getModelFactory().createCodeErfassenModel();
-    switch (codetyp) {
-      case SCHUELER -> {
-        List<SchuelerCode> schuelerCodes = svmContext.getSvmModel().getSchuelerCodesAll();
-        codeErfassenModel.setSchuelerCodeOrigin(schuelerCodes.get(indexCodeToBeModified));
-      }
-      case MITARBEITER -> {
-        List<MitarbeiterCode> mitarbeiterCodes = svmContext.getSvmModel().getMitarbeiterCodesAll();
-        codeErfassenModel.setMitarbeiterCodeOrigin(mitarbeiterCodes.get(indexCodeToBeModified));
-      }
-      case ELTERNMITHILFE -> {
-        List<ElternmithilfeCode> elternmithilfeCodes =
-            svmContext.getSvmModel().getElternmithilfeCodesAll();
-        codeErfassenModel.setElternmithilfeCodeOrigin(
-            elternmithilfeCodes.get(indexCodeToBeModified));
-      }
-      case SEMESTERRECHNUNG -> {
-        List<SemesterrechnungCode> semesterrechnungCodes =
-            svmContext.getSvmModel().getSemesterrechnungCodesAll();
-        codeErfassenModel.setSemesterrechnungCodeOrigin(
-            semesterrechnungCodes.get(indexCodeToBeModified));
-      }
-    }
-    return codeErfassenModel;
+  public SchuelerCodeErfassenModel createSchuelerCodeErfassenModel(
+      SvmContext svmContext, CodesTableModel codesTableModel) {
+    return svmContext.getModelFactory().createSchuelerCodeErfassenModel(Optional.empty());
+  }
+
+  @Override
+  public SchuelerCodeErfassenModel createSchuelerCodeErfassenModel(
+      SvmContext svmContext, CodesTableModel codesTableModel, int indexSchuelerCodeToBeModified) {
+    SchuelerCode schuelerCodeToBeModified =
+        getSelectedSchuelerCode(codesTableModel, indexSchuelerCodeToBeModified);
+    return svmContext
+        .getModelFactory()
+        .createSchuelerCodeErfassenModel(Optional.of(schuelerCodeToBeModified));
+  }
+
+  private SchuelerCode getSelectedSchuelerCode(
+      CodesTableModel codesTableModel, int indexSchuelerCodeToBeModified) {
+    return (SchuelerCode) codesTableModel.getCodeAt(indexSchuelerCodeToBeModified);
+  }
+
+  @Override
+  public MitarbeiterCodeErfassenModel createMitarbeiterCodeErfassenModel(
+      SvmContext svmContext, CodesTableModel codesTableModel) {
+    return svmContext.getModelFactory().createMitarbeiterCodeErfassenModel(Optional.empty());
+  }
+
+  @Override
+  public MitarbeiterCodeErfassenModel createMitarbeiterCodeErfassenModel(
+      SvmContext svmContext,
+      CodesTableModel codesTableModel,
+      int indexMitarbeiterCodeToBeModified) {
+    MitarbeiterCode mitarbeiterCodeToBeModified =
+        getSelectedMitarbeiterCode(codesTableModel, indexMitarbeiterCodeToBeModified);
+    return svmContext
+        .getModelFactory()
+        .createMitarbeiterCodeErfassenModel(Optional.of(mitarbeiterCodeToBeModified));
+  }
+
+  private MitarbeiterCode getSelectedMitarbeiterCode(
+      CodesTableModel codesTableModel, int indexMitarbeiterCodeToBeModified) {
+    return (MitarbeiterCode) codesTableModel.getCodeAt(indexMitarbeiterCodeToBeModified);
+  }
+
+  @Override
+  public ElternmithilfeCodeErfassenModel createElternmithilfeCodeErfassenModel(
+      SvmContext svmContext, CodesTableModel codesTableModel) {
+    return svmContext.getModelFactory().createElternmithilfeCodeErfassenModel(Optional.empty());
+  }
+
+  @Override
+  public ElternmithilfeCodeErfassenModel createElternmithilfeCodeErfassenModel(
+      SvmContext svmContext,
+      CodesTableModel codesTableModel,
+      int indexElternmithilfeCodeToBeModified) {
+    ElternmithilfeCode elternmithilfeCodeToBeModified =
+        getSelectedElternmithilfeCode(codesTableModel, indexElternmithilfeCodeToBeModified);
+    return svmContext
+        .getModelFactory()
+        .createElternmithilfeCodeErfassenModel(Optional.of(elternmithilfeCodeToBeModified));
+  }
+
+  private ElternmithilfeCode getSelectedElternmithilfeCode(
+      CodesTableModel codesTableModel, int indexElternmithilfeCodeToBeModified) {
+    return (ElternmithilfeCode) codesTableModel.getCodeAt(indexElternmithilfeCodeToBeModified);
+  }
+
+  @Override
+  public SemesterrechnungCodeErfassenModel createSemesterrechnungCodeErfassenModel(
+      SvmContext svmContext, CodesTableModel codesTableModel) {
+    return svmContext.getModelFactory().createSemesterrechnungCodeErfassenModel(Optional.empty());
+  }
+
+  @Override
+  public SemesterrechnungCodeErfassenModel createSemesterrechnungCodeErfassenModel(
+      SvmContext svmContext,
+      CodesTableModel codesTableModel,
+      int indexSemesterrechnungCodeToBeModified) {
+    SemesterrechnungCode semesterrechnungCodeToBeModified =
+        getSelectedSemesterrechnungCode(codesTableModel, indexSemesterrechnungCodeToBeModified);
+    return svmContext
+        .getModelFactory()
+        .createSemesterrechnungCodeErfassenModel(Optional.of(semesterrechnungCodeToBeModified));
+  }
+
+  private SemesterrechnungCode getSelectedSemesterrechnungCode(
+      CodesTableModel codesTableModel, int indexSemesterrechnungCodeToBeModified) {
+    return (SemesterrechnungCode) codesTableModel.getCodeAt(indexSemesterrechnungCodeToBeModified);
   }
 
   @Override

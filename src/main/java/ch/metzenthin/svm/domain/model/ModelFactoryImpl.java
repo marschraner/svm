@@ -1,9 +1,17 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
+import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
+import ch.metzenthin.svm.service.ElternmithilfeCodeService;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.KurstypService;
+import ch.metzenthin.svm.service.MitarbeiterCodeService;
+import ch.metzenthin.svm.service.SchuelerCodeService;
+import ch.metzenthin.svm.service.SemesterrechnungCodeService;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 
@@ -16,15 +24,35 @@ public class ModelFactoryImpl implements ModelFactory {
 
   private final KursortService kursortService;
   private final KurstypService kurstypService;
+  private final SchuelerCodeService schuelerCodeService;
+  private final MitarbeiterCodeService mitarbeiterCodeService;
+  private final ElternmithilfeCodeService elternmithilfeCodeService;
+  private final SemesterrechnungCodeService semesterrechnungCodeService;
 
-  public ModelFactoryImpl(KursortService kursortService, KurstypService kurstypService) {
+  public ModelFactoryImpl(
+      KursortService kursortService,
+      KurstypService kurstypService,
+      SchuelerCodeService schuelerCodeService,
+      MitarbeiterCodeService mitarbeiterCodeService,
+      ElternmithilfeCodeService elternmithilfeCodeService,
+      SemesterrechnungCodeService semesterrechnungCodeService) {
     this.kursortService = kursortService;
     this.kurstypService = kurstypService;
+    this.schuelerCodeService = schuelerCodeService;
+    this.mitarbeiterCodeService = mitarbeiterCodeService;
+    this.elternmithilfeCodeService = elternmithilfeCodeService;
+    this.semesterrechnungCodeService = semesterrechnungCodeService;
   }
 
   @Override
   public SvmModel createSvmModel() {
-    return new SvmModelImpl(kursortService, kurstypService);
+    return new SvmModelImpl(
+        kursortService,
+        kurstypService,
+        schuelerCodeService,
+        mitarbeiterCodeService,
+        elternmithilfeCodeService,
+        semesterrechnungCodeService);
   }
 
   @Override
@@ -69,12 +97,38 @@ public class ModelFactoryImpl implements ModelFactory {
 
   @Override
   public CodesModel createCodesModel() {
-    return new CodesModelImpl();
+    return new CodesModelImpl(
+        schuelerCodeService,
+        mitarbeiterCodeService,
+        elternmithilfeCodeService,
+        semesterrechnungCodeService);
   }
 
   @Override
-  public CodeErfassenModel createCodeErfassenModel() {
-    return new CodeErfassenModelImpl();
+  public SchuelerCodeErfassenModel createSchuelerCodeErfassenModel(
+      Optional<SchuelerCode> schuelerCodeToBeModifiedOptional) {
+    return new SchuelerCodeErfassenModelImpl(schuelerCodeToBeModifiedOptional, schuelerCodeService);
+  }
+
+  @Override
+  public MitarbeiterCodeErfassenModel createMitarbeiterCodeErfassenModel(
+      Optional<MitarbeiterCode> mitarbeiterCodeToBeModifiedOptional) {
+    return new MitarbeiterCodeErfassenModelImpl(
+        mitarbeiterCodeToBeModifiedOptional, mitarbeiterCodeService);
+  }
+
+  @Override
+  public ElternmithilfeCodeErfassenModel createElternmithilfeCodeErfassenModel(
+      Optional<ElternmithilfeCode> elternmithilfeCodeToBeModifiedOptional) {
+    return new ElternmithilfeCodeErfassenModelImpl(
+        elternmithilfeCodeToBeModifiedOptional, elternmithilfeCodeService);
+  }
+
+  @Override
+  public SemesterrechnungCodeErfassenModel createSemesterrechnungCodeErfassenModel(
+      Optional<SemesterrechnungCode> semesterrechnungCodeToBeModifiedOptional) {
+    return new SemesterrechnungCodeErfassenModelImpl(
+        semesterrechnungCodeToBeModifiedOptional, semesterrechnungCodeService);
   }
 
   @Override

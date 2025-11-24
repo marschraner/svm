@@ -2,8 +2,12 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.service.ElternmithilfeCodeService;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.KurstypService;
+import ch.metzenthin.svm.service.MitarbeiterCodeService;
+import ch.metzenthin.svm.service.SchuelerCodeService;
+import ch.metzenthin.svm.service.SemesterrechnungCodeService;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,17 +20,29 @@ public class SvmModelImpl implements SvmModel {
 
   private final KursortService kursortService;
   private final KurstypService kurstypService;
+  private final SchuelerCodeService schuelerCodeService;
+  private final MitarbeiterCodeService mitarbeiterCodeService;
+  private final ElternmithilfeCodeService elternmithilfeCodeService;
+  private final SemesterrechnungCodeService semesterrechnungCodeService;
 
-  public SvmModelImpl(KursortService kursortService, KurstypService kurstypService) {
+  public SvmModelImpl(
+      KursortService kursortService,
+      KurstypService kurstypService,
+      SchuelerCodeService schuelerCodeService,
+      MitarbeiterCodeService mitarbeiterCodeService,
+      ElternmithilfeCodeService elternmithilfeCodeService,
+      SemesterrechnungCodeService semesterrechnungCodeService) {
     this.kursortService = kursortService;
     this.kurstypService = kurstypService;
+    this.schuelerCodeService = schuelerCodeService;
+    this.mitarbeiterCodeService = mitarbeiterCodeService;
+    this.elternmithilfeCodeService = elternmithilfeCodeService;
+    this.semesterrechnungCodeService = semesterrechnungCodeService;
   }
 
   @Override
   public List<SchuelerCode> getSchuelerCodesAll() {
-    FindAllSchuelerCodesCommand findAllSchuelerCodesCommand = new FindAllSchuelerCodesCommand();
-    commandInvoker.executeCommand(findAllSchuelerCodesCommand);
-    return findAllSchuelerCodesCommand.getSchuelerCodesAll();
+    return schuelerCodeService.findAllCodes();
   }
 
   @Override
@@ -42,10 +58,7 @@ public class SvmModelImpl implements SvmModel {
 
   @Override
   public List<MitarbeiterCode> getMitarbeiterCodesAll() {
-    FindAllMitarbeiterCodesCommand findAllMitarbeiterCodesCommand =
-        new FindAllMitarbeiterCodesCommand();
-    commandInvoker.executeCommand(findAllMitarbeiterCodesCommand);
-    return findAllMitarbeiterCodesCommand.getMitarbeiterCodesAll();
+    return mitarbeiterCodeService.findAllCodes();
   }
 
   @Override
@@ -61,10 +74,7 @@ public class SvmModelImpl implements SvmModel {
 
   @Override
   public List<ElternmithilfeCode> getElternmithilfeCodesAll() {
-    FindAllElternmithilfeCodesCommand findAllElternmithilfeCodesCommand =
-        new FindAllElternmithilfeCodesCommand();
-    commandInvoker.executeCommand(findAllElternmithilfeCodesCommand);
-    return findAllElternmithilfeCodesCommand.getElternmithilfeCodesAll();
+    return elternmithilfeCodeService.findAllCodes();
   }
 
   @Override
@@ -80,10 +90,7 @@ public class SvmModelImpl implements SvmModel {
 
   @Override
   public List<SemesterrechnungCode> getSemesterrechnungCodesAll() {
-    FindAllSemesterrechnungCodesCommand findAllSemesterrechnungCodesCommand =
-        new FindAllSemesterrechnungCodesCommand();
-    commandInvoker.executeCommand(findAllSemesterrechnungCodesCommand);
-    return findAllSemesterrechnungCodesCommand.getSemesterrechnungCodesAll();
+    return semesterrechnungCodeService.findAllCodes();
   }
 
   @Override

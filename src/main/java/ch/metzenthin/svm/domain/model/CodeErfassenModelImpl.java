@@ -1,50 +1,30 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.*;
-import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
-import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
-import ch.metzenthin.svm.persistence.entities.SchuelerCode;
-import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
-import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
+import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.service.CodeService;
+import ch.metzenthin.svm.service.result.SaveCodeResult;
+import jakarta.persistence.OptimisticLockException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
  * @author Martin Schraner
  */
-public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassenModel {
+public abstract class CodeErfassenModelImpl<T extends Code> extends AbstractModel
+    implements CodeErfassenModel {
 
   private static final Logger LOGGER = LogManager.getLogger(CodeErfassenModelImpl.class);
 
-  private String kuerzel;
-  private String beschreibung;
-  private Boolean selektierbar;
-  private SchuelerCode schuelerCodeOrigin;
-  private MitarbeiterCode mitarbeiterCodeOrigin;
-  private ElternmithilfeCode elternmithilfeCodeOrigin;
-  private SemesterrechnungCode semesterrechnungCodeOrigin;
+  private final T code;
+  private final CodeService<T> codeService;
 
-  @Override
-  public void setSchuelerCodeOrigin(SchuelerCode schuelerCodeOrigin) {
-    this.schuelerCodeOrigin = schuelerCodeOrigin;
-  }
-
-  @Override
-  public void setMitarbeiterCodeOrigin(MitarbeiterCode mitarbeiterCodeOrigin) {
-    this.mitarbeiterCodeOrigin = mitarbeiterCodeOrigin;
-  }
-
-  @Override
-  public void setElternmithilfeCodeOrigin(ElternmithilfeCode elternmithilfeCodeOrigin) {
-    this.elternmithilfeCodeOrigin = elternmithilfeCodeOrigin;
-  }
-
-  @Override
-  public void setSemesterrechnungCodeOrigin(SemesterrechnungCode semesterrechnungCodeOrigin) {
-    this.semesterrechnungCodeOrigin = semesterrechnungCodeOrigin;
+  protected CodeErfassenModelImpl(T code, CodeService<T> codeService) {
+    this.code = code;
+    this.codeService = codeService;
   }
 
   private final StringModelAttribute kuerzelModelAttribute =
@@ -56,12 +36,12 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
           new AttributeAccessor<>() {
             @Override
             public String getValue() {
-              return kuerzel;
+              return code.getKuerzel();
             }
 
             @Override
             public void setValue(String value) {
-              kuerzel = value;
+              code.setKuerzel(value);
             }
           });
 
@@ -72,7 +52,12 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
 
   @Override
   public void setKuerzel(String kuerzel) throws SvmValidationException {
-    kuerzelModelAttribute.setNewValue(true, kuerzel, isBulkUpdate());
+    setKuerzel(kuerzel, false);
+  }
+
+  private void setKuerzel(String kuerzel, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    kuerzelModelAttribute.setNewValue(true, kuerzel, isBulkUpdate(), enforcePropertyChangeEvent);
   }
 
   private final StringModelAttribute beschreibungModelAttribute =
@@ -84,12 +69,12 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
           new AttributeAccessor<>() {
             @Override
             public String getValue() {
-              return beschreibung;
+              return code.getBeschreibung();
             }
 
             @Override
             public void setValue(String value) {
-              beschreibung = value;
+              code.setBeschreibung(value);
             }
           });
 
@@ -100,142 +85,57 @@ public class CodeErfassenModelImpl extends AbstractModel implements CodeErfassen
 
   @Override
   public void setBeschreibung(String beschreibung) throws SvmValidationException {
-    beschreibungModelAttribute.setNewValue(true, beschreibung, isBulkUpdate());
+    setBeschreibung(beschreibung, false);
+  }
+
+  private void setBeschreibung(String bezeichnung, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    beschreibungModelAttribute.setNewValue(
+        true, bezeichnung, isBulkUpdate(), enforcePropertyChangeEvent);
   }
 
   @Override
   public void setSelektierbar(Boolean isSelected) {
-    Boolean oldValue = selektierbar;
-    selektierbar = isSelected;
+    setSelektierbar(isSelected, false);
+  }
+
+  private void setSelektierbar(Boolean isSelected, boolean enforcePropertyChangeEvent) {
+    Boolean oldValue = (enforcePropertyChangeEvent) ? !isSelected : code.isSelektierbar();
+    code.setSelektierbar(isSelected);
     firePropertyChange(Field.SELEKTIERBAR, oldValue, isSelected);
   }
 
   @Override
   public Boolean isSelektierbar() {
-    return selektierbar;
+    return code.isSelektierbar();
   }
 
   @Override
-  public boolean checkCodeKuerzelBereitsInVerwendung(SvmModel svmModel, Codetyp codetyp) {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    CheckCodeKuerzelBereitsInVerwendungCommand checkCodeKuerzelBereitsInVerwendungCommand =
-        switch (codetyp) {
-          case SCHUELER ->
-              new CheckCodeKuerzelBereitsInVerwendungCommand(
-                  kuerzel, schuelerCodeOrigin, svmModel.getSchuelerCodesAll());
-          case MITARBEITER ->
-              new CheckCodeKuerzelBereitsInVerwendungCommand(
-                  kuerzel, mitarbeiterCodeOrigin, svmModel.getMitarbeiterCodesAll());
-          case ELTERNMITHILFE ->
-              new CheckCodeKuerzelBereitsInVerwendungCommand(
-                  kuerzel, elternmithilfeCodeOrigin, svmModel.getElternmithilfeCodesAll());
-          case SEMESTERRECHNUNG ->
-              new CheckCodeKuerzelBereitsInVerwendungCommand(
-                  kuerzel, semesterrechnungCodeOrigin, svmModel.getSemesterrechnungCodesAll());
-        };
-    commandInvoker.executeCommand(checkCodeKuerzelBereitsInVerwendungCommand);
-    return checkCodeKuerzelBereitsInVerwendungCommand.isBereitsInVerwendung();
-  }
-
-  @Override
-  public void speichern(SvmModel svmModel, CodesTableModel codesTableModel, Codetyp codetyp) {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    switch (codetyp) {
-      case SCHUELER -> {
-        SchuelerCode schuelerCode = new SchuelerCode(kuerzel, beschreibung, selektierbar);
-        SaveOrUpdateSchuelerCodeCommand saveOrUpdateSchuelerCodeCommand =
-            new SaveOrUpdateSchuelerCodeCommand(
-                schuelerCode, schuelerCodeOrigin, svmModel.getSchuelerCodesAll());
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateSchuelerCodeCommand);
-        // TableData mit von der Datenbank upgedateten SchülerCodes updaten
-        codesTableModel.getCodesTableData().setCodes(svmModel.getSchuelerCodesAll());
-      }
-      case MITARBEITER -> {
-        MitarbeiterCode mitarbeiterCode = new MitarbeiterCode(kuerzel, beschreibung, selektierbar);
-        SaveOrUpdateMitarbeiterCodeCommand saveOrUpdateMitarbeiterCodeCommand =
-            new SaveOrUpdateMitarbeiterCodeCommand(
-                mitarbeiterCode, mitarbeiterCodeOrigin, svmModel.getMitarbeiterCodesAll());
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateMitarbeiterCodeCommand);
-        // TableData mit von der Datenbank upgedateten MitarbeiterCodes updaten
-        codesTableModel.getCodesTableData().setCodes(svmModel.getMitarbeiterCodesAll());
-      }
-      case ELTERNMITHILFE -> {
-        ElternmithilfeCode elternmithilfeCode =
-            new ElternmithilfeCode(kuerzel, beschreibung, selektierbar);
-        SaveOrUpdateElternmithilfeCodeCommand saveOrUpdateElternmithilfeCodeCommand =
-            new SaveOrUpdateElternmithilfeCodeCommand(
-                elternmithilfeCode, elternmithilfeCodeOrigin, svmModel.getElternmithilfeCodesAll());
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateElternmithilfeCodeCommand);
-        // TableData mit von der Datenbank upgedateten ElternmithilfeCodes updaten
-        codesTableModel.getCodesTableData().setCodes(svmModel.getElternmithilfeCodesAll());
-      }
-      case SEMESTERRECHNUNG -> {
-        SemesterrechnungCode semesterrechnungCode =
-            new SemesterrechnungCode(kuerzel, beschreibung, selektierbar);
-        SaveOrUpdateSemesterrechnungCodeCommand saveOrUpdateSemesterrechnungCodeCommand =
-            new SaveOrUpdateSemesterrechnungCodeCommand(
-                semesterrechnungCode,
-                semesterrechnungCodeOrigin,
-                svmModel.getSemesterrechnungCodesAll());
-        commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterrechnungCodeCommand);
-        // TableData mit von der Datenbank upgedateten SemesterrechnungCodes updaten
-        codesTableModel.getCodesTableData().setCodes(svmModel.getSemesterrechnungCodesAll());
-      }
+  public SaveCodeResult speichern() {
+    SaveCodeResult saveCodeResult;
+    try {
+      codeService.saveCode(code);
+      saveCodeResult = SaveCodeResult.SPEICHERN_ERFOLGREICH;
+    } catch (EntityAlreadyExistsException e) {
+      saveCodeResult = SaveCodeResult.CODE_BEREITS_ERFASST;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      saveCodeResult = SaveCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }
+    return saveCodeResult;
   }
 
-  @SuppressWarnings("DuplicatedCode")
   @Override
   public void initializeCompleted() {
-    if (schuelerCodeOrigin != null) {
+    if (code.getCodeId() != null) {
       setBulkUpdate(true);
       try {
-        setKuerzel(schuelerCodeOrigin.getKuerzel());
-        setBeschreibung(schuelerCodeOrigin.getBeschreibung());
-        setSelektierbar(
-            !schuelerCodeOrigin.isSelektierbar()); // damit PropertyChange ausgelöst wird!
-        setSelektierbar(schuelerCodeOrigin.isSelektierbar());
+        setKuerzel(code.getKuerzel(), true);
+        setBeschreibung(code.getBeschreibung(), true);
+        setSelektierbar(code.isSelektierbar(), true);
       } catch (SvmValidationException e) {
         LOGGER.error(e.getMessage());
       }
       setBulkUpdate(false);
-    } else if (mitarbeiterCodeOrigin != null) {
-      setBulkUpdate(true);
-      try {
-        setKuerzel(mitarbeiterCodeOrigin.getKuerzel());
-        setBeschreibung(mitarbeiterCodeOrigin.getBeschreibung());
-        setSelektierbar(
-            !mitarbeiterCodeOrigin.isSelektierbar()); // damit PropertyChange ausgelöst wird!
-        setSelektierbar(mitarbeiterCodeOrigin.isSelektierbar());
-      } catch (SvmValidationException e) {
-        LOGGER.error(e.getMessage());
-      }
-      setBulkUpdate(false);
-    } else if (elternmithilfeCodeOrigin != null) {
-      setBulkUpdate(true);
-      try {
-        setKuerzel(elternmithilfeCodeOrigin.getKuerzel());
-        setBeschreibung(elternmithilfeCodeOrigin.getBeschreibung());
-        setSelektierbar(
-            !elternmithilfeCodeOrigin.isSelektierbar()); // damit PropertyChange ausgelöst wird!
-        setSelektierbar(elternmithilfeCodeOrigin.isSelektierbar());
-      } catch (SvmValidationException e) {
-        LOGGER.error(e.getMessage());
-      }
-      setBulkUpdate(false);
-    } else if (semesterrechnungCodeOrigin != null) {
-      setBulkUpdate(true);
-      try {
-        setKuerzel(semesterrechnungCodeOrigin.getKuerzel());
-        setBeschreibung(semesterrechnungCodeOrigin.getBeschreibung());
-        setSelektierbar(
-            !semesterrechnungCodeOrigin.isSelektierbar()); // damit PropertyChange ausgelöst wird!
-        setSelektierbar(semesterrechnungCodeOrigin.isSelektierbar());
-      } catch (SvmValidationException e) {
-        LOGGER.error(e.getMessage());
-      }
-      setBulkUpdate(false);
-    } else {
       super.initializeCompleted();
     }
   }

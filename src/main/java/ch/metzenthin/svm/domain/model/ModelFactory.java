@@ -1,7 +1,11 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
+import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
+import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 import java.util.Optional;
 
 /**
@@ -30,7 +34,17 @@ public interface ModelFactory {
 
   CodesModel createCodesModel();
 
-  CodeErfassenModel createCodeErfassenModel();
+  SchuelerCodeErfassenModel createSchuelerCodeErfassenModel(
+      Optional<SchuelerCode> schuelerCodeToBeModifiedOptional);
+
+  MitarbeiterCodeErfassenModel createMitarbeiterCodeErfassenModel(
+      Optional<MitarbeiterCode> mitarbeiterCodeToBeModifiedOptional);
+
+  ElternmithilfeCodeErfassenModel createElternmithilfeCodeErfassenModel(
+      Optional<ElternmithilfeCode> elternmithilfeCodeToBeModifiedOptional);
+
+  SemesterrechnungCodeErfassenModel createSemesterrechnungCodeErfassenModel(
+      Optional<SemesterrechnungCode> semesterrechnungCodeToBeModifiedOptional);
 
   CodeSpecificHinzufuegenModel createCodeSchuelerHinzufuegenModel();
 

@@ -4,6 +4,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.domain.model.CodeErfassenModel;
 import ch.metzenthin.svm.domain.model.CodesModel;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.control.CodeErfassenController;
 import java.awt.*;
@@ -13,7 +14,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 
-@SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
+@SuppressWarnings({"java:S100", "java:S107", "java:S1171", "java:S1450", "FieldCanBeLocal"})
 public class CodeErfassenDialog extends JDialog {
 
   // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
@@ -37,7 +38,8 @@ public class CodeErfassenDialog extends JDialog {
       int indexBearbeiten,
       boolean isBearbeiten,
       String title,
-      Codetyp codetyp) {
+      Codetyp codetyp,
+      DialogClosedListener dialogClosedListener) {
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
@@ -46,28 +48,53 @@ public class CodeErfassenDialog extends JDialog {
       getRootPane().setDefaultButton(btnSpeichern);
     }
     createCodeErfassenController(
-        svmContext, codesTableModel, codesModel, indexBearbeiten, isBearbeiten, codetyp);
+        svmContext,
+        codesTableModel,
+        codesModel,
+        indexBearbeiten,
+        isBearbeiten,
+        codetyp,
+        dialogClosedListener);
   }
 
+  @SuppressWarnings("ExtractMethodRecommender")
   private void createCodeErfassenController(
       SvmContext svmContext,
       CodesTableModel codesTableModel,
       CodesModel codesModel,
       int indexBearbeiten,
       boolean isBearbeiten,
-      Codetyp codetyp) {
+      Codetyp codetyp,
+      DialogClosedListener dialogClosedListener) {
     CodeErfassenModel codeErfassenModel =
-        (isBearbeiten
-            ? codesModel.getCodeErfassenModel(svmContext, indexBearbeiten, codetyp)
-            : svmContext.getModelFactory().createCodeErfassenModel());
+        switch (codetyp) {
+          case SCHUELER ->
+              (isBearbeiten)
+                  ? codesModel.createSchuelerCodeErfassenModel(
+                      svmContext, codesTableModel, indexBearbeiten)
+                  : codesModel.createSchuelerCodeErfassenModel(svmContext, codesTableModel);
+          case MITARBEITER ->
+              (isBearbeiten)
+                  ? codesModel.createMitarbeiterCodeErfassenModel(
+                      svmContext, codesTableModel, indexBearbeiten)
+                  : codesModel.createMitarbeiterCodeErfassenModel(svmContext, codesTableModel);
+          case ELTERNMITHILFE ->
+              (isBearbeiten)
+                  ? codesModel.createElternmithilfeCodeErfassenModel(
+                      svmContext, codesTableModel, indexBearbeiten)
+                  : codesModel.createElternmithilfeCodeErfassenModel(svmContext, codesTableModel);
+          case SEMESTERRECHNUNG ->
+              (isBearbeiten)
+                  ? codesModel.createSemesterrechnungCodeErfassenModel(
+                      svmContext, codesTableModel, indexBearbeiten)
+                  : codesModel.createSemesterrechnungCodeErfassenModel(svmContext, codesTableModel);
+        };
     CodeErfassenController codeErfassenController =
         new CodeErfassenController(
-            svmContext,
-            codesTableModel,
             codeErfassenModel,
-            codetyp,
             isBearbeiten,
-            DEFAULT_BUTTON_ENABLED);
+            DEFAULT_BUTTON_ENABLED,
+            dialogClosedListener);
     codeErfassenController.setCodeErfassenDialog(this);
     codeErfassenController.setContentPane(contentPane);
     codeErfassenController.setTxtKuerzel(txtKuerzel);

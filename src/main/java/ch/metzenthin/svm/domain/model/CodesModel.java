@@ -1,13 +1,9 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.datatypes.Codetyp;
-import ch.metzenthin.svm.domain.commands.DeleteElternmithilfeCodeCommand;
-import ch.metzenthin.svm.domain.commands.DeleteMitarbeiterCodeCommand;
-import ch.metzenthin.svm.domain.commands.DeleteSchuelerCodeCommand;
-import ch.metzenthin.svm.domain.commands.DeleteSemesterrechnungCodeCommand;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.service.result.DeleteCodeResult;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 
 /**
@@ -15,17 +11,17 @@ import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
  */
 public interface CodesModel {
 
-  DeleteSchuelerCodeCommand.Result eintragLoeschenSchuelerCodesVerwalten(
-      SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved);
+  DeleteCodeResult eintragLoeschenSchuelerCodesVerwalten(
+      CodesTableModel codesTableModel, int indexCodeToBeRemoved);
 
-  DeleteMitarbeiterCodeCommand.Result eintragLoeschenMitarbeiterCodesVerwalten(
-      SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved);
+  DeleteCodeResult eintragLoeschenMitarbeiterCodesVerwalten(
+      CodesTableModel codesTableModel, int indexCodeToBeRemoved);
 
-  DeleteElternmithilfeCodeCommand.Result eintragLoeschenElternmithilfeCodesVerwalten(
-      SvmContext svmContext, CodesTableModel codesTableModel, int selectedRow);
+  DeleteCodeResult eintragLoeschenElternmithilfeCodesVerwalten(
+      CodesTableModel codesTableModel, int indexCodeToBeRemoved);
 
-  DeleteSemesterrechnungCodeCommand.Result eintragLoeschenSemesterrechnungCodesVerwalten(
-      SvmContext svmContext, CodesTableModel codesTableModel, int indexCodeToBeRemoved);
+  DeleteCodeResult eintragLoeschenSemesterrechnungCodesVerwalten(
+      CodesTableModel codesTableModel, int indexCodeToBeRemoved);
 
   void eintragLoeschenSchuelerCodesSchueler(
       CodesTableModel codesTableModel,
@@ -37,8 +33,33 @@ public interface CodesModel {
       MitarbeiterCode mitarbeiterCodeToBeRemoved,
       MitarbeiterErfassenModel mitarbeiterErfassenModel);
 
-  CodeErfassenModel getCodeErfassenModel(
-      SvmContext svmContext, int indexCodeToBeModified, Codetyp codetyp);
+  SchuelerCodeErfassenModel createSchuelerCodeErfassenModel(
+      SvmContext svmContext, CodesTableModel codesTableModel);
+
+  SchuelerCodeErfassenModel createSchuelerCodeErfassenModel(
+      SvmContext svmContext, CodesTableModel codesTableModel, int indexSchuelerCodeToBeModified);
+
+  MitarbeiterCodeErfassenModel createMitarbeiterCodeErfassenModel(
+      SvmContext svmContext, CodesTableModel codesTableModel);
+
+  MitarbeiterCodeErfassenModel createMitarbeiterCodeErfassenModel(
+      SvmContext svmContext, CodesTableModel codesTableModel, int indexMitarbeiterCodeToBeModified);
+
+  ElternmithilfeCodeErfassenModel createElternmithilfeCodeErfassenModel(
+      SvmContext svmContext, CodesTableModel codesTableModel);
+
+  ElternmithilfeCodeErfassenModel createElternmithilfeCodeErfassenModel(
+      SvmContext svmContext,
+      CodesTableModel codesTableModel,
+      int indexElternmithilfeCodeToBeModified);
+
+  SemesterrechnungCodeErfassenModel createSemesterrechnungCodeErfassenModel(
+      SvmContext svmContext, CodesTableModel codesTableModel);
+
+  SemesterrechnungCodeErfassenModel createSemesterrechnungCodeErfassenModel(
+      SvmContext svmContext,
+      CodesTableModel codesTableModel,
+      int indexSemesterrechnungCodeToBeModified);
 
   SchuelerCode[] getSelectableSchuelerCodes(
       SvmModel svmModel, SchuelerDatenblattModel schuelerDatenblattModel);
