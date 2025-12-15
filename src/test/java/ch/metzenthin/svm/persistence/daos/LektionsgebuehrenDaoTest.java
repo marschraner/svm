@@ -55,7 +55,7 @@ public class LektionsgebuehrenDaoTest {
       entityManager.persist(lektionsgebuehren);
 
       Lektionsgebuehren lektionsgebuehrenFound =
-          lektionsgebuehrenDao.findById(lektionsgebuehren.getLektionslaenge());
+          lektionsgebuehrenDao.findById(lektionsgebuehren.getId());
 
       assertEquals(new BigDecimal("22.50"), lektionsgebuehrenFound.getBetrag1Kind());
 
@@ -89,7 +89,7 @@ public class LektionsgebuehrenDaoTest {
       entityManager.flush();
 
       Lektionsgebuehren lektionsgebuehrenFound =
-          lektionsgebuehrenDao.findById(lektionsgebuehrenSaved.getLektionslaenge());
+          lektionsgebuehrenDao.findById(lektionsgebuehrenSaved.getId());
 
       // Erzwingen, dass von DB gelesen wird
       entityManager.refresh(lektionsgebuehrenFound);
@@ -136,22 +136,22 @@ public class LektionsgebuehrenDaoTest {
 
       entityManager.flush();
 
-      assertNotNull(lektionsgebuehrenDao.findById(57));
-      assertNotNull(lektionsgebuehrenDao.findById(67));
+      assertNotNull(lektionsgebuehrenDao.findById(lektionsgebuehren1Saved.getId()));
+      assertNotNull(lektionsgebuehrenDao.findById(lektionsgebuehren2Saved.getId()));
 
       // 1. Lektionsgebuehren löschen
       lektionsgebuehrenDao.remove(lektionsgebuehren1Saved);
       entityManager.flush();
 
-      assertNull(lektionsgebuehrenDao.findById(57));
-      assertNotNull(lektionsgebuehrenDao.findById(67));
+      assertNull(lektionsgebuehrenDao.findById(lektionsgebuehren1Saved.getId()));
+      assertNotNull(lektionsgebuehrenDao.findById(lektionsgebuehren2Saved.getId()));
 
       // 2. Lektionsgebuehren löschen
       lektionsgebuehrenDao.remove(lektionsgebuehren2Saved);
       entityManager.flush();
 
-      assertNull(lektionsgebuehrenDao.findById(57));
-      assertNull(lektionsgebuehrenDao.findById(67));
+      assertNull(lektionsgebuehrenDao.findById(lektionsgebuehren1Saved.getId()));
+      assertNull(lektionsgebuehrenDao.findById(lektionsgebuehren2Saved.getId()));
 
     } finally {
       if (tx != null) {

@@ -54,6 +54,7 @@ DROP TABLE IF EXISTS Lektionsgebuehren;
 -- *****************
 
 CREATE TABLE IF NOT EXISTS Lektionsgebuehren (
+    id                         INT           NOT NULL AUTO_INCREMENT,
     lektionslaenge             INT           NOT NULL,
     version                    INT           NOT NULL,
     betrag_1_kind              DECIMAL(6,2)  NOT NULL,
@@ -64,7 +65,7 @@ CREATE TABLE IF NOT EXISTS Lektionsgebuehren (
     betrag_6_kinder            DECIMAL(6,2)  NOT NULL,
     creation_date              TIMESTAMP     NOT NULL,
     last_modified              TIMESTAMP     NOT NULL,
-    PRIMARY KEY (lektionslaenge));
+    PRIMARY KEY (id));
      
 DESCRIBE Lektionsgebuehren;
 

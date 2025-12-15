@@ -54,11 +54,11 @@ public class FindAllLektionsgebuehrenCommandTest {
     boolean found1 = false;
     boolean found2 = false;
     for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenListFound) {
-      if (lektionsgebuehren.getLektionslaenge().equals(57)
+      if (lektionsgebuehren.getLektionslaenge() == 57
           && lektionsgebuehren.getBetrag1Kind().equals(new BigDecimal("22.50"))) {
         found1 = true;
       }
-      if (lektionsgebuehren.getLektionslaenge().equals(67)
+      if (lektionsgebuehren.getLektionslaenge() == 67
           && lektionsgebuehren.getBetrag1Kind().equals(new BigDecimal("24.50"))) {
         found2 = true;
       }
@@ -137,7 +137,7 @@ public class FindAllLektionsgebuehrenCommandTest {
 
     for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenTestdata) {
       Lektionsgebuehren lektionsgebuehrenToBeRemoved =
-          lektionsgebuehrenDao.findById(lektionsgebuehren.getLektionslaenge());
+          lektionsgebuehrenDao.findById(lektionsgebuehren.getId());
       lektionsgebuehrenDao.remove(lektionsgebuehrenToBeRemoved);
     }
 

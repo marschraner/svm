@@ -19,8 +19,12 @@ public class Lektionsgebuehren extends AbstractEntity implements Comparable<Lekt
   public static final int MIN_ANZAHL_TAGE_SECHS_JAHRES_RABATT = 2125; // 5 Jahre und 10 Monate
 
   @Id
-  @Column(name = "lektionslaenge")
-  private Integer lektionslaenge;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Integer id;
+
+  @Column(name = "lektionslaenge", nullable = false)
+  private int lektionslaenge;
 
   @Column(name = "betrag_1_kind", nullable = false)
   private BigDecimal betrag1Kind;
@@ -43,7 +47,7 @@ public class Lektionsgebuehren extends AbstractEntity implements Comparable<Lekt
   public Lektionsgebuehren() {}
 
   public Lektionsgebuehren(
-      Integer lektionslaenge,
+      int lektionslaenge,
       BigDecimal betrag1Kind,
       BigDecimal betrag2Kinder,
       BigDecimal betrag3Kinder,
@@ -61,7 +65,7 @@ public class Lektionsgebuehren extends AbstractEntity implements Comparable<Lekt
 
   public boolean isIdenticalWith(Lektionsgebuehren otherLektionsgebuehren) {
     return otherLektionsgebuehren != null
-        && (lektionslaenge.equals(otherLektionsgebuehren.lektionslaenge));
+        && lektionslaenge == otherLektionsgebuehren.lektionslaenge;
   }
 
   public void copyAttributesFrom(Lektionsgebuehren otherLektionslaengen) {
@@ -88,6 +92,6 @@ public class Lektionsgebuehren extends AbstractEntity implements Comparable<Lekt
 
   @Override
   public int compareTo(Lektionsgebuehren otherLektionsgebuehren) {
-    return lektionslaenge.compareTo(otherLektionsgebuehren.getLektionslaenge());
+    return Integer.compare(lektionslaenge, otherLektionsgebuehren.getLektionslaenge());
   }
 }

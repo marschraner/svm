@@ -1,5 +1,7 @@
 # noinspection SqlResolveForFile
 # noinspection SqlWithoutWhereForFile
+
+# 1. Hinzufügen von creation_date / Umbenennung last_updated -> last_modified
 ALTER TABLE svm.Adresse ADD COLUMN version INT NOT NULL AFTER adresse_id;
 ALTER TABLE svm.Adresse ADD COLUMN creation_date TIMESTAMP NOT NULL AFTER ort;
 ALTER TABLE svm.Adresse CHANGE last_updated last_modified TIMESTAMP NOT NULL;
@@ -87,3 +89,8 @@ ALTER TABLE svm.Semesterrechnung ADD COLUMN version INT NOT NULL AFTER person_id
 ALTER TABLE svm.Semesterrechnung ADD COLUMN creation_date TIMESTAMP NOT NULL AFTER deleted;
 ALTER TABLE svm.Semesterrechnung CHANGE last_updated last_modified TIMESTAMP NOT NULL;
 UPDATE svm.Semesterrechnung SET creation_date = last_modified;
+
+
+-- 2. Lektionsgebuehren: neue Spalte "id"
+ALTER TABLE svm.Lektionsgebuehren DROP PRIMARY KEY,
+                                  ADD COLUMN id INT PRIMARY KEY NOT NULL AUTO_INCREMENT FIRST;
