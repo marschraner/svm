@@ -78,8 +78,8 @@ public class SaveOrUpdateLektionsgebuehrenCommandTest {
     commandInvoker.executeCommandAsTransaction(saveOrUpdateLektionsgebuehrenCommand);
     assertEquals(2, lektionsgebuehrenSaved.size());
     // Nach Lektionslänge geordnet?
-    assertEquals(Integer.valueOf(57), lektionsgebuehrenSaved.get(0).getLektionslaenge());
-    assertEquals(Integer.valueOf(67), lektionsgebuehrenSaved.get(1).getLektionslaenge());
+    assertEquals(57, lektionsgebuehrenSaved.get(0).getLektionslaenge());
+    assertEquals(67, lektionsgebuehrenSaved.get(1).getLektionslaenge());
     assertTrue(checkIfLektionsgebuehrenAvailable(57, new BigDecimal("22.50")));
     assertTrue(checkIfLektionsgebuehrenAvailable(67, new BigDecimal("24.50")));
 
@@ -108,7 +108,7 @@ public class SaveOrUpdateLektionsgebuehrenCommandTest {
     entityManager.getTransaction().begin();
     for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenSaved) {
       Lektionsgebuehren lektionsgebuehrenToBeDeleted =
-          lektionsgebuehrenDao.findById(lektionsgebuehren.getLektionslaenge());
+          lektionsgebuehrenDao.findById(lektionsgebuehren.getId());
       if (lektionsgebuehrenToBeDeleted != null) {
         lektionsgebuehrenDao.remove(lektionsgebuehrenToBeDeleted);
       }
@@ -124,7 +124,7 @@ public class SaveOrUpdateLektionsgebuehrenCommandTest {
     List<Lektionsgebuehren> lektionsgebuehrenAll =
         findAllLektionsgebuehrenCommand.getLektionsgebuehrenAllList();
     for (Lektionsgebuehren lektionsgebuehren : lektionsgebuehrenAll) {
-      if (lektionsgebuehren.getLektionslaenge().equals(lektionslaenge)
+      if (lektionsgebuehren.getLektionslaenge() == lektionslaenge
           && lektionsgebuehren.getBetrag1Kind().equals(betrag1Kind)) {
         return true;
       }

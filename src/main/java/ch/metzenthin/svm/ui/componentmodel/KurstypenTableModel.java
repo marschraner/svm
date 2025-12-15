@@ -3,7 +3,9 @@ package ch.metzenthin.svm.ui.componentmodel;
 import ch.metzenthin.svm.domain.model.KurstypenTableData;
 import java.io.Serial;
 import javax.swing.table.AbstractTableModel;
+import lombok.Getter;
 
+@Getter
 public class KurstypenTableModel extends AbstractTableModel {
 
   @Serial private static final long serialVersionUID = 1L;
@@ -38,9 +40,5 @@ public class KurstypenTableModel extends AbstractTableModel {
   @Override
   public Class<?> getColumnClass(int columnIndex) {
     return kurstypenTableData.getColumnClass();
-  }
-
-  public KurstypenTableData getKurstypenTableData() {
-    return kurstypenTableData;
   }
 }

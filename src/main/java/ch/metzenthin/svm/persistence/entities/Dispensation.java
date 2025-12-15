@@ -2,17 +2,20 @@ package ch.metzenthin.svm.persistence.entities;
 
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import jakarta.persistence.*;
-import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Objects;
 import java.util.Properties;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
  */
 @Entity
 @Table(name = "Dispensation")
-public class Dispensation implements Comparable<Dispensation> {
+@Setter
+@Getter
+public class Dispensation extends AbstractEntity implements Comparable<Dispensation> {
 
   private static final String DD_MM_YY_FORMAT = "%1$td.%1$tm.%1$tY";
 
@@ -20,11 +23,6 @@ public class Dispensation implements Comparable<Dispensation> {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "dispensation_id")
   private Integer dispensationId;
-
-  @SuppressWarnings("unused")
-  @Version
-  @Column(name = "last_updated")
-  private Timestamp version;
 
   @Temporal(TemporalType.DATE)
   @Column(name = "dispensationsbeginn", nullable = false)
@@ -151,54 +149,5 @@ public class Dispensation implements Comparable<Dispensation> {
     }
     dispensationSb.append(", Grund: ").append(grund);
     return dispensationSb.toString();
-  }
-
-  public Integer getDispensationId() {
-    return dispensationId;
-  }
-
-  @SuppressWarnings("unused")
-  public void setDispensationId(Integer dispensationId) {
-    this.dispensationId = dispensationId;
-  }
-
-  public Calendar getDispensationsbeginn() {
-    return dispensationsbeginn;
-  }
-
-  public void setDispensationsbeginn(Calendar dispensationsbeginn) {
-    this.dispensationsbeginn = dispensationsbeginn;
-  }
-
-  public Calendar getDispensationsende() {
-    return dispensationsende;
-  }
-
-  public void setDispensationsende(Calendar dispensationsende) {
-    this.dispensationsende = dispensationsende;
-  }
-
-  public String getVoraussichtlicheDauer() {
-    return voraussichtlicheDauer;
-  }
-
-  public void setVoraussichtlicheDauer(String voraussichtlicheDauer) {
-    this.voraussichtlicheDauer = voraussichtlicheDauer;
-  }
-
-  public String getGrund() {
-    return grund;
-  }
-
-  public void setGrund(String grund) {
-    this.grund = grund;
-  }
-
-  public Schueler getSchueler() {
-    return schueler;
-  }
-
-  public void setSchueler(Schueler schueler) {
-    this.schueler = schueler;
   }
 }

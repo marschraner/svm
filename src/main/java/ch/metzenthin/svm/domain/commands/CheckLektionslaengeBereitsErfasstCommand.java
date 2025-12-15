@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import java.util.List;
+import lombok.Getter;
 
 /**
  * @author Martin Schraner
@@ -14,7 +15,7 @@ public class CheckLektionslaengeBereitsErfasstCommand implements Command {
   private final List<Lektionsgebuehren> bereitsErfassteLektionsgebuehrenListe;
 
   // output
-  private boolean bereitsErfasst;
+  @Getter private boolean bereitsErfasst;
 
   public CheckLektionslaengeBereitsErfasstCommand(
       Lektionsgebuehren lektionsgebuehren,
@@ -30,17 +31,12 @@ public class CheckLektionslaengeBereitsErfasstCommand implements Command {
     for (Lektionsgebuehren bereitsErfassteLektionsgebuehren :
         bereitsErfassteLektionsgebuehrenListe) {
       if (!bereitsErfassteLektionsgebuehren.isIdenticalWith(lektionsgebuehrenOrigin)
-          && bereitsErfassteLektionsgebuehren
-              .getLektionslaenge()
-              .equals(lektionsgebuehren.getLektionslaenge())) {
+          && bereitsErfassteLektionsgebuehren.getLektionslaenge()
+              == lektionsgebuehren.getLektionslaenge()) {
         bereitsErfasst = true;
         return;
       }
     }
     bereitsErfasst = false;
-  }
-
-  public boolean isBereitsErfasst() {
-    return bereitsErfasst;
   }
 }

@@ -7,25 +7,23 @@ import ch.metzenthin.svm.common.utils.StringNumberComparator;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import jakarta.persistence.*;
 import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.*;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
  */
 @Entity
 @Table(name = "Kurs")
-public class Kurs implements Comparable<Kurs> {
+@Setter
+@Getter
+public class Kurs extends AbstractEntity implements Comparable<Kurs> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "kurs_id")
   private Integer kursId;
-
-  @SuppressWarnings("unused")
-  @Version
-  @Column(name = "last_updated")
-  private Timestamp version;
 
   @ManyToOne
   @JoinColumn(name = "semester_id", nullable = false)
@@ -223,19 +221,6 @@ public class Kurs implements Comparable<Kurs> {
     return result;
   }
 
-  public Integer getKursId() {
-    return kursId;
-  }
-
-  @SuppressWarnings("unused")
-  public void setKursId(Integer kursId) {
-    this.kursId = kursId;
-  }
-
-  public Semester getSemester() {
-    return semester;
-  }
-
   public void setSemester(Semester semester) {
     if (this.semester != null) {
       deleteSemester(this.semester);
@@ -249,10 +234,6 @@ public class Kurs implements Comparable<Kurs> {
   public void deleteSemester(Semester semester) {
     semester.getKurse().remove(this);
     this.semester = null;
-  }
-
-  public Kurstyp getKurstyp() {
-    return kurstyp;
   }
 
   public void setKurstyp(Kurstyp kurstyp) {
@@ -270,50 +251,6 @@ public class Kurs implements Comparable<Kurs> {
     this.kurstyp = null;
   }
 
-  public String getAltersbereich() {
-    return altersbereich;
-  }
-
-  public void setAltersbereich(String altersbereich) {
-    this.altersbereich = altersbereich;
-  }
-
-  public String getStufe() {
-    return stufe;
-  }
-
-  public void setStufe(String stufe) {
-    this.stufe = stufe;
-  }
-
-  public Wochentag getWochentag() {
-    return wochentag;
-  }
-
-  public void setWochentag(Wochentag wochentag) {
-    this.wochentag = wochentag;
-  }
-
-  public Time getZeitBeginn() {
-    return zeitBeginn;
-  }
-
-  public void setZeitBeginn(Time zeitBeginn) {
-    this.zeitBeginn = zeitBeginn;
-  }
-
-  public Time getZeitEnde() {
-    return zeitEnde;
-  }
-
-  public void setZeitEnde(Time zeitEnde) {
-    this.zeitEnde = zeitEnde;
-  }
-
-  public Kursort getKursort() {
-    return kursort;
-  }
-
   public void setKursort(Kursort kursort) {
     if (this.kursort != null) {
       deleteKursort(this.kursort);
@@ -329,10 +266,6 @@ public class Kurs implements Comparable<Kurs> {
     this.kursort = null;
   }
 
-  public List<Mitarbeiter> getLehrkraefte() {
-    return lehrkraefte;
-  }
-
   public void addLehrkraft(Mitarbeiter mitarbeiter) {
     if (!mitarbeiter.getKurse().contains(this)) {
       mitarbeiter.getKurse().add(this);
@@ -345,18 +278,6 @@ public class Kurs implements Comparable<Kurs> {
   public void deleteLehrkraft(Mitarbeiter mitarbeiter) {
     mitarbeiter.getKurse().remove(this);
     lehrkraefte.remove(mitarbeiter);
-  }
-
-  public String getBemerkungen() {
-    return bemerkungen;
-  }
-
-  public void setBemerkungen(String bemerkungen) {
-    this.bemerkungen = bemerkungen;
-  }
-
-  public List<Kursanmeldung> getKursanmeldungen() {
-    return kursanmeldungen;
   }
 
   @Transient

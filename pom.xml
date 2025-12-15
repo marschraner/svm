@@ -18,6 +18,13 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.28</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- maven-dependency-plugin:analyze-only reports this dependency as unused declared, but it is needed! -->
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>

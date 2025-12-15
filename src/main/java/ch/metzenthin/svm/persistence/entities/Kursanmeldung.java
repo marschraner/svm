@@ -4,9 +4,10 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
@@ -14,7 +15,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "Kursanmeldung")
 @IdClass(KursanmeldungId.class)
-public class Kursanmeldung implements Comparable<Kursanmeldung> {
+@Getter
+@Setter
+public class Kursanmeldung extends AbstractEntity implements Comparable<Kursanmeldung> {
 
   @Id
   @ManyToOne(optional = false)
@@ -25,11 +28,6 @@ public class Kursanmeldung implements Comparable<Kursanmeldung> {
   @ManyToOne(optional = false)
   @JoinColumn(name = "kurs_id")
   private Kurs kurs;
-
-  @SuppressWarnings("unused")
-  @Version
-  @Column(name = "last_updated")
-  private Timestamp version;
 
   @Temporal(TemporalType.DATE)
   @Column(name = "anmeldedatum", nullable = false)
@@ -120,45 +118,5 @@ public class Kursanmeldung implements Comparable<Kursanmeldung> {
       kursanmeldungSb.append(")");
     }
     return kursanmeldungSb.toString();
-  }
-
-  public Schueler getSchueler() {
-    return schueler;
-  }
-
-  public void setSchueler(Schueler schueler) {
-    this.schueler = schueler;
-  }
-
-  public Kurs getKurs() {
-    return kurs;
-  }
-
-  public void setKurs(Kurs kurs) {
-    this.kurs = kurs;
-  }
-
-  public Calendar getAnmeldedatum() {
-    return anmeldedatum;
-  }
-
-  public void setAnmeldedatum(Calendar anmeldedatum) {
-    this.anmeldedatum = anmeldedatum;
-  }
-
-  public Calendar getAbmeldedatum() {
-    return abmeldedatum;
-  }
-
-  public void setAbmeldedatum(Calendar abmeldedatum) {
-    this.abmeldedatum = abmeldedatum;
-  }
-
-  public String getBemerkungen() {
-    return bemerkungen;
-  }
-
-  public void setBemerkungen(String bemerkungen) {
-    this.bemerkungen = bemerkungen;
   }
 }

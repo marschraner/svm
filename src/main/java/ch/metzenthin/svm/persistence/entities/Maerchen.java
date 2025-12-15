@@ -1,25 +1,23 @@
 package ch.metzenthin.svm.persistence.entities;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
 import java.util.*;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
  */
 @Entity
 @Table(name = "Maerchen")
-public class Maerchen implements Comparable<Maerchen> {
+@Setter
+@Getter
+public class Maerchen extends AbstractEntity implements Comparable<Maerchen> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "maerchen_id")
   private Integer maerchenId;
-
-  @SuppressWarnings("unused")
-  @Version
-  @Column(name = "last_updated")
-  private Timestamp version;
 
   @Column(name = "schuljahr", nullable = false)
   private String schuljahr;
@@ -81,42 +79,5 @@ public class Maerchen implements Comparable<Maerchen> {
   @Override
   public String toString() {
     return bezeichnung + " (" + schuljahr + ")";
-  }
-
-  public Integer getMaerchenId() {
-    return maerchenId;
-  }
-
-  @SuppressWarnings("unused")
-  public void setMaerchenId(Integer maerchenId) {
-    this.maerchenId = maerchenId;
-  }
-
-  public String getSchuljahr() {
-    return schuljahr;
-  }
-
-  public void setSchuljahr(String schuljahr) {
-    this.schuljahr = schuljahr;
-  }
-
-  public String getBezeichnung() {
-    return bezeichnung;
-  }
-
-  public void setBezeichnung(String bezeichnung) {
-    this.bezeichnung = bezeichnung;
-  }
-
-  public Integer getAnzahlVorstellungen() {
-    return anzahlVorstellungen;
-  }
-
-  public void setAnzahlVorstellungen(Integer anzahlVorstellungen) {
-    this.anzahlVorstellungen = anzahlVorstellungen;
-  }
-
-  public List<Maercheneinteilung> getMaercheneinteilungen() {
-    return maercheneinteilungen;
   }
 }

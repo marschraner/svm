@@ -3,12 +3,29 @@ package ch.metzenthin.svm.persistence.entities;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
-import jakarta.persistence.*;
-import java.sql.Timestamp;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.persistence.Transient;
 import java.text.Collator;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
@@ -17,17 +34,14 @@ import java.util.Objects;
 @Table(name = "Person")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "discriminator")
-public abstract class Person implements Comparable<Person> {
+@Getter
+@Setter
+public abstract class Person extends AbstractEntity implements Comparable<Person> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "person_id")
   private Integer personId;
-
-  @SuppressWarnings("unused")
-  @Version
-  @Column(name = "last_updated")
-  private Timestamp version;
 
   @Enumerated(EnumType.STRING)
   @Column(name = "anrede", nullable = false)
@@ -127,8 +141,12 @@ public abstract class Person implements Comparable<Person> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     Person person = (Person) o;
     return anrede == person.anrede
         && Objects.equals(vorname, person.vorname)
@@ -190,78 +208,6 @@ public abstract class Person implements Comparable<Person> {
       personSb.append(", ").append(email);
     }
     return personSb.toString();
-  }
-
-  public Integer getPersonId() {
-    return personId;
-  }
-
-  public void setPersonId(Integer personId) {
-    this.personId = personId;
-  }
-
-  public Anrede getAnrede() {
-    return anrede;
-  }
-
-  public void setAnrede(Anrede anrede) {
-    this.anrede = anrede;
-  }
-
-  public String getVorname() {
-    return vorname;
-  }
-
-  public void setVorname(String vorname) {
-    this.vorname = vorname;
-  }
-
-  public String getNachname() {
-    return nachname;
-  }
-
-  public void setNachname(String nachname) {
-    this.nachname = nachname;
-  }
-
-  public Calendar getGeburtsdatum() {
-    return geburtsdatum;
-  }
-
-  public void setGeburtsdatum(Calendar geburtsdatum) {
-    this.geburtsdatum = geburtsdatum;
-  }
-
-  public String getFestnetz() {
-    return festnetz;
-  }
-
-  public void setFestnetz(String festnetz) {
-    this.festnetz = festnetz;
-  }
-
-  public String getNatel() {
-    return natel;
-  }
-
-  public void setNatel(String natel) {
-    this.natel = natel;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public Adresse getAdresse() {
-    return adresse;
-  }
-
-  public void setAdresse(Adresse adresse) {
-    this.adresse = adresse;
   }
 
   @Transient

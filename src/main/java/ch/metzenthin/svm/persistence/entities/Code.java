@@ -1,10 +1,11 @@
 package ch.metzenthin.svm.persistence.entities;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
 import java.text.Collator;
 import java.util.Locale;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
@@ -13,17 +14,14 @@ import java.util.Objects;
 @Table(name = "Code")
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "discriminator")
-public abstract class Code implements Comparable<Code> {
+@Getter
+@Setter
+public abstract class Code extends AbstractEntity implements Comparable<Code> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "code_id")
   private Integer codeId;
-
-  @SuppressWarnings("unused")
-  @Version
-  @Column(name = "last_updated")
-  private Timestamp version;
 
   @Column(name = "kuerzel", nullable = false)
   private String kuerzel;
@@ -32,11 +30,11 @@ public abstract class Code implements Comparable<Code> {
   private String beschreibung;
 
   @Column(name = "selektierbar", nullable = false)
-  private Boolean selektierbar;
+  private boolean selektierbar;
 
   protected Code() {}
 
-  protected Code(String kuerzel, String beschreibung, Boolean selektierbar) {
+  protected Code(String kuerzel, String beschreibung, boolean selektierbar) {
     this.kuerzel = kuerzel;
     this.beschreibung = beschreibung;
     this.selektierbar = selektierbar;
@@ -53,7 +51,7 @@ public abstract class Code implements Comparable<Code> {
   public void copyAttributesFrom(Code otherCode) {
     this.kuerzel = otherCode.getKuerzel();
     this.beschreibung = otherCode.getBeschreibung();
-    this.selektierbar = otherCode.getSelektierbar();
+    this.selektierbar = otherCode.isSelektierbar();
   }
 
   @Override
@@ -84,38 +82,5 @@ public abstract class Code implements Comparable<Code> {
       return "";
     }
     return kuerzel + " (" + beschreibung + ")";
-  }
-
-  public Integer getCodeId() {
-    return codeId;
-  }
-
-  @SuppressWarnings("unused")
-  public void setCodeId(Integer codeId) {
-    this.codeId = codeId;
-  }
-
-  public String getKuerzel() {
-    return kuerzel;
-  }
-
-  public void setKuerzel(String kuerzel) {
-    this.kuerzel = kuerzel;
-  }
-
-  public String getBeschreibung() {
-    return beschreibung;
-  }
-
-  public void setBeschreibung(String beschreibung) {
-    this.beschreibung = beschreibung;
-  }
-
-  public Boolean getSelektierbar() {
-    return selektierbar;
-  }
-
-  public void setSelektierbar(Boolean selektierbar) {
-    this.selektierbar = selektierbar;
   }
 }

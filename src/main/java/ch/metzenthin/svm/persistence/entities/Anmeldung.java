@@ -1,27 +1,35 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import jakarta.persistence.*;
-import java.sql.Timestamp;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
  */
 @Entity
 @Table(name = "Anmeldung")
-public class Anmeldung implements Comparable<Anmeldung> {
+@Getter
+@Setter
+public class Anmeldung extends AbstractEntity implements Comparable<Anmeldung> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "anmeldung_id")
   private Integer anmeldungId;
-
-  @SuppressWarnings("unused")
-  @Version
-  @Column(name = "last_updated")
-  private Timestamp version;
 
   @Temporal(TemporalType.DATE)
   @Column(name = "anmeldedatum", nullable = false)
@@ -53,8 +61,12 @@ public class Anmeldung implements Comparable<Anmeldung> {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     Anmeldung anmeldung = (Anmeldung) o;
     return Objects.equals(anmeldedatum, anmeldung.anmeldedatum)
         && Objects.equals(abmeldedatum, anmeldung.abmeldedatum)
@@ -91,38 +103,5 @@ public class Anmeldung implements Comparable<Anmeldung> {
       anmeldungSb.append(" - ").append(String.format("%1$td.%1$tm.%1$tY", abmeldedatum));
     }
     return anmeldungSb.toString();
-  }
-
-  public Integer getAnmeldungId() {
-    return anmeldungId;
-  }
-
-  @SuppressWarnings("unused")
-  public void setAnmeldungId(Integer anmeldungId) {
-    this.anmeldungId = anmeldungId;
-  }
-
-  public Calendar getAnmeldedatum() {
-    return anmeldedatum;
-  }
-
-  public void setAnmeldedatum(Calendar anmeldedatum) {
-    this.anmeldedatum = anmeldedatum;
-  }
-
-  public Calendar getAbmeldedatum() {
-    return abmeldedatum;
-  }
-
-  public void setAbmeldedatum(Calendar abmeldedatum) {
-    this.abmeldedatum = abmeldedatum;
-  }
-
-  public Schueler getSchueler() {
-    return schueler;
-  }
-
-  public void setSchueler(Schueler schueler) {
-    this.schueler = schueler;
   }
 }

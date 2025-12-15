@@ -5,7 +5,9 @@ import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import java.io.Serial;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
+import lombok.Getter;
 
+@Getter
 public class MitarbeitersTableModel extends AbstractTableModel {
 
   @Serial private static final long serialVersionUID = 1L;
@@ -55,10 +57,6 @@ public class MitarbeitersTableModel extends AbstractTableModel {
 
   public List<Mitarbeiter> getMitarbeiters() {
     return mitarbeitersTableData.mitarbeiters();
-  }
-
-  public MitarbeitersTableData getMitarbeitersTableData() {
-    return mitarbeitersTableData;
   }
 
   public int getAnzSelektiert() {

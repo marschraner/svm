@@ -3,6 +3,8 @@ package ch.metzenthin.svm.persistence.entities;
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import jakarta.persistence.*;
 import java.util.*;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
@@ -11,6 +13,8 @@ import java.util.*;
 @Entity
 @Table(name = "Angehoeriger")
 @DiscriminatorValue("Angehoeriger")
+@Getter
+@Setter
 public class Angehoeriger extends Person {
 
   @Column(name = "wuenscht_emails")
@@ -71,31 +75,6 @@ public class Angehoeriger extends Person {
     return angehoerigerAsString;
   }
 
-  @Override
-  public String toString() {
-    return super.toString();
-  }
-
-  public Boolean getWuenschtEmails() {
-    return wuenschtEmails;
-  }
-
-  public void setWuenschtEmails(Boolean wuenschtEmails) {
-    this.wuenschtEmails = wuenschtEmails;
-  }
-
-  public List<Schueler> getKinderVater() {
-    return kinderVater;
-  }
-
-  public List<Schueler> getKinderMutter() {
-    return kinderMutter;
-  }
-
-  public List<Schueler> getSchuelerRechnungsempfaenger() {
-    return schuelerRechnungsempfaenger;
-  }
-
   @Transient
   public List<Schueler> getAngemeldeteSchuelerRechnungsempfaenger() {
     List<Schueler> angemeldeteSchuelerRechnungsempfaenger = new ArrayList<>();
@@ -106,10 +85,6 @@ public class Angehoeriger extends Person {
     }
     Collections.sort(angemeldeteSchuelerRechnungsempfaenger);
     return angemeldeteSchuelerRechnungsempfaenger;
-  }
-
-  public List<Semesterrechnung> getSemesterrechnungen() {
-    return semesterrechnungen;
   }
 
   @Transient
