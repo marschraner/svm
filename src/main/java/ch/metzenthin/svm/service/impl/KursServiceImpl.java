@@ -40,4 +40,10 @@ public class KursServiceImpl implements KursService {
               return kurslaenge == lektionslaenge;
             });
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public boolean existsKursBySemesterId(int semesterId) {
+    return kursRepository.countBySemesterId(semesterId) > 0;
+  }
 }

@@ -2,7 +2,6 @@ package ch.metzenthin.svm.domain.model;
 
 import static ch.metzenthin.svm.common.utils.Converter.*;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
-import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.utils.Converter;
@@ -10,15 +9,11 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import java.text.ParseException;
 import java.util.Calendar;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * @author Hans Stamm
  */
 public class CalendarModelAttribute {
-
-  private static final Logger LOGGER = LogManager.getLogger(CalendarModelAttribute.class);
 
   private final ModelAttributeListener modelAttributeListener;
   private final AttributeAccessor<Calendar> attributeAccessor;
@@ -54,11 +49,32 @@ public class CalendarModelAttribute {
 
   void setNewValue(boolean isRequired, String newValue, boolean isBulkUpdate)
       throws SvmValidationException {
-    setNewValue(isRequired, newValue, Converter.DD_MM_YYYY_DATE_FORMAT_STRING, isBulkUpdate);
+    setNewValue(isRequired, newValue, isBulkUpdate, false);
+  }
+
+  void setNewValue(
+      boolean isRequired, String newValue, boolean isBulkUpdate, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    setNewValue(
+        isRequired,
+        newValue,
+        Converter.DD_MM_YYYY_DATE_FORMAT_STRING,
+        isBulkUpdate,
+        enforcePropertyChangeEvent);
   }
 
   void setNewValue(
       boolean isRequired, String newValue, String dateFormatString, boolean isBulkUpdate)
+      throws SvmValidationException {
+    setNewValue(isRequired, newValue, dateFormatString, isBulkUpdate, false);
+  }
+
+  void setNewValue(
+      boolean isRequired,
+      String newValue,
+      String dateFormatString,
+      boolean isBulkUpdate,
+      boolean enforcePropertyChangeEvent)
       throws SvmValidationException {
     String newValueTrimmed = (newValue != null) ? newValue.trim() : "";
     if (!isBulkUpdate) {
@@ -82,20 +98,11 @@ public class CalendarModelAttribute {
       }
     }
     String oldValue = getValueAsString(dateFormatString);
-    attributeAccessor.setValue(newValueAsCalendar);
-    if (!equalsNullSafe(
-            newValueTrimmed, nullAsEmptyString(asString(newValueAsCalendar, dateFormatString)))
-        && equalsNullSafe(oldValue, getValueAsString(dateFormatString))) {
-      // Der Wert wurde formatiert und das Resultat entspricht dem alten Wert. Dann wird kein
-      // PropertyChangeEvent
-      // ausgelöst. Damit trotzdem ein Event ausgelöst wird, wird der alte Wert auf den nicht
-      // formatierten Wert gesetzt.
-      oldValue = newValueTrimmed;
-      LOGGER.trace(
-          "setNewValue: Alten Wert auf Eingabewert gesetzt, damit PropertyChangeEvent ausgelöst wird. Alter Wert={}, neuer Wert={}",
-          oldValue,
-          getValue());
+    if (enforcePropertyChangeEvent) {
+      // Damit ein PropertyChangeEvent ausgelöst wird
+      oldValue = "!" + nullAsEmptyString(oldValue);
     }
+    attributeAccessor.setValue(newValueAsCalendar);
     modelAttributeListener.firePropertyChange(field, oldValue, getValueAsString(dateFormatString));
   }
 

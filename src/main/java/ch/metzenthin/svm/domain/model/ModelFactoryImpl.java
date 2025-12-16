@@ -6,14 +6,18 @@ import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 import ch.metzenthin.svm.service.ElternmithilfeCodeService;
+import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.KurstypService;
 import ch.metzenthin.svm.service.LektionsgebuehrenService;
 import ch.metzenthin.svm.service.MitarbeiterCodeService;
 import ch.metzenthin.svm.service.SchuelerCodeService;
+import ch.metzenthin.svm.service.SemesterService;
 import ch.metzenthin.svm.service.SemesterrechnungCodeService;
+import ch.metzenthin.svm.service.SemesterrechnungService;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +28,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ModelFactoryImpl implements ModelFactory {
 
+  private final KursService kursService;
   private final KursortService kursortService;
   private final KurstypService kurstypService;
   private final SchuelerCodeService schuelerCodeService;
@@ -31,15 +36,21 @@ public class ModelFactoryImpl implements ModelFactory {
   private final ElternmithilfeCodeService elternmithilfeCodeService;
   private final SemesterrechnungCodeService semesterrechnungCodeService;
   private final LektionsgebuehrenService lektionsgebuehrenService;
+  private final SemesterService semesterService;
+  private final SemesterrechnungService semesterrechnungService;
 
   public ModelFactoryImpl(
+      KursService kursService,
       KursortService kursortService,
       KurstypService kurstypService,
       SchuelerCodeService schuelerCodeService,
       MitarbeiterCodeService mitarbeiterCodeService,
       ElternmithilfeCodeService elternmithilfeCodeService,
       SemesterrechnungCodeService semesterrechnungCodeService,
-      LektionsgebuehrenService lektionsgebuehrenService) {
+      LektionsgebuehrenService lektionsgebuehrenService,
+      SemesterService semesterService,
+      SemesterrechnungService semesterrechnungService) {
+    this.kursService = kursService;
     this.kursortService = kursortService;
     this.kurstypService = kurstypService;
     this.schuelerCodeService = schuelerCodeService;
@@ -47,6 +58,8 @@ public class ModelFactoryImpl implements ModelFactory {
     this.elternmithilfeCodeService = elternmithilfeCodeService;
     this.semesterrechnungCodeService = semesterrechnungCodeService;
     this.lektionsgebuehrenService = lektionsgebuehrenService;
+    this.semesterService = semesterService;
+    this.semesterrechnungService = semesterrechnungService;
   }
 
   @Override
@@ -58,7 +71,8 @@ public class ModelFactoryImpl implements ModelFactory {
         mitarbeiterCodeService,
         elternmithilfeCodeService,
         semesterrechnungCodeService,
-        lektionsgebuehrenService);
+        lektionsgebuehrenService,
+        semesterService);
   }
 
   @Override
@@ -177,12 +191,13 @@ public class ModelFactoryImpl implements ModelFactory {
 
   @Override
   public SemestersModel createSemestersModel() {
-    return new SemestersModelImpl();
+    return new SemestersModelImpl(kursService, semesterService, semesterrechnungService);
   }
 
   @Override
-  public SemesterErfassenModel createSemesterErfassenModel() {
-    return new SemesterErfassenModelImpl();
+  public SemesterErfassenModel createSemesterErfassenModel(
+      Optional<Semester> semesterToBeModifiedOptional) {
+    return new SemesterErfassenModelImpl(semesterToBeModifiedOptional, semesterService);
   }
 
   @Override

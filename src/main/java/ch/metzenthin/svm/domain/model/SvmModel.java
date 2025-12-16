@@ -38,6 +38,8 @@ public interface SvmModel {
 
   List<Semester> getSemestersAll();
 
+  List<SemesterAndNumberOfKurse> getSemestersAndNumberOfKurseAll();
+
   List<Maerchen> getMaerchensAll();
 
   List<Lektionsgebuehren> getLektionsgebuehrenAllList();

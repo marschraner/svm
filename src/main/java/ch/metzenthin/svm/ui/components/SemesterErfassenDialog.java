@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.components;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Schuljahre;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.SemesterErfassenModel;
 import ch.metzenthin.svm.domain.model.SemestersModel;
 import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
@@ -14,7 +15,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 
-@SuppressWarnings({"java:S100", "java:S1450"})
+@SuppressWarnings({"java:S100", "java:S1450", "FieldCanBeLocal"})
 public class SemesterErfassenDialog extends JDialog {
 
   // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
@@ -46,7 +47,8 @@ public class SemesterErfassenDialog extends JDialog {
       SemestersModel semestersModel,
       int indexBearbeiten,
       boolean isBearbeiten,
-      String title) {
+      String title,
+      DialogClosedListener dialogClosedListener) {
     $$$setupUI$$$();
     setContentPane(contentPane);
     setModal(true);
@@ -56,7 +58,7 @@ public class SemesterErfassenDialog extends JDialog {
       getRootPane().setDefaultButton(btnSpeichern);
     }
     createSemesterErfassenController(
-        svmContext, semestersTableModel, semestersModel, indexBearbeiten, isBearbeiten);
+        svmContext, semestersTableModel, semestersModel, indexBearbeiten, isBearbeiten, dialogClosedListener);
   }
 
   private void createSemesterErfassenController(
@@ -64,18 +66,19 @@ public class SemesterErfassenDialog extends JDialog {
       SemestersTableModel semestersTableModel,
       SemestersModel semestersModel,
       int indexBearbeiten,
-      boolean isBearbeiten) {
+      boolean isBearbeiten,
+      DialogClosedListener dialogClosedListener) {
     SemesterErfassenModel semesterErfassenModel =
-        (isBearbeiten
-            ? semestersModel.getSemesterErfassenModel(svmContext, indexBearbeiten)
-            : svmContext.getModelFactory().createSemesterErfassenModel());
+        (isBearbeiten)
+            ? semestersModel.createSemesterErfassenModel(
+                svmContext, semestersTableModel, indexBearbeiten)
+            : semestersModel.createSemesterErfassenModel(svmContext, semestersTableModel);
     SemesterErfassenController semesterErfassenController =
         new SemesterErfassenController(
-            svmContext,
-            semestersTableModel,
             semesterErfassenModel,
             isBearbeiten,
-            DEFAULT_BUTTON_ENABLED);
+            DEFAULT_BUTTON_ENABLED,
+            dialogClosedListener);
     semesterErfassenController.setSemesterErfassenDialog(this);
     semesterErfassenController.setContentPane(contentPane);
     semesterErfassenController.setSpinnerSchuljahre(spinnerSchuljahre);

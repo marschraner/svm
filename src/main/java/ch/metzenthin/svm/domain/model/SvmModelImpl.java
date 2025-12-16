@@ -8,6 +8,7 @@ import ch.metzenthin.svm.service.KurstypService;
 import ch.metzenthin.svm.service.LektionsgebuehrenService;
 import ch.metzenthin.svm.service.MitarbeiterCodeService;
 import ch.metzenthin.svm.service.SchuelerCodeService;
+import ch.metzenthin.svm.service.SemesterService;
 import ch.metzenthin.svm.service.SemesterrechnungCodeService;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,9 @@ public class SvmModelImpl implements SvmModel {
   private final ElternmithilfeCodeService elternmithilfeCodeService;
   private final SemesterrechnungCodeService semesterrechnungCodeService;
   private final LektionsgebuehrenService lektionsgebuehrenService;
+  private final SemesterService semesterService;
 
+  @SuppressWarnings("java:S107")
   public SvmModelImpl(
       KursortService kursortService,
       KurstypService kurstypService,
@@ -34,7 +37,8 @@ public class SvmModelImpl implements SvmModel {
       MitarbeiterCodeService mitarbeiterCodeService,
       ElternmithilfeCodeService elternmithilfeCodeService,
       SemesterrechnungCodeService semesterrechnungCodeService,
-      LektionsgebuehrenService lektionsgebuehrenService) {
+      LektionsgebuehrenService lektionsgebuehrenService,
+      SemesterService semesterService) {
     this.kursortService = kursortService;
     this.kurstypService = kurstypService;
     this.schuelerCodeService = schuelerCodeService;
@@ -42,6 +46,7 @@ public class SvmModelImpl implements SvmModel {
     this.elternmithilfeCodeService = elternmithilfeCodeService;
     this.semesterrechnungCodeService = semesterrechnungCodeService;
     this.lektionsgebuehrenService = lektionsgebuehrenService;
+    this.semesterService = semesterService;
   }
 
   @Override
@@ -160,9 +165,12 @@ public class SvmModelImpl implements SvmModel {
 
   @Override
   public List<Semester> getSemestersAll() {
-    FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
-    commandInvoker.executeCommand(findAllSemestersCommand);
-    return findAllSemestersCommand.getSemestersAll();
+    return semesterService.findAllSemesters();
+  }
+
+  @Override
+  public List<SemesterAndNumberOfKurse> getSemestersAndNumberOfKurseAll() {
+    return semesterService.findAllSemestersAndNumberOfKurse();
   }
 
   @Override
