@@ -54,11 +54,32 @@ public class CalendarModelAttribute {
 
   void setNewValue(boolean isRequired, String newValue, boolean isBulkUpdate)
       throws SvmValidationException {
-    setNewValue(isRequired, newValue, Converter.DD_MM_YYYY_DATE_FORMAT_STRING, isBulkUpdate);
+    setNewValue(isRequired, newValue, isBulkUpdate, false);
+  }
+
+  void setNewValue(
+      boolean isRequired, String newValue, boolean isBulkUpdate, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    setNewValue(
+        isRequired,
+        newValue,
+        Converter.DD_MM_YYYY_DATE_FORMAT_STRING,
+        isBulkUpdate,
+        enforcePropertyChangeEvent);
   }
 
   void setNewValue(
       boolean isRequired, String newValue, String dateFormatString, boolean isBulkUpdate)
+      throws SvmValidationException {
+    setNewValue(isRequired, newValue, dateFormatString, isBulkUpdate, false);
+  }
+
+  void setNewValue(
+      boolean isRequired,
+      String newValue,
+      String dateFormatString,
+      boolean isBulkUpdate,
+      boolean enforcePropertyChangeEvent)
       throws SvmValidationException {
     String newValueTrimmed = (newValue != null) ? newValue.trim() : "";
     if (!isBulkUpdate) {
@@ -82,6 +103,10 @@ public class CalendarModelAttribute {
       }
     }
     String oldValue = getValueAsString(dateFormatString);
+    if (enforcePropertyChangeEvent) {
+      // Damit ein PropertyChangeEvent ausgelöst wird
+      oldValue = "!" + nullAsEmptyString(oldValue);
+    }
     attributeAccessor.setValue(newValueAsCalendar);
     if (!equalsNullSafe(
             newValueTrimmed, nullAsEmptyString(asString(newValueAsCalendar, dateFormatString)))

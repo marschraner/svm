@@ -5,34 +5,41 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.datatypes.Schuljahre;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
+import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
+import ch.metzenthin.svm.domain.EntityWithOverlappingPeriodsException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.Semester;
-import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
+import ch.metzenthin.svm.service.SemesterService;
+import ch.metzenthin.svm.service.result.SaveSemesterResult;
+import jakarta.persistence.OptimisticLockException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class SemesterErfassenModelImpl extends AbstractModel implements SemesterErfassenModel {
 
   private static final Logger LOGGER = LogManager.getLogger(SemesterErfassenModelImpl.class);
   private static final String KEINE_GUELTIGE_PERIODE = "Keine gültige Periode";
 
-  private final Semester semester = new Semester();
-  private Semester semesterOrigin;
+  private final Semester semester;
+  private final SemesterService semesterService;
+
+  public SemesterErfassenModelImpl(
+      Optional<Semester> semesterToBeModifiedOptional, SemesterService semesterService) {
+    this.semester = semesterToBeModifiedOptional.orElseGet(Semester::new);
+    this.semesterService = semesterService;
+  }
 
   @Override
   public Semester getSemester() {
     return semester;
-  }
-
-  @Override
-  public void setSemesterOrigin(Semester semesterOrigin) {
-    this.semesterOrigin = semesterOrigin;
   }
 
   private final StringModelAttribute schuljahrModelAttribute =
@@ -60,7 +67,13 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
 
   @Override
   public void setSchuljahr(String schuljahr) throws SvmValidationException {
-    schuljahrModelAttribute.setNewValue(true, schuljahr, isBulkUpdate());
+    setSchuljahr(schuljahr, false);
+  }
+
+  private void setSchuljahr(String schuljahr, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    schuljahrModelAttribute.setNewValue(
+        true, schuljahr, isBulkUpdate(), enforcePropertyChangeEvent);
   }
 
   @Override
@@ -70,7 +83,13 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
 
   @Override
   public void setSemesterbezeichnung(Semesterbezeichnung semesterbezeichnung) {
-    Semesterbezeichnung oldValue = semester.getSemesterbezeichnung();
+    setSemesterbezeichnung(semesterbezeichnung, false);
+  }
+
+  private void setSemesterbezeichnung(
+      Semesterbezeichnung semesterbezeichnung, boolean enforcePropertyChangeEvent) {
+    Semesterbezeichnung oldValue =
+        (enforcePropertyChangeEvent) ? null : semester.getSemesterbezeichnung();
     semester.setSemesterbezeichnung(semesterbezeichnung);
     firePropertyChange(Field.SEMESTERBEZEICHNUNG, oldValue, semester.getSemesterbezeichnung());
   }
@@ -100,7 +119,13 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
 
   @Override
   public void setSemesterbeginn(String semesterbeginn) throws SvmValidationException {
-    semesterbeginnModelAttribute.setNewValue(true, semesterbeginn, isBulkUpdate());
+    setSemesterbeginn(semesterbeginn, false);
+  }
+
+  private void setSemesterbeginn(String semesterbeginn, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    semesterbeginnModelAttribute.setNewValue(
+        true, semesterbeginn, isBulkUpdate(), enforcePropertyChangeEvent);
     if (!isBulkUpdate()
         && semester.getSemesterbeginn() != null
         && semester.getSemesterbeginn().get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
@@ -144,7 +169,13 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
 
   @Override
   public void setSemesterende(String semesterende) throws SvmValidationException {
-    semesterendeModelAttribute.setNewValue(true, semesterende, isBulkUpdate());
+    setSemesterende(semesterende, false);
+  }
+
+  private void setSemesterende(String semesterende, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    semesterendeModelAttribute.setNewValue(
+        true, semesterende, isBulkUpdate(), enforcePropertyChangeEvent);
     if (!isBulkUpdate()
         && semester.getSemesterende() != null
         && semester.getSemesterende().get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
@@ -188,7 +219,13 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
 
   @Override
   public void setFerienbeginn1(String ferienbeginn1) throws SvmValidationException {
-    ferienbeginn1ModelAttribute.setNewValue(true, ferienbeginn1, isBulkUpdate());
+    setFerienbeginn1(ferienbeginn1, false);
+  }
+
+  private void setFerienbeginn1(String ferienbeginn1, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    ferienbeginn1ModelAttribute.setNewValue(
+        true, ferienbeginn1, isBulkUpdate(), enforcePropertyChangeEvent);
     if (!isBulkUpdate()
         && semester.getFerienbeginn1() != null
         && semester.getFerienbeginn1().get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
@@ -232,7 +269,13 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
 
   @Override
   public void setFerienende1(String ferienende1) throws SvmValidationException {
-    ferienende1ModelAttribute.setNewValue(true, ferienende1, isBulkUpdate());
+    setFerienende1(ferienende1, false);
+  }
+
+  private void setFerienende1(String ferienende1, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    ferienende1ModelAttribute.setNewValue(
+        true, ferienende1, isBulkUpdate(), enforcePropertyChangeEvent);
     if (!isBulkUpdate()
         && semester.getFerienende1() != null
         && semester.getFerienende1().get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
@@ -275,7 +318,13 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
 
   @Override
   public void setFerienbeginn2(String ferienbeginn2) throws SvmValidationException {
-    ferienbeginn2ModelAttribute.setNewValue(false, ferienbeginn2, isBulkUpdate());
+    setFerienbeginn2(ferienbeginn2, false);
+  }
+
+  private void setFerienbeginn2(String ferienbeginn2, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    ferienbeginn2ModelAttribute.setNewValue(
+        false, ferienbeginn2, isBulkUpdate(), enforcePropertyChangeEvent);
     if (!isBulkUpdate()
         && semester.getFerienbeginn2() != null
         && semester.getFerienbeginn2().get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
@@ -319,7 +368,13 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
 
   @Override
   public void setFerienende2(String ferienende2) throws SvmValidationException {
-    ferienende2ModelAttribute.setNewValue(false, ferienende2, isBulkUpdate());
+    setFerienende2(ferienende2, false);
+  }
+
+  private void setFerienende2(String ferienende2, boolean enforcePropertyChangeEvent)
+      throws SvmValidationException {
+    ferienende2ModelAttribute.setNewValue(
+        false, ferienende2, isBulkUpdate(), enforcePropertyChangeEvent);
     if (!isBulkUpdate()
         && semester.getFerienende2() != null
         && semester.getFerienende2().get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
@@ -338,75 +393,48 @@ public class SemesterErfassenModelImpl extends AbstractModel implements Semester
   }
 
   @Override
-  public boolean checkSemesterBereitsErfasst(SvmModel svmModel) {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    CheckSemesterBereitsErfasstCommand checkSemesterBereitsErfasstCommand =
-        new CheckSemesterBereitsErfasstCommand(
-            semester, semesterOrigin, svmModel.getSemestersAll());
-    commandInvoker.executeCommand(checkSemesterBereitsErfasstCommand);
-    return checkSemesterBereitsErfasstCommand.isBereitsErfasst();
-  }
-
-  @Override
-  public boolean checkSemesterUeberlapptAndereSemester(SvmModel svmModel) {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    CheckSemesterUeberlapptAndereSemesterCommand checkSemesterUeberlapptAndereSemesterCommand =
-        new CheckSemesterUeberlapptAndereSemesterCommand(
-            semester, semesterOrigin, svmModel.getSemestersAll());
-    commandInvoker.executeCommand(checkSemesterUeberlapptAndereSemesterCommand);
-    return checkSemesterUeberlapptAndereSemesterCommand.isUeberlappt();
-  }
-
-  @Override
-  public Semester getNaechstesNochNichtErfasstesSemester(SvmModel svmModel) {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    DetermineNaechstesNochNichtErfasstesSemesterCommand
-        determineNaechstesNochNichtErfasstesSemesterCommand =
-            new DetermineNaechstesNochNichtErfasstesSemesterCommand(svmModel.getSemestersAll());
-    commandInvoker.executeCommand(determineNaechstesNochNichtErfasstesSemesterCommand);
-    return determineNaechstesNochNichtErfasstesSemesterCommand
-        .getNaechstesNochNichtErfasstesSemester();
-  }
-
-  @Override
   public boolean checkIfUpdateAffectsSemesterrechnungen() {
-    return !(semesterOrigin == null
-        || semester.getAnzahlSchulwochen() == semesterOrigin.getAnzahlSchulwochen()
-        || semesterOrigin.getSemesterrechnungen().isEmpty());
+    return semesterService.checkIfUpdateAffectsSemesterrechnungen(semester);
   }
 
   @Override
-  public void updateAnzWochenSemesterrechnungen() {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    UpdateAnzWochenSemesterrechnungenCommand updateAnzWochenSemesterrechnungenCommand =
-        new UpdateAnzWochenSemesterrechnungenCommand(
-            semesterOrigin.getSemesterrechnungen(), semester);
-    commandInvoker.executeCommandAsTransaction(updateAnzWochenSemesterrechnungenCommand);
+  public Semester getNaechstesNochNichtErfasstesSemester() {
+    return semesterService.determineNaechstesNochNichtErfasstesSemester();
   }
 
   @Override
-  public void speichern(SvmModel svmModel, SemestersTableModel semestersTableModel) {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    SaveOrUpdateSemesterCommand saveOrUpdateSemesterCommand =
-        new SaveOrUpdateSemesterCommand(semester, semesterOrigin, svmModel.getSemestersAll());
-    commandInvoker.executeCommandAsTransaction(saveOrUpdateSemesterCommand);
-    // TableData mit von der Datenbank upgedateten Semesters updaten
-    semestersTableModel.getSemestersTableData().setSemesters(svmModel.getSemestersAll());
+  public SaveSemesterResult speichern(boolean updateSemesterrechnungen) {
+
+    SaveSemesterResult saveSemesterResult;
+
+    try {
+      semesterService.saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(
+          semester, updateSemesterrechnungen);
+      saveSemesterResult = SaveSemesterResult.SPEICHERN_ERFOLGREICH;
+    } catch (EntityAlreadyExistsException e) {
+      saveSemesterResult = SaveSemesterResult.SEMESTER_BEREITS_ERFASST;
+    } catch (EntityWithOverlappingPeriodsException e) {
+      saveSemesterResult = SaveSemesterResult.SEMESTER_UEBERLAPPT_MIT_ANDEREM_SEMESTER;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      saveSemesterResult = SaveSemesterResult.SEMESTER_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+
+    return saveSemesterResult;
   }
 
   @Override
   public void initializeCompleted() {
-    if (semesterOrigin != null) {
+    if (semester.getSemesterId() != null) {
       setBulkUpdate(true);
       try {
-        setSchuljahr(semesterOrigin.getSchuljahr());
-        setSemesterbezeichnung(semesterOrigin.getSemesterbezeichnung());
-        setSemesterbeginn(asString(semesterOrigin.getSemesterbeginn()));
-        setSemesterende(asString(semesterOrigin.getSemesterende()));
-        setFerienbeginn1(asString(semesterOrigin.getFerienbeginn1()));
-        setFerienende1(asString(semesterOrigin.getFerienende1()));
-        setFerienbeginn2(asString(semesterOrigin.getFerienbeginn2()));
-        setFerienende2(asString(semesterOrigin.getFerienende2()));
+        setSchuljahr(semester.getSchuljahr(), true);
+        setSemesterbezeichnung(semester.getSemesterbezeichnung(), true);
+        setSemesterbeginn(asString(semester.getSemesterbeginn()), true);
+        setSemesterende(asString(semester.getSemesterende()), true);
+        setFerienbeginn1(asString(semester.getFerienbeginn1()), true);
+        setFerienende1(asString(semester.getFerienende1()), true);
+        setFerienbeginn2(asString(semester.getFerienbeginn2()), true);
+        setFerienende2(asString(semester.getFerienende2()), true);
       } catch (SvmValidationException e) {
         LOGGER.error(e.getMessage());
       }

@@ -11,22 +11,23 @@ doc/Installation
 log/
 
 # Intellij (https://github.com/github/gitignore/blob/master/Global/JetBrains.gitignore)
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/findbugs-idea.xml
-.idea/dictionaries/
-.idea/fileTemplates/
 .idea/dataSources
 .idea/dataSources.ids
-.idea/dataSources.xml
 .idea/dataSources.local.xml
+.idea/dataSources.xml
+.idea/db-forest-config.xml
+.idea/dictionaries/
+.idea/fileTemplates/
+.idea/findbugs-idea.xml
+.idea/google-java-format.xml
 .idea/kotlinc.xml
 .idea/modules.xml
-.idea/sonarlint
-.idea/shelf
-.idea/svm.iml
-.idea/google-java-format.xml
 .idea/runConfigurations.xml
+.idea/shelf
+.idea/sonarlint
+.idea/svm.iml
+.idea/tasks.xml
+.idea/workspace.xml
 
 svm.iml
 

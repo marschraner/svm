@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.commands.DeleteSemesterCommand;
+import ch.metzenthin.svm.service.result.DeleteSemesterResult;
 import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
 
 /**
@@ -9,8 +9,17 @@ import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
  */
 public interface SemestersModel {
 
-  SemesterErfassenModel getSemesterErfassenModel(SvmContext svmContext, int indexBearbeiten);
+  SemesterErfassenModel createSemesterErfassenModel(
+      SvmContext svmContext, SemestersTableModel semestersTableModel);
 
-  DeleteSemesterCommand.Result semesterLoeschen(
-      SvmContext svmContext, SemestersTableModel semestersTableModel, int indexSemesterToBeRemoved);
+  SemesterErfassenModel createSemesterErfassenModel(
+      SvmContext svmContext, SemestersTableModel semestersTableModel, int indexBearbeiten);
+
+  boolean existsKurs(SemestersTableModel semestersTableModel, int selectedSemesterIndex);
+
+  int getNumberOfReferencedSemesterrechnungen(
+      SemestersTableModel semestersTableModel, int selectedSemesterIndex);
+
+  DeleteSemesterResult semesterLoeschen(
+      SemestersTableModel semestersTableModel, int indexSemesterToBeRemoved);
 }

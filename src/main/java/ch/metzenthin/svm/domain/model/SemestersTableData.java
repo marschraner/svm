@@ -1,19 +1,22 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Field;
-import ch.metzenthin.svm.persistence.entities.Semester;
 import java.util.Calendar;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Martin Schraner
  */
+@Setter
+@Getter
 public class SemestersTableData {
 
-  private List<Semester> semesters;
+  private List<SemesterAndNumberOfKurse> semestersAndNumberOfKurses;
 
-  public SemestersTableData(List<Semester> semesters) {
-    this.semesters = semesters;
+  public SemestersTableData(List<SemesterAndNumberOfKurse> semestersAndNumberOfKurses) {
+    this.semestersAndNumberOfKurses = semestersAndNumberOfKurses;
   }
 
   private static final Field[] COLUMNS = {
@@ -34,23 +37,24 @@ public class SemestersTableData {
   }
 
   public int size() {
-    return semesters.size();
+    return semestersAndNumberOfKurses.size();
   }
 
   public Object getValueAt(int rowIndex, int columnIndex) {
-    Semester semester = semesters.get(rowIndex);
+    SemesterAndNumberOfKurse semesterAndNumberOfKurse = semestersAndNumberOfKurses.get(rowIndex);
     Object value = null;
     switch (COLUMNS[columnIndex]) {
-      case SCHULJAHR -> value = semester.getSchuljahr();
-      case SEMESTERBEZEICHNUNG -> value = semester.getSemesterbezeichnung();
-      case SEMESTERBEGINN -> value = semester.getSemesterbeginn();
-      case SEMESTERENDE -> value = semester.getSemesterende();
-      case FERIENBEGINN1 -> value = semester.getFerienbeginn1();
-      case FERIENENDE1 -> value = semester.getFerienende1();
-      case FERIENBEGINN2 -> value = semester.getFerienbeginn2();
-      case FERIENENDE2 -> value = semester.getFerienende2();
-      case ANZAHL_SCHULWOCHEN -> value = semester.getAnzahlSchulwochen();
-      case ANZAHL_KURSE -> value = semester.getKurse().size();
+      case SCHULJAHR -> value = semesterAndNumberOfKurse.semester().getSchuljahr();
+      case SEMESTERBEZEICHNUNG ->
+          value = semesterAndNumberOfKurse.semester().getSemesterbezeichnung();
+      case SEMESTERBEGINN -> value = semesterAndNumberOfKurse.semester().getSemesterbeginn();
+      case SEMESTERENDE -> value = semesterAndNumberOfKurse.semester().getSemesterende();
+      case FERIENBEGINN1 -> value = semesterAndNumberOfKurse.semester().getFerienbeginn1();
+      case FERIENENDE1 -> value = semesterAndNumberOfKurse.semester().getFerienende1();
+      case FERIENBEGINN2 -> value = semesterAndNumberOfKurse.semester().getFerienbeginn2();
+      case FERIENENDE2 -> value = semesterAndNumberOfKurse.semester().getFerienende2();
+      case ANZAHL_SCHULWOCHEN -> value = semesterAndNumberOfKurse.semester().getAnzahlSchulwochen();
+      case ANZAHL_KURSE -> value = semesterAndNumberOfKurse.numberOfKurse();
       default -> {
         // Nothing to do
       }
@@ -69,13 +73,5 @@ public class SemestersTableData {
 
   public String getColumnName(int column) {
     return COLUMNS[column].toString();
-  }
-
-  public List<Semester> getSemesters() {
-    return semesters;
-  }
-
-  public void setSemesters(List<Semester> semesters) {
-    this.semesters = semesters;
   }
 }

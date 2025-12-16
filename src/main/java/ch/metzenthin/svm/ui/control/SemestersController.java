@@ -3,24 +3,25 @@ package ch.metzenthin.svm.ui.control;
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.commands.DeleteSemesterCommand;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.SemestersModel;
 import ch.metzenthin.svm.domain.model.SemestersTableData;
-import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.service.result.DeleteSemesterResult;
 import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
 import ch.metzenthin.svm.ui.components.SemesterErfassenDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 import javax.swing.*;
 
 /**
  * @author Martin Schraner
  */
 @SuppressWarnings("DuplicatedCode")
-public class SemestersController {
+public class SemestersController implements DialogClosedListener {
+
+  public static final String ERROR_TITLE = "Fehler";
   private final SvmContext svmContext;
   private final SemestersModel semestersModel;
   private SemestersTableModel semestersTableModel;
@@ -61,7 +62,7 @@ public class SemestersController {
 
   private void initializeSemestersTable() {
     SemestersTableData semestersTableData =
-        new SemestersTableData(svmContext.getSvmModel().getSemestersAll());
+        new SemestersTableData(svmContext.getSvmModel().getSemestersAndNumberOfKurseAll());
     semestersTableModel = new SemestersTableModel(semestersTableData);
     semestersTable.setModel(semestersTableModel);
     setColumnCellRenderers(semestersTable, semestersTableModel);
@@ -76,7 +77,7 @@ public class SemestersController {
     btnNeu.setFocusPainted(true);
     SemesterErfassenDialog semesterErfassenDialog =
         new SemesterErfassenDialog(
-            svmContext, semestersTableModel, semestersModel, 0, false, "Neues Semester");
+            svmContext, semestersTableModel, semestersModel, 0, false, "Neues Semester", this);
     semesterErfassenDialog.pack();
     semesterErfassenDialog.setVisible(true);
     semestersTableModel.fireTableDataChanged();
@@ -102,7 +103,8 @@ public class SemestersController {
             semestersModel,
             semestersTable.getSelectedRow(),
             true,
-            "Semester bearbeiten");
+            "Semester bearbeiten",
+            this);
     semesterErfassenDialog.pack();
     semesterErfassenDialog.setVisible(true);
     semestersTableModel.fireTableDataChanged();
@@ -133,11 +135,14 @@ public class SemestersController {
             options, // the titles of buttons
             options[1]); // default button title
     if (n == 0) {
-      List<Semester> semesters = semestersTableModel.getSemestersTableData().getSemesters();
-      Semester semesterToBeDeleted = semesters.get(semestersTable.getSelectedRow());
-      int numberOfReferencedSemesterrechnungen = semesterToBeDeleted.getSemesterrechnungen().size();
+      // Löschen durchführen
+      int numberOfReferencedSemesterrechnungen =
+          semestersModel.getNumberOfReferencedSemesterrechnungen(
+              semestersTableModel, semestersTable.getSelectedRow());
+      boolean existsKurs =
+          semestersModel.existsKurs(semestersTableModel, semestersTable.getSelectedRow());
       int n1 = 0;
-      if (semesterToBeDeleted.getKurse().isEmpty() && numberOfReferencedSemesterrechnungen > 0) {
+      if (!existsKurs && numberOfReferencedSemesterrechnungen > 0) {
         n1 =
             JOptionPane.showOptionDialog(
                 null,
@@ -155,20 +160,28 @@ public class SemestersController {
                 options[1]); // default button title
       }
       if (n1 == 0) {
-        DeleteSemesterCommand.Result result =
-            semestersModel.semesterLoeschen(
-                svmContext, semestersTableModel, semestersTable.getSelectedRow());
-        if (result == DeleteSemesterCommand.Result.SEMESTER_VON_KURS_REFERENZIERT) {
-          JOptionPane.showMessageDialog(
-              null,
-              "Das Semester wird durch mindestens einen Kurs referenziert und kann "
-                  + "nicht gelöscht werden.",
-              "Fehler",
-              JOptionPane.ERROR_MESSAGE);
-          btnLoeschen.setFocusPainted(false);
-        } else if (result == DeleteSemesterCommand.Result.LOESCHEN_ERFOLGREICH) {
-          semestersTableModel.fireTableDataChanged();
-          semestersTable.addNotify();
+        DeleteSemesterResult deleteSemesterResult =
+            semestersModel.semesterLoeschen(semestersTableModel, semestersTable.getSelectedRow());
+        switch (deleteSemesterResult) {
+          case SEMESTER_VON_KURS_REFERENZIERT -> {
+            JOptionPane.showMessageDialog(
+                null,
+                "Das Semester wird durch mindestens einen Kurs "
+                    + "referenziert und kann nicht gelöscht werden.",
+                ERROR_TITLE,
+                JOptionPane.ERROR_MESSAGE);
+            btnLoeschen.setFocusPainted(false);
+          }
+          case SEMESTER_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+            JOptionPane.showMessageDialog(
+                null,
+                "Das Semester kann nicht gelöscht werden, da der Eintrag unterdessen durch\n"
+                    + "einen anderen Benutzer verändert oder gelöscht wurde.",
+                ERROR_TITLE,
+                JOptionPane.ERROR_MESSAGE);
+            reloadTableModel();
+          }
+          case LOESCHEN_ERFOLGREICH -> reloadTableModel();
         }
       }
     }
@@ -195,5 +208,19 @@ public class SemestersController {
 
   public void addCloseListener(ActionListener closeListener) {
     this.closeListener = closeListener;
+  }
+
+  @Override
+  public void onDialogClosed() {
+    reloadTableModel();
+  }
+
+  private void reloadTableModel() {
+    // TableData mit von der Datenbank upgedateten Semesters updaten
+    semestersTableModel
+        .getSemestersTableData()
+        .setSemestersAndNumberOfKurses(svmContext.getSvmModel().getSemestersAndNumberOfKurseAll());
+    semestersTableModel.fireTableDataChanged();
+    semestersTable.addNotify();
   }
 }

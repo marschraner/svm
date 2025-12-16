@@ -10,4 +10,6 @@ public interface KursService {
   boolean existsKursByKurstypId(int kurstypId);
 
   boolean existsKursByLektionslaenge(int lektionslaenge);
+
+  boolean existsKursBySemesterId(int semesterId);
 }

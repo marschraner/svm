@@ -2,18 +2,22 @@ package ch.metzenthin.svm.ui.control;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
-import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.SemesterErfassenModel;
-import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
+import ch.metzenthin.svm.service.result.SaveSemesterResult;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,11 +34,10 @@ public class SemesterErfassenController extends AbstractController {
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
   private static final boolean MODEL_VALIDATION_MODE = false;
 
-  private final SemestersTableModel semestersTableModel;
   private final SemesterErfassenModel semesterErfassenModel;
-  private final SvmContext svmContext;
   private final boolean isBearbeiten;
   private final boolean defaultButtonEnabled;
+  private final DialogClosedListener dialogClosedListener;
   private JDialog semesterErfassenDialog;
   private JSpinner spinnerSchuljahre;
   private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
@@ -44,26 +47,24 @@ public class SemesterErfassenController extends AbstractController {
   private JTextField txtFerienende1;
   private JTextField txtFerienbeginn2;
   private JTextField txtFerienende2;
-  private JLabel errLblSemesterbeginn;
-  private JLabel errLblSemesterende;
-  private JLabel errLblFerienbeginn1;
-  private JLabel errLblFerienende1;
-  private JLabel errLblFerienbeginn2;
-  private JLabel errLblFerienende2;
+  @Setter private JLabel errLblSemesterbeginn;
+  @Setter private JLabel errLblSemesterende;
+  @Setter private JLabel errLblFerienbeginn1;
+  @Setter private JLabel errLblFerienende1;
+  @Setter private JLabel errLblFerienbeginn2;
+  @Setter private JLabel errLblFerienende2;
   private JButton btnSpeichern;
 
   public SemesterErfassenController(
-      SvmContext svmContext,
-      SemestersTableModel semestersTableModel,
       SemesterErfassenModel semesterErfassenModel,
       boolean isBearbeiten,
-      boolean defaultButtonEnabled) {
+      boolean defaultButtonEnabled,
+      DialogClosedListener dialogClosedListener) {
     super(semesterErfassenModel);
-    this.svmContext = svmContext;
-    this.semestersTableModel = semestersTableModel;
     this.semesterErfassenModel = semesterErfassenModel;
     this.isBearbeiten = isBearbeiten;
     this.defaultButtonEnabled = defaultButtonEnabled;
+    this.dialogClosedListener = dialogClosedListener;
     this.semesterErfassenModel.addPropertyChangeListener(this);
     this.semesterErfassenModel.addDisableFieldsListener(this);
     this.semesterErfassenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -78,7 +79,7 @@ public class SemesterErfassenController extends AbstractController {
   public void setSemesterErfassenDialog(JDialog semesterErfassenDialog) {
     // call onCancel() when cross is clicked
     this.semesterErfassenDialog = semesterErfassenDialog;
-    semesterErfassenDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    semesterErfassenDialog.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     semesterErfassenDialog.addWindowListener(
         new WindowAdapter() {
           @Override
@@ -106,9 +107,7 @@ public class SemesterErfassenController extends AbstractController {
 
   private void initSchuljahr() {
     String schuljahr =
-        semesterErfassenModel
-            .getNaechstesNochNichtErfasstesSemester(svmContext.getSvmModel())
-            .getSchuljahr();
+        semesterErfassenModel.getNaechstesNochNichtErfasstesSemester().getSchuljahr();
     try {
       semesterErfassenModel.setSchuljahr(schuljahr);
     } catch (SvmValidationException e) {
@@ -157,9 +156,7 @@ public class SemesterErfassenController extends AbstractController {
 
   private void initSemesterbezeichnung() {
     Semesterbezeichnung semesterbezeichnung =
-        semesterErfassenModel
-            .getNaechstesNochNichtErfasstesSemester(svmContext.getSvmModel())
-            .getSemesterbezeichnung();
+        semesterErfassenModel.getNaechstesNochNichtErfasstesSemester().getSemesterbezeichnung();
     try {
       semesterErfassenModel.setSemesterbezeichnung(semesterbezeichnung);
     } catch (SvmValidationException e) {
@@ -519,30 +516,6 @@ public class SemesterErfassenController extends AbstractController {
     }
   }
 
-  public void setErrLblSemesterbeginn(JLabel errLblSemesterbeginn) {
-    this.errLblSemesterbeginn = errLblSemesterbeginn;
-  }
-
-  public void setErrLblSemesterende(JLabel errLblSemesterende) {
-    this.errLblSemesterende = errLblSemesterende;
-  }
-
-  public void setErrLblFerienbeginn1(JLabel errLblFerienbeginn1) {
-    this.errLblFerienbeginn1 = errLblFerienbeginn1;
-  }
-
-  public void setErrLblFerienende1(JLabel errLblFerienende1) {
-    this.errLblFerienende1 = errLblFerienende1;
-  }
-
-  public void setErrLblFerienbeginn2(JLabel errLblFerienbeginn2) {
-    this.errLblFerienbeginn2 = errLblFerienbeginn2;
-  }
-
-  public void setErrLblFerienende2(JLabel errLblFerienende2) {
-    this.errLblFerienende2 = errLblFerienende2;
-  }
-
   public void setBtnSpeichern(JButton btnSpeichern) {
     this.btnSpeichern = btnSpeichern;
     if (isModelValidationMode()) {
@@ -556,46 +529,124 @@ public class SemesterErfassenController extends AbstractController {
       btnSpeichern.setFocusPainted(false);
       return;
     }
-    if (semesterErfassenModel.checkSemesterBereitsErfasst(svmContext.getSvmModel())) {
-      JOptionPane.showMessageDialog(
-          semesterErfassenDialog,
-          semesterErfassenModel.getSemester() + " bereits erfasst.",
-          "Fehler",
-          JOptionPane.ERROR_MESSAGE);
-      btnSpeichern.setFocusPainted(false);
+
+    boolean affectsSemesterrechnungen =
+        semesterErfassenModel.checkIfUpdateAffectsSemesterrechnungen();
+    SaveSemesterResult saveSemesterResult;
+    if (affectsSemesterrechnungen) {
+      Object[] optionsImport = {"Ja", "Nein"};
+      int n =
+          JOptionPane.showOptionDialog(
+              null,
+              "Soll die Anzahl Semesterwochen auch bei den Semesterrechnungen geändert werden? \n"
+                  + "(Semesterrechnungen mit gesetztem Rechnungsdatum werden nicht verändert.)",
+              "Anzahl Semesterwochen auch bei Semesterrechnungen ändern?",
+              JOptionPane.YES_NO_OPTION,
+              JOptionPane.QUESTION_MESSAGE,
+              null,
+              optionsImport, // the titles of buttons
+              optionsImport[0]); // default button title
+      if (n == 0) {
+        JDialog semesterSpeichernBusyDialog = createSemesterSpeichernBusyDialog();
+        SwingWorker<SaveSemesterResult, Void> semesterSpeichernSwingWorker =
+            getSpeichernSwingWorker(semesterSpeichernBusyDialog);
+        semesterSpeichernBusyDialog.setVisible(true);
+        // der nachfolgende Code ist blockiert, bis der Worker beendet ist und den BusyDialog
+        // schliesst
+        saveSemesterResult = getSaveSemesterResult(semesterSpeichernSwingWorker);
+
+      } else {
+        saveSemesterResult = semesterErfassenModel.speichern(false);
+      }
     } else {
-      if (semesterErfassenModel.checkSemesterUeberlapptAndereSemester(svmContext.getSvmModel())) {
+      saveSemesterResult = semesterErfassenModel.speichern(false);
+    }
+
+    switch (saveSemesterResult) {
+      case SEMESTER_BEREITS_ERFASST -> {
+        showMessageDialogError(semesterErfassenModel.getSemester() + " bereits erfasst.");
+        btnSpeichern.setFocusPainted(false);
+      }
+      case SEMESTER_UEBERLAPPT_MIT_ANDEREM_SEMESTER -> {
+        showMessageDialogError("Semester dürfen sich nicht überlappen.");
+        btnSpeichern.setFocusPainted(false);
+      }
+      case SEMESTER_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+        closeDialog();
+        showMessageDialogError(
+            "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
+                + "einen anderen Benutzer verändert oder gelöscht wurde.");
+      }
+      case SPEICHERN_ERFOLGREICH -> {
+        closeDialog();
         JOptionPane.showMessageDialog(
             semesterErfassenDialog,
-            "Semester dürfen sich nicht überlappen.",
-            "Fehler",
-            JOptionPane.ERROR_MESSAGE);
-        btnSpeichern.setFocusPainted(false);
-      } else {
-        boolean affectsSemesterrechnungen =
-            semesterErfassenModel.checkIfUpdateAffectsSemesterrechnungen();
-        int n = 0;
-        if (affectsSemesterrechnungen) {
-          Object[] optionsImport = {"Ja", "Nein"};
-          n =
-              JOptionPane.showOptionDialog(
-                  null,
-                  "Soll die Anzahl Semesterwochen auch bei den Semesterrechnungen geändert werden? \n"
-                      + "(Semesterrechnungen mit gesetztem Rechnungsdatum werden nicht verändert.)",
-                  "Anzahl Semesterwochen auch bei Semesterrechnungen ändern?",
-                  JOptionPane.YES_NO_OPTION,
-                  JOptionPane.QUESTION_MESSAGE,
-                  null,
-                  optionsImport, // the titles of buttons
-                  optionsImport[0]); // default button title
-        }
-        semesterErfassenModel.speichern(svmContext.getSvmModel(), semestersTableModel);
-        if (affectsSemesterrechnungen && n == 0) {
-          semesterErfassenModel.updateAnzWochenSemesterrechnungen();
-        }
-        semesterErfassenDialog.dispose();
+            "Semester wurde erfolgreich gespeichert.",
+            "Speichern erfolgreich",
+            JOptionPane.INFORMATION_MESSAGE);
       }
     }
+  }
+
+  private SwingWorker<SaveSemesterResult, Void> getSpeichernSwingWorker(JDialog busyDialog) {
+    SwingWorker<SaveSemesterResult, Void> worker =
+        new SwingWorker<>() {
+          @Override
+          protected SaveSemesterResult doInBackground() {
+            return semesterErfassenModel.speichern(true);
+          }
+
+          @Override
+          protected void done() {
+            busyDialog.dispose();
+          }
+        };
+
+    // Worker muss ausgeführt werden bevor der Dialog visible wird, da mit setVisible der
+    // nachfolgende Code blockiert ist
+    worker.execute();
+    return worker;
+  }
+
+  private static SaveSemesterResult getSaveSemesterResult(
+      SwingWorker<SaveSemesterResult, Void> semesterSpeichernSwingWorker) {
+    SaveSemesterResult saveSemesterResult;
+    try {
+      saveSemesterResult = semesterSpeichernSwingWorker.get();
+    } catch (InterruptedException e) {
+      LOGGER.warn("Speichern Worker Interrupted!", e);
+      Thread.currentThread().interrupt();
+      throw new SvmRuntimeException(e.getMessage(), e);
+    } catch (ExecutionException e) {
+      throw new SvmRuntimeException(e.getMessage(), e);
+    }
+    return saveSemesterResult;
+  }
+
+  private void showMessageDialogError(String message) {
+    JOptionPane.showMessageDialog(
+        semesterErfassenDialog, message, "Fehler", JOptionPane.ERROR_MESSAGE);
+  }
+
+  private static JDialog createSemesterSpeichernBusyDialog() {
+
+    final JOptionPane optionPane =
+        new JOptionPane(
+            "Das Semester und die betroffenen Semesterrechnungen werden gespeichert.",
+            JOptionPane.INFORMATION_MESSAGE,
+            JOptionPane.DEFAULT_OPTION,
+            null,
+            new Object[] {},
+            null);
+
+    final JDialog dialog = new JDialog();
+    dialog.setTitle("Verarbeitung läuft ...");
+    dialog.setModal(true);
+    dialog.setContentPane(optionPane);
+    dialog.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    dialog.pack();
+
+    return dialog;
   }
 
   public void setBtnAbbrechen(JButton btnAbbrechen) {
@@ -603,7 +654,12 @@ public class SemesterErfassenController extends AbstractController {
   }
 
   private void onAbbrechen() {
+    closeDialog();
+  }
+
+  private void closeDialog() {
     semesterErfassenDialog.dispose();
+    dialogClosedListener.onDialogClosed();
   }
 
   private void onSemesterErfassenModelCompleted(boolean completed) {

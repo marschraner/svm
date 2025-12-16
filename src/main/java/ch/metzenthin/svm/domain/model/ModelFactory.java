@@ -6,6 +6,7 @@ import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
+import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 import java.util.Optional;
 
@@ -65,7 +66,8 @@ public interface ModelFactory {
 
   SemestersModel createSemestersModel();
 
-  SemesterErfassenModel createSemesterErfassenModel();
+  SemesterErfassenModel createSemesterErfassenModel(
+      Optional<Semester> semesterToBeModifiedOptional);
 
   KurseSemesterwahlModel createKurseSemesterwahlModel();
 
