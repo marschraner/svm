@@ -32,13 +32,13 @@ public class SemestersModelImpl extends AbstractModel implements SemestersModel 
   }
 
   @Override
-  public SemesterErfassenModel createSemesterErfassenModel(
+  public CreateOrUpdateSemesterModel createCreateOrUpdateSemesterModel(
       SvmContext svmContext, SemestersTableModel semestersTableModel) {
-    return svmContext.getModelFactory().createSemesterErfassenModel(Optional.empty());
+    return svmContext.getModelFactory().createCreateOrUpdateSemesterModel(Optional.empty());
   }
 
   @Override
-  public SemesterErfassenModel createSemesterErfassenModel(
+  public CreateOrUpdateSemesterModel createCreateOrUpdateSemesterModel(
       SvmContext svmContext,
       SemestersTableModel semestersTableModel,
       int indexSemesterToBeModified) {
@@ -46,7 +46,7 @@ public class SemestersModelImpl extends AbstractModel implements SemestersModel 
         getSelectedSemester(semestersTableModel, indexSemesterToBeModified);
     return svmContext
         .getModelFactory()
-        .createSemesterErfassenModel(Optional.of(semesterToBeModified));
+        .createCreateOrUpdateSemesterModel(Optional.of(semesterToBeModified));
   }
 
   private static Semester getSelectedSemester(

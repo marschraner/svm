@@ -9,10 +9,10 @@ import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
  */
 public interface SemestersModel {
 
-  SemesterErfassenModel createSemesterErfassenModel(
+  CreateOrUpdateSemesterModel createCreateOrUpdateSemesterModel(
       SvmContext svmContext, SemestersTableModel semestersTableModel);
 
-  SemesterErfassenModel createSemesterErfassenModel(
+  CreateOrUpdateSemesterModel createCreateOrUpdateSemesterModel(
       SvmContext svmContext, SemestersTableModel semestersTableModel, int indexBearbeiten);
 
   boolean existsKurs(SemestersTableModel semestersTableModel, int selectedSemesterIndex);

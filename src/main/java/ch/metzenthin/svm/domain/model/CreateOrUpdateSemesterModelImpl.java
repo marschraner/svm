@@ -23,15 +23,16 @@ import org.springframework.dao.OptimisticLockingFailureException;
  * @author Martin Schraner
  */
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-public class SemesterErfassenModelImpl extends AbstractModel implements SemesterErfassenModel {
+public class CreateOrUpdateSemesterModelImpl extends AbstractModel
+    implements CreateOrUpdateSemesterModel {
 
-  private static final Logger LOGGER = LogManager.getLogger(SemesterErfassenModelImpl.class);
+  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateSemesterModelImpl.class);
   private static final String KEINE_GUELTIGE_PERIODE = "Keine gültige Periode";
 
   private final Semester semester;
   private final SemesterService semesterService;
 
-  public SemesterErfassenModelImpl(
+  public CreateOrUpdateSemesterModelImpl(
       Optional<Semester> semesterToBeModifiedOptional, SemesterService semesterService) {
     this.semester = semesterToBeModifiedOptional.orElseGet(Semester::new);
     this.semesterService = semesterService;

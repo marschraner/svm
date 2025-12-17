@@ -66,7 +66,7 @@ public interface ModelFactory {
 
   SemestersModel createSemestersModel();
 
-  SemesterErfassenModel createSemesterErfassenModel(
+  CreateOrUpdateSemesterModel createCreateOrUpdateSemesterModel(
       Optional<Semester> semesterToBeModifiedOptional);
 
   KurseSemesterwahlModel createKurseSemesterwahlModel();

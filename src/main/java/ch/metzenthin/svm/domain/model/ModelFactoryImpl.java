@@ -195,9 +195,9 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
-  public SemesterErfassenModel createSemesterErfassenModel(
+  public CreateOrUpdateSemesterModel createCreateOrUpdateSemesterModel(
       Optional<Semester> semesterToBeModifiedOptional) {
-    return new SemesterErfassenModelImpl(semesterToBeModifiedOptional, semesterService);
+    return new CreateOrUpdateSemesterModelImpl(semesterToBeModifiedOptional, semesterService);
   }
 
   @Override

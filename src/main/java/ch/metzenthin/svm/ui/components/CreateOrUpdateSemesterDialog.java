@@ -3,11 +3,11 @@ package ch.metzenthin.svm.ui.components;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Schuljahre;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModel;
 import ch.metzenthin.svm.domain.model.DialogClosedListener;
-import ch.metzenthin.svm.domain.model.SemesterErfassenModel;
 import ch.metzenthin.svm.domain.model.SemestersModel;
 import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
-import ch.metzenthin.svm.ui.control.SemesterErfassenController;
+import ch.metzenthin.svm.ui.control.CreateOrUpdateSemesterController;
 import java.awt.*;
 import java.util.Locale;
 import javax.swing.*;
@@ -16,7 +16,7 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 
 @SuppressWarnings({"java:S100", "java:S1450", "FieldCanBeLocal"})
-public class SemesterErfassenDialog extends JDialog {
+public class CreateOrUpdateSemesterDialog extends JDialog {
 
   // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
   private static final boolean DEFAULT_BUTTON_ENABLED = false;
@@ -41,7 +41,7 @@ public class SemesterErfassenDialog extends JDialog {
   private JButton btnSpeichern;
   private JButton btnAbbrechen;
 
-  public SemesterErfassenDialog(
+  public CreateOrUpdateSemesterDialog(
       SvmContext svmContext,
       SemestersTableModel semestersTableModel,
       SemestersModel semestersModel,
@@ -57,47 +57,47 @@ public class SemesterErfassenDialog extends JDialog {
     if (DEFAULT_BUTTON_ENABLED) {
       getRootPane().setDefaultButton(btnSpeichern);
     }
-    createSemesterErfassenController(
+    createCreateOrUpdateSemesterController(
         svmContext, semestersTableModel, semestersModel, indexBearbeiten, isBearbeiten, dialogClosedListener);
   }
 
-  private void createSemesterErfassenController(
+  private void createCreateOrUpdateSemesterController(
       SvmContext svmContext,
       SemestersTableModel semestersTableModel,
       SemestersModel semestersModel,
       int indexBearbeiten,
       boolean isBearbeiten,
       DialogClosedListener dialogClosedListener) {
-    SemesterErfassenModel semesterErfassenModel =
+    CreateOrUpdateSemesterModel createOrUpdateSemesterModel =
         (isBearbeiten)
-            ? semestersModel.createSemesterErfassenModel(
+            ? semestersModel.createCreateOrUpdateSemesterModel(
                 svmContext, semestersTableModel, indexBearbeiten)
-            : semestersModel.createSemesterErfassenModel(svmContext, semestersTableModel);
-    SemesterErfassenController semesterErfassenController =
-        new SemesterErfassenController(
-            semesterErfassenModel,
+            : semestersModel.createCreateOrUpdateSemesterModel(svmContext, semestersTableModel);
+    CreateOrUpdateSemesterController createOrUpdateSemesterController =
+        new CreateOrUpdateSemesterController(
+            createOrUpdateSemesterModel,
             isBearbeiten,
             DEFAULT_BUTTON_ENABLED,
             dialogClosedListener);
-    semesterErfassenController.setSemesterErfassenDialog(this);
-    semesterErfassenController.setContentPane(contentPane);
-    semesterErfassenController.setSpinnerSchuljahre(spinnerSchuljahre);
-    semesterErfassenController.setComboBoxSemesterbezeichnung(comboBoxSemesterbezeichnung);
-    semesterErfassenController.setTxtSemesterbeginn(txtSemesterbeginn);
-    semesterErfassenController.setTxtSemesterende(txtSemesterende);
-    semesterErfassenController.setTxtFerienbeginn1(txtFerienbeginn1);
-    semesterErfassenController.setTxtFerienende1(txtFerienende1);
-    semesterErfassenController.setTxtFerienbeginn2(txtFerienbeginn2);
-    semesterErfassenController.setTxtFerienende2(txtFerienende2);
-    semesterErfassenController.setBtnSpeichern(btnSpeichern);
-    semesterErfassenController.setBtnAbbrechen(btnAbbrechen);
-    semesterErfassenController.setErrLblSemesterbeginn(errLblSemesterbeginn);
-    semesterErfassenController.setErrLblSemesterende(errLblSemesterende);
-    semesterErfassenController.setErrLblFerienbeginn1(errLblFerienbeginn1);
-    semesterErfassenController.setErrLblFerienende1(errLblFerienende1);
-    semesterErfassenController.setErrLblFerienbeginn2(errLblFerienbeginn2);
-    semesterErfassenController.setErrLblFerienende2(errLblFerienende2);
-    semesterErfassenController.constructionDone();
+    createOrUpdateSemesterController.setCreateOrUpdateSemesterDialog(this);
+    createOrUpdateSemesterController.setContentPane(contentPane);
+    createOrUpdateSemesterController.setSpinnerSchuljahre(spinnerSchuljahre);
+    createOrUpdateSemesterController.setComboBoxSemesterbezeichnung(comboBoxSemesterbezeichnung);
+    createOrUpdateSemesterController.setTxtSemesterbeginn(txtSemesterbeginn);
+    createOrUpdateSemesterController.setTxtSemesterende(txtSemesterende);
+    createOrUpdateSemesterController.setTxtFerienbeginn1(txtFerienbeginn1);
+    createOrUpdateSemesterController.setTxtFerienende1(txtFerienende1);
+    createOrUpdateSemesterController.setTxtFerienbeginn2(txtFerienbeginn2);
+    createOrUpdateSemesterController.setTxtFerienende2(txtFerienende2);
+    createOrUpdateSemesterController.setBtnSpeichern(btnSpeichern);
+    createOrUpdateSemesterController.setBtnAbbrechen(btnAbbrechen);
+    createOrUpdateSemesterController.setErrLblSemesterbeginn(errLblSemesterbeginn);
+    createOrUpdateSemesterController.setErrLblSemesterende(errLblSemesterende);
+    createOrUpdateSemesterController.setErrLblFerienbeginn1(errLblFerienbeginn1);
+    createOrUpdateSemesterController.setErrLblFerienende1(errLblFerienende1);
+    createOrUpdateSemesterController.setErrLblFerienbeginn2(errLblFerienbeginn2);
+    createOrUpdateSemesterController.setErrLblFerienende2(errLblFerienende2);
+    createOrUpdateSemesterController.constructionDone();
   }
 
   @SuppressWarnings("DuplicatedCode")
