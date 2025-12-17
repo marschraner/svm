@@ -8,7 +8,7 @@ import ch.metzenthin.svm.domain.model.SemestersModel;
 import ch.metzenthin.svm.domain.model.SemestersTableData;
 import ch.metzenthin.svm.service.result.DeleteSemesterResult;
 import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
-import ch.metzenthin.svm.ui.components.SemesterErfassenDialog;
+import ch.metzenthin.svm.ui.components.CreateOrUpdateSemesterDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -75,11 +75,11 @@ public class SemestersController implements DialogClosedListener {
 
   private void onNeu() {
     btnNeu.setFocusPainted(true);
-    SemesterErfassenDialog semesterErfassenDialog =
-        new SemesterErfassenDialog(
+    CreateOrUpdateSemesterDialog createOrUpdateSemesterDialog =
+        new CreateOrUpdateSemesterDialog(
             svmContext, semestersTableModel, semestersModel, 0, false, "Neues Semester", this);
-    semesterErfassenDialog.pack();
-    semesterErfassenDialog.setVisible(true);
+    createOrUpdateSemesterDialog.pack();
+    createOrUpdateSemesterDialog.setVisible(true);
     semestersTableModel.fireTableDataChanged();
     btnNeu.setFocusPainted(false);
   }
@@ -96,8 +96,8 @@ public class SemestersController implements DialogClosedListener {
 
   private void onBearbeiten() {
     btnBearbeiten.setFocusPainted(true);
-    SemesterErfassenDialog semesterErfassenDialog =
-        new SemesterErfassenDialog(
+    CreateOrUpdateSemesterDialog createOrUpdateSemesterDialog =
+        new CreateOrUpdateSemesterDialog(
             svmContext,
             semestersTableModel,
             semestersModel,
@@ -105,8 +105,8 @@ public class SemestersController implements DialogClosedListener {
             true,
             "Semester bearbeiten",
             this);
-    semesterErfassenDialog.pack();
-    semesterErfassenDialog.setVisible(true);
+    createOrUpdateSemesterDialog.pack();
+    createOrUpdateSemesterDialog.setVisible(true);
     semestersTableModel.fireTableDataChanged();
     btnBearbeiten.setFocusPainted(false);
   }

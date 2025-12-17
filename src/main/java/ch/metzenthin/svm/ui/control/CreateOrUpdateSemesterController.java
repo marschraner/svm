@@ -9,8 +9,8 @@ import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModel;
 import ch.metzenthin.svm.domain.model.DialogClosedListener;
-import ch.metzenthin.svm.domain.model.SemesterErfassenModel;
 import ch.metzenthin.svm.service.result.SaveSemesterResult;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -25,20 +25,20 @@ import org.apache.logging.log4j.Logger;
  * @author Martin Schraner
  */
 @SuppressWarnings("LoggingSimilarMessage")
-public class SemesterErfassenController extends AbstractController {
+public class CreateOrUpdateSemesterController extends AbstractController {
 
-  private static final Logger LOGGER = LogManager.getLogger(SemesterErfassenController.class);
+  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateSemesterController.class);
   private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE =
       "Validierung wegen equalFieldAndModelValue";
 
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
   private static final boolean MODEL_VALIDATION_MODE = false;
 
-  private final SemesterErfassenModel semesterErfassenModel;
+  private final CreateOrUpdateSemesterModel createOrUpdateSemesterModel;
   private final boolean isBearbeiten;
   private final boolean defaultButtonEnabled;
   private final DialogClosedListener dialogClosedListener;
-  private JDialog semesterErfassenDialog;
+  private JDialog createOrUpdateSemesterDialog;
   private JSpinner spinnerSchuljahre;
   private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
   private JTextField txtSemesterbeginn;
@@ -55,32 +55,33 @@ public class SemesterErfassenController extends AbstractController {
   @Setter private JLabel errLblFerienende2;
   private JButton btnSpeichern;
 
-  public SemesterErfassenController(
-      SemesterErfassenModel semesterErfassenModel,
+  public CreateOrUpdateSemesterController(
+      CreateOrUpdateSemesterModel createOrUpdateSemesterModel,
       boolean isBearbeiten,
       boolean defaultButtonEnabled,
       DialogClosedListener dialogClosedListener) {
-    super(semesterErfassenModel);
-    this.semesterErfassenModel = semesterErfassenModel;
+    super(createOrUpdateSemesterModel);
+    this.createOrUpdateSemesterModel = createOrUpdateSemesterModel;
     this.isBearbeiten = isBearbeiten;
     this.defaultButtonEnabled = defaultButtonEnabled;
     this.dialogClosedListener = dialogClosedListener;
-    this.semesterErfassenModel.addPropertyChangeListener(this);
-    this.semesterErfassenModel.addDisableFieldsListener(this);
-    this.semesterErfassenModel.addMakeErrorLabelsInvisibleListener(this);
-    this.semesterErfassenModel.addCompletedListener(this::onSemesterErfassenModelCompleted);
+    this.createOrUpdateSemesterModel.addPropertyChangeListener(this);
+    this.createOrUpdateSemesterModel.addDisableFieldsListener(this);
+    this.createOrUpdateSemesterModel.addMakeErrorLabelsInvisibleListener(this);
+    this.createOrUpdateSemesterModel.addCompletedListener(
+        this::onCreateOrUpdateSemesterModelCompleted);
     this.setModelValidationMode(MODEL_VALIDATION_MODE);
   }
 
   public void constructionDone() {
-    semesterErfassenModel.initializeCompleted();
+    createOrUpdateSemesterModel.initializeCompleted();
   }
 
-  public void setSemesterErfassenDialog(JDialog semesterErfassenDialog) {
+  public void setCreateOrUpdateSemesterDialog(JDialog createOrUpdateSemesterDialog) {
     // call onCancel() when cross is clicked
-    this.semesterErfassenDialog = semesterErfassenDialog;
-    semesterErfassenDialog.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-    semesterErfassenDialog.addWindowListener(
+    this.createOrUpdateSemesterDialog = createOrUpdateSemesterDialog;
+    createOrUpdateSemesterDialog.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    createOrUpdateSemesterDialog.addWindowListener(
         new WindowAdapter() {
           @Override
           public void windowClosing(WindowEvent e) {
@@ -107,9 +108,9 @@ public class SemesterErfassenController extends AbstractController {
 
   private void initSchuljahr() {
     String schuljahr =
-        semesterErfassenModel.getNaechstesNochNichtErfasstesSemester().getSchuljahr();
+        createOrUpdateSemesterModel.getNaechstesNochNichtErfasstesSemester().getSchuljahr();
     try {
-      semesterErfassenModel.setSchuljahr(schuljahr);
+      createOrUpdateSemesterModel.setSchuljahr(schuljahr);
     } catch (SvmValidationException e) {
       LOGGER.error(e.getMessage());
     }
@@ -119,7 +120,7 @@ public class SemesterErfassenController extends AbstractController {
   private void onSchuljahrSelected() {
     LOGGER.trace("PersonController Event Schuljahre selected ={}", spinnerSchuljahre.getValue());
     boolean equalFieldAndModelValue =
-        equalsNullSafe(spinnerSchuljahre.getValue(), semesterErfassenModel.getSchuljahr());
+        equalsNullSafe(spinnerSchuljahre.getValue(), createOrUpdateSemesterModel.getSchuljahr());
     try {
       setModelSchuljahr();
     } catch (SvmValidationException e) {
@@ -136,9 +137,10 @@ public class SemesterErfassenController extends AbstractController {
   private void setModelSchuljahr() throws SvmValidationException {
     makeErrorLabelInvisible(Field.SCHULJAHR);
     try {
-      semesterErfassenModel.setSchuljahr((String) spinnerSchuljahre.getValue());
+      createOrUpdateSemesterModel.setSchuljahr((String) spinnerSchuljahre.getValue());
     } catch (SvmValidationException e) {
-      LOGGER.trace("SemesterErfassenController setModelSchuljahr Exception={}", e.getMessage());
+      LOGGER.trace(
+          "CreateOrUpdateSemesterController setModelSchuljahr Exception={}", e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -156,9 +158,11 @@ public class SemesterErfassenController extends AbstractController {
 
   private void initSemesterbezeichnung() {
     Semesterbezeichnung semesterbezeichnung =
-        semesterErfassenModel.getNaechstesNochNichtErfasstesSemester().getSemesterbezeichnung();
+        createOrUpdateSemesterModel
+            .getNaechstesNochNichtErfasstesSemester()
+            .getSemesterbezeichnung();
     try {
-      semesterErfassenModel.setSemesterbezeichnung(semesterbezeichnung);
+      createOrUpdateSemesterModel.setSemesterbezeichnung(semesterbezeichnung);
     } catch (SvmValidationException e) {
       LOGGER.error(e.getMessage());
     }
@@ -166,12 +170,12 @@ public class SemesterErfassenController extends AbstractController {
 
   private void onSemesterbezeichnungSelected() {
     LOGGER.trace(
-        "SemesterErfassenController Event Semesterbezeichnung selected={}",
+        "CreateOrUpdateSemesterController Event Semesterbezeichnung selected={}",
         comboBoxSemesterbezeichnung.getSelectedItem());
     boolean equalFieldAndModelValue =
         equalsNullSafe(
             comboBoxSemesterbezeichnung.getSelectedItem(),
-            semesterErfassenModel.getSemesterbezeichnung());
+            createOrUpdateSemesterModel.getSemesterbezeichnung());
     try {
       setModelSemesterbezeichnung();
     } catch (SvmValidationException e) {
@@ -188,7 +192,7 @@ public class SemesterErfassenController extends AbstractController {
   private void setModelSemesterbezeichnung() throws SvmValidationException {
     makeErrorLabelInvisible(Field.SEMESTERBEZEICHNUNG);
     try {
-      semesterErfassenModel.setSemesterbezeichnung(
+      createOrUpdateSemesterModel.setSemesterbezeichnung(
           (Semesterbezeichnung) comboBoxSemesterbezeichnung.getSelectedItem());
     } catch (SvmValidationException e) {
       LOGGER.trace("PersonController setModelSemesterbezeichnung Exception={}", e.getMessage());
@@ -212,9 +216,10 @@ public class SemesterErfassenController extends AbstractController {
   }
 
   private void onSemesterbeginnEvent(boolean showRequiredErrMsg) {
-    LOGGER.trace("SemesterErfassenController Event Semesterbeginn");
+    LOGGER.trace("CreateOrUpdateSemesterController Event Semesterbeginn");
     boolean equalFieldAndModelValue =
-        equalsNullSafe(txtSemesterbeginn.getText(), semesterErfassenModel.getSemesterbeginn());
+        equalsNullSafe(
+            txtSemesterbeginn.getText(), createOrUpdateSemesterModel.getSemesterbeginn());
     try {
       setModelSemesterbeginn(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -231,10 +236,11 @@ public class SemesterErfassenController extends AbstractController {
   private void setModelSemesterbeginn(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.SEMESTERBEGINN);
     try {
-      semesterErfassenModel.setSemesterbeginn(txtSemesterbeginn.getText());
+      createOrUpdateSemesterModel.setSemesterbeginn(txtSemesterbeginn.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "SemesterErfassenController setModelSemesterbeginn RequiredException={}", e.getMessage());
+          "CreateOrUpdateSemesterController setModelSemesterbeginn RequiredException={}",
+          e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtSemesterbeginn.setToolTipText(e.getMessage());
         // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
@@ -245,7 +251,7 @@ public class SemesterErfassenController extends AbstractController {
       throw e;
     } catch (SvmValidationException e) {
       LOGGER.trace(
-          "SemesterErfassenController setModelSemesterbeginn Exception={}", e.getMessage());
+          "CreateOrUpdateSemesterController setModelSemesterbeginn Exception={}", e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -266,9 +272,9 @@ public class SemesterErfassenController extends AbstractController {
   }
 
   private void onSemesterendeEvent(boolean showRequiredErrMsg) {
-    LOGGER.trace("SemesterErfassenController Event Semesterende");
+    LOGGER.trace("CreateOrUpdateSemesterController Event Semesterende");
     boolean equalFieldAndModelValue =
-        equalsNullSafe(txtSemesterende.getText(), semesterErfassenModel.getSemesterende());
+        equalsNullSafe(txtSemesterende.getText(), createOrUpdateSemesterModel.getSemesterende());
     try {
       setModelSemesterende(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -285,10 +291,11 @@ public class SemesterErfassenController extends AbstractController {
   private void setModelSemesterende(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.SEMESTERENDE);
     try {
-      semesterErfassenModel.setSemesterende(txtSemesterende.getText());
+      createOrUpdateSemesterModel.setSemesterende(txtSemesterende.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "SemesterErfassenController setModelSemesterende RequiredException={}", e.getMessage());
+          "CreateOrUpdateSemesterController setModelSemesterende RequiredException={}",
+          e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtSemesterende.setToolTipText(e.getMessage());
         // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
@@ -298,7 +305,8 @@ public class SemesterErfassenController extends AbstractController {
       }
       throw e;
     } catch (SvmValidationException e) {
-      LOGGER.trace("SemesterErfassenController setModelSemesterende Exception={}", e.getMessage());
+      LOGGER.trace(
+          "CreateOrUpdateSemesterController setModelSemesterende Exception={}", e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -319,9 +327,9 @@ public class SemesterErfassenController extends AbstractController {
   }
 
   private void onFerienbeginn1Event(boolean showRequiredErrMsg) {
-    LOGGER.trace("SemesterErfassenController Event Ferienbeginn1");
+    LOGGER.trace("CreateOrUpdateSemesterController Event Ferienbeginn1");
     boolean equalFieldAndModelValue =
-        equalsNullSafe(txtFerienbeginn1.getText(), semesterErfassenModel.getFerienbeginn1());
+        equalsNullSafe(txtFerienbeginn1.getText(), createOrUpdateSemesterModel.getFerienbeginn1());
     try {
       setModelFerienbeginn1(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -338,10 +346,11 @@ public class SemesterErfassenController extends AbstractController {
   private void setModelFerienbeginn1(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.FERIENBEGINN1);
     try {
-      semesterErfassenModel.setFerienbeginn1(txtFerienbeginn1.getText());
+      createOrUpdateSemesterModel.setFerienbeginn1(txtFerienbeginn1.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "SemesterErfassenController setModelFerienbeginn1 RequiredException={}", e.getMessage());
+          "CreateOrUpdateSemesterController setModelFerienbeginn1 RequiredException={}",
+          e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtFerienbeginn1.setToolTipText(e.getMessage());
         // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
@@ -351,7 +360,8 @@ public class SemesterErfassenController extends AbstractController {
       }
       throw e;
     } catch (SvmValidationException e) {
-      LOGGER.trace("SemesterErfassenController setModelFerienbeginn1 Exception={}", e.getMessage());
+      LOGGER.trace(
+          "CreateOrUpdateSemesterController setModelFerienbeginn1 Exception={}", e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -372,9 +382,9 @@ public class SemesterErfassenController extends AbstractController {
   }
 
   private void onFerienende1Event(boolean showRequiredErrMsg) {
-    LOGGER.trace("SemesterErfassenController Event Ferienende1");
+    LOGGER.trace("CreateOrUpdateSemesterController Event Ferienende1");
     boolean equalFieldAndModelValue =
-        equalsNullSafe(txtFerienende1.getText(), semesterErfassenModel.getFerienende1());
+        equalsNullSafe(txtFerienende1.getText(), createOrUpdateSemesterModel.getFerienende1());
     try {
       setModelFerienende1(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -391,10 +401,11 @@ public class SemesterErfassenController extends AbstractController {
   private void setModelFerienende1(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.FERIENENDE1);
     try {
-      semesterErfassenModel.setFerienende1(txtFerienende1.getText());
+      createOrUpdateSemesterModel.setFerienende1(txtFerienende1.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "SemesterErfassenController setModelFerienende1 RequiredException={}", e.getMessage());
+          "CreateOrUpdateSemesterController setModelFerienende1 RequiredException={}",
+          e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtFerienende1.setToolTipText(e.getMessage());
         // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
@@ -404,7 +415,8 @@ public class SemesterErfassenController extends AbstractController {
       }
       throw e;
     } catch (SvmValidationException e) {
-      LOGGER.trace("SemesterErfassenController setModelFerienende1 Exception={}", e.getMessage());
+      LOGGER.trace(
+          "CreateOrUpdateSemesterController setModelFerienende1 Exception={}", e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -425,9 +437,9 @@ public class SemesterErfassenController extends AbstractController {
   }
 
   private void onFerienbeginn2Event(boolean showRequiredErrMsg) {
-    LOGGER.trace("SemesterErfassenController Event Ferienbeginn2");
+    LOGGER.trace("CreateOrUpdateSemesterController Event Ferienbeginn2");
     boolean equalFieldAndModelValue =
-        equalsNullSafe(txtFerienbeginn2.getText(), semesterErfassenModel.getFerienbeginn2());
+        equalsNullSafe(txtFerienbeginn2.getText(), createOrUpdateSemesterModel.getFerienbeginn2());
     try {
       setModelFerienbeginn2(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -444,10 +456,11 @@ public class SemesterErfassenController extends AbstractController {
   private void setModelFerienbeginn2(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.FERIENBEGINN2);
     try {
-      semesterErfassenModel.setFerienbeginn2(txtFerienbeginn2.getText());
+      createOrUpdateSemesterModel.setFerienbeginn2(txtFerienbeginn2.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "SemesterErfassenController setModelFerienbeginn2 RequiredException={}", e.getMessage());
+          "CreateOrUpdateSemesterController setModelFerienbeginn2 RequiredException={}",
+          e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtFerienbeginn2.setToolTipText(e.getMessage());
         // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
@@ -457,7 +470,8 @@ public class SemesterErfassenController extends AbstractController {
       }
       throw e;
     } catch (SvmValidationException e) {
-      LOGGER.trace("SemesterErfassenController setModelFerienbeginn2 Exception={}", e.getMessage());
+      LOGGER.trace(
+          "CreateOrUpdateSemesterController setModelFerienbeginn2 Exception={}", e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -478,9 +492,9 @@ public class SemesterErfassenController extends AbstractController {
   }
 
   private void onFerienende2Event(boolean showRequiredErrMsg) {
-    LOGGER.trace("SemesterErfassenController Event Ferienende2");
+    LOGGER.trace("CreateOrUpdateSemesterController Event Ferienende2");
     boolean equalFieldAndModelValue =
-        equalsNullSafe(txtFerienende2.getText(), semesterErfassenModel.getFerienende2());
+        equalsNullSafe(txtFerienende2.getText(), createOrUpdateSemesterModel.getFerienende2());
     try {
       setModelFerienende2(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -497,10 +511,11 @@ public class SemesterErfassenController extends AbstractController {
   private void setModelFerienende2(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.FERIENENDE2);
     try {
-      semesterErfassenModel.setFerienende2(txtFerienende2.getText());
+      createOrUpdateSemesterModel.setFerienende2(txtFerienende2.getText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
-          "SemesterErfassenController setModelFerienende2 RequiredException={}", e.getMessage());
+          "CreateOrUpdateSemesterController setModelFerienende2 RequiredException={}",
+          e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
         txtFerienende2.setToolTipText(e.getMessage());
         // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
@@ -510,7 +525,8 @@ public class SemesterErfassenController extends AbstractController {
       }
       throw e;
     } catch (SvmValidationException e) {
-      LOGGER.trace("SemesterErfassenController setModelFerienende2 Exception={}", e.getMessage());
+      LOGGER.trace(
+          "CreateOrUpdateSemesterController setModelFerienende2 Exception={}", e.getMessage());
       showErrMsg(e);
       throw e;
     }
@@ -531,7 +547,7 @@ public class SemesterErfassenController extends AbstractController {
     }
 
     boolean affectsSemesterrechnungen =
-        semesterErfassenModel.checkIfUpdateAffectsSemesterrechnungen();
+        createOrUpdateSemesterModel.checkIfUpdateAffectsSemesterrechnungen();
     SaveSemesterResult saveSemesterResult;
     if (affectsSemesterrechnungen) {
       Object[] optionsImport = {"Ja", "Nein"};
@@ -556,15 +572,15 @@ public class SemesterErfassenController extends AbstractController {
         saveSemesterResult = getSaveSemesterResult(semesterSpeichernSwingWorker);
 
       } else {
-        saveSemesterResult = semesterErfassenModel.speichern(false);
+        saveSemesterResult = createOrUpdateSemesterModel.speichern(false);
       }
     } else {
-      saveSemesterResult = semesterErfassenModel.speichern(false);
+      saveSemesterResult = createOrUpdateSemesterModel.speichern(false);
     }
 
     switch (saveSemesterResult) {
       case SEMESTER_BEREITS_ERFASST -> {
-        showMessageDialogError(semesterErfassenModel.getSemester() + " bereits erfasst.");
+        showMessageDialogError(createOrUpdateSemesterModel.getSemester() + " bereits erfasst.");
         btnSpeichern.setFocusPainted(false);
       }
       case SEMESTER_UEBERLAPPT_MIT_ANDEREM_SEMESTER -> {
@@ -580,7 +596,7 @@ public class SemesterErfassenController extends AbstractController {
       case SPEICHERN_ERFOLGREICH -> {
         closeDialog();
         JOptionPane.showMessageDialog(
-            semesterErfassenDialog,
+            createOrUpdateSemesterDialog,
             "Semester wurde erfolgreich gespeichert.",
             "Speichern erfolgreich",
             JOptionPane.INFORMATION_MESSAGE);
@@ -593,7 +609,7 @@ public class SemesterErfassenController extends AbstractController {
         new SwingWorker<>() {
           @Override
           protected SaveSemesterResult doInBackground() {
-            return semesterErfassenModel.speichern(true);
+            return createOrUpdateSemesterModel.speichern(true);
           }
 
           @Override
@@ -625,7 +641,7 @@ public class SemesterErfassenController extends AbstractController {
 
   private void showMessageDialogError(String message) {
     JOptionPane.showMessageDialog(
-        semesterErfassenDialog, message, "Fehler", JOptionPane.ERROR_MESSAGE);
+        createOrUpdateSemesterDialog, message, "Fehler", JOptionPane.ERROR_MESSAGE);
   }
 
   private static JDialog createSemesterSpeichernBusyDialog() {
@@ -658,12 +674,12 @@ public class SemesterErfassenController extends AbstractController {
   }
 
   private void closeDialog() {
-    semesterErfassenDialog.dispose();
+    createOrUpdateSemesterDialog.dispose();
     dialogClosedListener.onDialogClosed();
   }
 
-  private void onSemesterErfassenModelCompleted(boolean completed) {
-    LOGGER.trace("SemesterErfassenModel completed={}", completed);
+  private void onCreateOrUpdateSemesterModelCompleted(boolean completed) {
+    LOGGER.trace("CreateOrUpdateSemesterModel completed={}", completed);
     if (completed) {
       btnSpeichern.setToolTipText(null);
       btnSpeichern.setEnabled(true);
@@ -677,21 +693,22 @@ public class SemesterErfassenController extends AbstractController {
   void doPropertyChange(PropertyChangeEvent evt) {
     super.doPropertyChange(evt);
     if (checkIsFieldChange(Field.SCHULJAHR, evt)) {
-      spinnerSchuljahre.setValue(semesterErfassenModel.getSchuljahr());
+      spinnerSchuljahre.setValue(createOrUpdateSemesterModel.getSchuljahr());
     } else if (checkIsFieldChange(Field.SEMESTERBEZEICHNUNG, evt)) {
-      comboBoxSemesterbezeichnung.setSelectedItem(semesterErfassenModel.getSemesterbezeichnung());
+      comboBoxSemesterbezeichnung.setSelectedItem(
+          createOrUpdateSemesterModel.getSemesterbezeichnung());
     } else if (checkIsFieldChange(Field.SEMESTERBEGINN, evt)) {
-      txtSemesterbeginn.setText(asString(semesterErfassenModel.getSemesterbeginn()));
+      txtSemesterbeginn.setText(asString(createOrUpdateSemesterModel.getSemesterbeginn()));
     } else if (checkIsFieldChange(Field.SEMESTERENDE, evt)) {
-      txtSemesterende.setText(asString(semesterErfassenModel.getSemesterende()));
+      txtSemesterende.setText(asString(createOrUpdateSemesterModel.getSemesterende()));
     } else if (checkIsFieldChange(Field.FERIENBEGINN1, evt)) {
-      txtFerienbeginn1.setText(asString(semesterErfassenModel.getFerienbeginn1()));
+      txtFerienbeginn1.setText(asString(createOrUpdateSemesterModel.getFerienbeginn1()));
     } else if (checkIsFieldChange(Field.FERIENENDE1, evt)) {
-      txtFerienende1.setText(asString(semesterErfassenModel.getFerienende1()));
+      txtFerienende1.setText(asString(createOrUpdateSemesterModel.getFerienende1()));
     } else if (checkIsFieldChange(Field.FERIENBEGINN2, evt)) {
-      txtFerienbeginn2.setText(asString(semesterErfassenModel.getFerienbeginn2()));
+      txtFerienbeginn2.setText(asString(createOrUpdateSemesterModel.getFerienbeginn2()));
     } else if (checkIsFieldChange(Field.FERIENENDE2, evt)) {
-      txtFerienende2.setText(asString(semesterErfassenModel.getFerienende2()));
+      txtFerienende2.setText(asString(createOrUpdateSemesterModel.getFerienende2()));
     }
   }
 
