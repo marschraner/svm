@@ -9,6 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,10 +26,11 @@ public abstract class AbstractController
 
   /**
    * modelValidationMode true: SvmRequiredExceptions werden nicht markiert (nur als Tooltip). Model
-   * wird invalidiert bei Fehler modelValidationMode false: SvmRequiredExceptions werden sofort
-   * markiert (in Error labels). Model wird nicht invalidiert bei Fehler
+   * wird invalidiert bei Fehler<br>
+   * modelValidationMode false: SvmRequiredExceptions werden sofort markiert (in Error labels).
+   * Model wird nicht invalidiert bei Fehler
    */
-  private boolean modelValidationMode = true;
+  @Getter private boolean modelValidationMode = true;
 
   protected AbstractController(Model model) {
     this.model = model;
@@ -120,10 +122,6 @@ public abstract class AbstractController
     Set<Field> fields = new HashSet<>();
     fields.add(field);
     makeErrorLabelsInvisible(fields);
-  }
-
-  public boolean isModelValidationMode() {
-    return modelValidationMode;
   }
 
   public void setModelValidationMode(boolean modelValidationMode) {

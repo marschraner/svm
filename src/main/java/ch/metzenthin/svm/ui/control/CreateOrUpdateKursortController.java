@@ -101,6 +101,13 @@ public class CreateOrUpdateKursortController extends AbstractController {
     if (equalFieldAndModelValue && isModelValidationMode()) {
       // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb
       // muss hier die Validierung angestossen werden.
+      // Szenario (mit modelValidationMode = true!):
+      // - Kursort bearbeiten (z.B. Saal B)
+      // - Fehler provozieren (z.B. Bezeichnung statt "Saal B" nur "S". Es gibt einen Fehler wegen
+      // min. Länge 2)
+      // → der Speichern-Button ist disabled
+      // - Fehler entfernen (Wert zurücksetzen: wieder "Saal B" eingeben)
+      // → Ohne dieses if-Statement bleibt der Speichern-Button disabled!
       LOGGER.trace("Validierung wegen equalFieldAndModelValue");
       validate();
     }

@@ -63,7 +63,8 @@ final class SchuelerSuchenModelImpl extends PersonModelImpl implements SchuelerS
 
   @Override
   public String getGeburtsdatumSuchperiode() {
-    if (geburtsdatumSuchperiodeBeginn == null && geburtsdatumSuchperiodeEnde == null) {
+    if ((geburtsdatumSuchperiodeDateFormatString == null)
+        || (geburtsdatumSuchperiodeBeginn == null && geburtsdatumSuchperiodeEnde == null)) {
       return "";
     } else if (geburtsdatumSuchperiodeEnde == null) {
       return asString(getGeburtsdatumSuchperiodeBeginn(), geburtsdatumSuchperiodeDateFormatString);

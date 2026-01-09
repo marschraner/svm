@@ -224,8 +224,12 @@ public class Converter {
     if (getCharacterOccurrencesInString(periode, '-') > 1) {
       throw new ParseException("Ungültige Periode: mehr als ein '-'-Zeichen", 0);
     } else if (getCharacterOccurrencesInString(periode, '-') == 1) {
-      String periodeBeginn = periode.trim().split("-")[0].trim();
-      String periodeEnde = periode.trim().split("-")[1].trim();
+      String[] split = periode.trim().split("-");
+      if (split.length != 2) {
+        throw new ParseException("Keine gültige Periode", 0);
+      }
+      String periodeBeginn = split[0].trim();
+      String periodeEnde = split[1].trim();
       String periodeDateFormatString = determineDateFormatString(periodeBeginn);
       if (!periodeDateFormatString.equals(determineDateFormatString(periodeEnde))) {
         throw new ParseException("Beginn und Ende der Periode inkonsistent", 0);

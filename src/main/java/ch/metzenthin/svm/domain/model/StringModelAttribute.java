@@ -80,9 +80,19 @@ public class StringModelAttribute {
     if (!equalsNullSafe(newValueTrimmed, newValueFormatted)
         && equalsNullSafe(oldValue, getValue())) {
       // Der Wert wurde formatiert und das Resultat entspricht dem alten Wert. Dann wird kein
-      // PropertyChangeEvent
-      // ausgelöst. Damit trotzdem ein Event ausgelöst wird, wird der alte Wert auf den nicht
-      // formatierten Wert gesetzt.
+      // PropertyChangeEvent ausgelöst. Damit trotzdem ein Event ausgelöst wird, wird der alte Wert
+      // auf den nicht formatierten Wert gesetzt.
+      // Dieser Fall tritt z.B. in folgender Situation auf:
+      // - Es wird ein Attributwert eines Attributs mit Formatter im UI angezeigt
+      //   (z.B. Strasse: Austrasse 5)
+      // - Der Benutzer ändert den Wert auf: Austr. 5
+      // - Der StrasseFormatter ändert den Wert im Model auf Austrasse 5
+      //   - newValueTrimmed: Austr. 5
+      //   - newValueFormatted: Austrasse 5
+      //   - oldValue: Austrasse 5
+      //   - getValue(): Austrasse 5
+      // => ohne dieses if-Statement würde kein PropertyChange ausgeführt und im UI würde weiterhin
+      // der Wert Austr. 5 angezeigt
       oldValue = newValueTrimmed;
       LOGGER.trace(
           "setNewValue: Alten Wert auf Eingabewert gesetzt, damit PropertyChangeEvent ausgelöst wird. Alter Wert={}, neuer Wert={}",
@@ -92,7 +102,12 @@ public class StringModelAttribute {
     modelAttributeListener.firePropertyChange(field, oldValue, getValue());
   }
 
-  /** Achtung: Neuer Wert wird nicht geprüft! */
+  /**
+   * Achtung: Neuer Wert wird nicht geprüft!<br>
+   * Diese Methode wird verwendet für das Setzen von Attributwerten ohne Benutzereingabe (z.B.
+   * Kopieren des Attributs von einem anderen Objekt (z.B. Adresse) oder Initialisierung des
+   * Attributwerts mit null).
+   */
   void initValue(String newValue) {
     String oldValue = getValue();
     attributeAccessor.setValue(emptyStringAsNull(newValue));

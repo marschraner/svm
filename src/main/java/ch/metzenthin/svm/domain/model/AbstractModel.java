@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.Getter;
 
 /**
  * @author Hans Stamm
@@ -26,13 +27,23 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
   private boolean bulkUpdate = false;
 
   /**
-   * modelValidationMode true: Model wird invalidiert bei Fehler modelValidationMode false: Model
-   * wird nicht invalidiert bei Fehler
+   * Wird bei der Instanziierung des Controllers gesetzt und wird dann nicht mehr verändert.<br>
+   * modelValidationMode true: Model wird invalidiert bei Fehler<br>
+   * modelValidationMode false: Model wird nicht invalidiert bei Fehler
    */
-  private boolean modelValidationMode = true;
+  @Getter private boolean modelValidationMode = true;
 
+  /**
+   * BulkUpdate true: es folgen mehrere Attribut-Updates nacheinander, für die keine Validierung
+   * durchgeführt werden muss (z.B. bei initializeComplete()).<br>
+   * BulkUpdate false: Die Attribut-Updates sind durchgeführt. View und Model werden validiert.
+   * Falls das Model nicht invalidiert wird bei Fehler (modelValidationMode = false), wird durch
+   * fireCompleted(true) die Initialisierung des Models abgeschlossen.
+   */
   void setBulkUpdate(boolean bulkUpdate) {
     this.bulkUpdate = bulkUpdate;
+    // Der folgende firePropertyChange bewirkt, dass die View und das Model validiert werden, falls
+    // bulkUpdate false ist.
     firePropertyChange(Field.BULK_UPDATE, !bulkUpdate, bulkUpdate);
     if (!bulkUpdate && !isModelValidationMode()) {
       fireCompleted(true);
@@ -181,10 +192,6 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
     }
   }
 
-  private void setValid() {
-    fireCompleted(true);
-  }
-
   /** Template Method für die Validierung des Models. */
   @Override
   public void validate() throws SvmValidationException {
@@ -197,7 +204,7 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
       invalidate();
       throw e;
     }
-    setValid();
+    fireCompleted(true);
   }
 
   /**
@@ -205,10 +212,6 @@ abstract class AbstractModel implements Model, ModelAttributeListener {
    * abgeleitete Exception bei Fehler. Die Invalidierung des Models erfolgt in der Template Method.
    */
   abstract void doValidate() throws SvmValidationException;
-
-  public boolean isModelValidationMode() {
-    return modelValidationMode;
-  }
 
   @Override
   public void setModelValidationMode(boolean modelValidationMode) {

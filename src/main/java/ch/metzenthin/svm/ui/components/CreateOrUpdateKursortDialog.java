@@ -67,11 +67,11 @@ public class CreateOrUpdateKursortDialog extends JDialog {
             DEFAULT_BUTTON_ENABLED);
     createOrUpdateKursortController.setCreateOrUpdateKursortDialog(this);
     createOrUpdateKursortController.setContentPane(contentPane);
-    createOrUpdateKursortController.setTxtBezeichnung(txtBezeichnung);
-    createOrUpdateKursortController.setCheckBoxSelektierbar(checkBoxSelektierbar);
     createOrUpdateKursortController.setBtnSpeichern(btnSpeichern);
     createOrUpdateKursortController.setBtnAbbrechen(btnAbbrechen);
     createOrUpdateKursortController.setErrLblBezeichnung(errLblBezeichnung);
+    createOrUpdateKursortController.setTxtBezeichnung(txtBezeichnung);
+    createOrUpdateKursortController.setCheckBoxSelektierbar(checkBoxSelektierbar);
     createOrUpdateKursortController.constructionDone();
   }
 

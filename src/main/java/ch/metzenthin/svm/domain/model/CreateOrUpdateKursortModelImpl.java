@@ -94,19 +94,28 @@ public class CreateOrUpdateKursortModelImpl extends AbstractModel
     return saveKursortResult;
   }
 
+  /**
+   * Die Model- und PropertyChange-Listener sind registriert. Die Attributwerte werden an die
+   * Listener gemeldet und die Validierung wird angestossen.
+   */
   @SuppressWarnings("DuplicatedCode")
   @Override
   public void initializeCompleted() {
     if (kursort.getKursortId() != null) {
+      // bestehender Kursort
+      // Validierung ausschalten
       setBulkUpdate(true);
+      // Meldung der Attributwerte an die Listener
       try {
         setBezeichnung(kursort.getBezeichnung(), true);
         setSelektierbar(kursort.isSelektierbar(), true);
       } catch (SvmValidationException e) {
         LOGGER.error(e.getMessage());
       }
+      // Validierung anstossen
       setBulkUpdate(false);
     } else {
+      // neuer Kursort
       super.initializeCompleted();
     }
   }
