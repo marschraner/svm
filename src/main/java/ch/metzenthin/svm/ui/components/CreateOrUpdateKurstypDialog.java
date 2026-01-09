@@ -2,7 +2,6 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateKurstypModel;
-import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.KurstypenModel;
 import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
 import ch.metzenthin.svm.ui.control.CreateOrUpdateKurstypController;
@@ -34,8 +33,7 @@ public class CreateOrUpdateKurstypDialog extends JDialog {
       KurstypenModel kurstypenModel,
       int indexBearbeiten,
       boolean isBearbeiten,
-      String title,
-      DialogClosedListener dialogClosedListener) {
+      String title) {
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
@@ -48,8 +46,7 @@ public class CreateOrUpdateKurstypDialog extends JDialog {
         kurstypenTableModel,
         kurstypenModel,
         indexBearbeiten,
-        isBearbeiten,
-        dialogClosedListener);
+        isBearbeiten);
   }
 
   private void createCreateOrUpdateKurstypController(
@@ -57,8 +54,7 @@ public class CreateOrUpdateKurstypDialog extends JDialog {
       KurstypenTableModel kurstypenTableModel,
       KurstypenModel kurstypenModel,
       int indexBearbeiten,
-      boolean isBearbeiten,
-      DialogClosedListener dialogClosedListener) {
+      boolean isBearbeiten) {
     CreateOrUpdateKurstypModel createOrUpdateKurstypModel =
         (isBearbeiten
             ? kurstypenModel.createCreateOrUpdateKurstypModel(
@@ -68,8 +64,7 @@ public class CreateOrUpdateKurstypDialog extends JDialog {
         new CreateOrUpdateKurstypController(
             createOrUpdateKurstypModel,
             isBearbeiten,
-            DEFAULT_BUTTON_ENABLED,
-            dialogClosedListener);
+            DEFAULT_BUTTON_ENABLED);
     createOrUpdateKurstypController.setCreateOrUpdateKurstypDialog(this);
     createOrUpdateKurstypController.setContentPane(contentPane);
     createOrUpdateKurstypController.setTxtBezeichnung(txtBezeichnung);

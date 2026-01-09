@@ -10,7 +10,6 @@ import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModel;
-import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.service.result.SaveSemesterResult;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -37,7 +36,6 @@ public class CreateOrUpdateSemesterController extends AbstractController {
   private final CreateOrUpdateSemesterModel createOrUpdateSemesterModel;
   private final boolean isBearbeiten;
   private final boolean defaultButtonEnabled;
-  private final DialogClosedListener dialogClosedListener;
   private JDialog createOrUpdateSemesterDialog;
   private JSpinner spinnerSchuljahre;
   private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
@@ -58,13 +56,11 @@ public class CreateOrUpdateSemesterController extends AbstractController {
   public CreateOrUpdateSemesterController(
       CreateOrUpdateSemesterModel createOrUpdateSemesterModel,
       boolean isBearbeiten,
-      boolean defaultButtonEnabled,
-      DialogClosedListener dialogClosedListener) {
+      boolean defaultButtonEnabled) {
     super(createOrUpdateSemesterModel);
     this.createOrUpdateSemesterModel = createOrUpdateSemesterModel;
     this.isBearbeiten = isBearbeiten;
     this.defaultButtonEnabled = defaultButtonEnabled;
-    this.dialogClosedListener = dialogClosedListener;
     this.createOrUpdateSemesterModel.addPropertyChangeListener(this);
     this.createOrUpdateSemesterModel.addDisableFieldsListener(this);
     this.createOrUpdateSemesterModel.addMakeErrorLabelsInvisibleListener(this);
@@ -675,7 +671,6 @@ public class CreateOrUpdateSemesterController extends AbstractController {
 
   private void closeDialog() {
     createOrUpdateSemesterDialog.dispose();
-    dialogClosedListener.onDialogClosed();
   }
 
   private void onCreateOrUpdateSemesterModelCompleted(boolean completed) {

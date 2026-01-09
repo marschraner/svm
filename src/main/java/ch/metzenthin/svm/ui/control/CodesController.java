@@ -7,7 +7,6 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.domain.model.CodesModel;
 import ch.metzenthin.svm.domain.model.CodesTableData;
-import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.persistence.entities.Code;
@@ -26,7 +25,7 @@ import javax.swing.*;
 /**
  * @author Martin Schraner
  */
-public class CodesController implements DialogClosedListener {
+public class CodesController {
 
   private static final String FEHLER = "Fehler";
   private static final String SOLL_DER_EINTRAG_AUS_DER_DATENBANK_GELOESCHT_WERDEN =
@@ -236,10 +235,11 @@ public class CodesController implements DialogClosedListener {
         };
     CreateOrUpdateCodeDialog createOrUpdateCodeDialog =
         new CreateOrUpdateCodeDialog(
-            svmContext, codesTableModel, codesModel, 0, false, titel, codetyp, this);
+            svmContext, codesTableModel, codesModel, 0, false, titel, codetyp);
     createOrUpdateCodeDialog.pack();
     createOrUpdateCodeDialog.setVisible(true);
-    codesTableModel.fireTableDataChanged();
+    // Dialog wurde geschlossen
+    reloadTableModel();
     btnNeu.setFocusPainted(false);
   }
 
@@ -255,7 +255,8 @@ public class CodesController implements DialogClosedListener {
             Codetyp.SCHUELER);
     codeSpecificHinzufuegenDialog.pack();
     codeSpecificHinzufuegenDialog.setVisible(true);
-    codesTableModel.fireTableDataChanged();
+    // Dialog wurde geschlossen
+    reloadTableModel();
     btnNeu.setFocusPainted(false);
     if (codesModel.getSelectableSchuelerCodes(svmContext.getSvmModel(), schuelerDatenblattModel)
             .length
@@ -276,8 +277,8 @@ public class CodesController implements DialogClosedListener {
             Codetyp.MITARBEITER);
     codeSpecificHinzufuegenDialog.pack();
     codeSpecificHinzufuegenDialog.setVisible(true);
-    codesTable.addNotify();
-    codesTableModel.fireTableDataChanged();
+    // Dialog wurde geschlossen
+    reloadTableModel();
     btnNeu.setFocusPainted(false);
     if (codesModel.getSelectableMitarbeiterCodes(svmContext.getSvmModel(), mitarbeiterErfassenModel)
             .length
@@ -320,11 +321,11 @@ public class CodesController implements DialogClosedListener {
             codesTable.getSelectedRow(),
             true,
             titel,
-            codetyp,
-            this);
+            codetyp);
     createOrUpdateCodeDialog.pack();
     createOrUpdateCodeDialog.setVisible(true);
-    codesTableModel.fireTableDataChanged();
+    // Dialog wurde geschlossen
+    reloadTableModel();
     btnBearbeiten.setFocusPainted(false);
   }
 
@@ -621,11 +622,6 @@ public class CodesController implements DialogClosedListener {
 
   public void addZurueckZuSchuelerSuchenListener(ActionListener zurueckZuSchuelerSuchenListener) {
     this.zurueckZuSchuelerSuchenListener = zurueckZuSchuelerSuchenListener;
-  }
-
-  @Override
-  public void onDialogClosed() {
-    reloadTableModel();
   }
 
   private void reloadTableModel() {

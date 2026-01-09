@@ -4,7 +4,6 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateCodeModel;
 import ch.metzenthin.svm.domain.model.CodesModel;
-import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.control.CreateOrUpdateCodeController;
 import java.awt.*;
@@ -38,8 +37,7 @@ public class CreateOrUpdateCodeDialog extends JDialog {
       int indexBearbeiten,
       boolean isBearbeiten,
       String title,
-      Codetyp codetyp,
-      DialogClosedListener dialogClosedListener) {
+      Codetyp codetyp) {
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
@@ -53,8 +51,7 @@ public class CreateOrUpdateCodeDialog extends JDialog {
         codesModel,
         indexBearbeiten,
         isBearbeiten,
-        codetyp,
-        dialogClosedListener);
+        codetyp);
   }
 
   @SuppressWarnings("ExtractMethodRecommender")
@@ -64,8 +61,7 @@ public class CreateOrUpdateCodeDialog extends JDialog {
       CodesModel codesModel,
       int indexBearbeiten,
       boolean isBearbeiten,
-      Codetyp codetyp,
-      DialogClosedListener dialogClosedListener) {
+      Codetyp codetyp) {
     CreateOrUpdateCodeModel createOrUpdateCodeModel =
         switch (codetyp) {
           case SCHUELER ->
@@ -93,8 +89,7 @@ public class CreateOrUpdateCodeDialog extends JDialog {
         new CreateOrUpdateCodeController(
             createOrUpdateCodeModel,
             isBearbeiten,
-            DEFAULT_BUTTON_ENABLED,
-            dialogClosedListener);
+            DEFAULT_BUTTON_ENABLED);
     createOrUpdateCodeController.setCreateOrUpdateCodeDialog(this);
     createOrUpdateCodeController.setContentPane(contentPane);
     createOrUpdateCodeController.setTxtKuerzel(txtKuerzel);

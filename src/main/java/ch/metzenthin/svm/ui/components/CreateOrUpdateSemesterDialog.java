@@ -4,7 +4,6 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Schuljahre;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModel;
-import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.SemestersModel;
 import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
 import ch.metzenthin.svm.ui.control.CreateOrUpdateSemesterController;
@@ -47,8 +46,7 @@ public class CreateOrUpdateSemesterDialog extends JDialog {
       SemestersModel semestersModel,
       int indexBearbeiten,
       boolean isBearbeiten,
-      String title,
-      DialogClosedListener dialogClosedListener) {
+      String title) {
     $$$setupUI$$$();
     setContentPane(contentPane);
     setModal(true);
@@ -58,7 +56,7 @@ public class CreateOrUpdateSemesterDialog extends JDialog {
       getRootPane().setDefaultButton(btnSpeichern);
     }
     createCreateOrUpdateSemesterController(
-        svmContext, semestersTableModel, semestersModel, indexBearbeiten, isBearbeiten, dialogClosedListener);
+        svmContext, semestersTableModel, semestersModel, indexBearbeiten, isBearbeiten);
   }
 
   private void createCreateOrUpdateSemesterController(
@@ -66,8 +64,7 @@ public class CreateOrUpdateSemesterDialog extends JDialog {
       SemestersTableModel semestersTableModel,
       SemestersModel semestersModel,
       int indexBearbeiten,
-      boolean isBearbeiten,
-      DialogClosedListener dialogClosedListener) {
+      boolean isBearbeiten) {
     CreateOrUpdateSemesterModel createOrUpdateSemesterModel =
         (isBearbeiten)
             ? semestersModel.createCreateOrUpdateSemesterModel(
@@ -77,8 +74,7 @@ public class CreateOrUpdateSemesterDialog extends JDialog {
         new CreateOrUpdateSemesterController(
             createOrUpdateSemesterModel,
             isBearbeiten,
-            DEFAULT_BUTTON_ENABLED,
-            dialogClosedListener);
+            DEFAULT_BUTTON_ENABLED);
     createOrUpdateSemesterController.setCreateOrUpdateSemesterDialog(this);
     createOrUpdateSemesterController.setContentPane(contentPane);
     createOrUpdateSemesterController.setSpinnerSchuljahre(spinnerSchuljahre);

@@ -6,7 +6,6 @@ import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateCodeModel;
-import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.service.result.SaveCodeResult;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -30,7 +29,6 @@ public class CreateOrUpdateCodeController extends AbstractController {
   private final CreateOrUpdateCodeModel createOrUpdateCodeModel;
   private final boolean isBearbeiten;
   private final boolean defaultButtonEnabled;
-  private final DialogClosedListener dialogClosedListener;
   private JDialog createOrUpdateCodeDialog;
   private JTextField txtKuerzel;
   private JTextField txtBeschreibung;
@@ -42,13 +40,11 @@ public class CreateOrUpdateCodeController extends AbstractController {
   public CreateOrUpdateCodeController(
       CreateOrUpdateCodeModel createOrUpdateCodeModel,
       boolean isBearbeiten,
-      boolean defaultButtonEnabled,
-      DialogClosedListener dialogClosedListener) {
+      boolean defaultButtonEnabled) {
     super(createOrUpdateCodeModel);
     this.createOrUpdateCodeModel = createOrUpdateCodeModel;
     this.isBearbeiten = isBearbeiten;
     this.defaultButtonEnabled = defaultButtonEnabled;
-    this.dialogClosedListener = dialogClosedListener;
     this.createOrUpdateCodeModel.addPropertyChangeListener(this);
     this.createOrUpdateCodeModel.addDisableFieldsListener(this);
     this.createOrUpdateCodeModel.addMakeErrorLabelsInvisibleListener(this);
@@ -255,7 +251,6 @@ public class CreateOrUpdateCodeController extends AbstractController {
 
   private void closeDialog() {
     createOrUpdateCodeDialog.dispose();
-    dialogClosedListener.onDialogClosed();
   }
 
   private void onCreateOrUpdateCodeModelCompleted(boolean completed) {

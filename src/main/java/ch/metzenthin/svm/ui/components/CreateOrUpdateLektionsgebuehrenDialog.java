@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateLektionsgebuehrenModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenModel;
 import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
@@ -45,8 +44,7 @@ public class CreateOrUpdateLektionsgebuehrenDialog extends JDialog {
       LektionsgebuehrenModel lektionsgebuehrenModel,
       int indexBearbeiten,
       boolean isBearbeiten,
-      String title,
-      DialogClosedListener dialogClosedListener) {
+      String title) {
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
@@ -59,8 +57,7 @@ public class CreateOrUpdateLektionsgebuehrenDialog extends JDialog {
         lektionsgebuehrenTableModel,
         lektionsgebuehrenModel,
         indexBearbeiten,
-        isBearbeiten,
-        dialogClosedListener);
+        isBearbeiten);
   }
 
   private void createCreateOrUpdateLektionsgebuehrenController(
@@ -68,8 +65,7 @@ public class CreateOrUpdateLektionsgebuehrenDialog extends JDialog {
       LektionsgebuehrenTableModel lektionsgebuehrenTableModel,
       LektionsgebuehrenModel lektionsgebuehrenModel,
       int indexBearbeiten,
-      boolean isBearbeiten,
-      DialogClosedListener dialogClosedListener) {
+      boolean isBearbeiten) {
     CreateOrUpdateLektionsgebuehrenModel createOrUpdateLektionsgebuehrenModel =
         (isBearbeiten)
             ? lektionsgebuehrenModel.createCreateOrUpdateLektionsgebuehrenModel(
@@ -80,8 +76,7 @@ public class CreateOrUpdateLektionsgebuehrenDialog extends JDialog {
         new CreateOrUpdateLektionsgebuehrenController(
             createOrUpdateLektionsgebuehrenModel,
             isBearbeiten,
-            DEFAULT_BUTTON_ENABLED,
-            dialogClosedListener);
+            DEFAULT_BUTTON_ENABLED);
     createOrUpdateLektionsgebuehrenController.setCreateOrUpdateLektionsgebuehrenDialog(this);
     createOrUpdateLektionsgebuehrenController.setContentPane(contentPane);
     createOrUpdateLektionsgebuehrenController.setTxtLektionslaenge(txtLektionslaenge);

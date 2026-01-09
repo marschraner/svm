@@ -6,7 +6,6 @@ import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateLektionsgebuehrenModel;
-import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.service.result.SaveLektionsgebuehrenResult;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -33,7 +32,6 @@ public class CreateOrUpdateLektionsgebuehrenController extends AbstractControlle
   private final CreateOrUpdateLektionsgebuehrenModel createOrUpdateLektionsgebuehrenModel;
   private final boolean isBearbeiten;
   private final boolean defaultButtonEnabled;
-  private final DialogClosedListener dialogClosedListener;
   private JDialog createOrUpdatelektionsgebuehrenDialog;
   private JTextField txtLektionslaenge;
   private JTextField txtBetrag1Kind;
@@ -54,13 +52,11 @@ public class CreateOrUpdateLektionsgebuehrenController extends AbstractControlle
   public CreateOrUpdateLektionsgebuehrenController(
       CreateOrUpdateLektionsgebuehrenModel createOrUpdateLektionsgebuehrenModel,
       boolean isBearbeiten,
-      boolean defaultButtonEnabled,
-      DialogClosedListener dialogClosedListener) {
+      boolean defaultButtonEnabled) {
     super(createOrUpdateLektionsgebuehrenModel);
     this.createOrUpdateLektionsgebuehrenModel = createOrUpdateLektionsgebuehrenModel;
     this.isBearbeiten = isBearbeiten;
     this.defaultButtonEnabled = defaultButtonEnabled;
-    this.dialogClosedListener = dialogClosedListener;
     this.createOrUpdateLektionsgebuehrenModel.addPropertyChangeListener(this);
     this.createOrUpdateLektionsgebuehrenModel.addDisableFieldsListener(this);
     this.createOrUpdateLektionsgebuehrenModel.addMakeErrorLabelsInvisibleListener(this);
@@ -546,7 +542,6 @@ public class CreateOrUpdateLektionsgebuehrenController extends AbstractControlle
 
   private void closeDialog() {
     createOrUpdatelektionsgebuehrenDialog.dispose();
-    dialogClosedListener.onDialogClosed();
   }
 
   private void onCreateOrUpdateLektionsgebuehrenModelCompleted(boolean completed) {

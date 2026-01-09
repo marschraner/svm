@@ -3,7 +3,6 @@ package ch.metzenthin.svm.ui.control;
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.SemestersModel;
 import ch.metzenthin.svm.domain.model.SemestersTableData;
 import ch.metzenthin.svm.service.result.DeleteSemesterResult;
@@ -19,7 +18,7 @@ import javax.swing.*;
  * @author Martin Schraner
  */
 @SuppressWarnings("DuplicatedCode")
-public class SemestersController implements DialogClosedListener {
+public class SemestersController {
 
   public static final String ERROR_TITLE = "Fehler";
   private final SvmContext svmContext;
@@ -77,10 +76,11 @@ public class SemestersController implements DialogClosedListener {
     btnNeu.setFocusPainted(true);
     CreateOrUpdateSemesterDialog createOrUpdateSemesterDialog =
         new CreateOrUpdateSemesterDialog(
-            svmContext, semestersTableModel, semestersModel, 0, false, "Neues Semester", this);
+            svmContext, semestersTableModel, semestersModel, 0, false, "Neues Semester");
     createOrUpdateSemesterDialog.pack();
     createOrUpdateSemesterDialog.setVisible(true);
-    semestersTableModel.fireTableDataChanged();
+    // Dialog wurde geschlossen
+    reloadTableModel();
     btnNeu.setFocusPainted(false);
   }
 
@@ -103,11 +103,11 @@ public class SemestersController implements DialogClosedListener {
             semestersModel,
             semestersTable.getSelectedRow(),
             true,
-            "Semester bearbeiten",
-            this);
+            "Semester bearbeiten");
     createOrUpdateSemesterDialog.pack();
     createOrUpdateSemesterDialog.setVisible(true);
-    semestersTableModel.fireTableDataChanged();
+    // Dialog wurde geschlossen
+    reloadTableModel();
     btnBearbeiten.setFocusPainted(false);
   }
 
@@ -208,11 +208,6 @@ public class SemestersController implements DialogClosedListener {
 
   public void addCloseListener(ActionListener closeListener) {
     this.closeListener = closeListener;
-  }
-
-  @Override
-  public void onDialogClosed() {
-    reloadTableModel();
   }
 
   private void reloadTableModel() {

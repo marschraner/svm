@@ -6,7 +6,6 @@ import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateKursortModel;
-import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.service.result.SaveKursortResult;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -29,7 +28,6 @@ public class CreateOrUpdateKursortController extends AbstractController {
   private final CreateOrUpdateKursortModel createOrUpdateKursortModel;
   private final boolean isBearbeiten;
   private final boolean defaultButtonEnabled;
-  private final DialogClosedListener dialogClosedListener;
   private JDialog createOrUpdateKursortDialog;
   private JTextField txtBezeichnung;
   private JCheckBox checkBoxSelektierbar;
@@ -39,13 +37,11 @@ public class CreateOrUpdateKursortController extends AbstractController {
   public CreateOrUpdateKursortController(
       CreateOrUpdateKursortModel createOrUpdateKursortModel,
       boolean isBearbeiten,
-      boolean defaultButtonEnabled,
-      DialogClosedListener dialogClosedListener) {
+      boolean defaultButtonEnabled) {
     super(createOrUpdateKursortModel);
     this.createOrUpdateKursortModel = createOrUpdateKursortModel;
     this.isBearbeiten = isBearbeiten;
     this.defaultButtonEnabled = defaultButtonEnabled;
-    this.dialogClosedListener = dialogClosedListener;
     this.createOrUpdateKursortModel.addPropertyChangeListener(this);
     this.createOrUpdateKursortModel.addDisableFieldsListener(this);
     this.createOrUpdateKursortModel.addMakeErrorLabelsInvisibleListener(this);
@@ -202,7 +198,6 @@ public class CreateOrUpdateKursortController extends AbstractController {
 
   private void closeDialog() {
     createOrUpdateKursortDialog.dispose();
-    dialogClosedListener.onDialogClosed();
   }
 
   private void onCreateOrUpdateKursortModelCompleted(boolean completed) {

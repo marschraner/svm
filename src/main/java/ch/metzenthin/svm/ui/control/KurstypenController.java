@@ -4,7 +4,6 @@ import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRen
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAsPercentages;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.model.DialogClosedListener;
 import ch.metzenthin.svm.domain.model.KurstypenModel;
 import ch.metzenthin.svm.domain.model.KurstypenTableData;
 import ch.metzenthin.svm.service.result.DeleteKurstypResult;
@@ -19,7 +18,7 @@ import javax.swing.*;
 /**
  * @author Martin Schraner
  */
-public class KurstypenController implements DialogClosedListener {
+public class KurstypenController {
   private final SvmContext svmContext;
   private final KurstypenModel kurstypenModel;
   private KurstypenTableModel kurstypenTableModel;
@@ -73,10 +72,11 @@ public class KurstypenController implements DialogClosedListener {
     btnNeu.setFocusPainted(true);
     CreateOrUpdateKurstypDialog createOrUpdateKurstypDialog =
         new CreateOrUpdateKurstypDialog(
-            svmContext, kurstypenTableModel, kurstypenModel, 0, false, "Neuer Kurstyp", this);
+            svmContext, kurstypenTableModel, kurstypenModel, 0, false, "Neuer Kurstyp");
     createOrUpdateKurstypDialog.pack();
     createOrUpdateKurstypDialog.setVisible(true);
-    kurstypenTableModel.fireTableDataChanged();
+    // Dialog wurde geschlossen
+    reloadTableModel();
     btnNeu.setFocusPainted(false);
   }
 
@@ -99,11 +99,11 @@ public class KurstypenController implements DialogClosedListener {
             kurstypenModel,
             kurstypenTable.getSelectedRow(),
             true,
-            "Kurstyp bearbeiten",
-            this);
+            "Kurstyp bearbeiten");
     createOrUpdateKurstypDialog.pack();
     createOrUpdateKurstypDialog.setVisible(true);
-    kurstypenTableModel.fireTableDataChanged();
+    // Dialog wurde geschlossen
+    reloadTableModel();
     btnBearbeiten.setFocusPainted(false);
   }
 
@@ -178,11 +178,6 @@ public class KurstypenController implements DialogClosedListener {
 
   public void addCloseListener(ActionListener closeListener) {
     this.closeListener = closeListener;
-  }
-
-  @Override
-  public void onDialogClosed() {
-    reloadTableModel();
   }
 
   private void reloadTableModel() {
