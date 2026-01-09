@@ -47,11 +47,11 @@ public class KursorteTableData {
     return COLUMNS[column].toString();
   }
 
-  public void setKursorte(List<Kursort> kursorte) {
+  void setKursorte(List<Kursort> kursorte) {
     this.kursorte = kursorte;
   }
 
-  public List<Kursort> getKursorte() {
+  List<Kursort> getKursorte() {
     return kursorte;
   }
 }

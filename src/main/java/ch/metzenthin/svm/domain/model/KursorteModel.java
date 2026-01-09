@@ -2,19 +2,19 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.service.result.DeleteKursortResult;
-import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
 
 /**
  * @author Martin Schraner
  */
 public interface KursorteModel extends Model {
 
-  DeleteKursortResult eintragLoeschen(
-      KursorteTableModel kursorteTableModel, int indexKursortToBeRemoved);
+  DeleteKursortResult eintragLoeschen(int indexKursortToBeRemoved);
 
-  CreateOrUpdateKursortModel createOrUpdateKursortModel(
-      SvmContext svmContext, KursorteTableModel kursorteTableModel);
+  CreateOrUpdateKursortModel createOrUpdateKursortModel(SvmContext svmContext);
 
-  CreateOrUpdateKursortModel createOrUpdateKursortModel(
-      SvmContext svmContext, KursorteTableModel kursorteTableModel, int indexBearbeiten);
+  CreateOrUpdateKursortModel createOrUpdateKursortModel(SvmContext svmContext, int indexBearbeiten);
+
+  KursorteTableData getKursorteTableData();
+
+  void reloadData();
 }

@@ -3,9 +3,7 @@ package ch.metzenthin.svm.ui.componentmodel;
 import ch.metzenthin.svm.domain.model.KursorteTableData;
 import java.io.Serial;
 import javax.swing.table.AbstractTableModel;
-import lombok.Getter;
 
-@Getter
 public class KursorteTableModel extends AbstractTableModel {
 
   @Serial private static final long serialVersionUID = 1L;

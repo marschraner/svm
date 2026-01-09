@@ -1,9 +1,6 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateKursortModel;
-import ch.metzenthin.svm.domain.model.KursorteModel;
-import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
 import ch.metzenthin.svm.ui.control.CreateOrUpdateKursortController;
 import java.awt.*;
 import java.util.Locale;
@@ -28,10 +25,7 @@ public class CreateOrUpdateKursortDialog extends JDialog {
   private JLabel errLblBezeichnung;
 
   public CreateOrUpdateKursortDialog(
-      SvmContext svmContext,
-      KursorteTableModel kursorteTableModel,
-      KursorteModel kursorteModel,
-      int indexBearbeiten,
+      CreateOrUpdateKursortModel createOrUpdateKursortModel,
       boolean isBearbeiten,
       String title) {
     setContentPane(contentPane);
@@ -41,30 +35,15 @@ public class CreateOrUpdateKursortDialog extends JDialog {
     if (DEFAULT_BUTTON_ENABLED) {
       getRootPane().setDefaultButton(btnSpeichern);
     }
-    createOrUpdateKursortController(
-        svmContext,
-        kursorteTableModel,
-        kursorteModel,
-        indexBearbeiten,
-        isBearbeiten);
+    createOrUpdateKursortController(createOrUpdateKursortModel, isBearbeiten);
   }
 
   private void createOrUpdateKursortController(
-      SvmContext svmContext,
-      KursorteTableModel kursorteTableModel,
-      KursorteModel kursorteModel,
-      int indexBearbeiten,
+      CreateOrUpdateKursortModel createOrUpdateKursortModel,
       boolean isBearbeiten) {
-    CreateOrUpdateKursortModel createOrUpdateKursortModel =
-        (isBearbeiten)
-            ? kursorteModel.createOrUpdateKursortModel(
-                svmContext, kursorteTableModel, indexBearbeiten)
-            : kursorteModel.createOrUpdateKursortModel(svmContext, kursorteTableModel);
     CreateOrUpdateKursortController createOrUpdateKursortController =
         new CreateOrUpdateKursortController(
-            createOrUpdateKursortModel,
-            isBearbeiten,
-            DEFAULT_BUTTON_ENABLED);
+            createOrUpdateKursortModel, isBearbeiten, DEFAULT_BUTTON_ENABLED);
     createOrUpdateKursortController.setCreateOrUpdateKursortDialog(this);
     createOrUpdateKursortController.setContentPane(contentPane);
     createOrUpdateKursortController.setBtnSpeichern(btnSpeichern);

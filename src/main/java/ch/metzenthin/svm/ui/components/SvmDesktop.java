@@ -4,12 +4,14 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
+import ch.metzenthin.svm.ui.control.KursorteController;
 import com.apple.eawt.Application;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serial;
 import java.net.URL;
 import javax.swing.*;
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,7 +26,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
   private static final String SCHUELER_SUCHEN = "Schüler suchen";
 
   private final transient DB db = DBFactory.getInstance();
-  private final transient SvmContext svmContext;
+  @Getter private final transient SvmContext svmContext;
   private JComponent activeComponent;
 
   public SvmDesktop(SvmContext svmContext) {
@@ -277,9 +279,9 @@ public class SvmDesktop extends JFrame implements ActionListener {
       setAndShowActivePanel(kurstypenPanel.$$$getRootComponent$$$(), "Kurstypen verwalten");
 
     } else if ("kursorteVerwalten".equals(e.getActionCommand())) {
-      KursortePanel kursortePanel = new KursortePanel(svmContext);
-      kursortePanel.addCloseListener(e8 -> onFrameAbbrechen());
-      setAndShowActivePanel(kursortePanel.$$$getRootComponent$$$(), "Kursorte verwalten");
+      KursorteController kursorteController =
+          new KursorteController(svmContext, e8 -> onFrameAbbrechen());
+      setAndShowActivePanel(kursorteController.getPanelRootComponent(), "Kursorte verwalten");
 
     } else if ("monatsstatistikKurse".equals(e.getActionCommand())) {
       MonatsstatistikKursePanel monatsstatistikKursePanel =
@@ -353,14 +355,14 @@ public class SvmDesktop extends JFrame implements ActionListener {
     revalidate();
   }
 
+  @SuppressWarnings("java:S5411")
   private void onNextPanelAvailable(Object eventSource) {
     startWaitCursor();
     Object[] eventSourceArray = (Object[]) eventSource;
     LOGGER.trace("Next panel {} aufgerufen", eventSourceArray[1]);
     if (eventSourceArray.length > 2) {
       Object thirdElement = eventSourceArray[2];
-      if (thirdElement instanceof Boolean thirdElementBoolean
-          && Boolean.TRUE.equals(thirdElementBoolean)) {
+      if (thirdElement instanceof Boolean thirdElementBoolean && thirdElementBoolean) {
         LOGGER.trace("Next panel mit close session aufgerufen");
         db.closeSession();
       }
@@ -416,9 +418,5 @@ public class SvmDesktop extends JFrame implements ActionListener {
     RootPaneContainer root = (RootPaneContainer) getRootPane().getTopLevelAncestor();
     root.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     root.getGlassPane().setVisible(false);
-  }
-
-  public SvmContext getSvmContext() {
-    return svmContext;
   }
 }

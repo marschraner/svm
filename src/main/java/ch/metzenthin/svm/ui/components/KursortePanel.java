@@ -1,16 +1,14 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.ui.control.KursorteController;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
+import lombok.Getter;
 
 /**
  * @author Martin Schraner
@@ -22,30 +20,14 @@ public class KursortePanel {
   private JPanel datenPanel;
   private JPanel titelPanel;
   private JPanel buttonPanel;
-  private JTable kursorteTable;
-  private JButton btnNeu;
-  private JButton btnBearbeiten;
-  private JButton btnLoeschen;
-  private JButton btnAbbrechen;
-  private KursorteController kursorteController;
+  @Getter private JTable kursorteTable;
+  @Getter private JButton btnNeu;
+  @Getter private JButton btnBearbeiten;
+  @Getter private JButton btnLoeschen;
+  @Getter private JButton btnAbbrechen;
 
-  KursortePanel(SvmContext svmContext) {
+  public KursortePanel() {
     $$$setupUI$$$();
-    createKursorteController(svmContext);
-  }
-
-  private void createKursorteController(SvmContext svmContext) {
-    kursorteController =
-        new KursorteController(svmContext.getModelFactory().createKursorteModel(), svmContext);
-    kursorteController.setKursorteTable(kursorteTable);
-    kursorteController.setBtnNeu(btnNeu);
-    kursorteController.setBtnBearbeiten(btnBearbeiten);
-    kursorteController.setBtnLoeschen(btnLoeschen);
-    kursorteController.setBtnAbbrechen(btnAbbrechen);
-  }
-
-  public void addCloseListener(ActionListener closeListener) {
-    kursorteController.addCloseListener(closeListener);
   }
 
   private void createUIComponents() {

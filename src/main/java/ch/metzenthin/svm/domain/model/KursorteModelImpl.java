@@ -6,9 +6,10 @@ import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.result.DeleteKursortResult;
-import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
 import jakarta.persistence.OptimisticLockException;
+import java.util.List;
 import java.util.Optional;
+import lombok.Getter;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
@@ -17,15 +18,17 @@ import org.springframework.dao.OptimisticLockingFailureException;
 public class KursorteModelImpl extends AbstractModel implements KursorteModel {
 
   private final KursortService kursortService;
+  @Getter private final KursorteTableData kursorteTableData;
 
   public KursorteModelImpl(KursortService kursortService) {
     this.kursortService = kursortService;
+    List<Kursort> kursorte = this.kursortService.findAllKursorte();
+    this.kursorteTableData = new KursorteTableData(kursorte);
   }
 
   @Override
-  public DeleteKursortResult eintragLoeschen(
-      KursorteTableModel kursorteTableModel, int indexKursortToBeRemoved) {
-    Kursort kursortToBeDeleted = getSelectedKursort(kursorteTableModel, indexKursortToBeRemoved);
+  public DeleteKursortResult eintragLoeschen(int indexKursortToBeDeleted) {
+    Kursort kursortToBeDeleted = getSelectedKursort(indexKursortToBeDeleted);
     DeleteKursortResult deleteKursortResult;
     try {
       kursortService.deleteKursort(kursortToBeDeleted);
@@ -39,23 +42,21 @@ public class KursorteModelImpl extends AbstractModel implements KursorteModel {
   }
 
   @Override
-  public CreateOrUpdateKursortModel createOrUpdateKursortModel(
-      SvmContext svmContext, KursorteTableModel kursorteTableModel) {
+  public CreateOrUpdateKursortModel createOrUpdateKursortModel(SvmContext svmContext) {
     return svmContext.getModelFactory().createCreateOrUpdateKursortModel(Optional.empty());
   }
 
   @Override
   public CreateOrUpdateKursortModel createOrUpdateKursortModel(
-      SvmContext svmContext, KursorteTableModel kursorteTableModel, int indexKursortToBeModified) {
-    Kursort kursortToBeModified = getSelectedKursort(kursorteTableModel, indexKursortToBeModified);
+      SvmContext svmContext, int indexKursortToBeModified) {
+    Kursort kursortToBeModified = getSelectedKursort(indexKursortToBeModified);
     return svmContext
         .getModelFactory()
         .createCreateOrUpdateKursortModel(Optional.of(kursortToBeModified));
   }
 
-  private static Kursort getSelectedKursort(
-      KursorteTableModel kursorteTableModel, int selectedIndex) {
-    return kursorteTableModel.getKursorteTableData().getKursorte().get(selectedIndex);
+  private Kursort getSelectedKursort(int selectedIndex) {
+    return kursorteTableData.getKursorte().get(selectedIndex);
   }
 
   @Override
@@ -66,5 +67,11 @@ public class KursorteModelImpl extends AbstractModel implements KursorteModel {
   @Override
   public boolean isCompleted() {
     return true;
+  }
+
+  @Override
+  public void reloadData() {
+    List<Kursort> kursorte = kursortService.findAllKursorte();
+    kursorteTableData.setKursorte(kursorte);
   }
 }
