@@ -7,11 +7,10 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateKursortModel;
 import ch.metzenthin.svm.service.result.SaveKursortResult;
+import ch.metzenthin.svm.ui.components.CreateOrUpdateKursortView;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
-import javax.swing.*;
-import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,40 +24,41 @@ public class CreateOrUpdateKursortController extends AbstractController {
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
   private static final boolean MODEL_VALIDATION_MODE = false;
 
+  private final CreateOrUpdateKursortView createOrUpdateKursortView;
   private final CreateOrUpdateKursortModel createOrUpdateKursortModel;
   private final boolean isBearbeiten;
-  private final boolean defaultButtonEnabled;
-  private JDialog createOrUpdateKursortDialog;
-  private JTextField txtBezeichnung;
-  private JCheckBox checkBoxSelektierbar;
-  @Setter private JLabel errLblBezeichnung;
-  private JButton btnSpeichern;
 
   public CreateOrUpdateKursortController(
-      CreateOrUpdateKursortModel createOrUpdateKursortModel,
-      boolean isBearbeiten,
-      boolean defaultButtonEnabled) {
+      CreateOrUpdateKursortModel createOrUpdateKursortModel, boolean isBearbeiten, String title) {
     super(createOrUpdateKursortModel);
+    this.createOrUpdateKursortView = new CreateOrUpdateKursortView(title, e -> onAbbrechen());
     this.createOrUpdateKursortModel = createOrUpdateKursortModel;
     this.isBearbeiten = isBearbeiten;
-    this.defaultButtonEnabled = defaultButtonEnabled;
     this.createOrUpdateKursortModel.addPropertyChangeListener(this);
     this.createOrUpdateKursortModel.addDisableFieldsListener(this);
     this.createOrUpdateKursortModel.addMakeErrorLabelsInvisibleListener(this);
     this.createOrUpdateKursortModel.addCompletedListener(
         this::onCreateOrUpdateKursortModelCompleted);
     this.setModelValidationMode(MODEL_VALIDATION_MODE);
+    configView();
+    configBtnSpeichern();
+    configBtnAbbrechen();
+    configTxtBezeichnung();
+    configCheckBoxSelektierbar();
+    constructionDone();
   }
 
-  public void constructionDone() {
+  private void constructionDone() {
     createOrUpdateKursortModel.initializeCompleted();
   }
 
-  public void setCreateOrUpdateKursortDialog(JDialog createOrUpdateKursortDialog) {
-    // call onCancel() when cross is clicked
-    this.createOrUpdateKursortDialog = createOrUpdateKursortDialog;
-    createOrUpdateKursortDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    createOrUpdateKursortDialog.addWindowListener(
+  public void showDialog() {
+    createOrUpdateKursortView.showDialog();
+  }
+
+  private void configView() {
+    // call onAbbrechen() when cross is clicked
+    createOrUpdateKursortView.addWindowListener(
         new WindowAdapter() {
           @Override
           public void windowClosing(WindowEvent e) {
@@ -67,20 +67,9 @@ public class CreateOrUpdateKursortController extends AbstractController {
         });
   }
 
-  public void setContentPane(JPanel contentPane) {
-    // call onCancel() on ESCAPE
-    contentPane.registerKeyboardAction(
-        e -> onAbbrechen(),
-        KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-  }
-
-  public void setTxtBezeichnung(JTextField txtBezeichnung) {
-    this.txtBezeichnung = txtBezeichnung;
-    if (!defaultButtonEnabled) {
-      this.txtBezeichnung.addActionListener(e -> onBezeichnungEvent(true));
-    }
-    this.txtBezeichnung.addFocusListener(
+  private void configTxtBezeichnung() {
+    createOrUpdateKursortView.addTxtBezeichnungActionListener(e -> onBezeichnungEvent(true));
+    createOrUpdateKursortView.addTxtBezeichnungFocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
@@ -92,7 +81,9 @@ public class CreateOrUpdateKursortController extends AbstractController {
   private void onBezeichnungEvent(boolean showRequiredErrMsg) {
     LOGGER.trace("CreateOrUpdateKursortController Event Bezeichnung");
     boolean equalFieldAndModelValue =
-        equalsNullSafe(txtBezeichnung.getText(), createOrUpdateKursortModel.getBezeichnung());
+        equalsNullSafe(
+            createOrUpdateKursortView.getTxtBezeichnungText(),
+            createOrUpdateKursortModel.getBezeichnung());
     try {
       setModelBezeichnung(showRequiredErrMsg);
     } catch (SvmValidationException e) {
@@ -116,13 +107,13 @@ public class CreateOrUpdateKursortController extends AbstractController {
   private void setModelBezeichnung(boolean showRequiredErrMsg) throws SvmValidationException {
     makeErrorLabelInvisible(Field.BEZEICHNUNG);
     try {
-      createOrUpdateKursortModel.setBezeichnung(txtBezeichnung.getText());
+      createOrUpdateKursortModel.setBezeichnung(createOrUpdateKursortView.getTxtBezeichnungText());
     } catch (SvmRequiredException e) {
       LOGGER.trace(
           "CreateOrUpdateKursortController setModelBezeichnung RequiredException={}",
           e.getMessage());
       if (isModelValidationMode() || !showRequiredErrMsg) {
-        txtBezeichnung.setToolTipText(e.getMessage());
+        createOrUpdateKursortView.setTxtBezeichnungToolTipText(e.getMessage());
         // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
         // bestanden sind.
       } else {
@@ -137,66 +128,56 @@ public class CreateOrUpdateKursortController extends AbstractController {
     }
   }
 
-  public void setCheckBoxSelektierbar(JCheckBox checkBoxSelektierbar) {
-    this.checkBoxSelektierbar = checkBoxSelektierbar;
+  private void configCheckBoxSelektierbar() {
     // Selektierbar als Default-Wert
     if (!isBearbeiten) {
       createOrUpdateKursortModel.setSelektierbar(true);
     }
-    this.checkBoxSelektierbar.addItemListener(e -> onSelektierbarEvent());
-  }
-
-  private void setModelSelektierbar() {
-    createOrUpdateKursortModel.setSelektierbar(checkBoxSelektierbar.isSelected());
+    createOrUpdateKursortView.addCheckBoxSelektierbarItemListener(e -> onSelektierbarEvent());
   }
 
   private void onSelektierbarEvent() {
     LOGGER.trace(
         "AngehoerigerController Event Selektierbar. Selected={}",
-        checkBoxSelektierbar.isSelected());
-    setModelSelektierbar();
+        createOrUpdateKursortView.isCheckBoxSelektierbarSelected());
+    createOrUpdateKursortModel.setSelektierbar(
+        createOrUpdateKursortView.isCheckBoxSelektierbarSelected());
   }
 
-  public void setBtnSpeichern(JButton btnSpeichern) {
-    this.btnSpeichern = btnSpeichern;
+  private void configBtnSpeichern() {
     if (isModelValidationMode()) {
-      btnSpeichern.setEnabled(false);
+      createOrUpdateKursortView.setButtonSpeichernEnabled(false);
     }
-    this.btnSpeichern.addActionListener(e -> onSpeichern());
+    createOrUpdateKursortView.addButtonSpeichernActionListener(e -> onSpeichern());
   }
 
   @SuppressWarnings("DuplicatedCode")
   private void onSpeichern() {
     if (!isModelValidationMode() && !validateOnSpeichern()) {
-      btnSpeichern.setFocusPainted(false);
+      createOrUpdateKursortView.setButtonSpeichernFocusPainted(false);
       return;
     }
 
     SaveKursortResult saveKursortResult = createOrUpdateKursortModel.speichern();
     switch (saveKursortResult) {
       case KURSORT_BEREITS_ERFASST -> {
-        JOptionPane.showMessageDialog(
-            createOrUpdateKursortDialog,
-            "Bezeichnung bereits in Verwendung.",
-            "Fehler",
-            JOptionPane.ERROR_MESSAGE);
-        btnSpeichern.setFocusPainted(false);
+        createOrUpdateKursortView.showErrorMessageDialog(
+            "Bezeichnung bereits in Verwendung.", "Fehler");
+        createOrUpdateKursortView.setButtonSpeichernFocusPainted(false);
       }
       case KURSORT_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
         closeDialog();
-        JOptionPane.showMessageDialog(
-            createOrUpdateKursortDialog,
+        createOrUpdateKursortView.showErrorMessageDialog(
             "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
                 + "einen anderen Benutzer verändert oder gelöscht wurde.",
-            "Fehler",
-            JOptionPane.ERROR_MESSAGE);
+            "Fehler");
       }
       case SPEICHERN_ERFOLGREICH -> closeDialog();
     }
   }
 
-  public void setBtnAbbrechen(JButton btnAbbrechen) {
-    btnAbbrechen.addActionListener(e -> onAbbrechen());
+  public void configBtnAbbrechen() {
+    createOrUpdateKursortView.addButtonAbbrechenActionListener(e -> onAbbrechen());
   }
 
   private void onAbbrechen() {
@@ -204,17 +185,18 @@ public class CreateOrUpdateKursortController extends AbstractController {
   }
 
   private void closeDialog() {
-    createOrUpdateKursortDialog.dispose();
+    createOrUpdateKursortView.dispose();
   }
 
   private void onCreateOrUpdateKursortModelCompleted(boolean completed) {
     LOGGER.trace("CreateOrUpdateKursortModel completed={}", completed);
     if (completed) {
-      btnSpeichern.setToolTipText(null);
-      btnSpeichern.setEnabled(true);
+      createOrUpdateKursortView.setButtonSpeichernToolTipText(null);
+      createOrUpdateKursortView.setButtonSpeichernEnabled(true);
     } else {
-      btnSpeichern.setToolTipText("Bitte Eingabedaten vervollständigen");
-      btnSpeichern.setEnabled(false);
+      createOrUpdateKursortView.setButtonSpeichernToolTipText(
+          "Bitte Eingabedaten vervollständigen");
+      createOrUpdateKursortView.setButtonSpeichernEnabled(false);
     }
   }
 
@@ -222,15 +204,16 @@ public class CreateOrUpdateKursortController extends AbstractController {
   void doPropertyChange(PropertyChangeEvent evt) {
     super.doPropertyChange(evt);
     if (checkIsFieldChange(Field.BEZEICHNUNG, evt)) {
-      txtBezeichnung.setText(createOrUpdateKursortModel.getBezeichnung());
+      createOrUpdateKursortView.setTxtBezeichnungText(createOrUpdateKursortModel.getBezeichnung());
     } else if (checkIsFieldChange(Field.SELEKTIERBAR, evt)) {
-      checkBoxSelektierbar.setSelected(createOrUpdateKursortModel.isSelektierbar());
+      createOrUpdateKursortView.setCheckBoxSelektierbarSelected(
+          createOrUpdateKursortModel.isSelektierbar());
     }
   }
 
   @Override
   void validateFields() throws SvmValidationException {
-    if (txtBezeichnung.isEnabled()) {
+    if (createOrUpdateKursortView.isTxtBezeichnungEnabled()) {
       LOGGER.trace("Validate field Bezeichnung");
       setModelBezeichnung(true);
     }
@@ -239,23 +222,23 @@ public class CreateOrUpdateKursortController extends AbstractController {
   @Override
   void showErrMsg(SvmValidationException e) {
     if (e.getAffectedFields().contains(Field.BEZEICHNUNG)) {
-      errLblBezeichnung.setVisible(true);
-      errLblBezeichnung.setText(e.getMessage());
+      createOrUpdateKursortView.setErrLblBezeichnungVisible(true);
+      createOrUpdateKursortView.setErrLblBezeichnungText(e.getMessage());
     }
   }
 
   @Override
   void showErrMsgAsToolTip(SvmValidationException e) {
     if (e.getAffectedFields().contains(Field.BEZEICHNUNG)) {
-      txtBezeichnung.setToolTipText(e.getMessage());
+      createOrUpdateKursortView.setTxtBezeichnungToolTipText(e.getMessage());
     }
   }
 
   @Override
   public void makeErrorLabelsInvisible(Set<Field> fields) {
     if (fields.contains(Field.ALLE) || fields.contains(Field.BEZEICHNUNG)) {
-      errLblBezeichnung.setVisible(false);
-      txtBezeichnung.setToolTipText(null);
+      createOrUpdateKursortView.setErrLblBezeichnungVisible(false);
+      createOrUpdateKursortView.setTxtBezeichnungToolTipText(null);
     }
   }
 

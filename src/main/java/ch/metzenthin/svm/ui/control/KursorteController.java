@@ -6,7 +6,6 @@ import ch.metzenthin.svm.domain.model.KursorteModel;
 import ch.metzenthin.svm.domain.model.KursorteTableData;
 import ch.metzenthin.svm.service.result.DeleteKursortResult;
 import ch.metzenthin.svm.ui.componentmodel.KursorteTableModel;
-import ch.metzenthin.svm.ui.components.CreateOrUpdateKursortDialog;
 import ch.metzenthin.svm.ui.components.TablePanelView;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -65,10 +64,9 @@ public class KursorteController {
     kursorteView.setButtonNeuFocusPainted(true);
     CreateOrUpdateKursortModel createOrUpdateKursortModel =
         kursorteModel.createOrUpdateKursortModel(svmContext);
-    CreateOrUpdateKursortDialog createOrUpdateKursortDialog =
-        new CreateOrUpdateKursortDialog(createOrUpdateKursortModel, false, "Neuer Kursort");
-    createOrUpdateKursortDialog.pack();
-    createOrUpdateKursortDialog.setVisible(true);
+    CreateOrUpdateKursortController createOrUpdateKursortController =
+        new CreateOrUpdateKursortController(createOrUpdateKursortModel, false, "Neuer Kursort");
+    createOrUpdateKursortController.showDialog();
     // Dialog wurde geschlossen
     reloadTableData();
     kursorteView.setButtonNeuFocusPainted(false);
@@ -83,10 +81,9 @@ public class KursorteController {
     kursorteView.setButtonBearbeitenFocusPainted(true);
     CreateOrUpdateKursortModel createOrUpdateKursortModel =
         kursorteModel.createOrUpdateKursortModel(svmContext, kursorteView.getSelectedRow());
-    CreateOrUpdateKursortDialog createOrUpdateKursortDialog =
-        new CreateOrUpdateKursortDialog(createOrUpdateKursortModel, true, "Kursort bearbeiten");
-    createOrUpdateKursortDialog.pack();
-    createOrUpdateKursortDialog.setVisible(true);
+    CreateOrUpdateKursortController createOrUpdateKursortController =
+        new CreateOrUpdateKursortController(createOrUpdateKursortModel, true, "Kursort bearbeiten");
+    createOrUpdateKursortController.showDialog();
     // Dialog wurde geschlossen
     reloadTableData();
     kursorteView.setButtonBearbeitenFocusPainted(false);

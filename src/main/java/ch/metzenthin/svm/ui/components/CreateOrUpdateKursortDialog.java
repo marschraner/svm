@@ -1,62 +1,29 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.domain.model.CreateOrUpdateKursortModel;
-import ch.metzenthin.svm.ui.control.CreateOrUpdateKursortController;
 import java.awt.*;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
+import lombok.Getter;
 
 @SuppressWarnings({"java:S100", "java:S1171", "java:S1450", "FieldCanBeLocal"})
 public class CreateOrUpdateKursortDialog extends JDialog {
 
-  // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
-  private static final boolean DEFAULT_BUTTON_ENABLED = false;
-
-  private JPanel contentPane;
+  @Getter private JPanel contentPane;
   private JPanel datenPanel;
   private JPanel buttonPanel;
-  private JTextField txtBezeichnung;
-  private JCheckBox checkBoxSelektierbar;
-  private JButton btnSpeichern;
-  private JButton btnAbbrechen;
-  private JLabel errLblBezeichnung;
+  @Getter private JTextField txtBezeichnung;
+  @Getter private JLabel errLblBezeichnung;
+  @Getter private JCheckBox checkBoxSelektierbar;
+  @Getter private JButton btnSpeichern;
+  @Getter private JButton btnAbbrechen;
 
-  public CreateOrUpdateKursortDialog(
-      CreateOrUpdateKursortModel createOrUpdateKursortModel,
-      boolean isBearbeiten,
-      String title) {
+  public CreateOrUpdateKursortDialog(String title) {
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
-    initializeErrLbls();
-    if (DEFAULT_BUTTON_ENABLED) {
-      getRootPane().setDefaultButton(btnSpeichern);
-    }
-    createOrUpdateKursortController(createOrUpdateKursortModel, isBearbeiten);
-  }
-
-  private void createOrUpdateKursortController(
-      CreateOrUpdateKursortModel createOrUpdateKursortModel,
-      boolean isBearbeiten) {
-    CreateOrUpdateKursortController createOrUpdateKursortController =
-        new CreateOrUpdateKursortController(
-            createOrUpdateKursortModel, isBearbeiten, DEFAULT_BUTTON_ENABLED);
-    createOrUpdateKursortController.setCreateOrUpdateKursortDialog(this);
-    createOrUpdateKursortController.setContentPane(contentPane);
-    createOrUpdateKursortController.setBtnSpeichern(btnSpeichern);
-    createOrUpdateKursortController.setBtnAbbrechen(btnAbbrechen);
-    createOrUpdateKursortController.setErrLblBezeichnung(errLblBezeichnung);
-    createOrUpdateKursortController.setTxtBezeichnung(txtBezeichnung);
-    createOrUpdateKursortController.setCheckBoxSelektierbar(checkBoxSelektierbar);
-    createOrUpdateKursortController.constructionDone();
-  }
-
-  private void initializeErrLbls() {
-    errLblBezeichnung.setVisible(false);
-    errLblBezeichnung.setForeground(Color.RED);
   }
 
   {
