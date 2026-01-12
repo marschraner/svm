@@ -48,13 +48,16 @@ public abstract class AbstractDialogController<
     configModel();
   }
 
+  protected void onConstructionFinished() {
+    model.initializeCompleted();
+  }
+
   private void configModel() {
     model.addPropertyChangeListener(this);
     model.addDisableFieldsListener(this);
     model.addMakeErrorLabelsInvisibleListener(this);
     model.addCompletedListener(this);
     model.setModelValidationMode(isModelValidationMode());
-    model.initializeCompleted();
   }
 
   public void showDialog() {

@@ -1,9 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
-import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
-
 import ch.metzenthin.svm.common.datatypes.Field;
-import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateKursortModel;
 import ch.metzenthin.svm.service.result.SaveKursortResult;
@@ -24,7 +21,7 @@ public class CreateOrUpdateKursortController
 
   private final boolean isBearbeiten;
 
-  public CreateOrUpdateKursortController(
+  CreateOrUpdateKursortController(
       CreateOrUpdateKursortModel createOrUpdateKursortModel, boolean isBearbeiten, String title) {
     super(createOrUpdateKursortModel, new CreateOrUpdateKursortView(title));
     this.isBearbeiten = isBearbeiten;
@@ -32,9 +29,19 @@ public class CreateOrUpdateKursortController
     configCheckBoxSelektierbar();
     configBtnSpeichern();
     configBtnAbbrechen();
+    onConstructionFinished(); // damit das Model initialisiert wird!
   }
 
+  private ModelAndViewAccessor<String> bezeichnungModelAndViewAccessor;
+
   private void configTxtBezeichnung() {
+    bezeichnungModelAndViewAccessor =
+        new ModelAndViewAccessor<>(
+            Field.BEZEICHNUNG,
+            model::getBezeichnung,
+            model::setBezeichnung,
+            view::getTxtBezeichnungText,
+            view::setTxtBezeichnungToolTipText);
     view.addTxtBezeichnungActionListener(e -> onBezeichnungEvent(true));
     view.addTxtBezeichnungFocusListener(
         new FocusAdapter() {
@@ -47,50 +54,8 @@ public class CreateOrUpdateKursortController
 
   private void onBezeichnungEvent(boolean showRequiredErrMsg) {
     LOGGER.trace("CreateOrUpdateKursortController Event Bezeichnung");
-    boolean equalFieldAndModelValue =
-        equalsNullSafe(view.getTxtBezeichnungText(), model.getBezeichnung());
-    try {
-      setModelBezeichnung(showRequiredErrMsg);
-    } catch (SvmValidationException e) {
-      return;
-    }
-    if (equalFieldAndModelValue && isModelValidationMode()) {
-      // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb
-      // muss hier die Validierung angestossen werden.
-      // Szenario (mit modelValidationMode = true!):
-      // - Kursort bearbeiten (z.B. Saal B)
-      // - Fehler provozieren (z.B. Bezeichnung statt "Saal B" nur "S". Es gibt einen Fehler wegen
-      // min. Länge 2)
-      // → der Speichern-Button ist disabled
-      // - Fehler entfernen (Wert zurücksetzen: wieder "Saal B" eingeben)
-      // → Ohne dieses if-Statement bleibt der Speichern-Button disabled!
-      LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-      validate();
-    }
-  }
-
-  private void setModelBezeichnung(boolean showRequiredErrMsg) throws SvmValidationException {
-    makeErrorLabelInvisible(Field.BEZEICHNUNG);
-    try {
-      model.setBezeichnung(view.getTxtBezeichnungText());
-    } catch (SvmRequiredException e) {
-      LOGGER.trace(
-          "CreateOrUpdateKursortController setModelBezeichnung RequiredException={}",
-          e.getMessage());
-      if (isModelValidationMode() || !showRequiredErrMsg) {
-        view.setTxtBezeichnungToolTipText(e.getMessage());
-        // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
-        // bestanden sind.
-      } else {
-        showErrMsg(e);
-      }
-      throw e;
-    } catch (SvmValidationException e) {
-      LOGGER.trace(
-          "CreateOrUpdateKursortController setModelBezeichnung Exception={}", e.getMessage());
-      showErrMsg(e);
-      throw e;
-    }
+    setModelValueFromViewWithViewValueChangedCheck(
+        bezeichnungModelAndViewAccessor, showRequiredErrMsg);
   }
 
   private void configCheckBoxSelektierbar() {
@@ -171,7 +136,7 @@ public class CreateOrUpdateKursortController
   void validateFields() throws SvmValidationException {
     if (view.isTxtBezeichnungEnabled()) {
       LOGGER.trace("Validate field Bezeichnung");
-      setModelBezeichnung(true);
+      setModelValueFromView(bezeichnungModelAndViewAccessor, true);
     }
   }
 
