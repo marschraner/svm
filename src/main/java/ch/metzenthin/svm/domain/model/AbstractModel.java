@@ -12,11 +12,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.Getter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Hans Stamm
  */
 public abstract class AbstractModel implements Model, ModelAttributeListener {
+
+  private static final Logger LOGGER = LogManager.getLogger(AbstractModel.class);
 
   private final CommandInvoker commandInvoker = new CommandInvokerImpl();
 
@@ -178,10 +182,33 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
 
   @Override
   public void initializeCompleted() {
+    fireInitializeCompleted();
+  }
+
+  private void fireInitializeCompleted() {
     if (isModelValidationMode()) {
       fireCompleted(isCompleted());
     } else {
       fireCompleted(true);
+    }
+  }
+
+  protected void initializeCompleted(Integer id, AllModelValuesSetter allModelValuesSetter) {
+    if (id != null) {
+      // bestehende Entity
+      // Validierung ausschalten
+      setBulkUpdate(true);
+      // Meldung der Attributwerte an die Listener
+      try {
+        allModelValuesSetter.setAllModelValues();
+      } catch (SvmValidationException e) {
+        LOGGER.error(e.getMessage());
+      }
+      // Validierung anstossen
+      setBulkUpdate(false);
+    } else {
+      // neue Entity
+      fireInitializeCompleted();
     }
   }
 

@@ -8,8 +8,6 @@ import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.result.SaveKursortResult;
 import jakarta.persistence.OptimisticLockException;
 import java.util.Optional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
@@ -18,8 +16,6 @@ import org.springframework.dao.OptimisticLockingFailureException;
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class CreateOrUpdateKursortModelImpl extends AbstractModel
     implements CreateOrUpdateKursortModel {
-
-  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateKursortModelImpl.class);
 
   private final Kursort kursort;
   private final KursortService kursortService;
@@ -98,26 +94,14 @@ public class CreateOrUpdateKursortModelImpl extends AbstractModel
    * Die Model- und PropertyChange-Listener sind registriert. Die Attributwerte werden an die
    * Listener gemeldet und die Validierung wird angestossen.
    */
-  @SuppressWarnings("DuplicatedCode")
   @Override
   public void initializeCompleted() {
-    if (kursort.getKursortId() != null) {
-      // bestehender Kursort
-      // Validierung ausschalten
-      setBulkUpdate(true);
-      // Meldung der Attributwerte an die Listener
-      try {
-        setBezeichnung(kursort.getBezeichnung(), true);
-        setSelektierbar(kursort.isSelektierbar(), true);
-      } catch (SvmValidationException e) {
-        LOGGER.error(e.getMessage());
-      }
-      // Validierung anstossen
-      setBulkUpdate(false);
-    } else {
-      // neuer Kursort
-      super.initializeCompleted();
-    }
+    initializeCompleted(
+        kursort.getKursortId(),
+        () -> {
+          setBezeichnung(kursort.getBezeichnung(), true);
+          setSelektierbar(kursort.isSelektierbar(), true);
+        });
   }
 
   @Override
