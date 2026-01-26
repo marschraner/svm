@@ -21,7 +21,7 @@ public abstract class AbstractController
 
   private static final Logger LOGGER = LogManager.getLogger(AbstractController.class);
 
-  private Model model;
+  private Model untypedModel;
   private boolean bulkUpdate = false;
 
   /**
@@ -30,10 +30,10 @@ public abstract class AbstractController
    * modelValidationMode false: SvmRequiredExceptions werden sofort markiert (in Error labels).
    * Model wird nicht invalidiert bei Fehler
    */
-  @Getter private boolean modelValidationMode = true;
+  @Getter private boolean modelValidationMode = false;
 
-  protected AbstractController(Model model) {
-    this.model = model;
+  protected AbstractController(Model untypedModel) {
+    this.untypedModel = untypedModel;
   }
 
   /**
@@ -94,7 +94,7 @@ public abstract class AbstractController
 
   private void validateModel() {
     try {
-      model.validate();
+      untypedModel.validate();
     } catch (SvmValidationException e) {
       LOGGER.trace("AbstractController model.validate {}", e.getMessageLong());
       showErrMsgAsToolTip(e);
@@ -103,7 +103,7 @@ public abstract class AbstractController
 
   private void validateModelWithThrowException() throws SvmValidationException {
     try {
-      model.validate();
+      untypedModel.validate();
     } catch (SvmValidationException e) {
       LOGGER.trace(
           "AbstractController model.validateModelWithThrowException {}", e.getMessageLong());
@@ -126,10 +126,10 @@ public abstract class AbstractController
 
   public void setModelValidationMode(boolean modelValidationMode) {
     this.modelValidationMode = modelValidationMode;
-    model.setModelValidationMode(modelValidationMode);
+    untypedModel.setModelValidationMode(modelValidationMode);
   }
 
-  protected void setModel(Model model) {
-    this.model = model;
+  protected void setUntypedModel(Model untypedModel) {
+    this.untypedModel = untypedModel;
   }
 }

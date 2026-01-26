@@ -2272,7 +2272,7 @@ public abstract class SemesterrechnungController extends AbstractController {
     this.semesterrechnungModel.removeDisableFieldsListener(this);
     this.semesterrechnungModel.removeMakeErrorLabelsInvisibleListener(this);
     this.semesterrechnungModel = semesterrechnungModel;
-    super.setModel(semesterrechnungModel);
+    super.setUntypedModel(semesterrechnungModel);
     this.semesterrechnungModel.addPropertyChangeListener(this);
     this.semesterrechnungModel.addDisableFieldsListener(this);
     this.semesterrechnungModel.addMakeErrorLabelsInvisibleListener(this);

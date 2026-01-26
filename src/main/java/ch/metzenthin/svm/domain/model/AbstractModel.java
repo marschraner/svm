@@ -16,7 +16,7 @@ import lombok.Getter;
 /**
  * @author Hans Stamm
  */
-abstract class AbstractModel implements Model, ModelAttributeListener {
+public abstract class AbstractModel implements Model, ModelAttributeListener {
 
   private final CommandInvoker commandInvoker = new CommandInvokerImpl();
 

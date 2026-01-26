@@ -9,7 +9,7 @@ import javax.swing.text.StyleContext;
 import lombok.Getter;
 
 @SuppressWarnings({"java:S100", "java:S1171", "java:S1450", "FieldCanBeLocal"})
-public class CreateOrUpdateKursortDialog extends JDialog {
+public class CreateOrUpdateKursortDialog extends SpeichernAbbrechenDialog {
 
   @Getter private JPanel contentPane;
   private JPanel datenPanel;
@@ -24,6 +24,16 @@ public class CreateOrUpdateKursortDialog extends JDialog {
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
+  }
+
+  @Override
+  public JButton getSpeichernButton() {
+    return btnSpeichern;
+  }
+
+  @Override
+  public JButton getAbbrechenButton() {
+    return btnAbbrechen;
   }
 
   {
