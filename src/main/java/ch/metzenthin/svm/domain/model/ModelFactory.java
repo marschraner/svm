@@ -59,7 +59,7 @@ public interface ModelFactory {
   CreateOrUpdateKursortModel createCreateOrUpdateKursortModel(
       Optional<Kursort> kursortToBeModifiedOptional);
 
-  KurstypenModel createKurstypenModel();
+  KurstypListModel createKurstypListModel();
 
   CreateOrUpdateKurstypModel createCreateOrUpdateKurstypModel(
       Optional<Kurstyp> kurstypToBeModifiedOptional);

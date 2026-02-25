@@ -3,9 +3,11 @@ package ch.metzenthin.svm.ui.components;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.domain.model.KursortListModel;
+import ch.metzenthin.svm.domain.model.KurstypListModel;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.ui.control.KursortListController;
+import ch.metzenthin.svm.ui.control.KurstypListController;
 import com.apple.eawt.Application;
 import java.awt.*;
 import java.awt.event.*;
@@ -275,9 +277,11 @@ public class SvmDesktop extends JFrame implements ActionListener {
           "Kurse verwalten: Schuljahr / Semester wählen");
 
     } else if ("kurstypenVerwalten".equals(e.getActionCommand())) {
-      KurstypenPanel kurstypenPanel = new KurstypenPanel(svmContext);
-      kurstypenPanel.addCloseListener(e7 -> onFrameAbbrechen());
-      setAndShowActivePanel(kurstypenPanel.$$$getRootComponent$$$(), "Kurstypen verwalten");
+      KurstypListModel kurstypListModel = svmContext.getModelFactory().createKurstypListModel();
+      KurstypListController kurstypListController =
+          new KurstypListController(svmContext, kurstypListModel, e7 -> onFrameAbbrechen());
+      setAndShowActivePanel(
+          kurstypListController.getView().getRootComponent(), "Kurstypen verwalten");
 
     } else if ("kursorteVerwalten".equals(e.getActionCommand())) {
       KursortListModel kursortListModel = svmContext.getModelFactory().createKursortListModel();

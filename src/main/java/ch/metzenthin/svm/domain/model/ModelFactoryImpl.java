@@ -179,8 +179,8 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
-  public KurstypenModel createKurstypenModel() {
-    return new KurstypenModelImpl(kurstypService);
+  public KurstypListModel createKurstypListModel() {
+    return new KurstypListModel(kurstypService);
   }
 
   @Override

@@ -1,83 +1,39 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.model.CreateOrUpdateKurstypModel;
-import ch.metzenthin.svm.domain.model.KurstypenModel;
-import ch.metzenthin.svm.ui.componentmodel.KurstypenTableModel;
-import ch.metzenthin.svm.ui.control.CreateOrUpdateKurstypController;
 import java.awt.*;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
+import lombok.Getter;
 
 @SuppressWarnings({"java:S100", "java:S1171", "java:S1450", "FieldCanBeLocal"})
-public class CreateOrUpdateKurstypDialog extends JDialog {
-
-  // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
-  private static final boolean DEFAULT_BUTTON_ENABLED = false;
+public class CreateOrUpdateKurstypDialog extends CreateOrUpdateBezeichnungAndSelektierbarDialog {
 
   private JPanel contentPane;
   private JPanel datenPanel;
   private JPanel buttonPanel;
-  private JTextField txtBezeichnung;
-  private JCheckBox checkBoxSelektierbar;
+  @Getter private JTextField txtBezeichnung;
+  @Getter private JLabel errLblBezeichnung;
+  @Getter private JCheckBox checkBoxSelektierbar;
   private JButton btnSpeichern;
   private JButton btnAbbrechen;
-  private JLabel errLblBezeichnung;
 
-  public CreateOrUpdateKurstypDialog(
-      SvmContext svmContext,
-      KurstypenTableModel kurstypenTableModel,
-      KurstypenModel kurstypenModel,
-      int indexBearbeiten,
-      boolean isBearbeiten,
-      String title) {
+  public CreateOrUpdateKurstypDialog(String title) {
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
-    initializeErrLbls();
-    if (DEFAULT_BUTTON_ENABLED) {
-      getRootPane().setDefaultButton(btnSpeichern);
-    }
-    createCreateOrUpdateKurstypController(
-        svmContext,
-        kurstypenTableModel,
-        kurstypenModel,
-        indexBearbeiten,
-        isBearbeiten);
   }
 
-  private void createCreateOrUpdateKurstypController(
-      SvmContext svmContext,
-      KurstypenTableModel kurstypenTableModel,
-      KurstypenModel kurstypenModel,
-      int indexBearbeiten,
-      boolean isBearbeiten) {
-    CreateOrUpdateKurstypModel createOrUpdateKurstypModel =
-        (isBearbeiten
-            ? kurstypenModel.createCreateOrUpdateKurstypModel(
-                svmContext, kurstypenTableModel, indexBearbeiten)
-            : kurstypenModel.createCreateOrUpdateKurstypModel(svmContext, kurstypenTableModel));
-    CreateOrUpdateKurstypController createOrUpdateKurstypController =
-        new CreateOrUpdateKurstypController(
-            createOrUpdateKurstypModel,
-            isBearbeiten,
-            DEFAULT_BUTTON_ENABLED);
-    createOrUpdateKurstypController.setCreateOrUpdateKurstypDialog(this);
-    createOrUpdateKurstypController.setContentPane(contentPane);
-    createOrUpdateKurstypController.setTxtBezeichnung(txtBezeichnung);
-    createOrUpdateKurstypController.setCheckBoxSelektierbar(checkBoxSelektierbar);
-    createOrUpdateKurstypController.setBtnSpeichern(btnSpeichern);
-    createOrUpdateKurstypController.setBtnAbbrechen(btnAbbrechen);
-    createOrUpdateKurstypController.setErrLblBezeichnung(errLblBezeichnung);
-    createOrUpdateKurstypController.constructionDone();
+  @Override
+  public JButton getSpeichernButton() {
+    return btnSpeichern;
   }
 
-  private void initializeErrLbls() {
-    errLblBezeichnung.setVisible(false);
-    errLblBezeichnung.setForeground(Color.RED);
+  @Override
+  public JButton getAbbrechenButton() {
+    return btnAbbrechen;
   }
 
   {
