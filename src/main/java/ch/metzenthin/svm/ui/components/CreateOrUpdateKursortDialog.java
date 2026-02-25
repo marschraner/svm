@@ -9,16 +9,16 @@ import javax.swing.text.StyleContext;
 import lombok.Getter;
 
 @SuppressWarnings({"java:S100", "java:S1171", "java:S1450", "FieldCanBeLocal"})
-public class CreateOrUpdateKursortDialog extends SpeichernAbbrechenDialog {
+public class CreateOrUpdateKursortDialog extends CreateOrUpdateBezeichnungAndSelektierbarDialog {
 
-  @Getter private JPanel contentPane;
+  private JPanel contentPane;
   private JPanel datenPanel;
   private JPanel buttonPanel;
   @Getter private JTextField txtBezeichnung;
   @Getter private JLabel errLblBezeichnung;
   @Getter private JCheckBox checkBoxSelektierbar;
-  @Getter private JButton btnSpeichern;
-  @Getter private JButton btnAbbrechen;
+  private JButton btnSpeichern;
+  private JButton btnAbbrechen;
 
   public CreateOrUpdateKursortDialog(String title) {
     setContentPane(contentPane);
