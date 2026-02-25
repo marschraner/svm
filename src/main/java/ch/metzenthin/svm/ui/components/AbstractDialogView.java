@@ -6,15 +6,15 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 
 /**
+ * @param <T> Dialog-Typ, z.B. CreateOrUpdateKursortDialog
  * @author Hans Stamm
  */
-public abstract class AbstractDialogView<T extends SpeichernAbbrechenDialog> {
+public abstract class AbstractDialogView<T extends SpeichernAbbrechenDialog> extends AbstractView {
 
   protected final T dialog;
   private final JButton buttonSpeichern;
@@ -58,7 +58,7 @@ public abstract class AbstractDialogView<T extends SpeichernAbbrechenDialog> {
   }
 
   public void showErrorMessageDialog(String message, String title) {
-    JOptionPane.showMessageDialog(dialog, message, title, JOptionPane.ERROR_MESSAGE);
+    showErrorMessageDialog(dialog, message, title);
   }
 
   public void addButtonSpeichernActionListener(ActionListener actionListener) {

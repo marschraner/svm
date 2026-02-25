@@ -6,7 +6,7 @@ import ch.metzenthin.svm.service.result.SaveKursortResult;
 /**
  * @author Martin Schraner
  */
-public interface CreateOrUpdateKursortModel extends Model {
+public interface CreateOrUpdateKursortModel extends CreateOrUpdateModel<SaveKursortResult> {
 
   String getBezeichnung();
 
@@ -15,6 +15,4 @@ public interface CreateOrUpdateKursortModel extends Model {
   void setBezeichnung(String bezeichnung) throws SvmValidationException;
 
   void setSelektierbar(Boolean isSelected);
-
-  SaveKursortResult speichern();
 }

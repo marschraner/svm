@@ -15,20 +15,16 @@ import org.apache.logging.log4j.Logger;
  * @author Martin Schraner
  */
 public class CreateOrUpdateKursortController
-    extends AbstractDialogController<CreateOrUpdateKursortModel, CreateOrUpdateKursortView> {
+    extends AbstractDialogController<
+        CreateOrUpdateKursortModel, CreateOrUpdateKursortView, SaveKursortResult> {
 
   private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateKursortController.class);
 
-  private final boolean isBearbeiten;
-
   CreateOrUpdateKursortController(
       CreateOrUpdateKursortModel createOrUpdateKursortModel, boolean isBearbeiten, String title) {
-    super(createOrUpdateKursortModel, new CreateOrUpdateKursortView(title));
-    this.isBearbeiten = isBearbeiten;
+    super(createOrUpdateKursortModel, new CreateOrUpdateKursortView(title), isBearbeiten);
     configTxtBezeichnung();
     configCheckBoxSelektierbar();
-    configBtnSpeichern();
-    configBtnAbbrechen();
     onConstructionFinished(); // damit das Model initialisiert wird!
   }
 
@@ -71,55 +67,6 @@ public class CreateOrUpdateKursortController
         "AngehoerigerController Event Selektierbar. Selected={}",
         view.isCheckBoxSelektierbarSelected());
     model.setSelektierbar(view.isCheckBoxSelektierbarSelected());
-  }
-
-  private void configBtnSpeichern() {
-    if (isModelValidationMode()) {
-      view.setButtonSpeichernDisabled();
-    }
-    view.addButtonSpeichernActionListener(e -> onSpeichern());
-  }
-
-  @SuppressWarnings("DuplicatedCode")
-  private void onSpeichern() {
-    if (!isModelValidationMode() && !validateOnSpeichern()) {
-      view.setButtonSpeichernFocusPainted(false);
-      return;
-    }
-
-    SaveKursortResult saveKursortResult = model.speichern();
-    switch (saveKursortResult) {
-      case KURSORT_BEREITS_ERFASST -> {
-        view.showErrorMessageDialog("Bezeichnung bereits in Verwendung.", "Fehler");
-        view.setButtonSpeichernFocusPainted(false);
-      }
-      case KURSORT_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
-        closeDialog();
-        view.showErrorMessageDialog(
-            "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
-                + "einen anderen Benutzer verändert oder gelöscht wurde.",
-            "Fehler");
-      }
-      case SPEICHERN_ERFOLGREICH -> closeDialog();
-    }
-  }
-
-  public void configBtnAbbrechen() {
-    view.addButtonAbbrechenActionListener(e -> onAbbrechen());
-  }
-
-  private void onAbbrechen() {
-    closeDialog();
-  }
-
-  @Override
-  public void completed(boolean completed) {
-    LOGGER.trace("Model completed={}", completed);
-    if (completed) {
-      view.setButtonSpeichernEnabled();
-    } else {
-      view.setButtonSpeichernDisabled("Bitte Eingabedaten vervollständigen");
-    }
   }
 
   @Override
