@@ -4,6 +4,8 @@ import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRen
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAsPercentages;
 
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -15,7 +17,7 @@ import lombok.Getter;
 /**
  * @author Hans Stamm
  */
-public class TablePanelView {
+public class TablePanelView extends AbstractView {
 
   private final AbstractTableModel tableModel;
   private final JTable table;
@@ -26,21 +28,15 @@ public class TablePanelView {
   @Getter private final JComponent rootComponent;
 
   public TablePanelView(
-      AbstractTableModel tableModel,
-      ListSelectionListener listSelectionListener,
-      MouseListener mouseListener,
-      ActionListener closeListener) {
+      AbstractTableModel tableModel, AbstractListPanel listPanel, ActionListener closeListener) {
     this.tableModel = tableModel;
-    KursortePanel kursortePanel = new KursortePanel();
-    this.table = kursortePanel.getKursorteTable();
-    this.buttonNeu = kursortePanel.getBtnNeu();
-    this.buttonBearbeiten = kursortePanel.getBtnBearbeiten();
-    this.buttonLoeschen = kursortePanel.getBtnLoeschen();
-    this.buttonAbbrechen = kursortePanel.getBtnAbbrechen();
-    this.rootComponent = kursortePanel.$$$getRootComponent$$$();
+    this.table = listPanel.getTable();
+    this.buttonNeu = listPanel.getBtnNeu();
+    this.buttonBearbeiten = listPanel.getBtnBearbeiten();
+    this.buttonLoeschen = listPanel.getBtnLoeschen();
+    this.buttonAbbrechen = listPanel.getBtnAbbrechen();
+    this.rootComponent = listPanel.getRootComponent();
     configTable(this.table, tableModel);
-    addListSelectionListener(listSelectionListener);
-    addMouseListener(mouseListener);
     addButtonAbbrechenActionListener(closeListener);
   }
 
@@ -48,6 +44,31 @@ public class TablePanelView {
     table.setModel(tableModel);
     setColumnCellRenderers(table, tableModel);
     setJTableColumnWidthAsPercentages(table, 0.75, 0.25);
+  }
+
+  public void configListeners(Runnable mouseListenerAction, Runnable listSelectionListenerAction) {
+    addMouseListener(createMouseListener(mouseListenerAction));
+    addListSelectionListener(createListSelectionListener(listSelectionListenerAction));
+  }
+
+  private MouseListener createMouseListener(Runnable mouseListenerAction) {
+    return new MouseAdapter() {
+      @Override
+      public void mousePressed(MouseEvent me) {
+        if (me.getClickCount() == 2) {
+          mouseListenerAction.run();
+        }
+      }
+    };
+  }
+
+  private ListSelectionListener createListSelectionListener(Runnable listSelectionListenerAction) {
+    return e -> {
+      if (e.getValueIsAdjusting()) {
+        return;
+      }
+      listSelectionListenerAction.run();
+    };
   }
 
   private void addListSelectionListener(ListSelectionListener listSelectionListener) {
@@ -105,5 +126,13 @@ public class TablePanelView {
 
   public void setButtonLoeschenFocusPainted(boolean focusPainted) {
     buttonLoeschen.setFocusPainted(focusPainted);
+  }
+
+  public void showErrorMessageDialog(String message, String title) {
+    showErrorMessageDialog(rootComponent, message, title);
+  }
+
+  public int showYesNoDialog(String message, String title) {
+    return showYesNoDialog(rootComponent, message, title);
   }
 }

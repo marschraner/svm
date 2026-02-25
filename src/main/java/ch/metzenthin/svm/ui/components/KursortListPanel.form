@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.KursortePanel">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.KursortListPanel">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
       <xy x="20" y="20" width="1134" height="400"/>
@@ -57,7 +57,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="ca0ce" class="javax.swing.JTable" binding="kursorteTable" custom-create="true">
+                  <component id="ca0ce" class="javax.swing.JTable" binding="kursortTable" custom-create="true">
                     <constraints/>
                     <properties>
                       <preferredScrollableViewportSize width="400" height="300"/>

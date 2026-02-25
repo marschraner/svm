@@ -168,8 +168,8 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
-  public KursorteModel createKursorteModel() {
-    return new KursorteModelImpl(kursortService);
+  public KursortListModel createKursortListModel() {
+    return new KursortListModel(kursortService);
   }
 
   @Override

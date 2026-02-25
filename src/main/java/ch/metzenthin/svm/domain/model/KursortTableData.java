@@ -7,27 +7,17 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class KursorteTableData {
+public class KursortTableData extends AbstractTableData<Kursort> {
 
   private static final Field[] COLUMNS = {Field.BEZEICHNUNG, Field.SELEKTIERBAR};
 
-  private List<Kursort> kursorte;
-
-  public KursorteTableData(List<Kursort> kursorte) {
-    this.kursorte = kursorte;
+  public KursortTableData(List<Kursort> kursortList) {
+    super(COLUMNS, kursortList);
   }
 
-  public int getColumnCount() {
-    return COLUMNS.length;
-  }
-
-  public int size() {
-    return kursorte.size();
-  }
-
-  @SuppressWarnings("DuplicatedCode")
+  @Override
   public Object getValueAt(int rowIndex, int columnIndex) {
-    Kursort kursort = kursorte.get(rowIndex);
+    Kursort kursort = data.get(rowIndex);
     Object value = null;
     switch (COLUMNS[columnIndex]) {
       case BEZEICHNUNG -> value = kursort.getBezeichnung();
@@ -39,19 +29,8 @@ public class KursorteTableData {
     return value;
   }
 
-  public Class<?> getColumnClass() {
+  @Override
+  public Class<?> getColumnClass(int columnIndex) {
     return String.class;
-  }
-
-  public String getColumnName(int column) {
-    return COLUMNS[column].toString();
-  }
-
-  void setKursorte(List<Kursort> kursorte) {
-    this.kursorte = kursorte;
-  }
-
-  List<Kursort> getKursorte() {
-    return kursorte;
   }
 }

@@ -2,33 +2,39 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.EntityStillReferencedException;
-import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.result.DeleteKursortResult;
+import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import jakarta.persistence.OptimisticLockException;
 import java.util.List;
 import java.util.Optional;
-import lombok.Getter;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
  * @author Martin Schraner
  */
-public class KursorteModelImpl extends AbstractModel implements KursorteModel {
+public class KursortListModel
+    extends AbstractListModel<
+        KursortTableData, Kursort, CreateOrUpdateKursortModel, DeleteKursortResult> {
 
   private final KursortService kursortService;
-  @Getter private final KursorteTableData kursorteTableData;
 
-  public KursorteModelImpl(KursortService kursortService) {
+  public KursortListModel(KursortService kursortService) {
+    super(createTableModel(kursortService));
     this.kursortService = kursortService;
-    List<Kursort> kursorte = this.kursortService.findAllKursorte();
-    this.kursorteTableData = new KursorteTableData(kursorte);
+  }
+
+  private static TableModel<KursortTableData, Kursort> createTableModel(
+      KursortService kursortService) {
+    List<Kursort> kursorte = kursortService.findAllKursorte();
+    KursortTableData kursortTableData = new KursortTableData(kursorte);
+    return new TableModel<>(kursortTableData);
   }
 
   @Override
   public DeleteKursortResult eintragLoeschen(int indexKursortToBeDeleted) {
-    Kursort kursortToBeDeleted = getSelectedKursort(indexKursortToBeDeleted);
+    Kursort kursortToBeDeleted = getSelectedRow(indexKursortToBeDeleted);
     DeleteKursortResult deleteKursortResult;
     try {
       kursortService.deleteKursort(kursortToBeDeleted);
@@ -42,36 +48,27 @@ public class KursorteModelImpl extends AbstractModel implements KursorteModel {
   }
 
   @Override
-  public CreateOrUpdateKursortModel createOrUpdateKursortModel(SvmContext svmContext) {
+  public CreateOrUpdateKursortModel createCreateOrUpdateModel(SvmContext svmContext) {
     return svmContext.getModelFactory().createCreateOrUpdateKursortModel(Optional.empty());
   }
 
   @Override
-  public CreateOrUpdateKursortModel createOrUpdateKursortModel(
-      SvmContext svmContext, int indexKursortToBeModified) {
-    Kursort kursortToBeModified = getSelectedKursort(indexKursortToBeModified);
+  public CreateOrUpdateKursortModel createCreateOrUpdateModel(
+      SvmContext svmContext, int indexKursortToBeUpdated) {
+    Kursort kursortToBeUpdated = getSelectedRow(indexKursortToBeUpdated);
     return svmContext
         .getModelFactory()
-        .createCreateOrUpdateKursortModel(Optional.of(kursortToBeModified));
-  }
-
-  private Kursort getSelectedKursort(int selectedIndex) {
-    return kursorteTableData.getKursorte().get(selectedIndex);
-  }
-
-  @Override
-  void doValidate() throws SvmValidationException {
-    // Keine feldübergreifende Validierung notwendig
-  }
-
-  @Override
-  public boolean isCompleted() {
-    return true;
+        .createCreateOrUpdateKursortModel(Optional.of(kursortToBeUpdated));
   }
 
   @Override
   public void reloadData() {
     List<Kursort> kursorte = kursortService.findAllKursorte();
-    kursorteTableData.setKursorte(kursorte);
+    tableModel.setData(kursorte);
+  }
+
+  @Override
+  public String getListItemName() {
+    return "Kursort";
   }
 }

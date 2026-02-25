@@ -2,9 +2,10 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Codetyp;
+import ch.metzenthin.svm.domain.model.KursortListModel;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
-import ch.metzenthin.svm.ui.control.KursorteController;
+import ch.metzenthin.svm.ui.control.KursortListController;
 import com.apple.eawt.Application;
 import java.awt.*;
 import java.awt.event.*;
@@ -279,9 +280,11 @@ public class SvmDesktop extends JFrame implements ActionListener {
       setAndShowActivePanel(kurstypenPanel.$$$getRootComponent$$$(), "Kurstypen verwalten");
 
     } else if ("kursorteVerwalten".equals(e.getActionCommand())) {
-      KursorteController kursorteController =
-          new KursorteController(svmContext, e8 -> onFrameAbbrechen());
-      setAndShowActivePanel(kursorteController.getPanelRootComponent(), "Kursorte verwalten");
+      KursortListModel kursortListModel = svmContext.getModelFactory().createKursortListModel();
+      KursortListController kursortListController =
+          new KursortListController(svmContext, kursortListModel, e8 -> onFrameAbbrechen());
+      setAndShowActivePanel(
+          kursortListController.getView().getRootComponent(), "Kursorte verwalten");
 
     } else if ("monatsstatistikKurse".equals(e.getActionCommand())) {
       MonatsstatistikKursePanel monatsstatistikKursePanel =

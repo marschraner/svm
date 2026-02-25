@@ -54,7 +54,7 @@ public interface ModelFactory {
 
   MitarbeiterErfassenModel createMitarbeiterErfassenModel();
 
-  KursorteModel createKursorteModel();
+  KursortListModel createKursortListModel();
 
   CreateOrUpdateKursortModel createCreateOrUpdateKursortModel(
       Optional<Kursort> kursortToBeModifiedOptional);
