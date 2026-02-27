@@ -2,7 +2,7 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.domain.model.CreateOrUpdateKurstypModel;
 import ch.metzenthin.svm.service.result.SaveKurstypResult;
-import ch.metzenthin.svm.ui.components.CreateOrUpdateKurstypView;
+import ch.metzenthin.svm.ui.view.CreateOrUpdateKurstypView;
 
 /**
  * @author Martin Schraner

@@ -7,8 +7,7 @@ import ch.metzenthin.svm.domain.model.KurstypTableData;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.service.result.DeleteKurstypResult;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
-import ch.metzenthin.svm.ui.components.KurstypListPanel;
-import ch.metzenthin.svm.ui.components.TablePanelView;
+import ch.metzenthin.svm.ui.view.KurstypListView;
 import java.awt.event.ActionListener;
 
 /**
@@ -23,9 +22,9 @@ public class KurstypListController
         svmContext, kurstypListModel, createView(kurstypListModel.getTableModel(), closeListener));
   }
 
-  private static TablePanelView createView(
+  private static KurstypListView createView(
       TableModel<KurstypTableData, Kurstyp> tableModel, ActionListener closeListener) {
-    return new TablePanelView(tableModel, new KurstypListPanel(), closeListener);
+    return new KurstypListView(tableModel, closeListener);
   }
 
   @Override

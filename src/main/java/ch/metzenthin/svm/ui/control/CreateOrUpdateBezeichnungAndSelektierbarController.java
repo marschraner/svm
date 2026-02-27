@@ -4,8 +4,8 @@ import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateBezeichnungAndSelektierbarModel;
 import ch.metzenthin.svm.service.result.SaveDialogResult;
-import ch.metzenthin.svm.ui.components.CreateOrUpdateBezeichnungAndSelektierbarView;
 import ch.metzenthin.svm.ui.components.SpeichernAbbrechenDialog;
+import ch.metzenthin.svm.ui.view.CreateOrUpdateBezeichnungAndSelektierbarDialogView;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
@@ -20,9 +20,10 @@ import org.apache.logging.log4j.Logger;
  */
 public abstract class CreateOrUpdateBezeichnungAndSelektierbarController<
         T extends CreateOrUpdateBezeichnungAndSelektierbarModel<V>,
-        U extends CreateOrUpdateBezeichnungAndSelektierbarView<? extends SpeichernAbbrechenDialog>,
+        U extends
+            CreateOrUpdateBezeichnungAndSelektierbarDialogView<? extends SpeichernAbbrechenDialog>,
         V extends SaveDialogResult>
-    extends AbstractDialogController<T, U, V> {
+    extends SpeichernAbbrechenDialogController<T, U, V> {
 
   private static final Logger LOGGER =
       LogManager.getLogger(CreateOrUpdateBezeichnungAndSelektierbarController.class);

@@ -1,5 +1,6 @@
-package ch.metzenthin.svm.ui.components;
+package ch.metzenthin.svm.ui.view;
 
+import ch.metzenthin.svm.ui.components.SpeichernAbbrechenDialog;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -14,13 +15,14 @@ import javax.swing.WindowConstants;
  * @param <T> Dialog-Typ, z.B. CreateOrUpdateKursortDialog
  * @author Hans Stamm
  */
-public abstract class AbstractDialogView<T extends SpeichernAbbrechenDialog> extends AbstractView {
+public abstract class SpeichernAbbrechenDialogView<T extends SpeichernAbbrechenDialog>
+    extends AbstractView {
 
   protected final T dialog;
   private final JButton buttonSpeichern;
   private final JButton buttonAbbrechen;
 
-  protected AbstractDialogView(T dialog) {
+  protected SpeichernAbbrechenDialogView(T dialog) {
     this.dialog = dialog;
     this.buttonSpeichern = dialog.getSpeichernButton();
     this.buttonAbbrechen = dialog.getAbbrechenButton();

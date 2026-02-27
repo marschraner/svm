@@ -1,5 +1,7 @@
-package ch.metzenthin.svm.ui.components;
+package ch.metzenthin.svm.ui.view;
 
+import ch.metzenthin.svm.ui.components.CreateOrUpdateBezeichnungAndSelektierbarDialog;
+import ch.metzenthin.svm.ui.components.TextFieldWithErrorLabelComponent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemListener;
@@ -9,14 +11,14 @@ import javax.swing.JCheckBox;
  * @param <T> Dialog-Typ, z.B. CreateOrUpdateKursortDialog
  * @author Hans Stamm
  */
-public abstract class CreateOrUpdateBezeichnungAndSelektierbarView<
+public abstract class CreateOrUpdateBezeichnungAndSelektierbarDialogView<
         T extends CreateOrUpdateBezeichnungAndSelektierbarDialog>
-    extends AbstractDialogView<T> {
+    extends SpeichernAbbrechenDialogView<T> {
 
   private final TextFieldWithErrorLabelComponent bezeichnungWithErrorLabel;
   private final JCheckBox checkBoxSelektierbar;
 
-  protected CreateOrUpdateBezeichnungAndSelektierbarView(T dialog) {
+  protected CreateOrUpdateBezeichnungAndSelektierbarDialogView(T dialog) {
     super(dialog);
     this.bezeichnungWithErrorLabel =
         new TextFieldWithErrorLabelComponent(

@@ -1,8 +1,9 @@
-package ch.metzenthin.svm.ui.components;
+package ch.metzenthin.svm.ui.view;
 
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAsPercentages;
 
+import ch.metzenthin.svm.ui.components.AbstractListPanel;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,7 +18,7 @@ import lombok.Getter;
 /**
  * @author Hans Stamm
  */
-public class TablePanelView extends AbstractView {
+public abstract class AbstractListPanelView extends AbstractView {
 
   private final AbstractTableModel tableModel;
   private final JTable table;
@@ -27,7 +28,7 @@ public class TablePanelView extends AbstractView {
   private final JButton buttonAbbrechen;
   @Getter private final JComponent rootComponent;
 
-  public TablePanelView(
+  protected AbstractListPanelView(
       AbstractTableModel tableModel, AbstractListPanel listPanel, ActionListener closeListener) {
     this.tableModel = tableModel;
     this.table = listPanel.getTable();

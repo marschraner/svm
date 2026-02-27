@@ -7,8 +7,7 @@ import ch.metzenthin.svm.domain.model.KursortTableData;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.service.result.DeleteKursortResult;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
-import ch.metzenthin.svm.ui.components.KursortListPanel;
-import ch.metzenthin.svm.ui.components.TablePanelView;
+import ch.metzenthin.svm.ui.view.KursortListView;
 import java.awt.event.ActionListener;
 
 /**
@@ -23,9 +22,9 @@ public class KursortListController
         svmContext, kursortListModel, createView(kursortListModel.getTableModel(), closeListener));
   }
 
-  private static TablePanelView createView(
+  private static KursortListView createView(
       TableModel<KursortTableData, Kursort> tableModel, ActionListener closeListener) {
-    return new TablePanelView(tableModel, new KursortListPanel(), closeListener);
+    return new KursortListView(tableModel, closeListener);
   }
 
   @Override

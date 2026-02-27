@@ -6,8 +6,8 @@ import ch.metzenthin.svm.domain.model.DialogClosingListener;
 import ch.metzenthin.svm.domain.model.DisableFieldsListener;
 import ch.metzenthin.svm.domain.model.MakeErrorLabelsInvisibleListener;
 import ch.metzenthin.svm.service.result.SaveDialogResult;
-import ch.metzenthin.svm.ui.components.AbstractDialogView;
 import ch.metzenthin.svm.ui.components.SpeichernAbbrechenDialog;
+import ch.metzenthin.svm.ui.view.SpeichernAbbrechenDialogView;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,9 +18,9 @@ import org.apache.logging.log4j.Logger;
  * @param <V> Save-Result-Typ, z.B. SaveKursortResult
  * @author Hans Stamm
  */
-public abstract class AbstractDialogController<
+public abstract class SpeichernAbbrechenDialogController<
         T extends CreateOrUpdateModel<V>,
-        U extends AbstractDialogView<? extends SpeichernAbbrechenDialog>,
+        U extends SpeichernAbbrechenDialogView<? extends SpeichernAbbrechenDialog>,
         V extends SaveDialogResult>
     extends AbstractController
     implements DisableFieldsListener,
@@ -28,7 +28,8 @@ public abstract class AbstractDialogController<
         CompletedListener,
         DialogClosingListener {
 
-  private static final Logger LOGGER = LogManager.getLogger(AbstractDialogController.class);
+  private static final Logger LOGGER =
+      LogManager.getLogger(SpeichernAbbrechenDialogController.class);
 
   protected final T model;
 
@@ -44,11 +45,11 @@ public abstract class AbstractDialogController<
    */
   @Getter private final boolean modelValidationMode;
 
-  protected AbstractDialogController(T model, U view, boolean isBearbeiten) {
+  protected SpeichernAbbrechenDialogController(T model, U view, boolean isBearbeiten) {
     this(model, view, isBearbeiten, false);
   }
 
-  protected AbstractDialogController(
+  protected SpeichernAbbrechenDialogController(
       T model, U view, boolean isBearbeiten, boolean modelValidationMode) {
     super(model);
     this.model = model;

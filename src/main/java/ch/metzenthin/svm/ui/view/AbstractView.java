@@ -1,4 +1,4 @@
-package ch.metzenthin.svm.ui.components;
+package ch.metzenthin.svm.ui.view;
 
 import java.awt.Component;
 import javax.swing.JOptionPane;

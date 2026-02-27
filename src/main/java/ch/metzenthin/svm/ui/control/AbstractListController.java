@@ -5,7 +5,7 @@ import ch.metzenthin.svm.domain.model.AbstractListModel;
 import ch.metzenthin.svm.domain.model.AbstractTableData;
 import ch.metzenthin.svm.domain.model.Model;
 import ch.metzenthin.svm.service.result.SaveDialogResult;
-import ch.metzenthin.svm.ui.components.TablePanelView;
+import ch.metzenthin.svm.ui.view.AbstractListPanelView;
 import lombok.Getter;
 
 /**
@@ -19,9 +19,9 @@ public abstract class AbstractListController<
 
   protected final SvmContext svmContext;
   protected final T model;
-  @Getter public final TablePanelView view;
+  @Getter public final AbstractListPanelView view;
 
-  protected AbstractListController(SvmContext svmContext, T model, TablePanelView view) {
+  protected AbstractListController(SvmContext svmContext, T model, AbstractListPanelView view) {
     this.svmContext = svmContext;
     this.model = model;
     this.view = view;
