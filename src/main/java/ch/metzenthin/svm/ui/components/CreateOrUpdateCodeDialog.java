@@ -1,112 +1,41 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.datatypes.Codetyp;
-import ch.metzenthin.svm.domain.model.CreateOrUpdateCodeModel;
-import ch.metzenthin.svm.domain.model.CodesModel;
-import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
-import ch.metzenthin.svm.ui.control.CreateOrUpdateCodeController;
 import java.awt.*;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
+import lombok.Getter;
 
-@SuppressWarnings({"java:S100", "java:S107", "java:S1171", "java:S1450", "FieldCanBeLocal"})
-public class CreateOrUpdateCodeDialog extends JDialog {
-
-  // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
-  private static final boolean DEFAULT_BUTTON_ENABLED = false;
+@SuppressWarnings({"java:S100", "java:S1450", "java:S1171"})
+public class CreateOrUpdateCodeDialog extends SpeichernAbbrechenDialog {
 
   private JPanel contentPane;
   private JPanel datenPanel;
-  private JTextField txtKuerzel;
-  private JTextField txtBeschreibung;
-  private JCheckBox checkBoxSelektierbar;
-  private JLabel errLblKuerzel;
-  private JLabel errLblBeschreibung;
-  private JButton btnSpeichern;
   private JPanel buttonPanel;
+  @Getter private JTextField txtKuerzel;
+  @Getter private JLabel errLblKuerzel;
+  @Getter private JTextField txtBeschreibung;
+  @Getter private JLabel errLblBeschreibung;
+  @Getter private JCheckBox checkBoxSelektierbar;
+  private JButton btnSpeichern;
   private JButton btnAbbrechen;
 
-  public CreateOrUpdateCodeDialog(
-      SvmContext svmContext,
-      CodesTableModel codesTableModel,
-      CodesModel codesModel,
-      int indexBearbeiten,
-      boolean isBearbeiten,
-      String title,
-      Codetyp codetyp) {
+  public CreateOrUpdateCodeDialog(String title) {
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
-    initializeErrLbls();
-    if (DEFAULT_BUTTON_ENABLED) {
-      getRootPane().setDefaultButton(btnSpeichern);
-    }
-    createCreateOrUpdateCodeController(
-        svmContext,
-        codesTableModel,
-        codesModel,
-        indexBearbeiten,
-        isBearbeiten,
-        codetyp);
   }
 
-  @SuppressWarnings("ExtractMethodRecommender")
-  private void createCreateOrUpdateCodeController(
-      SvmContext svmContext,
-      CodesTableModel codesTableModel,
-      CodesModel codesModel,
-      int indexBearbeiten,
-      boolean isBearbeiten,
-      Codetyp codetyp) {
-    CreateOrUpdateCodeModel createOrUpdateCodeModel =
-        switch (codetyp) {
-          case SCHUELER ->
-              (isBearbeiten)
-                  ? codesModel.createCreateOrUpdateSchuelerCodeModel(
-                      svmContext, codesTableModel, indexBearbeiten)
-                  : codesModel.createCreateOrUpdateSchuelerCodeModel(svmContext, codesTableModel);
-          case MITARBEITER ->
-              (isBearbeiten)
-                  ? codesModel.createCreateOrUpdateMitarbeiterCodeModel(
-                      svmContext, codesTableModel, indexBearbeiten)
-                  : codesModel.createCreateOrUpdateMitarbeiterCodeModel(svmContext, codesTableModel);
-          case ELTERNMITHILFE ->
-              (isBearbeiten)
-                  ? codesModel.createCreateOrUpdateElternmithilfeCodeModel(
-                      svmContext, codesTableModel, indexBearbeiten)
-                  : codesModel.createCreateOrUpdateElternmithilfeCodeModel(svmContext, codesTableModel);
-          case SEMESTERRECHNUNG ->
-              (isBearbeiten)
-                  ? codesModel.createCreateOrUpdateSemesterrechnungCodeModel(
-                      svmContext, codesTableModel, indexBearbeiten)
-                  : codesModel.createCreateOrUpdateSemesterrechnungCodeModel(svmContext, codesTableModel);
-        };
-    CreateOrUpdateCodeController createOrUpdateCodeController =
-        new CreateOrUpdateCodeController(
-            createOrUpdateCodeModel,
-            isBearbeiten,
-            DEFAULT_BUTTON_ENABLED);
-    createOrUpdateCodeController.setCreateOrUpdateCodeDialog(this);
-    createOrUpdateCodeController.setContentPane(contentPane);
-    createOrUpdateCodeController.setTxtKuerzel(txtKuerzel);
-    createOrUpdateCodeController.setTxtBeschreibung(txtBeschreibung);
-    createOrUpdateCodeController.setCheckBoxSelektierbar(checkBoxSelektierbar);
-    createOrUpdateCodeController.setBtnSpeichern(btnSpeichern);
-    createOrUpdateCodeController.setBtnAbbrechen(btnAbbrechen);
-    createOrUpdateCodeController.setErrLblKuerzel(errLblKuerzel);
-    createOrUpdateCodeController.setErrLblBeschreibung(errLblBeschreibung);
-    createOrUpdateCodeController.constructionDone();
+  @Override
+  public JButton getSpeichernButton() {
+    return btnSpeichern;
   }
 
-  private void initializeErrLbls() {
-    errLblKuerzel.setVisible(false);
-    errLblKuerzel.setForeground(Color.RED);
-    errLblBeschreibung.setVisible(false);
-    errLblBeschreibung.setForeground(Color.RED);
+  @Override
+  public JButton getAbbrechenButton() {
+    return btnAbbrechen;
   }
 
   {

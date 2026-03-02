@@ -7,6 +7,7 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.domain.model.CodesModel;
 import ch.metzenthin.svm.domain.model.CodesTableData;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateCodeModel;
 import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.persistence.entities.Code;
@@ -16,7 +17,6 @@ import ch.metzenthin.svm.service.result.DeleteCodeResult;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.CodeSpecificHinzufuegenDialog;
-import ch.metzenthin.svm.ui.components.CreateOrUpdateCodeDialog;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 import java.awt.event.*;
 import java.util.List;
@@ -226,18 +226,27 @@ public class CodesController {
 
   private void onNeuCodesVerwalten() {
     btnNeu.setFocusPainted(true);
-    String titel =
+    String title =
         switch (codetyp) {
           case SCHUELER -> "Neuer Schüler-Code";
           case MITARBEITER -> "Neuer Mitarbeiter-Code";
           case ELTERNMITHILFE -> "Neuer Eltern-Mithilfe-Code";
           case SEMESTERRECHNUNG -> "Neuer Semesterrechnung-Code";
         };
-    CreateOrUpdateCodeDialog createOrUpdateCodeDialog =
-        new CreateOrUpdateCodeDialog(
-            svmContext, codesTableModel, codesModel, 0, false, titel, codetyp);
-    createOrUpdateCodeDialog.pack();
-    createOrUpdateCodeDialog.setVisible(true);
+    CreateOrUpdateCodeModel createOrUpdateCodeModel =
+        switch (codetyp) {
+          case SCHUELER ->
+              codesModel.createCreateOrUpdateSchuelerCodeModel(svmContext, codesTableModel);
+          case MITARBEITER ->
+              codesModel.createCreateOrUpdateMitarbeiterCodeModel(svmContext, codesTableModel);
+          case ELTERNMITHILFE ->
+              codesModel.createCreateOrUpdateElternmithilfeCodeModel(svmContext, codesTableModel);
+          case SEMESTERRECHNUNG ->
+              codesModel.createCreateOrUpdateSemesterrechnungCodeModel(svmContext, codesTableModel);
+        };
+    CreateOrUpdateCodeController createOrUpdateCodeController =
+        new CreateOrUpdateCodeController(createOrUpdateCodeModel, false, title);
+    createOrUpdateCodeController.showDialog();
     // Dialog wurde geschlossen
     reloadTableModel();
     btnNeu.setFocusPainted(false);
@@ -306,24 +315,31 @@ public class CodesController {
 
   private void onBearbeiten() {
     btnBearbeiten.setFocusPainted(true);
-    String titel =
+    String title =
         switch (codetyp) {
           case SCHUELER -> "Schüler-Code bearbeiten";
           case MITARBEITER -> "Mitarbeiter-Code bearbeiten";
           case ELTERNMITHILFE -> "Eltern-Mithilfe-Code bearbeiten";
           case SEMESTERRECHNUNG -> "Semesterrechnung-Code bearbeiten";
         };
-    CreateOrUpdateCodeDialog createOrUpdateCodeDialog =
-        new CreateOrUpdateCodeDialog(
-            svmContext,
-            codesTableModel,
-            codesModel,
-            codesTable.getSelectedRow(),
-            true,
-            titel,
-            codetyp);
-    createOrUpdateCodeDialog.pack();
-    createOrUpdateCodeDialog.setVisible(true);
+    CreateOrUpdateCodeModel createOrUpdateCodeModel =
+        switch (codetyp) {
+          case SCHUELER ->
+              codesModel.createCreateOrUpdateSchuelerCodeModel(
+                  svmContext, codesTableModel, codesTable.getSelectedRow());
+          case MITARBEITER ->
+              codesModel.createCreateOrUpdateMitarbeiterCodeModel(
+                  svmContext, codesTableModel, codesTable.getSelectedRow());
+          case ELTERNMITHILFE ->
+              codesModel.createCreateOrUpdateElternmithilfeCodeModel(
+                  svmContext, codesTableModel, codesTable.getSelectedRow());
+          case SEMESTERRECHNUNG ->
+              codesModel.createCreateOrUpdateSemesterrechnungCodeModel(
+                  svmContext, codesTableModel, codesTable.getSelectedRow());
+        };
+    CreateOrUpdateCodeController createOrUpdateCodeController =
+        new CreateOrUpdateCodeController(createOrUpdateCodeModel, true, title);
+    createOrUpdateCodeController.showDialog();
     // Dialog wurde geschlossen
     reloadTableModel();
     btnBearbeiten.setFocusPainted(false);

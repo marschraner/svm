@@ -6,7 +6,7 @@ import ch.metzenthin.svm.service.result.SaveCodeResult;
 /**
  * @author Martin Schraner
  */
-public interface CreateOrUpdateCodeModel extends Model {
+public interface CreateOrUpdateCodeModel extends CreateOrUpdateModel<SaveCodeResult> {
 
   String getKuerzel();
 
@@ -19,6 +19,4 @@ public interface CreateOrUpdateCodeModel extends Model {
   void setBeschreibung(String beschreibung) throws SvmValidationException;
 
   void setSelektierbar(Boolean isSelected);
-
-  SaveCodeResult speichern();
 }
