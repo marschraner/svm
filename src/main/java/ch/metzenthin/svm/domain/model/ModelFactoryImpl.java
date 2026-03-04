@@ -116,6 +116,26 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
+  public ElternmithilfeCodeListModel createElternmithilfeCodeListModel() {
+    return new ElternmithilfeCodeListModel(elternmithilfeCodeService);
+  }
+
+  @Override
+  public MitarbeiterCodeListModel createMitarbeiterCodeListModel() {
+    return new MitarbeiterCodeListModel(mitarbeiterCodeService);
+  }
+
+  @Override
+  public SchuelerCodeListModel createSchuelerCodeListModel() {
+    return new SchuelerCodeListModel(schuelerCodeService);
+  }
+
+  @Override
+  public SemesterrechnungCodeListModel createSemesterrechnungCodeListModel() {
+    return new SemesterrechnungCodeListModel(semesterrechnungCodeService);
+  }
+
+  @Override
   public CodesModel createCodesModel() {
     return new CodesModelImpl(
         schuelerCodeService,

@@ -1,15 +1,22 @@
 package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.datatypes.Codetyp;
+import ch.metzenthin.svm.domain.model.ElternmithilfeCodeListModel;
 import ch.metzenthin.svm.domain.model.KursortListModel;
 import ch.metzenthin.svm.domain.model.KurstypListModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenListModel;
+import ch.metzenthin.svm.domain.model.MitarbeiterCodeListModel;
+import ch.metzenthin.svm.domain.model.SchuelerCodeListModel;
+import ch.metzenthin.svm.domain.model.SemesterrechnungCodeListModel;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
+import ch.metzenthin.svm.ui.control.ElternmithilfeCodeListController;
 import ch.metzenthin.svm.ui.control.KursortListController;
 import ch.metzenthin.svm.ui.control.KurstypListController;
 import ch.metzenthin.svm.ui.control.LektionsgebuehrenListController;
+import ch.metzenthin.svm.ui.control.MitarbeiterCodeListController;
+import ch.metzenthin.svm.ui.control.SchuelerCodeListController;
+import ch.metzenthin.svm.ui.control.SemesterrechnungCodeListController;
 import com.apple.eawt.Application;
 import java.awt.*;
 import java.awt.event.*;
@@ -245,10 +252,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
           schuelerErfassenPanel.$$$getRootComponent$$$(), "Neuen Schüler erfassen");
 
     } else if ("schuelerCodesVerwalten".equals(e.getActionCommand())) {
-      CodesPanel codesPanel =
-          new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.SCHUELER);
-      codesPanel.addCloseListener(e2 -> onFrameAbbrechen());
-      setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Schüler-Codes verwalten");
+      String title = "Schüler-Codes verwalten";
+      SchuelerCodeListModel schuelerCodeListModel =
+          svmContext.getModelFactory().createSchuelerCodeListModel();
+      SchuelerCodeListController schuelerCodeListController =
+          new SchuelerCodeListController(
+              svmContext, schuelerCodeListModel, title, e2 -> onFrameAbbrechen());
+      setAndShowActivePanel(schuelerCodeListController.getView().getRootComponent(), title);
 
     } else if ("monatsstatistikSchueler".equals(e.getActionCommand())) {
       MonatsstatistikSchuelerPanel anAbmeldestatistikPanel =
@@ -265,10 +275,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
       setAndShowActivePanel(mitarbeiterSuchenPanel.$$$getRootComponent$$$(), "Mitarbeiter suchen");
 
     } else if ("mitarbeiterCodesVerwalten".equals(e.getActionCommand())) {
-      CodesPanel codesPanel =
-          new CodesPanel(svmContext, null, null, null, null, 0, false, false, Codetyp.MITARBEITER);
-      codesPanel.addCloseListener(e5 -> onFrameAbbrechen());
-      setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Mitarbeiter-Codes verwalten");
+      String title = "Mitarbeiter-Codes verwalten";
+      MitarbeiterCodeListModel mitarbeiterCodeListModel =
+          svmContext.getModelFactory().createMitarbeiterCodeListModel();
+      MitarbeiterCodeListController mitarbeiterCodeCodeListController =
+          new MitarbeiterCodeListController(
+              svmContext, mitarbeiterCodeListModel, title, e5 -> onFrameAbbrechen());
+      setAndShowActivePanel(mitarbeiterCodeCodeListController.getView().getRootComponent(), title);
 
     } else if ("kurseVerwalten".equals(e.getActionCommand())) {
       KurseSemesterwahlPanel kurseSemesterwahlPanel = new KurseSemesterwahlPanel(svmContext);
@@ -305,11 +318,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
       setAndShowActivePanel(semestersPanel.$$$getRootComponent$$$(), "Semester verwalten");
 
     } else if ("elternmithilfeCodesVerwalten".equals(e.getActionCommand())) {
-      CodesPanel codesPanel =
-          new CodesPanel(
-              svmContext, null, null, null, null, 0, false, false, Codetyp.ELTERNMITHILFE);
-      codesPanel.addCloseListener(e11 -> onFrameAbbrechen());
-      setAndShowActivePanel(codesPanel.$$$getRootComponent$$$(), "Eltern-Mithilfe-Codes verwalten");
+      String title = "Eltern-Mithilfe-Codes verwalten";
+      ElternmithilfeCodeListModel elternmithilfeCodeListModel =
+          svmContext.getModelFactory().createElternmithilfeCodeListModel();
+      ElternmithilfeCodeListController elternmithilfeCodeListController =
+          new ElternmithilfeCodeListController(
+              svmContext, elternmithilfeCodeListModel, title, e11 -> onFrameAbbrechen());
+      setAndShowActivePanel(elternmithilfeCodeListController.getView().getRootComponent(), title);
 
     } else if ("maerchenVerwalten".equals(e.getActionCommand())) {
       MaerchensPanel maerchensPanel = new MaerchensPanel(svmContext);
@@ -326,12 +341,13 @@ public class SvmDesktop extends JFrame implements ActionListener {
           semesterrechnungenSuchenPanel.$$$getRootComponent$$$(), "Semesterrechnungen suchen");
 
     } else if ("semesterrechnungCodesVerwalten".equals(e.getActionCommand())) {
-      CodesPanel codesPanel =
-          new CodesPanel(
-              svmContext, null, null, null, null, 0, false, false, Codetyp.SEMESTERRECHNUNG);
-      codesPanel.addCloseListener(e14 -> onFrameAbbrechen());
-      setAndShowActivePanel(
-          codesPanel.$$$getRootComponent$$$(), "Semesterrechnung-Codes verwalten");
+      String title = "Semesterrechnung-Codes verwalten";
+      SemesterrechnungCodeListModel semesterrechnungCodeListModel =
+          svmContext.getModelFactory().createSemesterrechnungCodeListModel();
+      SemesterrechnungCodeListController semesterrechnungCodeListController =
+          new SemesterrechnungCodeListController(
+              svmContext, semesterrechnungCodeListModel, title, e14 -> onFrameAbbrechen());
+      setAndShowActivePanel(semesterrechnungCodeListController.getView().getRootComponent(), title);
 
     } else if ("lektionsgebuehrenVerwalten".equals(e.getActionCommand())) {
       LektionsgebuehrenListModel lektionsgebuehrenListModel =

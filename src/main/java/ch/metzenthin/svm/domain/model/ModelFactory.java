@@ -34,6 +34,14 @@ public interface ModelFactory {
 
   DispensationErfassenModel createDispensationErfassenModel();
 
+  ElternmithilfeCodeListModel createElternmithilfeCodeListModel();
+
+  MitarbeiterCodeListModel createMitarbeiterCodeListModel();
+
+  SchuelerCodeListModel createSchuelerCodeListModel();
+
+  SemesterrechnungCodeListModel createSemesterrechnungCodeListModel();
+
   CodesModel createCodesModel();
 
   CreateOrUpdateSchuelerCodeModel createCreateOrUpdateSchuelerCodeModel(
