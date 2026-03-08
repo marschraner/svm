@@ -91,7 +91,7 @@ public interface ModelFactory {
 
   EmailModel createEmailModel();
 
-  LektionsgebuehrenModel createLektionsgebuehrenModel();
+  LektionsgebuehrenListModel createLektionsgebuehrenListModel();
 
   CreateOrUpdateLektionsgebuehrenModel createCreateOrUpdateLektionsgebuehrenModel(
       Optional<Lektionsgebuehren> lektionsgebuehrenToBeModifiedOptional);

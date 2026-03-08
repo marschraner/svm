@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Martin Schraner
  */
-public class LektionsgebuehrenTableData {
+public class LektionsgebuehrenTableData extends AbstractTableData<Lektionsgebuehren> {
 
   private static final Field[] COLUMNS = {
     Field.LEKTIONSLAENGE,
@@ -20,22 +20,12 @@ public class LektionsgebuehrenTableData {
     Field.BETRAG_6_KINDER
   };
 
-  private List<Lektionsgebuehren> lektionsgebuehrenList;
-
   public LektionsgebuehrenTableData(List<Lektionsgebuehren> lektionsgebuehrenList) {
-    this.lektionsgebuehrenList = lektionsgebuehrenList;
-  }
-
-  public int getColumnCount() {
-    return COLUMNS.length;
-  }
-
-  public int size() {
-    return lektionsgebuehrenList.size();
+    super(COLUMNS, lektionsgebuehrenList);
   }
 
   public Object getValueAt(int rowIndex, int columnIndex) {
-    Lektionsgebuehren lektionsgebuehren = lektionsgebuehrenList.get(rowIndex);
+    Lektionsgebuehren lektionsgebuehren = data.get(rowIndex);
     Object value = null;
     switch (COLUMNS[columnIndex]) {
       case LEKTIONSLAENGE -> value = lektionsgebuehren.getLektionslaenge();
@@ -64,17 +54,5 @@ public class LektionsgebuehrenTableData {
           BigDecimal.class;
       default -> String.class;
     };
-  }
-
-  public String getColumnName(int column) {
-    return COLUMNS[column].toString();
-  }
-
-  public List<Lektionsgebuehren> getLektionsgebuehrenList() {
-    return lektionsgebuehrenList;
-  }
-
-  public void setLektionsgebuehrenList(List<Lektionsgebuehren> lektionsgebuehrenList) {
-    this.lektionsgebuehrenList = lektionsgebuehrenList;
   }
 }

@@ -256,8 +256,8 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
-  public LektionsgebuehrenModel createLektionsgebuehrenModel() {
-    return new LektionsgebuehrenModelImpl(lektionsgebuehrenService);
+  public LektionsgebuehrenListModel createLektionsgebuehrenListModel() {
+    return new LektionsgebuehrenListModel(lektionsgebuehrenService);
   }
 
   @Override

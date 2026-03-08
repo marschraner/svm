@@ -4,10 +4,12 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Codetyp;
 import ch.metzenthin.svm.domain.model.KursortListModel;
 import ch.metzenthin.svm.domain.model.KurstypListModel;
+import ch.metzenthin.svm.domain.model.LektionsgebuehrenListModel;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.ui.control.KursortListController;
 import ch.metzenthin.svm.ui.control.KurstypListController;
+import ch.metzenthin.svm.ui.control.LektionsgebuehrenListController;
 import com.apple.eawt.Application;
 import java.awt.*;
 import java.awt.event.*;
@@ -332,10 +334,14 @@ public class SvmDesktop extends JFrame implements ActionListener {
           codesPanel.$$$getRootComponent$$$(), "Semesterrechnung-Codes verwalten");
 
     } else if ("lektionsgebuehrenVerwalten".equals(e.getActionCommand())) {
-      LektionsgebuehrenPanel lektionsgebuehrenPanel = new LektionsgebuehrenPanel(svmContext);
-      lektionsgebuehrenPanel.addCloseListener(e15 -> onFrameAbbrechen());
+      LektionsgebuehrenListModel lektionsgebuehrenListModel =
+          svmContext.getModelFactory().createLektionsgebuehrenListModel();
+      LektionsgebuehrenListController lektionsgebuehrenListController =
+          new LektionsgebuehrenListController(
+              svmContext, lektionsgebuehrenListModel, e15 -> onFrameAbbrechen());
       setAndShowActivePanel(
-          lektionsgebuehrenPanel.$$$getRootComponent$$$(), "Lektionsgebühren verwalten");
+          lektionsgebuehrenListController.getView().getRootComponent(),
+          "Lektionsgebühren verwalten");
 
     } else { // beenden
       quit();

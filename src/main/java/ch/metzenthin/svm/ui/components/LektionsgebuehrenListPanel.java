@@ -1,53 +1,44 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.ui.control.LektionsgebuehrenController;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
+import lombok.Getter;
 
 /**
  * @author Martin Schraner
  */
 @SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
-public class LektionsgebuehrenPanel {
+public class LektionsgebuehrenListPanel extends AbstractListPanel {
 
   private JPanel panel1;
   private JPanel datenPanel;
   private JPanel titelPanel;
-  private JTable lektionsgebuehrenTable;
   private JPanel buttonPanel;
-  private JButton btnNeu;
-  private JButton btnBearbeiten;
-  private JButton btnLoeschen;
-  private JButton btnAbbrechen;
-  private LektionsgebuehrenController lektionsgebuehrenController;
+  private JTable lektionsgebuehrenTable;
+  @Getter private JButton btnNeu;
+  @Getter private JButton btnBearbeiten;
+  @Getter private JButton btnLoeschen;
+  @Getter private JButton btnAbbrechen;
 
-  LektionsgebuehrenPanel(SvmContext svmContext) {
+  @Override
+  public JComponent getRootComponent() {
+    return $$$getRootComponent$$$();
+  }
+
+  @Override
+  public JTable getTable() {
+    return lektionsgebuehrenTable;
+  }
+
+  public LektionsgebuehrenListPanel() {
     $$$setupUI$$$();
-    createLektionsgebuehrenController(svmContext);
-  }
-
-  private void createLektionsgebuehrenController(SvmContext svmContext) {
-    lektionsgebuehrenController =
-        new LektionsgebuehrenController(
-            svmContext.getModelFactory().createLektionsgebuehrenModel(), svmContext);
-    lektionsgebuehrenController.setLektionsgebuehrenTable(lektionsgebuehrenTable);
-    lektionsgebuehrenController.setBtnNeu(btnNeu);
-    lektionsgebuehrenController.setBtnBearbeiten(btnBearbeiten);
-    lektionsgebuehrenController.setBtnLoeschen(btnLoeschen);
-    lektionsgebuehrenController.setBtnAbbrechen(btnAbbrechen);
-  }
-
-  public void addCloseListener(ActionListener closeListener) {
-    lektionsgebuehrenController.addCloseListener(closeListener);
   }
 
   private void createUIComponents() {
