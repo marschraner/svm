@@ -4,6 +4,7 @@ import ch.metzenthin.svm.domain.model.AbstractTableData;
 import java.io.Serial;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
+import lombok.Getter;
 
 /**
  * @param <T> Table-Data-Typ, z.B. KursortTableData
@@ -15,10 +16,12 @@ public class TableModel<T extends AbstractTableData<U>, U> extends AbstractTable
   @Serial private static final long serialVersionUID = 1L;
 
   private final transient T tableData;
+  @Getter private final double[] columnWidthsPercentages;
 
-  public TableModel(T tableData) {
+  public TableModel(T tableData, double... columnWidthsPercentages) {
     super();
     this.tableData = tableData;
+    this.columnWidthsPercentages = columnWidthsPercentages;
   }
 
   @Override

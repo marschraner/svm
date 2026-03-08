@@ -29,7 +29,7 @@ public class KursortListModel
       KursortService kursortService) {
     List<Kursort> kursorte = kursortService.findAllKursorte();
     KursortTableData kursortTableData = new KursortTableData(kursorte);
-    return new TableModel<>(kursortTableData);
+    return new TableModel<>(kursortTableData, 0.75, 0.25);
   }
 
   @Override

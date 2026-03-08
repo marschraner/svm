@@ -29,7 +29,7 @@ public class KurstypListModel
       KurstypService kurstypService) {
     List<Kurstyp> kurstypen = kurstypService.findAllKurstypen();
     KurstypTableData kurstypTableData = new KurstypTableData(kurstypen);
-    return new TableModel<>(kurstypTableData);
+    return new TableModel<>(kurstypTableData, 0.75, 0.25);
   }
 
   @Override

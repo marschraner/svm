@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.view;
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAsPercentages;
 
+import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import ch.metzenthin.svm.ui.components.AbstractListPanel;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -29,7 +30,7 @@ public abstract class AbstractListPanelView extends AbstractView {
   @Getter private final JComponent rootComponent;
 
   protected AbstractListPanelView(
-      AbstractTableModel tableModel, AbstractListPanel listPanel, ActionListener closeListener) {
+      TableModel<?, ?> tableModel, AbstractListPanel listPanel, ActionListener closeListener) {
     this.tableModel = tableModel;
     this.table = listPanel.getTable();
     this.buttonNeu = listPanel.getBtnNeu();
@@ -41,10 +42,13 @@ public abstract class AbstractListPanelView extends AbstractView {
     addButtonAbbrechenActionListener(closeListener);
   }
 
-  private static void configTable(JTable table, AbstractTableModel tableModel) {
+  private static void configTable(JTable table, TableModel<?, ?> tableModel) {
     table.setModel(tableModel);
     setColumnCellRenderers(table, tableModel);
-    setJTableColumnWidthAsPercentages(table, 0.75, 0.25);
+    double[] columnWithsPercentages = tableModel.getColumnWidthsPercentages();
+    if (columnWithsPercentages != null && columnWithsPercentages.length > 0) {
+      setJTableColumnWidthAsPercentages(table, columnWithsPercentages);
+    }
   }
 
   public void configListeners(Runnable mouseListenerAction, Runnable listSelectionListenerAction) {
