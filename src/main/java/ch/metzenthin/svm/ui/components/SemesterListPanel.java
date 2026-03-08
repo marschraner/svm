@@ -1,53 +1,45 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.ui.control.SemestersController;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
+import lombok.Getter;
 
 /**
  * @author Martin Schraner
  */
 @SuppressWarnings({"java:S100", "java:S1450"})
-public class SemestersPanel {
+public class SemesterListPanel extends AbstractListPanel {
 
   private JPanel panel1;
   private JPanel datenPanel;
   private JPanel titelPanel;
   private JPanel buttonPanel;
-  private JButton btnNeu;
-  private JButton btnBearbeiten;
-  private JButton btnLoeschen;
-  private JButton btnAbbrechen;
   private JPanel semestersTablePanel;
   private JTable semestersTable;
-  private SemestersController semestersController;
+  @Getter private JButton btnNeu;
+  @Getter private JButton btnBearbeiten;
+  @Getter private JButton btnLoeschen;
+  @Getter private JButton btnAbbrechen;
 
-  public SemestersPanel(SvmContext svmContext) {
+  public SemesterListPanel() {
     $$$setupUI$$$();
     createUIComponents();
-    createSemestersController(svmContext);
   }
 
-  private void createSemestersController(SvmContext svmContext) {
-    semestersController =
-        new SemestersController(svmContext.getModelFactory().createSemestersModel(), svmContext);
-    semestersController.setSemestersTable(semestersTable);
-    semestersController.setBtnNeu(btnNeu);
-    semestersController.setBtnBearbeiten(btnBearbeiten);
-    semestersController.setBtnLoeschen(btnLoeschen);
-    semestersController.setBtnAbbrechen(btnAbbrechen);
+  @Override
+  public JComponent getRootComponent() {
+    return $$$getRootComponent$$$();
   }
 
-  public void addCloseListener(ActionListener closeListener) {
-    semestersController.addCloseListener(closeListener);
+  @Override
+  public JTable getTable() {
+    return semestersTable;
   }
 
   @SuppressWarnings("DuplicatedCode")

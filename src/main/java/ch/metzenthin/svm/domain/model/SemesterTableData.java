@@ -3,21 +3,11 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.datatypes.Field;
 import java.util.Calendar;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author Martin Schraner
  */
-@Setter
-@Getter
-public class SemestersTableData {
-
-  private List<SemesterAndNumberOfKurse> semestersAndNumberOfKurses;
-
-  public SemestersTableData(List<SemesterAndNumberOfKurse> semestersAndNumberOfKurses) {
-    this.semestersAndNumberOfKurses = semestersAndNumberOfKurses;
-  }
+public class SemesterTableData extends AbstractTableData<SemesterAndNumberOfKurse> {
 
   private static final Field[] COLUMNS = {
     Field.SCHULJAHR,
@@ -32,16 +22,12 @@ public class SemestersTableData {
     Field.ANZAHL_KURSE
   };
 
-  public int getColumnCount() {
-    return COLUMNS.length;
-  }
-
-  public int size() {
-    return semestersAndNumberOfKurses.size();
+  public SemesterTableData(List<SemesterAndNumberOfKurse> semestersAndNumberOfKurses) {
+    super(COLUMNS, semestersAndNumberOfKurses);
   }
 
   public Object getValueAt(int rowIndex, int columnIndex) {
-    SemesterAndNumberOfKurse semesterAndNumberOfKurse = semestersAndNumberOfKurses.get(rowIndex);
+    SemesterAndNumberOfKurse semesterAndNumberOfKurse = data.get(rowIndex);
     Object value = null;
     switch (COLUMNS[columnIndex]) {
       case SCHULJAHR -> value = semesterAndNumberOfKurse.semester().getSchuljahr();
@@ -69,9 +55,5 @@ public class SemestersTableData {
       case ANZAHL_SCHULWOCHEN, ANZAHL_KURSE -> Integer.class;
       default -> String.class;
     };
-  }
-
-  public String getColumnName(int column) {
-    return COLUMNS[column].toString();
   }
 }

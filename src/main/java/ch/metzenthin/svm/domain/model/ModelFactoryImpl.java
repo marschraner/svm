@@ -210,8 +210,8 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
-  public SemestersModel createSemestersModel() {
-    return new SemestersModelImpl(kursService, semesterService, semesterrechnungService);
+  public SemesterListModel createSemesterListModel() {
+    return new SemesterListModel(kursService, semesterService, semesterrechnungService);
   }
 
   @Override

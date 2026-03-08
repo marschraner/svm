@@ -72,7 +72,7 @@ public interface ModelFactory {
   CreateOrUpdateKurstypModel createCreateOrUpdateKurstypModel(
       Optional<Kurstyp> kurstypToBeModifiedOptional);
 
-  SemestersModel createSemestersModel();
+  SemesterListModel createSemesterListModel();
 
   CreateOrUpdateSemesterModel createCreateOrUpdateSemesterModel(
       Optional<Semester> semesterToBeModifiedOptional);

@@ -87,7 +87,7 @@ public abstract class AbstractListController<
     view.clearSelection();
   }
 
-  private void onLoeschenDialog() {
+  protected void onLoeschenDialog() {
     int n =
         view.showYesNoDialog(
             "Soll der Eintrag aus der Datenbank gelöscht werden?",
@@ -113,7 +113,7 @@ public abstract class AbstractListController<
     reloadTableData();
   }
 
-  private void reloadTableData() {
+  protected void reloadTableData() {
     // TableData mit von der Datenbank upgedateten Objekten updaten
     model.reloadData();
     view.fireTableDataChanged();

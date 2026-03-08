@@ -2,81 +2,77 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.EntityStillReferencedException;
-import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.SemesterService;
 import ch.metzenthin.svm.service.SemesterrechnungService;
 import ch.metzenthin.svm.service.result.DeleteSemesterResult;
-import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
+import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import jakarta.persistence.OptimisticLockException;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
  * @author Martin Schraner
  */
-public class SemestersModelImpl extends AbstractModel implements SemestersModel {
+public class SemesterListModel
+    extends AbstractListModel<
+        SemesterTableData,
+        SemesterAndNumberOfKurse,
+        CreateOrUpdateSemesterModel,
+        DeleteSemesterResult> {
 
   private final KursService kursService;
   private final SemesterService semesterService;
   private final SemesterrechnungService semesterrechnungService;
 
-  public SemestersModelImpl(
+  public SemesterListModel(
       KursService kursService,
       SemesterService semesterService,
       SemesterrechnungService semesterrechnungService) {
+    super(createTableModel(semesterService));
     this.kursService = kursService;
     this.semesterService = semesterService;
     this.semesterrechnungService = semesterrechnungService;
   }
 
+  private static TableModel<SemesterTableData, SemesterAndNumberOfKurse> createTableModel(
+      SemesterService semesterService) {
+    List<SemesterAndNumberOfKurse> semesterList =
+        semesterService.findAllSemestersAndNumberOfKurse();
+    SemesterTableData semesterTableData = new SemesterTableData(semesterList);
+    return new TableModel<>(semesterTableData);
+  }
+
   @Override
-  public CreateOrUpdateSemesterModel createCreateOrUpdateSemesterModel(
-      SvmContext svmContext, SemestersTableModel semestersTableModel) {
+  public CreateOrUpdateSemesterModel createCreateOrUpdateModel(SvmContext svmContext) {
     return svmContext.getModelFactory().createCreateOrUpdateSemesterModel(Optional.empty());
   }
 
   @Override
-  public CreateOrUpdateSemesterModel createCreateOrUpdateSemesterModel(
-      SvmContext svmContext,
-      SemestersTableModel semestersTableModel,
-      int indexSemesterToBeModified) {
-    Semester semesterToBeModified =
-        getSelectedSemester(semestersTableModel, indexSemesterToBeModified);
+  public CreateOrUpdateSemesterModel createCreateOrUpdateModel(
+      SvmContext svmContext, int indexSemesterToBeUpdated) {
+    Semester semesterToBeUpdated = getSelectedRow(indexSemesterToBeUpdated).semester();
     return svmContext
         .getModelFactory()
-        .createCreateOrUpdateSemesterModel(Optional.of(semesterToBeModified));
+        .createCreateOrUpdateSemesterModel(Optional.of(semesterToBeUpdated));
   }
 
-  private static Semester getSelectedSemester(
-      SemestersTableModel semestersTableModel, int selectedIndex) {
-    return semestersTableModel
-        .getSemestersTableData()
-        .getSemestersAndNumberOfKurses()
-        .get(selectedIndex)
-        .semester();
-  }
-
-  @Override
-  public boolean existsKurs(SemestersTableModel semestersTableModel, int selectedSemesterIndex) {
-    Semester selectedSemester = getSelectedSemester(semestersTableModel, selectedSemesterIndex);
+  public boolean existsKurs(int selectedSemesterIndex) {
+    Semester selectedSemester = getSelectedRow(selectedSemesterIndex).semester();
     return kursService.existsKursBySemesterId(selectedSemester.getSemesterId());
   }
 
-  @Override
-  public int getNumberOfReferencedSemesterrechnungen(
-      SemestersTableModel semestersTableModel, int selectedSemesterIndex) {
-    Semester selectedSemester = getSelectedSemester(semestersTableModel, selectedSemesterIndex);
+  public int getNumberOfReferencedSemesterrechnungen(int selectedSemesterIndex) {
+    Semester selectedSemester = getSelectedRow(selectedSemesterIndex).semester();
     return semesterrechnungService.countSemesterrechnungenBySemesterId(
         selectedSemester.getSemesterId());
   }
 
   @Override
-  public DeleteSemesterResult semesterLoeschen(
-      SemestersTableModel semestersTableModel, int indexSemesterToBeRemoved) {
-    Semester semesterToBeDeleted =
-        getSelectedSemester(semestersTableModel, indexSemesterToBeRemoved);
+  public DeleteSemesterResult eintragLoeschen(int indexSemesterToBeDeleted) {
+    Semester semesterToBeDeleted = getSelectedRow(indexSemesterToBeDeleted).semester();
     DeleteSemesterResult deleteSemesterResult;
     try {
       semesterService.deleteSemesterrechnungenAndSemester(semesterToBeDeleted);
@@ -90,12 +86,14 @@ public class SemestersModelImpl extends AbstractModel implements SemestersModel 
   }
 
   @Override
-  void doValidate() throws SvmValidationException {
-    // Keine feldübergreifende Validierung notwendig
+  public void reloadData() {
+    List<SemesterAndNumberOfKurse> semesterList =
+        semesterService.findAllSemestersAndNumberOfKurse();
+    tableModel.setData(semesterList);
   }
 
   @Override
-  public boolean isCompleted() {
-    return false;
+  public String getListItemName() {
+    return "Semesterliste mit Anzahl Kurse";
   }
 }

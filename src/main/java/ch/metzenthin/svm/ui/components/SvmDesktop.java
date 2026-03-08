@@ -7,6 +7,7 @@ import ch.metzenthin.svm.domain.model.KurstypListModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenListModel;
 import ch.metzenthin.svm.domain.model.MitarbeiterCodeListModel;
 import ch.metzenthin.svm.domain.model.SchuelerCodeListModel;
+import ch.metzenthin.svm.domain.model.SemesterListModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungCodeListModel;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
@@ -16,6 +17,7 @@ import ch.metzenthin.svm.ui.control.KurstypListController;
 import ch.metzenthin.svm.ui.control.LektionsgebuehrenListController;
 import ch.metzenthin.svm.ui.control.MitarbeiterCodeListController;
 import ch.metzenthin.svm.ui.control.SchuelerCodeListController;
+import ch.metzenthin.svm.ui.control.SemesterListController;
 import ch.metzenthin.svm.ui.control.SemesterrechnungCodeListController;
 import com.apple.eawt.Application;
 import java.awt.*;
@@ -313,9 +315,11 @@ public class SvmDesktop extends JFrame implements ActionListener {
           monatsstatistikKursePanel.$$$getRootComponent$$$(), "Monatsstatistik Kurse");
 
     } else if ("semesterVerwalten".equals(e.getActionCommand())) {
-      SemestersPanel semestersPanel = new SemestersPanel(svmContext);
-      semestersPanel.addCloseListener(e10 -> onFrameAbbrechen());
-      setAndShowActivePanel(semestersPanel.$$$getRootComponent$$$(), "Semester verwalten");
+      SemesterListModel semesterListModel = svmContext.getModelFactory().createSemesterListModel();
+      SemesterListController semesterListController =
+          new SemesterListController(svmContext, semesterListModel, e10 -> onFrameAbbrechen());
+      setAndShowActivePanel(
+          semesterListController.getView().getRootComponent(), "Semester verwalten");
 
     } else if ("elternmithilfeCodesVerwalten".equals(e.getActionCommand())) {
       String title = "Eltern-Mithilfe-Codes verwalten";
