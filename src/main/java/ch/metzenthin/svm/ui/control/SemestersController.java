@@ -3,11 +3,11 @@ package ch.metzenthin.svm.ui.control;
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModel;
 import ch.metzenthin.svm.domain.model.SemestersModel;
 import ch.metzenthin.svm.domain.model.SemestersTableData;
 import ch.metzenthin.svm.service.result.DeleteSemesterResult;
 import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
-import ch.metzenthin.svm.ui.components.CreateOrUpdateSemesterDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -74,11 +74,11 @@ public class SemestersController {
 
   private void onNeu() {
     btnNeu.setFocusPainted(true);
-    CreateOrUpdateSemesterDialog createOrUpdateSemesterDialog =
-        new CreateOrUpdateSemesterDialog(
-            svmContext, semestersTableModel, semestersModel, 0, false, "Neues Semester");
-    createOrUpdateSemesterDialog.pack();
-    createOrUpdateSemesterDialog.setVisible(true);
+    CreateOrUpdateSemesterModel createOrUpdateSemesterModel =
+        semestersModel.createCreateOrUpdateSemesterModel(svmContext, semestersTableModel);
+    CreateOrUpdateSemesterController createOrUpdateSemesterController =
+        new CreateOrUpdateSemesterController(createOrUpdateSemesterModel, false, "Neues Semester");
+    createOrUpdateSemesterController.showDialog();
     // Dialog wurde geschlossen
     reloadTableModel();
     btnNeu.setFocusPainted(false);
@@ -96,16 +96,13 @@ public class SemestersController {
 
   private void onBearbeiten() {
     btnBearbeiten.setFocusPainted(true);
-    CreateOrUpdateSemesterDialog createOrUpdateSemesterDialog =
-        new CreateOrUpdateSemesterDialog(
-            svmContext,
-            semestersTableModel,
-            semestersModel,
-            semestersTable.getSelectedRow(),
-            true,
-            "Semester bearbeiten");
-    createOrUpdateSemesterDialog.pack();
-    createOrUpdateSemesterDialog.setVisible(true);
+    CreateOrUpdateSemesterModel createOrUpdateSemesterModel =
+        semestersModel.createCreateOrUpdateSemesterModel(
+            svmContext, semestersTableModel, semestersTable.getSelectedRow());
+    CreateOrUpdateSemesterController createOrUpdateSemesterController =
+        new CreateOrUpdateSemesterController(
+            createOrUpdateSemesterModel, true, "Semester bearbeiten");
+    createOrUpdateSemesterController.showDialog();
     // Dialog wurde geschlossen
     reloadTableModel();
     btnBearbeiten.setFocusPainted(false);

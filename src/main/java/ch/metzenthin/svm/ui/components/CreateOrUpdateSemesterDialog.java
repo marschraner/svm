@@ -1,115 +1,53 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Schuljahre;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
-import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModel;
-import ch.metzenthin.svm.domain.model.SemestersModel;
-import ch.metzenthin.svm.ui.componentmodel.SemestersTableModel;
-import ch.metzenthin.svm.ui.control.CreateOrUpdateSemesterController;
 import java.awt.*;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
+import lombok.Getter;
 
-@SuppressWarnings({"java:S100", "java:S1450", "FieldCanBeLocal"})
-public class CreateOrUpdateSemesterDialog extends JDialog {
-
-  // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
-  private static final boolean DEFAULT_BUTTON_ENABLED = false;
+@SuppressWarnings({"java:S100", "java:S1450"})
+public class CreateOrUpdateSemesterDialog extends SpeichernAbbrechenDialog {
 
   private JPanel contentPane;
   private JPanel datenPanel;
   private JPanel buttonPanel;
-  private JSpinner spinnerSchuljahre;
-  private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
-  private JTextField txtSemesterbeginn;
-  private JTextField txtSemesterende;
-  private JTextField txtFerienbeginn1;
-  private JTextField txtFerienende1;
-  private JTextField txtFerienbeginn2;
-  private JTextField txtFerienende2;
-  private JLabel errLblSemesterende;
-  private JLabel errLblSemesterbeginn;
-  private JLabel errLblFerienbeginn1;
-  private JLabel errLblFerienende1;
-  private JLabel errLblFerienbeginn2;
-  private JLabel errLblFerienende2;
+  @Getter private JSpinner spinnerSchuljahre;
+  @Getter private JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;
+  @Getter private JTextField txtSemesterbeginn;
+  @Getter private JLabel errLblSemesterbeginn;
+  @Getter private JTextField txtSemesterende;
+  @Getter private JLabel errLblSemesterende;
+  @Getter private JTextField txtFerienbeginn1;
+  @Getter private JLabel errLblFerienbeginn1;
+  @Getter private JTextField txtFerienende1;
+  @Getter private JLabel errLblFerienende1;
+  @Getter private JTextField txtFerienbeginn2;
+  @Getter private JLabel errLblFerienbeginn2;
+  @Getter private JTextField txtFerienende2;
+  @Getter private JLabel errLblFerienende2;
   private JButton btnSpeichern;
   private JButton btnAbbrechen;
 
-  public CreateOrUpdateSemesterDialog(
-      SvmContext svmContext,
-      SemestersTableModel semestersTableModel,
-      SemestersModel semestersModel,
-      int indexBearbeiten,
-      boolean isBearbeiten,
-      String title) {
+  @Override
+  public JButton getSpeichernButton() {
+    return btnSpeichern;
+  }
+
+  @Override
+  public JButton getAbbrechenButton() {
+    return btnAbbrechen;
+  }
+
+  public CreateOrUpdateSemesterDialog(String title) {
     $$$setupUI$$$();
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
-    initializeErrLbls();
-    if (DEFAULT_BUTTON_ENABLED) {
-      getRootPane().setDefaultButton(btnSpeichern);
-    }
-    createCreateOrUpdateSemesterController(
-        svmContext, semestersTableModel, semestersModel, indexBearbeiten, isBearbeiten);
-  }
-
-  private void createCreateOrUpdateSemesterController(
-      SvmContext svmContext,
-      SemestersTableModel semestersTableModel,
-      SemestersModel semestersModel,
-      int indexBearbeiten,
-      boolean isBearbeiten) {
-    CreateOrUpdateSemesterModel createOrUpdateSemesterModel =
-        (isBearbeiten)
-            ? semestersModel.createCreateOrUpdateSemesterModel(
-                svmContext, semestersTableModel, indexBearbeiten)
-            : semestersModel.createCreateOrUpdateSemesterModel(svmContext, semestersTableModel);
-    CreateOrUpdateSemesterController createOrUpdateSemesterController =
-        new CreateOrUpdateSemesterController(
-            createOrUpdateSemesterModel,
-            isBearbeiten,
-            DEFAULT_BUTTON_ENABLED);
-    createOrUpdateSemesterController.setCreateOrUpdateSemesterDialog(this);
-    createOrUpdateSemesterController.setContentPane(contentPane);
-    createOrUpdateSemesterController.setSpinnerSchuljahre(spinnerSchuljahre);
-    createOrUpdateSemesterController.setComboBoxSemesterbezeichnung(comboBoxSemesterbezeichnung);
-    createOrUpdateSemesterController.setTxtSemesterbeginn(txtSemesterbeginn);
-    createOrUpdateSemesterController.setTxtSemesterende(txtSemesterende);
-    createOrUpdateSemesterController.setTxtFerienbeginn1(txtFerienbeginn1);
-    createOrUpdateSemesterController.setTxtFerienende1(txtFerienende1);
-    createOrUpdateSemesterController.setTxtFerienbeginn2(txtFerienbeginn2);
-    createOrUpdateSemesterController.setTxtFerienende2(txtFerienende2);
-    createOrUpdateSemesterController.setBtnSpeichern(btnSpeichern);
-    createOrUpdateSemesterController.setBtnAbbrechen(btnAbbrechen);
-    createOrUpdateSemesterController.setErrLblSemesterbeginn(errLblSemesterbeginn);
-    createOrUpdateSemesterController.setErrLblSemesterende(errLblSemesterende);
-    createOrUpdateSemesterController.setErrLblFerienbeginn1(errLblFerienbeginn1);
-    createOrUpdateSemesterController.setErrLblFerienende1(errLblFerienende1);
-    createOrUpdateSemesterController.setErrLblFerienbeginn2(errLblFerienbeginn2);
-    createOrUpdateSemesterController.setErrLblFerienende2(errLblFerienende2);
-    createOrUpdateSemesterController.constructionDone();
-  }
-
-  @SuppressWarnings("DuplicatedCode")
-  private void initializeErrLbls() {
-    errLblSemesterbeginn.setVisible(false);
-    errLblSemesterbeginn.setForeground(Color.RED);
-    errLblSemesterende.setVisible(false);
-    errLblSemesterende.setForeground(Color.RED);
-    errLblFerienbeginn1.setVisible(false);
-    errLblFerienbeginn1.setForeground(Color.RED);
-    errLblFerienende1.setVisible(false);
-    errLblFerienende1.setForeground(Color.RED);
-    errLblFerienbeginn2.setVisible(false);
-    errLblFerienbeginn2.setForeground(Color.RED);
-    errLblFerienende2.setVisible(false);
-    errLblFerienende2.setForeground(Color.RED);
   }
 
   private void createUIComponents() {

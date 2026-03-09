@@ -85,12 +85,16 @@ public abstract class SpeichernAbbrechenDialogController<
     view.addButtonSpeichernActionListener(e -> onSpeichern());
   }
 
-  protected void onSpeichern() {
+  private void onSpeichern() {
     if (!isModelValidationMode() && !validateOnSpeichern()) {
       view.setButtonSpeichernFocusPainted(false);
       return;
     }
 
+    speichern();
+  }
+
+  protected void speichern() {
     V saveDialogResult = model.speichern();
     if (saveDialogResult.isErrorMessage()) {
       view.showErrorMessageDialog(saveDialogResult.getMessage(), "Fehler");

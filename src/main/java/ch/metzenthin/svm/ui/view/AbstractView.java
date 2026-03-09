@@ -1,6 +1,9 @@
 package ch.metzenthin.svm.ui.view;
 
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+
 import java.awt.Component;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 /**
@@ -10,6 +13,10 @@ public abstract class AbstractView {
 
   protected void showErrorMessageDialog(Component parent, String message, String title) {
     JOptionPane.showMessageDialog(parent, message, title, JOptionPane.ERROR_MESSAGE);
+  }
+
+  protected void showInfoMessageDialog(Component parent, String message, String title) {
+    JOptionPane.showMessageDialog(parent, message, title, JOptionPane.INFORMATION_MESSAGE);
   }
 
   protected int showYesNoDialog(Component parent, String message, String title) {
@@ -23,5 +30,25 @@ public abstract class AbstractView {
         null,
         options, // the titles of buttons
         options[1]); // default button title
+  }
+
+  public JDialog createBusyDialog(String message) {
+    final JOptionPane optionPane =
+        new JOptionPane(
+            message,
+            JOptionPane.INFORMATION_MESSAGE,
+            JOptionPane.DEFAULT_OPTION,
+            null,
+            new Object[] {},
+            null);
+
+    final JDialog dialog = new JDialog();
+    dialog.setTitle("Verarbeitung läuft ...");
+    dialog.setModal(true);
+    dialog.setContentPane(optionPane);
+    dialog.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    dialog.pack();
+
+    return dialog;
   }
 }

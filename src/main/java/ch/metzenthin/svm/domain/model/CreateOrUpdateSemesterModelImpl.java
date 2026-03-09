@@ -404,6 +404,11 @@ public class CreateOrUpdateSemesterModelImpl extends AbstractModel
   }
 
   @Override
+  public SaveSemesterResult speichern() {
+    throw new UnsupportedOperationException("Methode speichern(boolean) verwenden!");
+  }
+
+  @Override
   public SaveSemesterResult speichern(boolean updateSemesterrechnungen) {
 
     SaveSemesterResult saveSemesterResult;

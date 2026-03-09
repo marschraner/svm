@@ -9,7 +9,7 @@ import java.util.Calendar;
 /**
  * @author Martin Schraner
  */
-public interface CreateOrUpdateSemesterModel extends Model {
+public interface CreateOrUpdateSemesterModel extends CreateOrUpdateModel<SaveSemesterResult> {
 
   Semesterbezeichnung getSemesterbezeichnung();
 
