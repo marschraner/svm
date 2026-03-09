@@ -33,7 +33,7 @@ public abstract class CreateOrUpdateBezeichnungAndSelektierbarDialogView<
 
   public void setErrLblBezeichnungInvisible() {
     bezeichnungWithErrorLabel.setErrorLabelVisible(false);
-    bezeichnungWithErrorLabel.setErrorLabelText(null);
+    bezeichnungWithErrorLabel.setToolTipText(null);
   }
 
   public void addTxtBezeichnungActionListener(ActionListener actionListener) {

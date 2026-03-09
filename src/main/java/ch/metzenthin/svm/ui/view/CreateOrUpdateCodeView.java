@@ -35,7 +35,7 @@ public class CreateOrUpdateCodeView extends SpeichernAbbrechenDialogView<CreateO
 
   public void setErrLblKuerzelInvisible() {
     kuerzelWithErrorLabel.setErrorLabelVisible(false);
-    kuerzelWithErrorLabel.setErrorLabelText(null);
+    kuerzelWithErrorLabel.setToolTipText(null);
   }
 
   public void addTxtKuerzelActionListener(ActionListener actionListener) {
@@ -71,7 +71,7 @@ public class CreateOrUpdateCodeView extends SpeichernAbbrechenDialogView<CreateO
 
   public void setErrLblBeschreibungInvisible() {
     beschreibungWithErrorLabel.setErrorLabelVisible(false);
-    beschreibungWithErrorLabel.setErrorLabelText(null);
+    beschreibungWithErrorLabel.setToolTipText(null);
   }
 
   public void addTxtBeschreibungActionListener(ActionListener actionListener) {

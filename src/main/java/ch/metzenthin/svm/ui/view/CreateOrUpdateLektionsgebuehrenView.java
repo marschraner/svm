@@ -53,7 +53,7 @@ public class CreateOrUpdateLektionsgebuehrenView
 
   public void setErrLblLektionslaengeInvisible() {
     lektionslaengeWithErrorLabel.setErrorLabelVisible(false);
-    lektionslaengeWithErrorLabel.setErrorLabelText(null);
+    lektionslaengeWithErrorLabel.setToolTipText(null);
   }
 
   public void addTxtLektionslaengeActionListener(ActionListener actionListener) {
@@ -89,7 +89,7 @@ public class CreateOrUpdateLektionsgebuehrenView
 
   public void setErrLblBetrag1KindInvisible() {
     betrag1KindWithErrorLabel.setErrorLabelVisible(false);
-    betrag1KindWithErrorLabel.setErrorLabelText(null);
+    betrag1KindWithErrorLabel.setToolTipText(null);
   }
 
   public void addTxtBetrag1KindActionListener(ActionListener actionListener) {
@@ -125,7 +125,7 @@ public class CreateOrUpdateLektionsgebuehrenView
 
   public void setErrLblBetrag2KinderInvisible() {
     betrag2KinderWithErrorLabel.setErrorLabelVisible(false);
-    betrag2KinderWithErrorLabel.setErrorLabelText(null);
+    betrag2KinderWithErrorLabel.setToolTipText(null);
   }
 
   public void addTxtBetrag2KinderActionListener(ActionListener actionListener) {
@@ -161,7 +161,7 @@ public class CreateOrUpdateLektionsgebuehrenView
 
   public void setErrLblBetrag3KinderInvisible() {
     betrag3KinderWithErrorLabel.setErrorLabelVisible(false);
-    betrag3KinderWithErrorLabel.setErrorLabelText(null);
+    betrag3KinderWithErrorLabel.setToolTipText(null);
   }
 
   public void addTxtBetrag3KinderActionListener(ActionListener actionListener) {
@@ -197,7 +197,7 @@ public class CreateOrUpdateLektionsgebuehrenView
 
   public void setErrLblBetrag4KinderInvisible() {
     betrag4KinderWithErrorLabel.setErrorLabelVisible(false);
-    betrag4KinderWithErrorLabel.setErrorLabelText(null);
+    betrag4KinderWithErrorLabel.setToolTipText(null);
   }
 
   public void addTxtBetrag4KinderActionListener(ActionListener actionListener) {
@@ -233,7 +233,7 @@ public class CreateOrUpdateLektionsgebuehrenView
 
   public void setErrLblBetrag5KinderInvisible() {
     betrag5KinderWithErrorLabel.setErrorLabelVisible(false);
-    betrag5KinderWithErrorLabel.setErrorLabelText(null);
+    betrag5KinderWithErrorLabel.setToolTipText(null);
   }
 
   public void addTxtBetrag5KinderActionListener(ActionListener actionListener) {
@@ -269,7 +269,7 @@ public class CreateOrUpdateLektionsgebuehrenView
 
   public void setErrLblBetrag6KinderInvisible() {
     betrag6KinderWithErrorLabel.setErrorLabelVisible(false);
-    betrag6KinderWithErrorLabel.setErrorLabelText(null);
+    betrag6KinderWithErrorLabel.setToolTipText(null);
   }
 
   public void addTxtBetrag6KinderActionListener(ActionListener actionListener) {
