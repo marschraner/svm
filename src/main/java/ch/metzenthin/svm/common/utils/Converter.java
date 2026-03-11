@@ -184,6 +184,14 @@ public class Converter {
     return s;
   }
 
+  /**
+   * @param value Objekt, das in einen String umgewandelt werden soll.
+   * @return null wenn value null ist, sonst toString() auf dem value-Objekt
+   */
+  public static String asStringNullSafe(Object value) {
+    return (value == null) ? null : value.toString();
+  }
+
   private static String[] splitStrasseHausnummer(String strasseHausnummer) {
     if (strasseHausnummer == null) {
       return new String[] {};

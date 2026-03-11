@@ -1,119 +1,50 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.model.CreateOrUpdateLektionsgebuehrenModel;
-import ch.metzenthin.svm.domain.model.LektionsgebuehrenModel;
-import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
-import ch.metzenthin.svm.ui.control.CreateOrUpdateLektionsgebuehrenController;
 import java.awt.*;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
+import lombok.Getter;
 
-@SuppressWarnings({"java:S100", "java:S1171", "java:S1450", "FieldCanBeLocal"})
-public class CreateOrUpdateLektionsgebuehrenDialog extends JDialog {
-
-  // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
-  private static final boolean DEFAULT_BUTTON_ENABLED = false;
+@SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
+public class CreateOrUpdateLektionsgebuehrenDialog extends SpeichernAbbrechenDialog {
 
   private JPanel contentPane;
   private JPanel datenPanel;
   private JPanel buttonPanel;
-  private JTextField txtLektionslaenge;
-  private JTextField txtBetrag1Kind;
-  private JTextField txtBetrag2Kinder;
-  private JTextField txtBetrag3Kinder;
-  private JTextField txtBetrag4Kinder;
-  private JTextField txtBetrag5Kinder;
-  private JTextField txtBetrag6Kinder;
-  private JLabel errLblLektionslaenge;
-  private JLabel errLblBetrag1Kind;
-  private JLabel errLblBetrag2Kinder;
-  private JLabel errLblBetrag3Kinder;
-  private JLabel errLblBetrag4Kinder;
-  private JLabel errLblBetrag5Kinder;
-  private JLabel errLblBetrag6Kinder;
+  @Getter private JTextField txtLektionslaenge;
+  @Getter private JLabel errLblLektionslaenge;
+  @Getter private JTextField txtBetrag1Kind;
+  @Getter private JLabel errLblBetrag1Kind;
+  @Getter private JTextField txtBetrag2Kinder;
+  @Getter private JLabel errLblBetrag2Kinder;
+  @Getter private JTextField txtBetrag3Kinder;
+  @Getter private JLabel errLblBetrag3Kinder;
+  @Getter private JTextField txtBetrag4Kinder;
+  @Getter private JLabel errLblBetrag4Kinder;
+  @Getter private JTextField txtBetrag5Kinder;
+  @Getter private JLabel errLblBetrag5Kinder;
+  @Getter private JTextField txtBetrag6Kinder;
+  @Getter private JLabel errLblBetrag6Kinder;
   private JButton btnSpeichern;
   private JButton btnAbbrechen;
 
-  public CreateOrUpdateLektionsgebuehrenDialog(
-      SvmContext svmContext,
-      LektionsgebuehrenTableModel lektionsgebuehrenTableModel,
-      LektionsgebuehrenModel lektionsgebuehrenModel,
-      int indexBearbeiten,
-      boolean isBearbeiten,
-      String title) {
+  @Override
+  public JButton getSpeichernButton() {
+    return btnSpeichern;
+  }
+
+  @Override
+  public JButton getAbbrechenButton() {
+    return btnAbbrechen;
+  }
+
+  public CreateOrUpdateLektionsgebuehrenDialog(String title) {
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
-    initializeErrLbls();
-    if (DEFAULT_BUTTON_ENABLED) {
-      getRootPane().setDefaultButton(btnSpeichern);
-    }
-    createCreateOrUpdateLektionsgebuehrenController(
-        svmContext,
-        lektionsgebuehrenTableModel,
-        lektionsgebuehrenModel,
-        indexBearbeiten,
-        isBearbeiten);
-  }
-
-  private void createCreateOrUpdateLektionsgebuehrenController(
-      SvmContext svmContext,
-      LektionsgebuehrenTableModel lektionsgebuehrenTableModel,
-      LektionsgebuehrenModel lektionsgebuehrenModel,
-      int indexBearbeiten,
-      boolean isBearbeiten) {
-    CreateOrUpdateLektionsgebuehrenModel createOrUpdateLektionsgebuehrenModel =
-        (isBearbeiten)
-            ? lektionsgebuehrenModel.createCreateOrUpdateLektionsgebuehrenModel(
-                svmContext, lektionsgebuehrenTableModel, indexBearbeiten)
-            : lektionsgebuehrenModel.createCreateOrUpdateLektionsgebuehrenModel(
-                svmContext, lektionsgebuehrenTableModel);
-    CreateOrUpdateLektionsgebuehrenController createOrUpdateLektionsgebuehrenController =
-        new CreateOrUpdateLektionsgebuehrenController(
-            createOrUpdateLektionsgebuehrenModel,
-            isBearbeiten,
-            DEFAULT_BUTTON_ENABLED);
-    createOrUpdateLektionsgebuehrenController.setCreateOrUpdateLektionsgebuehrenDialog(this);
-    createOrUpdateLektionsgebuehrenController.setContentPane(contentPane);
-    createOrUpdateLektionsgebuehrenController.setTxtLektionslaenge(txtLektionslaenge);
-    createOrUpdateLektionsgebuehrenController.setTxtBetrag1Kind(txtBetrag1Kind);
-    createOrUpdateLektionsgebuehrenController.setTxtBetrag2Kinder(txtBetrag2Kinder);
-    createOrUpdateLektionsgebuehrenController.setTxtBetrag3Kinder(txtBetrag3Kinder);
-    createOrUpdateLektionsgebuehrenController.setTxtBetrag4Kinder(txtBetrag4Kinder);
-    createOrUpdateLektionsgebuehrenController.setTxtBetrag5Kinder(txtBetrag5Kinder);
-    createOrUpdateLektionsgebuehrenController.setTxtBetrag6Kinder(txtBetrag6Kinder);
-    createOrUpdateLektionsgebuehrenController.setBtnSpeichern(btnSpeichern);
-    createOrUpdateLektionsgebuehrenController.setBtnAbbrechen(btnAbbrechen);
-    createOrUpdateLektionsgebuehrenController.setErrLblLektionslaenge(errLblLektionslaenge);
-    createOrUpdateLektionsgebuehrenController.setErrLblBetrag1Kind(errLblBetrag1Kind);
-    createOrUpdateLektionsgebuehrenController.setErrLblBetrag2Kinder(errLblBetrag2Kinder);
-    createOrUpdateLektionsgebuehrenController.setErrLblBetrag3Kinder(errLblBetrag3Kinder);
-    createOrUpdateLektionsgebuehrenController.setErrLblBetrag4Kinder(errLblBetrag4Kinder);
-    createOrUpdateLektionsgebuehrenController.setErrLblBetrag5Kinder(errLblBetrag5Kinder);
-    createOrUpdateLektionsgebuehrenController.setErrLblBetrag6Kinder(errLblBetrag6Kinder);
-    createOrUpdateLektionsgebuehrenController.constructionDone();
-  }
-
-  @SuppressWarnings("DuplicatedCode")
-  private void initializeErrLbls() {
-    errLblLektionslaenge.setVisible(false);
-    errLblLektionslaenge.setForeground(Color.RED);
-    errLblBetrag1Kind.setVisible(false);
-    errLblBetrag1Kind.setForeground(Color.RED);
-    errLblBetrag2Kinder.setVisible(false);
-    errLblBetrag2Kinder.setForeground(Color.RED);
-    errLblBetrag3Kinder.setVisible(false);
-    errLblBetrag3Kinder.setForeground(Color.RED);
-    errLblBetrag4Kinder.setVisible(false);
-    errLblBetrag4Kinder.setForeground(Color.RED);
-    errLblBetrag5Kinder.setVisible(false);
-    errLblBetrag5Kinder.setForeground(Color.RED);
-    errLblBetrag6Kinder.setVisible(false);
-    errLblBetrag6Kinder.setForeground(Color.RED);
   }
 
   {

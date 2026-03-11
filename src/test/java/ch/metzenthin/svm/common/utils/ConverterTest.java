@@ -3,6 +3,7 @@ package ch.metzenthin.svm.common.utils;
 import static ch.metzenthin.svm.common.utils.Converter.*;
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -222,5 +223,12 @@ public class ConverterTest {
   @SuppressWarnings({"ConstantValue", "ObviousNullCheck"})
   public void testNullAsEmptyString_Empty() {
     assertTrue(nullAsEmptyString("").isEmpty());
+  }
+
+  @Test
+  public void testAsStringNullSafeNullSafe() {
+    assertNull(Converter.asStringNullSafe(null));
+    assertEquals("1.23", Converter.asStringNullSafe(BigDecimal.valueOf(1.23)));
+    assertEquals(Integer.toString(1000), Converter.asStringNullSafe(1000));
   }
 }

@@ -1,107 +1,54 @@
 package ch.metzenthin.svm.ui.control;
 
-import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
-
 import ch.metzenthin.svm.common.datatypes.Field;
-import ch.metzenthin.svm.domain.SvmRequiredException;
+import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateLektionsgebuehrenModel;
 import ch.metzenthin.svm.service.result.SaveLektionsgebuehrenResult;
+import ch.metzenthin.svm.ui.view.CreateOrUpdateLektionsgebuehrenView;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
-import javax.swing.*;
-import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
  * @author Martin Schraner
  */
-@SuppressWarnings("LoggingSimilarMessage")
-public class CreateOrUpdateLektionsgebuehrenController extends AbstractController {
+public class CreateOrUpdateLektionsgebuehrenController
+    extends SpeichernAbbrechenDialogController<
+        CreateOrUpdateLektionsgebuehrenModel,
+        CreateOrUpdateLektionsgebuehrenView,
+        SaveLektionsgebuehrenResult> {
 
   private static final Logger LOGGER =
       LogManager.getLogger(CreateOrUpdateLektionsgebuehrenController.class);
-  private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE =
-      "Validierung wegen equalFieldAndModelValue";
-
-  // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
-  private static final boolean MODEL_VALIDATION_MODE = false;
-
-  private final CreateOrUpdateLektionsgebuehrenModel createOrUpdateLektionsgebuehrenModel;
-  private final boolean isBearbeiten;
-  private final boolean defaultButtonEnabled;
-  private JDialog createOrUpdatelektionsgebuehrenDialog;
-  private JTextField txtLektionslaenge;
-  private JTextField txtBetrag1Kind;
-  private JTextField txtBetrag2Kinder;
-  private JTextField txtBetrag3Kinder;
-  private JTextField txtBetrag4Kinder;
-  private JTextField txtBetrag5Kinder;
-  private JTextField txtBetrag6Kinder;
-  @Setter private JLabel errLblLektionslaenge;
-  @Setter private JLabel errLblBetrag1Kind;
-  @Setter private JLabel errLblBetrag2Kinder;
-  @Setter private JLabel errLblBetrag3Kinder;
-  @Setter private JLabel errLblBetrag4Kinder;
-  @Setter private JLabel errLblBetrag5Kinder;
-  @Setter private JLabel errLblBetrag6Kinder;
-  private JButton btnSpeichern;
 
   public CreateOrUpdateLektionsgebuehrenController(
-      CreateOrUpdateLektionsgebuehrenModel createOrUpdateLektionsgebuehrenModel,
-      boolean isBearbeiten,
-      boolean defaultButtonEnabled) {
-    super(createOrUpdateLektionsgebuehrenModel);
-    this.createOrUpdateLektionsgebuehrenModel = createOrUpdateLektionsgebuehrenModel;
-    this.isBearbeiten = isBearbeiten;
-    this.defaultButtonEnabled = defaultButtonEnabled;
-    this.createOrUpdateLektionsgebuehrenModel.addPropertyChangeListener(this);
-    this.createOrUpdateLektionsgebuehrenModel.addDisableFieldsListener(this);
-    this.createOrUpdateLektionsgebuehrenModel.addMakeErrorLabelsInvisibleListener(this);
-    this.createOrUpdateLektionsgebuehrenModel.addCompletedListener(
-        this::onCreateOrUpdateLektionsgebuehrenModelCompleted);
-    this.setModelValidationMode(MODEL_VALIDATION_MODE);
+      CreateOrUpdateLektionsgebuehrenModel model, boolean isBearbeiten, String title) {
+    super(model, new CreateOrUpdateLektionsgebuehrenView(title), isBearbeiten);
+    configTxtLektionslaenge();
+    configTxtBetrag1Kind();
+    configTxtBetrag2Kinder();
+    configTxtBetrag3Kinder();
+    configTxtBetrag4Kinder();
+    configTxtBetrag5Kinder();
+    configTxtBetrag6Kinder();
+    onConstructionFinished();
   }
 
-  public void constructionDone() {
-    createOrUpdateLektionsgebuehrenModel.initializeCompleted();
-  }
+  private ModelAndViewAccessor<String> lektionslaengeModelAndViewAccessor;
 
-  public void setCreateOrUpdateLektionsgebuehrenDialog(
-      JDialog createOrUpdateLektionsgebuehrenDialog) {
-    // call onCancel() when cross is clicked
-    this.createOrUpdatelektionsgebuehrenDialog = createOrUpdateLektionsgebuehrenDialog;
-    createOrUpdateLektionsgebuehrenDialog.setDefaultCloseOperation(
-        WindowConstants.DO_NOTHING_ON_CLOSE);
-    createOrUpdateLektionsgebuehrenDialog.addWindowListener(
-        new WindowAdapter() {
-          @Override
-          public void windowClosing(WindowEvent e) {
-            onAbbrechen();
-          }
-        });
-  }
-
-  public void setContentPane(JPanel contentPane) {
-    // call onCancel() on ESCAPE
-    contentPane.registerKeyboardAction(
-        e -> onAbbrechen(),
-        KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-  }
-
-  public void setTxtLektionslaenge(JTextField txtLektionslaenge) {
-    this.txtLektionslaenge = txtLektionslaenge;
-    // ID darf nicht bearbeitet werden!
-    if (isBearbeiten) {
-      this.txtLektionslaenge.setEnabled(false);
-    }
-    if (!defaultButtonEnabled) {
-      this.txtLektionslaenge.addActionListener(e -> onLektionslaengeEvent(true));
-    }
-    this.txtLektionslaenge.addFocusListener(
+  private void configTxtLektionslaenge() {
+    lektionslaengeModelAndViewAccessor =
+        new ModelAndViewAccessor<>(
+            Field.LEKTIONSLAENGE,
+            () -> Integer.toString(model.getLektionslaenge()),
+            model::setLektionslaenge,
+            view::getTxtLektionslaengeText,
+            view::setTxtLektionslaengeToolTipText);
+    view.addTxtLektionslaengeActionListener(e -> onLektionslaengeEvent(true));
+    view.addTxtLektionslaengeFocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
@@ -112,53 +59,22 @@ public class CreateOrUpdateLektionsgebuehrenController extends AbstractControlle
 
   private void onLektionslaengeEvent(boolean showRequiredErrMsg) {
     LOGGER.trace("CreateOrUpdateLektionsgebuehrenController Event Lektionslaenge");
-    boolean equalFieldAndModelValue =
-        equalsNullSafe(
-            txtLektionslaenge.getText(), createOrUpdateLektionsgebuehrenModel.getLektionslaenge());
-    try {
-      setModelLektionslaenge(showRequiredErrMsg);
-    } catch (SvmValidationException e) {
-      return;
-    }
-    if (equalFieldAndModelValue && isModelValidationMode()) {
-      // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb
-      // muss hier die Validierung angestossen werden.
-      LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
-      validate();
-    }
+    setModelValueFromViewWithViewValueChangedCheck(
+        lektionslaengeModelAndViewAccessor, showRequiredErrMsg);
   }
 
-  private void setModelLektionslaenge(boolean showRequiredErrMsg) throws SvmValidationException {
-    makeErrorLabelInvisible(Field.LEKTIONSLAENGE);
-    try {
-      createOrUpdateLektionsgebuehrenModel.setLektionslaenge(txtLektionslaenge.getText());
-    } catch (SvmRequiredException e) {
-      LOGGER.trace(
-          "CreateOrUpdateLektionsgebuehrenController setModelLektionslaenge RequiredException={}",
-          e.getMessage());
-      if (isModelValidationMode() || !showRequiredErrMsg) {
-        txtLektionslaenge.setToolTipText(e.getMessage());
-        // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
-        // bestanden sind.
-      } else {
-        showErrMsg(e);
-      }
-      throw e;
-    } catch (SvmValidationException e) {
-      LOGGER.trace(
-          "CreateOrUpdateLektionsgebuehrenController setModelLektionslaenge Exception={}",
-          e.getMessage());
-      showErrMsg(e);
-      throw e;
-    }
-  }
+  private ModelAndViewAccessor<String> betrag1KindModelAndViewAccessor;
 
-  public void setTxtBetrag1Kind(JTextField txtBetrag1Kind) {
-    this.txtBetrag1Kind = txtBetrag1Kind;
-    if (!defaultButtonEnabled) {
-      this.txtBetrag1Kind.addActionListener(e -> onBetrag1KindEvent(true));
-    }
-    this.txtBetrag1Kind.addFocusListener(
+  private void configTxtBetrag1Kind() {
+    betrag1KindModelAndViewAccessor =
+        new ModelAndViewAccessor<>(
+            Field.BETRAG_1_KIND,
+            () -> Converter.asStringNullSafe(model.getBetrag1Kind()),
+            model::setBetrag1Kind,
+            view::getTxtBetrag1KindText,
+            view::setTxtBetrag1KindToolTipText);
+    view.addTxtBetrag1KindActionListener(e -> onBetrag1KindEvent(true));
+    view.addTxtBetrag1KindFocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
@@ -169,53 +85,22 @@ public class CreateOrUpdateLektionsgebuehrenController extends AbstractControlle
 
   private void onBetrag1KindEvent(boolean showRequiredErrMsg) {
     LOGGER.trace("CreateOrUpdateLektionsgebuehrenController Event Betrag1Kind");
-    boolean equalFieldAndModelValue =
-        equalsNullSafe(
-            txtBetrag1Kind.getText(), createOrUpdateLektionsgebuehrenModel.getBetrag1Kind());
-    try {
-      setModelBetrag1Kind(showRequiredErrMsg);
-    } catch (SvmValidationException e) {
-      return;
-    }
-    if (equalFieldAndModelValue && isModelValidationMode()) {
-      // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb
-      // muss hier die Validierung angestossen werden.
-      LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
-      validate();
-    }
+    setModelValueFromViewWithViewValueChangedCheck(
+        betrag1KindModelAndViewAccessor, showRequiredErrMsg);
   }
 
-  private void setModelBetrag1Kind(boolean showRequiredErrMsg) throws SvmValidationException {
-    makeErrorLabelInvisible(Field.BETRAG_1_KIND);
-    try {
-      createOrUpdateLektionsgebuehrenModel.setBetrag1Kind(txtBetrag1Kind.getText());
-    } catch (SvmRequiredException e) {
-      LOGGER.trace(
-          "CreateOrUpdateLektionsgebuehrenController setModelBetrag1Kind RequiredException={}",
-          e.getMessage());
-      if (isModelValidationMode() || !showRequiredErrMsg) {
-        txtBetrag1Kind.setToolTipText(e.getMessage());
-        // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
-        // bestanden sind.
-      } else {
-        showErrMsg(e);
-      }
-      throw e;
-    } catch (SvmValidationException e) {
-      LOGGER.trace(
-          "CreateOrUpdateLektionsgebuehrenController setModelBetrag1Kind Exception={}",
-          e.getMessage());
-      showErrMsg(e);
-      throw e;
-    }
-  }
+  private ModelAndViewAccessor<String> betrag2KinderModelAndViewAccessor;
 
-  public void setTxtBetrag2Kinder(JTextField txtBetrag2Kinder) {
-    this.txtBetrag2Kinder = txtBetrag2Kinder;
-    if (!defaultButtonEnabled) {
-      this.txtBetrag2Kinder.addActionListener(e -> onBetrag2KinderEvent(true));
-    }
-    this.txtBetrag2Kinder.addFocusListener(
+  private void configTxtBetrag2Kinder() {
+    betrag2KinderModelAndViewAccessor =
+        new ModelAndViewAccessor<>(
+            Field.BETRAG_2_KINDER,
+            () -> Converter.asStringNullSafe(model.getBetrag2Kinder()),
+            model::setBetrag2Kinder,
+            view::getTxtBetrag2KinderText,
+            view::setTxtBetrag2KinderToolTipText);
+    view.addTxtBetrag2KinderActionListener(e -> onBetrag2KinderEvent(true));
+    view.addTxtBetrag2KinderFocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
@@ -226,53 +111,22 @@ public class CreateOrUpdateLektionsgebuehrenController extends AbstractControlle
 
   private void onBetrag2KinderEvent(boolean showRequiredErrMsg) {
     LOGGER.trace("CreateOrUpdateLektionsgebuehrenController Event Betrag2Kinder");
-    boolean equalFieldAndModelValue =
-        equalsNullSafe(
-            txtBetrag2Kinder.getText(), createOrUpdateLektionsgebuehrenModel.getBetrag2Kinder());
-    try {
-      setModelBetrag2Kinder(showRequiredErrMsg);
-    } catch (SvmValidationException e) {
-      return;
-    }
-    if (equalFieldAndModelValue && isModelValidationMode()) {
-      // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb
-      // muss hier die Validierung angestossen werden.
-      LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
-      validate();
-    }
+    setModelValueFromViewWithViewValueChangedCheck(
+        betrag2KinderModelAndViewAccessor, showRequiredErrMsg);
   }
 
-  private void setModelBetrag2Kinder(boolean showRequiredErrMsg) throws SvmValidationException {
-    makeErrorLabelInvisible(Field.BETRAG_2_KINDER);
-    try {
-      createOrUpdateLektionsgebuehrenModel.setBetrag2Kinder(txtBetrag2Kinder.getText());
-    } catch (SvmRequiredException e) {
-      LOGGER.trace(
-          "CreateOrUpdateLektionsgebuehrenController setModelBetrag2Kinder RequiredException={}",
-          e.getMessage());
-      if (isModelValidationMode() || !showRequiredErrMsg) {
-        txtBetrag2Kinder.setToolTipText(e.getMessage());
-        // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
-        // bestanden sind.
-      } else {
-        showErrMsg(e);
-      }
-      throw e;
-    } catch (SvmValidationException e) {
-      LOGGER.trace(
-          "CreateOrUpdateLektionsgebuehrenController setModelBetrag2Kinder Exception={}",
-          e.getMessage());
-      showErrMsg(e);
-      throw e;
-    }
-  }
+  private ModelAndViewAccessor<String> betrag3KinderModelAndViewAccessor;
 
-  public void setTxtBetrag3Kinder(JTextField txtBetrag3Kinder) {
-    this.txtBetrag3Kinder = txtBetrag3Kinder;
-    if (!defaultButtonEnabled) {
-      this.txtBetrag3Kinder.addActionListener(e -> onBetrag3KinderEvent(true));
-    }
-    this.txtBetrag3Kinder.addFocusListener(
+  private void configTxtBetrag3Kinder() {
+    betrag3KinderModelAndViewAccessor =
+        new ModelAndViewAccessor<>(
+            Field.BETRAG_3_KINDER,
+            () -> Converter.asStringNullSafe(model.getBetrag3Kinder()),
+            model::setBetrag3Kinder,
+            view::getTxtBetrag3KinderText,
+            view::setTxtBetrag3KinderToolTipText);
+    view.addTxtBetrag3KinderActionListener(e -> onBetrag3KinderEvent(true));
+    view.addTxtBetrag3KinderFocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
@@ -283,53 +137,22 @@ public class CreateOrUpdateLektionsgebuehrenController extends AbstractControlle
 
   private void onBetrag3KinderEvent(boolean showRequiredErrMsg) {
     LOGGER.trace("CreateOrUpdateLektionsgebuehrenController Event Betrag3Kinder");
-    boolean equalFieldAndModelValue =
-        equalsNullSafe(
-            txtBetrag3Kinder.getText(), createOrUpdateLektionsgebuehrenModel.getBetrag3Kinder());
-    try {
-      setModelBetrag3Kinder(showRequiredErrMsg);
-    } catch (SvmValidationException e) {
-      return;
-    }
-    if (equalFieldAndModelValue && isModelValidationMode()) {
-      // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb
-      // muss hier die Validierung angestossen werden.
-      LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
-      validate();
-    }
+    setModelValueFromViewWithViewValueChangedCheck(
+        betrag3KinderModelAndViewAccessor, showRequiredErrMsg);
   }
 
-  private void setModelBetrag3Kinder(boolean showRequiredErrMsg) throws SvmValidationException {
-    makeErrorLabelInvisible(Field.BETRAG_3_KINDER);
-    try {
-      createOrUpdateLektionsgebuehrenModel.setBetrag3Kinder(txtBetrag3Kinder.getText());
-    } catch (SvmRequiredException e) {
-      LOGGER.trace(
-          "CreateOrUpdateLektionsgebuehrenController setModelBetrag3Kinder RequiredException={}",
-          e.getMessage());
-      if (isModelValidationMode() || !showRequiredErrMsg) {
-        txtBetrag3Kinder.setToolTipText(e.getMessage());
-        // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
-        // bestanden sind.
-      } else {
-        showErrMsg(e);
-      }
-      throw e;
-    } catch (SvmValidationException e) {
-      LOGGER.trace(
-          "CreateOrUpdateLektionsgebuehrenController setModelBetrag3Kinder Exception={}",
-          e.getMessage());
-      showErrMsg(e);
-      throw e;
-    }
-  }
+  private ModelAndViewAccessor<String> betrag4KinderModelAndViewAccessor;
 
-  public void setTxtBetrag4Kinder(JTextField txtBetrag4Kinder) {
-    this.txtBetrag4Kinder = txtBetrag4Kinder;
-    if (!defaultButtonEnabled) {
-      this.txtBetrag4Kinder.addActionListener(e -> onBetrag4KinderEvent(true));
-    }
-    this.txtBetrag4Kinder.addFocusListener(
+  private void configTxtBetrag4Kinder() {
+    betrag4KinderModelAndViewAccessor =
+        new ModelAndViewAccessor<>(
+            Field.BETRAG_4_KINDER,
+            () -> Converter.asStringNullSafe(model.getBetrag4Kinder()),
+            model::setBetrag4Kinder,
+            view::getTxtBetrag4KinderText,
+            view::setTxtBetrag4KinderToolTipText);
+    view.addTxtBetrag4KinderActionListener(e -> onBetrag4KinderEvent(true));
+    view.addTxtBetrag4KinderFocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
@@ -340,53 +163,22 @@ public class CreateOrUpdateLektionsgebuehrenController extends AbstractControlle
 
   private void onBetrag4KinderEvent(boolean showRequiredErrMsg) {
     LOGGER.trace("CreateOrUpdateLektionsgebuehrenController Event Betrag4Kinder");
-    boolean equalFieldAndModelValue =
-        equalsNullSafe(
-            txtBetrag4Kinder.getText(), createOrUpdateLektionsgebuehrenModel.getBetrag4Kinder());
-    try {
-      setModelBetrag4Kinder(showRequiredErrMsg);
-    } catch (SvmValidationException e) {
-      return;
-    }
-    if (equalFieldAndModelValue && isModelValidationMode()) {
-      // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb
-      // muss hier die Validierung angestossen werden.
-      LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
-      validate();
-    }
+    setModelValueFromViewWithViewValueChangedCheck(
+        betrag4KinderModelAndViewAccessor, showRequiredErrMsg);
   }
 
-  private void setModelBetrag4Kinder(boolean showRequiredErrMsg) throws SvmValidationException {
-    makeErrorLabelInvisible(Field.BETRAG_4_KINDER);
-    try {
-      createOrUpdateLektionsgebuehrenModel.setBetrag4Kinder(txtBetrag4Kinder.getText());
-    } catch (SvmRequiredException e) {
-      LOGGER.trace(
-          "CreateOrUpdateLektionsgebuehrenController setModelBetrag4Kinder RequiredException={}",
-          e.getMessage());
-      if (isModelValidationMode() || !showRequiredErrMsg) {
-        txtBetrag4Kinder.setToolTipText(e.getMessage());
-        // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
-        // bestanden sind.
-      } else {
-        showErrMsg(e);
-      }
-      throw e;
-    } catch (SvmValidationException e) {
-      LOGGER.trace(
-          "CreateOrUpdateLektionsgebuehrenController setModelBetrag4Kinder Exception={}",
-          e.getMessage());
-      showErrMsg(e);
-      throw e;
-    }
-  }
+  private ModelAndViewAccessor<String> betrag5KinderModelAndViewAccessor;
 
-  public void setTxtBetrag5Kinder(JTextField txtBetrag5Kinder) {
-    this.txtBetrag5Kinder = txtBetrag5Kinder;
-    if (!defaultButtonEnabled) {
-      this.txtBetrag5Kinder.addActionListener(e -> onBetrag5KinderEvent(true));
-    }
-    this.txtBetrag5Kinder.addFocusListener(
+  private void configTxtBetrag5Kinder() {
+    betrag5KinderModelAndViewAccessor =
+        new ModelAndViewAccessor<>(
+            Field.BETRAG_5_KINDER,
+            () -> Converter.asStringNullSafe(model.getBetrag5Kinder()),
+            model::setBetrag5Kinder,
+            view::getTxtBetrag5KinderText,
+            view::setTxtBetrag5KinderToolTipText);
+    view.addTxtBetrag5KinderActionListener(e -> onBetrag5KinderEvent(true));
+    view.addTxtBetrag5KinderFocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
@@ -397,53 +189,22 @@ public class CreateOrUpdateLektionsgebuehrenController extends AbstractControlle
 
   private void onBetrag5KinderEvent(boolean showRequiredErrMsg) {
     LOGGER.trace("CreateOrUpdateLektionsgebuehrenController Event Betrag5Kinder");
-    boolean equalFieldAndModelValue =
-        equalsNullSafe(
-            txtBetrag5Kinder.getText(), createOrUpdateLektionsgebuehrenModel.getBetrag5Kinder());
-    try {
-      setModelBetrag5Kinder(showRequiredErrMsg);
-    } catch (SvmValidationException e) {
-      return;
-    }
-    if (equalFieldAndModelValue && isModelValidationMode()) {
-      // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb
-      // muss hier die Validierung angestossen werden.
-      LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
-      validate();
-    }
+    setModelValueFromViewWithViewValueChangedCheck(
+        betrag5KinderModelAndViewAccessor, showRequiredErrMsg);
   }
 
-  private void setModelBetrag5Kinder(boolean showRequiredErrMsg) throws SvmValidationException {
-    makeErrorLabelInvisible(Field.BETRAG_5_KINDER);
-    try {
-      createOrUpdateLektionsgebuehrenModel.setBetrag5Kinder(txtBetrag5Kinder.getText());
-    } catch (SvmRequiredException e) {
-      LOGGER.trace(
-          "CreateOrUpdateLektionsgebuehrenController setModelBetrag5Kinder RequiredException={}",
-          e.getMessage());
-      if (isModelValidationMode() || !showRequiredErrMsg) {
-        txtBetrag5Kinder.setToolTipText(e.getMessage());
-        // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
-        // bestanden sind.
-      } else {
-        showErrMsg(e);
-      }
-      throw e;
-    } catch (SvmValidationException e) {
-      LOGGER.trace(
-          "CreateOrUpdateLektionsgebuehrenController setModelBetrag5Kinder Exception={}",
-          e.getMessage());
-      showErrMsg(e);
-      throw e;
-    }
-  }
+  private ModelAndViewAccessor<String> betrag6KinderModelAndViewAccessor;
 
-  public void setTxtBetrag6Kinder(JTextField txtBetrag6Kinder) {
-    this.txtBetrag6Kinder = txtBetrag6Kinder;
-    if (!defaultButtonEnabled) {
-      this.txtBetrag6Kinder.addActionListener(e -> onBetrag6KinderEvent(true));
-    }
-    this.txtBetrag6Kinder.addFocusListener(
+  private void configTxtBetrag6Kinder() {
+    betrag6KinderModelAndViewAccessor =
+        new ModelAndViewAccessor<>(
+            Field.BETRAG_6_KINDER,
+            () -> Converter.asStringNullSafe(model.getBetrag6Kinder()),
+            model::setBetrag6Kinder,
+            view::getTxtBetrag6KinderText,
+            view::setTxtBetrag6KinderToolTipText);
+    view.addTxtBetrag6KinderActionListener(e -> onBetrag6KinderEvent(true));
+    view.addTxtBetrag6KinderFocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
@@ -454,105 +215,8 @@ public class CreateOrUpdateLektionsgebuehrenController extends AbstractControlle
 
   private void onBetrag6KinderEvent(boolean showRequiredErrMsg) {
     LOGGER.trace("CreateOrUpdateLektionsgebuehrenController Event Betrag6Kinder");
-    boolean equalFieldAndModelValue =
-        equalsNullSafe(
-            txtBetrag6Kinder.getText(), createOrUpdateLektionsgebuehrenModel.getBetrag6Kinder());
-    try {
-      setModelBetrag6Kinder(showRequiredErrMsg);
-    } catch (SvmValidationException e) {
-      return;
-    }
-    if (equalFieldAndModelValue && isModelValidationMode()) {
-      // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb
-      // muss hier die Validierung angestossen werden.
-      LOGGER.trace(VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE);
-      validate();
-    }
-  }
-
-  private void setModelBetrag6Kinder(boolean showRequiredErrMsg) throws SvmValidationException {
-    makeErrorLabelInvisible(Field.BETRAG_6_KINDER);
-    try {
-      createOrUpdateLektionsgebuehrenModel.setBetrag6Kinder(txtBetrag6Kinder.getText());
-    } catch (SvmRequiredException e) {
-      LOGGER.trace(
-          "CreateOrUpdateLektionsgebuehrenController setModelBetrag6Kinder RequiredException={}",
-          e.getMessage());
-      if (isModelValidationMode() || !showRequiredErrMsg) {
-        txtBetrag6Kinder.setToolTipText(e.getMessage());
-        // Keine weitere Aktion. Die Required-Prüfung erfolgt erneut, nachdem alle Field-Prüfungen
-        // bestanden sind.
-      } else {
-        showErrMsg(e);
-      }
-      throw e;
-    } catch (SvmValidationException e) {
-      LOGGER.trace(
-          "CreateOrUpdateLektionsgebuehrenController setModelBetrag6Kinder Exception={}",
-          e.getMessage());
-      showErrMsg(e);
-      throw e;
-    }
-  }
-
-  public void setBtnSpeichern(JButton btnSpeichern) {
-    this.btnSpeichern = btnSpeichern;
-    if (isModelValidationMode()) {
-      btnSpeichern.setEnabled(false);
-    }
-    this.btnSpeichern.addActionListener(e -> onSpeichern());
-  }
-
-  private void onSpeichern() {
-    if (!isModelValidationMode() && !validateOnSpeichern()) {
-      btnSpeichern.setFocusPainted(false);
-      return;
-    }
-    SaveLektionsgebuehrenResult saveLektionsgebuehrenResult =
-        createOrUpdateLektionsgebuehrenModel.speichern();
-    switch (saveLektionsgebuehrenResult) {
-      case LEKTIONSGEBUEHREN_BEREITS_ERFASST -> {
-        JOptionPane.showMessageDialog(
-            createOrUpdatelektionsgebuehrenDialog,
-            "Lektionslänge bereits erfasst.",
-            "Fehler",
-            JOptionPane.ERROR_MESSAGE);
-        btnSpeichern.setFocusPainted(false);
-      }
-      case LEKTIONSGEBUEHREN_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
-        closeDialog();
-        JOptionPane.showMessageDialog(
-            createOrUpdatelektionsgebuehrenDialog,
-            "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
-                + "einen anderen Benutzer verändert oder gelöscht wurde.",
-            "Fehler",
-            JOptionPane.ERROR_MESSAGE);
-      }
-      case SPEICHERN_ERFOLGREICH -> closeDialog();
-    }
-  }
-
-  public void setBtnAbbrechen(JButton btnAbbrechen) {
-    btnAbbrechen.addActionListener(e -> onAbbrechen());
-  }
-
-  private void onAbbrechen() {
-    closeDialog();
-  }
-
-  private void closeDialog() {
-    createOrUpdatelektionsgebuehrenDialog.dispose();
-  }
-
-  private void onCreateOrUpdateLektionsgebuehrenModelCompleted(boolean completed) {
-    LOGGER.trace("CreateOrUpdateLektionsgebuehrenModel completed={}", completed);
-    if (completed) {
-      btnSpeichern.setToolTipText(null);
-      btnSpeichern.setEnabled(true);
-    } else {
-      btnSpeichern.setToolTipText("Bitte Eingabedaten vervollständigen");
-      btnSpeichern.setEnabled(false);
-    }
+    setModelValueFromViewWithViewValueChangedCheck(
+        betrag6KinderModelAndViewAccessor, showRequiredErrMsg);
   }
 
   @SuppressWarnings("java:S3776")
@@ -560,164 +224,131 @@ public class CreateOrUpdateLektionsgebuehrenController extends AbstractControlle
   void doPropertyChange(PropertyChangeEvent evt) {
     super.doPropertyChange(evt);
     if (checkIsFieldChange(Field.LEKTIONSLAENGE, evt)) {
-      txtLektionslaenge.setText(
-          Integer.toString(createOrUpdateLektionsgebuehrenModel.getLektionslaenge()));
+      view.setTxtLektionslaengeText(Integer.toString(model.getLektionslaenge()));
     } else if (checkIsFieldChange(Field.BETRAG_1_KIND, evt)) {
-      txtBetrag1Kind.setText(
-          createOrUpdateLektionsgebuehrenModel.getBetrag1Kind() == null
-              ? null
-              : createOrUpdateLektionsgebuehrenModel.getBetrag1Kind().toString());
+      view.setTxtBetrag1KindText(Converter.asStringNullSafe(model.getBetrag1Kind()));
     } else if (checkIsFieldChange(Field.BETRAG_2_KINDER, evt)) {
-      txtBetrag2Kinder.setText(
-          createOrUpdateLektionsgebuehrenModel.getBetrag2Kinder() == null
-              ? null
-              : createOrUpdateLektionsgebuehrenModel.getBetrag2Kinder().toString());
+      view.setTxtBetrag2KinderText(Converter.asStringNullSafe(model.getBetrag2Kinder()));
     } else if (checkIsFieldChange(Field.BETRAG_3_KINDER, evt)) {
-      txtBetrag3Kinder.setText(
-          createOrUpdateLektionsgebuehrenModel.getBetrag3Kinder() == null
-              ? null
-              : createOrUpdateLektionsgebuehrenModel.getBetrag3Kinder().toString());
+      view.setTxtBetrag3KinderText(Converter.asStringNullSafe(model.getBetrag3Kinder()));
     } else if (checkIsFieldChange(Field.BETRAG_4_KINDER, evt)) {
-      txtBetrag4Kinder.setText(
-          createOrUpdateLektionsgebuehrenModel.getBetrag4Kinder() == null
-              ? null
-              : createOrUpdateLektionsgebuehrenModel.getBetrag4Kinder().toString());
+      view.setTxtBetrag4KinderText(Converter.asStringNullSafe(model.getBetrag4Kinder()));
     } else if (checkIsFieldChange(Field.BETRAG_5_KINDER, evt)) {
-      txtBetrag5Kinder.setText(
-          createOrUpdateLektionsgebuehrenModel.getBetrag5Kinder() == null
-              ? null
-              : createOrUpdateLektionsgebuehrenModel.getBetrag5Kinder().toString());
+      view.setTxtBetrag5KinderText(Converter.asStringNullSafe(model.getBetrag5Kinder()));
     } else if (checkIsFieldChange(Field.BETRAG_6_KINDER, evt)) {
-      txtBetrag6Kinder.setText(
-          createOrUpdateLektionsgebuehrenModel.getBetrag6Kinder() == null
-              ? null
-              : createOrUpdateLektionsgebuehrenModel.getBetrag6Kinder().toString());
+      view.setTxtBetrag6KinderText(Converter.asStringNullSafe(model.getBetrag6Kinder()));
     }
   }
 
   @Override
   void validateFields() throws SvmValidationException {
-    if (txtLektionslaenge.isEnabled()) {
+    if (view.isTxtLektionslaengeEnabled()) {
       LOGGER.trace("Validate field Lektionslaenge");
-      setModelLektionslaenge(true);
+      setModelValueFromView(lektionslaengeModelAndViewAccessor, true);
     }
-    if (txtBetrag1Kind.isEnabled()) {
+    if (view.isTxtBetrag1KindEnabled()) {
       LOGGER.trace("Validate field Betrag 1 Kind");
-      setModelBetrag1Kind(true);
+      setModelValueFromView(betrag1KindModelAndViewAccessor, true);
     }
-    if (txtBetrag2Kinder.isEnabled()) {
+    if (view.isTxtBetrag2KinderEnabled()) {
       LOGGER.trace("Validate field Betrag 2 Kinder");
-      setModelBetrag2Kinder(true);
+      setModelValueFromView(betrag2KinderModelAndViewAccessor, true);
     }
-    if (txtBetrag3Kinder.isEnabled()) {
+    if (view.isTxtBetrag3KinderEnabled()) {
       LOGGER.trace("Validate field Betrag 3 Kinder");
-      setModelBetrag3Kinder(true);
+      setModelValueFromView(betrag3KinderModelAndViewAccessor, true);
     }
-    if (txtBetrag4Kinder.isEnabled()) {
+    if (view.isTxtBetrag4KinderEnabled()) {
       LOGGER.trace("Validate field Betrag 4 Kinder");
-      setModelBetrag4Kinder(true);
+      setModelValueFromView(betrag4KinderModelAndViewAccessor, true);
     }
-    if (txtBetrag5Kinder.isEnabled()) {
+    if (view.isTxtBetrag5KinderEnabled()) {
       LOGGER.trace("Validate field Betrag 5 Kinder");
-      setModelBetrag5Kinder(true);
+      setModelValueFromView(betrag5KinderModelAndViewAccessor, true);
     }
-    if (txtBetrag6Kinder.isEnabled()) {
+    if (view.isTxtBetrag6KinderEnabled()) {
       LOGGER.trace("Validate field Betrag 6 Kinder");
-      setModelBetrag6Kinder(true);
+      setModelValueFromView(betrag6KinderModelAndViewAccessor, true);
     }
   }
 
   @Override
   void showErrMsg(SvmValidationException e) {
     if (e.getAffectedFields().contains(Field.LEKTIONSLAENGE)) {
-      errLblLektionslaenge.setVisible(true);
-      errLblLektionslaenge.setText(e.getMessage());
+      view.setErrLblLektionslaengeVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_1_KIND)) {
-      errLblBetrag1Kind.setVisible(true);
-      errLblBetrag1Kind.setText(e.getMessage());
+      view.setErrLblBetrag1KindVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_2_KINDER)) {
-      errLblBetrag2Kinder.setVisible(true);
-      errLblBetrag2Kinder.setText(e.getMessage());
+      view.setErrLblBetrag2KinderVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_3_KINDER)) {
-      errLblBetrag3Kinder.setVisible(true);
-      errLblBetrag3Kinder.setText(e.getMessage());
+      view.setErrLblBetrag3KinderVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_4_KINDER)) {
-      errLblBetrag4Kinder.setVisible(true);
-      errLblBetrag4Kinder.setText(e.getMessage());
+      view.setErrLblBetrag4KinderVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_5_KINDER)) {
-      errLblBetrag5Kinder.setVisible(true);
-      errLblBetrag5Kinder.setText(e.getMessage());
+      view.setErrLblBetrag5KinderVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_6_KINDER)) {
-      errLblBetrag6Kinder.setVisible(true);
-      errLblBetrag6Kinder.setText(e.getMessage());
+      view.setErrLblBetrag6KinderVisible(e.getMessage());
     }
   }
 
   @Override
   void showErrMsgAsToolTip(SvmValidationException e) {
     if (e.getAffectedFields().contains(Field.LEKTIONSLAENGE)) {
-      txtLektionslaenge.setToolTipText(e.getMessage());
+      view.setTxtLektionslaengeToolTipText(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_1_KIND)) {
-      txtBetrag1Kind.setToolTipText(e.getMessage());
+      view.setTxtBetrag1KindToolTipText(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_2_KINDER)) {
-      txtBetrag2Kinder.setToolTipText(e.getMessage());
+      view.setTxtBetrag2KinderToolTipText(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_3_KINDER)) {
-      txtBetrag3Kinder.setToolTipText(e.getMessage());
+      view.setTxtBetrag3KinderToolTipText(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_4_KINDER)) {
-      txtBetrag4Kinder.setToolTipText(e.getMessage());
+      view.setTxtBetrag4KinderToolTipText(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_5_KINDER)) {
-      txtBetrag5Kinder.setToolTipText(e.getMessage());
+      view.setTxtBetrag5KinderToolTipText(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_6_KINDER)) {
-      txtBetrag6Kinder.setToolTipText(e.getMessage());
+      view.setTxtBetrag6KinderToolTipText(e.getMessage());
     }
   }
 
   @Override
   public void makeErrorLabelsInvisible(Set<Field> fields) {
     if (fields.contains(Field.ALLE) || fields.contains(Field.LEKTIONSLAENGE)) {
-      errLblLektionslaenge.setVisible(false);
-      txtLektionslaenge.setToolTipText(null);
+      view.setErrLblLektionslaengeInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_1_KIND)) {
-      errLblBetrag1Kind.setVisible(false);
-      txtBetrag1Kind.setToolTipText(null);
+      view.setErrLblBetrag1KindInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_2_KINDER)) {
-      errLblBetrag2Kinder.setVisible(false);
-      txtBetrag2Kinder.setToolTipText(null);
+      view.setErrLblBetrag2KinderInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_3_KINDER)) {
-      errLblBetrag3Kinder.setVisible(false);
-      txtBetrag3Kinder.setToolTipText(null);
+      view.setErrLblBetrag3KinderInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_4_KINDER)) {
-      errLblBetrag4Kinder.setVisible(false);
-      txtBetrag4Kinder.setToolTipText(null);
+      view.setErrLblBetrag4KinderInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_5_KINDER)) {
-      errLblBetrag5Kinder.setVisible(false);
-      txtBetrag5Kinder.setToolTipText(null);
+      view.setErrLblBetrag5KinderInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_6_KINDER)) {
-      errLblBetrag6Kinder.setVisible(false);
-      txtBetrag6Kinder.setToolTipText(null);
+      view.setErrLblBetrag6KinderInvisible();
     }
   }
 
   @Override
   public void disableFields(boolean disable, Set<Field> fields) {
-    // Keine zu deaktivierenden Felder
+    // Keine Felder, die inaktiviert werden müssen
   }
 }

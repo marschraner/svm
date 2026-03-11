@@ -7,7 +7,8 @@ import java.math.BigDecimal;
 /**
  * @author Martin Schraner
  */
-public interface CreateOrUpdateLektionsgebuehrenModel extends Model {
+public interface CreateOrUpdateLektionsgebuehrenModel
+    extends CreateOrUpdateModel<SaveLektionsgebuehrenResult> {
 
   Integer getLektionslaenge();
 
@@ -27,15 +28,15 @@ public interface CreateOrUpdateLektionsgebuehrenModel extends Model {
 
   void setBetrag1Kind(String betrag1Kind) throws SvmValidationException;
 
-  void setBetrag2Kinder(String betrag1Kind) throws SvmValidationException;
+  void setBetrag2Kinder(String betrag2Kinder) throws SvmValidationException;
 
-  void setBetrag3Kinder(String betrag1Kind) throws SvmValidationException;
+  void setBetrag3Kinder(String betrag3Kinder) throws SvmValidationException;
 
-  void setBetrag4Kinder(String betrag1Kind) throws SvmValidationException;
+  void setBetrag4Kinder(String betrag4Kinder) throws SvmValidationException;
 
-  void setBetrag5Kinder(String betrag1Kind) throws SvmValidationException;
+  void setBetrag5Kinder(String betrag5Kinder) throws SvmValidationException;
 
-  void setBetrag6Kinder(String betrag1Kind) throws SvmValidationException;
+  void setBetrag6Kinder(String betrag6Kinder) throws SvmValidationException;
 
   SaveLektionsgebuehrenResult speichern();
 }

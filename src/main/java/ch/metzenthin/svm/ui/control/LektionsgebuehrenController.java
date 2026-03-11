@@ -3,11 +3,11 @@ package ch.metzenthin.svm.ui.control;
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateLektionsgebuehrenModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenTableData;
 import ch.metzenthin.svm.service.result.DeleteLektionsgebuehrenResult;
 import ch.metzenthin.svm.ui.componentmodel.LektionsgebuehrenTableModel;
-import ch.metzenthin.svm.ui.components.CreateOrUpdateLektionsgebuehrenDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -69,16 +69,13 @@ public class LektionsgebuehrenController {
 
   private void onNeu() {
     btnNeu.setFocusPainted(true);
-    CreateOrUpdateLektionsgebuehrenDialog createOrUpdateLektionsgebuehrenDialog =
-        new CreateOrUpdateLektionsgebuehrenDialog(
-            svmContext,
-            lektionsgebuehrenTableModel,
-            lektionsgebuehrenModel,
-            0,
-            false,
-            "Neuer Lektionsgebuehren");
-    createOrUpdateLektionsgebuehrenDialog.pack();
-    createOrUpdateLektionsgebuehrenDialog.setVisible(true);
+    CreateOrUpdateLektionsgebuehrenModel createOrUpdateLektionsgebuehrenModel =
+        lektionsgebuehrenModel.createCreateOrUpdateLektionsgebuehrenModel(
+            svmContext, lektionsgebuehrenTableModel);
+    CreateOrUpdateLektionsgebuehrenController createOrUpdateLektionsgebuehrenController =
+        new CreateOrUpdateLektionsgebuehrenController(
+            createOrUpdateLektionsgebuehrenModel, false, "Neue Lektionsgebühren");
+    createOrUpdateLektionsgebuehrenController.showDialog();
     // Dialog wurde geschlossen
     reloadTableModel();
     btnNeu.setFocusPainted(false);
@@ -96,16 +93,13 @@ public class LektionsgebuehrenController {
 
   private void onBearbeiten() {
     btnBearbeiten.setFocusPainted(true);
-    CreateOrUpdateLektionsgebuehrenDialog createOrUpdateLektionsgebuehrenDialog =
-        new CreateOrUpdateLektionsgebuehrenDialog(
-            svmContext,
-            lektionsgebuehrenTableModel,
-            lektionsgebuehrenModel,
-            lektionsgebuehrenTable.getSelectedRow(),
-            true,
-            "Lektionsgebuehren bearbeiten");
-    createOrUpdateLektionsgebuehrenDialog.pack();
-    createOrUpdateLektionsgebuehrenDialog.setVisible(true);
+    CreateOrUpdateLektionsgebuehrenModel createOrUpdateLektionsgebuehrenModel =
+        lektionsgebuehrenModel.createCreateOrUpdateLektionsgebuehrenModel(
+            svmContext, lektionsgebuehrenTableModel, lektionsgebuehrenTable.getSelectedRow());
+    CreateOrUpdateLektionsgebuehrenController createOrUpdateLektionsgebuehrenController =
+        new CreateOrUpdateLektionsgebuehrenController(
+            createOrUpdateLektionsgebuehrenModel, true, "Lektionsgebühren bearbeiten");
+    createOrUpdateLektionsgebuehrenController.showDialog();
     // Dialog wurde geschlossen
     reloadTableModel();
     btnBearbeiten.setFocusPainted(false);
