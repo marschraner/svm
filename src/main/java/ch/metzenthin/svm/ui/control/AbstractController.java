@@ -40,6 +40,28 @@ public abstract class AbstractController
   }
 
   /**
+   * Abfrage, ob das Model im Initialisierungsmodus ist (bulkUpdate=true).
+   *
+   * <p>Ist der Model-Validation-Mode eingeschaltet (isModelValidationMode()=true), gilt folgendes:
+   * Einige Listener reagieren auch auf das Setzen des Model-Wertes in den View-Komponenten während
+   * der Initialisierung. Dadurch würde vom Model ein PropertyChange ausgelöst werden, auch dann,
+   * wenn der alte und der neue Wert identisch sind. Das wiederum löst eine Validierung aus in der
+   * alle Werte von der View ins Model übertragen werden. Alle View-Werte, die noch nicht
+   * initialisiert wurden, würden in die Model-Werte übertragen und somit auf "null" bzw. nichts
+   * gesetzt werden. Diese Methode muss von den entsprechenden Event-Handlern als Filter verwendet
+   * werden, um zu entscheiden, ob der Event verarbeitet werden darf. Gibt diese Methode true
+   * zurück, darf der Event verarbeitet werden.<br>
+   * Bisher bekannte UI-Komponenten mit betroffenen Listeners:<br>
+   * - Spinner (ChangeListener)<br>
+   * - ComboBox (ActionListener)
+   *
+   * @return true, wenn das Model im Initialisierungsmodus ist.
+   */
+  protected boolean isModelInInitialisationMode() {
+    return bulkUpdate;
+  }
+
+  /**
    * Template Methode. Nachdem die Subklassen den PropertyChangeEvent verarbeitet haben, wird die
    * Validierung aufgerufen.
    *

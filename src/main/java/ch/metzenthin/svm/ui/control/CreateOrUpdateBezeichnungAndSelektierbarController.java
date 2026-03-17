@@ -32,7 +32,12 @@ public abstract class CreateOrUpdateBezeichnungAndSelektierbarController<
     super(model, view, isBearbeiten);
     configTxtBezeichnung();
     configCheckBoxSelektierbar();
-    onConstructionFinished(); // damit das Model initialisiert wird!
+  }
+
+  @Override
+  protected void setDefaultValuesOnNeu() {
+    // Selektierbar als Default-Wert
+    model.setSelektierbar(true);
   }
 
   private ModelAndViewAccessor<String> bezeichnungModelAndViewAccessor;
@@ -62,10 +67,6 @@ public abstract class CreateOrUpdateBezeichnungAndSelektierbarController<
   }
 
   private void configCheckBoxSelektierbar() {
-    // Selektierbar als Default-Wert
-    if (!isBearbeiten) {
-      model.setSelektierbar(true);
-    }
     view.addCheckBoxSelektierbarItemListener(e -> onSelektierbarEvent());
   }
 

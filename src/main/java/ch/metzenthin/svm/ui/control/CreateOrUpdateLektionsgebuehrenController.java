@@ -34,7 +34,11 @@ public class CreateOrUpdateLektionsgebuehrenController
     configTxtBetrag4Kinder();
     configTxtBetrag5Kinder();
     configTxtBetrag6Kinder();
-    onConstructionFinished();
+  }
+
+  @Override
+  protected void setDefaultValuesOnNeu() {
+    // Empty, keine Defaultwerte.
   }
 
   private ModelAndViewAccessor<String> lektionslaengeModelAndViewAccessor;

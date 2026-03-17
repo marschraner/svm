@@ -37,26 +37,12 @@ public class CreateOrUpdateSemesterController
     configTxtFerienende1();
     configTxtFerienbeginn2();
     configTxtFerienende2();
+  }
 
-    onConstructionFinished();
-
-    // Die Initialisierung ist erfolgt, jetzt können die Listener für Spinner und ComboBox
-    // registriert werden.
-    // Ist der Model-Validation-Mode eingeschaltet (isModelValidationMode()==true), gilt folgendes:
-    // Die folgenden Listeners dürfen erst nach der Model-Initialisierung registriert werden, da
-    // sonst zu früh die Validierung aufgerufen wird. Die Listener reagieren auch auf das Setzen des
-    // Model-Wertes in den View-Komponenten während der Initialisierung. Dadurch würde vom Model ein
-    // PropertyChange ausgelöst werden, auch dann, wenn der alte und der neue Wert identisch sind.
-    // Das wiederum löst eine Validierung aus in der alle Werte von der View ins Model übertragen
-    // werden. Alle View-Werte, die noch nicht initialisiert wurden, würden in die Model-Werte
-    // übertragen und somit auf "null" bzw. nichts gesetzt werden.
-    view.addSpinnerSchuljahreChangeListener(e -> onSchuljahrSelected());
-    view.addComboBoxSemesterbezeichnungActionListener(e -> onSemesterbezeichnungSelected());
-
-    if (!isBearbeiten) {
-      initSchuljahr();
-      initSemesterbezeichnung();
-    }
+  @Override
+  protected void setDefaultValuesOnNeu() {
+    initSchuljahr();
+    initSemesterbezeichnung();
   }
 
   private ModelAndViewAccessor<String> schuljarModelAndViewAccessor;
@@ -69,6 +55,8 @@ public class CreateOrUpdateSemesterController
             model::setSchuljahr,
             view::getSpinnerSchuljahreValue,
             view::setSpinnerSchuljahreToolTipText);
+    view.addSpinnerSchuljahreChangeListener(
+        e -> onSchuljahrSelected(), e -> isModelInInitialisationMode());
   }
 
   private void initSchuljahr() {
@@ -98,6 +86,8 @@ public class CreateOrUpdateSemesterController
             view::getComboBoxSemesterbezeichnungSelectedItem,
             view::setComboBoxSemesterbezeichnungToolTipText);
     view.setComboBoxSemesterbezeichnungValues(Semesterbezeichnung.values());
+    view.addComboBoxSemesterbezeichnungActionListener(
+        e -> onSemesterbezeichnungSelected(), e -> isModelInInitialisationMode());
   }
 
   private void initSemesterbezeichnung() {

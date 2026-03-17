@@ -3,11 +3,14 @@ package ch.metzenthin.svm.ui.view;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.ui.components.CreateOrUpdateSemesterDialog;
 import ch.metzenthin.svm.ui.components.TextFieldWithErrorLabelComponent;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
+import java.util.function.Predicate;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JSpinner;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
@@ -51,8 +54,14 @@ public class CreateOrUpdateSemesterView
 
   // Schuljahre
 
-  public void addSpinnerSchuljahreChangeListener(ChangeListener changeListener) {
-    spinnerSchuljahre.addChangeListener(changeListener);
+  public void addSpinnerSchuljahreChangeListener(
+      ChangeListener changeListenerDelegate, Predicate<ChangeEvent> isInInitialisationMode) {
+    spinnerSchuljahre.addChangeListener(
+        e -> {
+          if (!isInInitialisationMode.test(e)) {
+            changeListenerDelegate.stateChanged(e);
+          }
+        });
   }
 
   public String getSpinnerSchuljahreValue() {
@@ -69,8 +78,14 @@ public class CreateOrUpdateSemesterView
 
   // Semesterbezeichnung
 
-  public void addComboBoxSemesterbezeichnungActionListener(ActionListener actionListener) {
-    comboBoxSemesterbezeichnung.addActionListener(actionListener);
+  public void addComboBoxSemesterbezeichnungActionListener(
+      ActionListener actionListenerDelegate, Predicate<ActionEvent> isInInitialisationMode) {
+    comboBoxSemesterbezeichnung.addActionListener(
+        e -> {
+          if (!isInInitialisationMode.test(e)) {
+            actionListenerDelegate.actionPerformed(e);
+          }
+        });
   }
 
   public void setComboBoxSemesterbezeichnungValues(Semesterbezeichnung[] semesterbezeichnungen) {

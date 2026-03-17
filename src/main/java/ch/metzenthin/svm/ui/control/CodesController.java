@@ -246,7 +246,7 @@ public class CodesController {
         };
     CreateOrUpdateCodeController createOrUpdateCodeController =
         new CreateOrUpdateCodeController(createOrUpdateCodeModel, false, title);
-    createOrUpdateCodeController.showDialog();
+    createOrUpdateCodeController.initialiseModelAndViewFieldsAndShowDialog();
     // Dialog wurde geschlossen
     reloadTableModel();
     btnNeu.setFocusPainted(false);
@@ -339,7 +339,7 @@ public class CodesController {
         };
     CreateOrUpdateCodeController createOrUpdateCodeController =
         new CreateOrUpdateCodeController(createOrUpdateCodeModel, true, title);
-    createOrUpdateCodeController.showDialog();
+    createOrUpdateCodeController.initialiseModelAndViewFieldsAndShowDialog();
     // Dialog wurde geschlossen
     reloadTableModel();
     btnBearbeiten.setFocusPainted(false);

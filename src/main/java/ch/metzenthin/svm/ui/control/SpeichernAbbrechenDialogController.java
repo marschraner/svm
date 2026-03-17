@@ -62,9 +62,31 @@ public abstract class SpeichernAbbrechenDialogController<
     configBtnAbbrechen();
   }
 
-  protected void onConstructionFinished() {
+  /**
+   * Aktionen, nachdem die Konstruktion des Controllers beendet ist.
+   *
+   * <p>Zuerst wird das Model informiert, dass die Initialisierung des Controllers erfolgt ist.
+   * Dadurch wird das Model initialisiert.
+   *
+   * <p>Bei einem neuen Objekt (!isBearbeiten) und im ModelValidationMode ist danach die
+   * Durchführung der Validierung nötig, insbesondere dann, wenn keine Initialwerte auf dem neuen
+   * Objekt gesetzt werden. Sind Validierungsfehler vorhanden, wird so der Speichern-Button
+   * deaktiviert.
+   *
+   * <p>Bei einem neuen Objekt können von den Subklassen noch die Initialwerte gesetzt werden.
+   */
+  protected void initialiseModelAndViewFields() {
     model.initializeCompleted();
+    if (!isBearbeiten && isModelValidationMode()) {
+      validate();
+    }
+    if (!isBearbeiten) {
+      setDefaultValuesOnNeu();
+    }
   }
+
+  /** Möglichkeit für Subklassen, das Model und die View mit Defaultwerten zu initialisieren. */
+  protected abstract void setDefaultValuesOnNeu();
 
   private void configModel() {
     model.addPropertyChangeListener(this);
@@ -74,7 +96,8 @@ public abstract class SpeichernAbbrechenDialogController<
     model.setModelValidationMode(isModelValidationMode());
   }
 
-  public void showDialog() {
+  public void initialiseModelAndViewFieldsAndShowDialog() {
+    initialiseModelAndViewFields();
     view.showDialog();
   }
 

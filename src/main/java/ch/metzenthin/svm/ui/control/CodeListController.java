@@ -38,7 +38,7 @@ public abstract class CodeListController<T extends Code>
     CreateOrUpdateCodeModel createOrUpdateCodeModel = model.createCreateOrUpdateModel(svmContext);
     CreateOrUpdateCodeController createOrUpdateCodeController =
         new CreateOrUpdateCodeController(createOrUpdateCodeModel, false, getNeuDialogTitle());
-    createOrUpdateCodeController.showDialog();
+    createOrUpdateCodeController.initialiseModelAndViewFieldsAndShowDialog();
   }
 
   protected abstract String getNeuDialogTitle();
@@ -49,7 +49,7 @@ public abstract class CodeListController<T extends Code>
         model.createCreateOrUpdateModel(svmContext, view.getSelectedRow());
     CreateOrUpdateCodeController createOrUpdateCodeController =
         new CreateOrUpdateCodeController(createOrUpdateCodeModel, true, getBearbeitenDialogTitle());
-    createOrUpdateCodeController.showDialog();
+    createOrUpdateCodeController.initialiseModelAndViewFieldsAndShowDialog();
   }
 
   protected abstract String getBearbeitenDialogTitle();

@@ -39,7 +39,7 @@ public class LektionsgebuehrenListController
     CreateOrUpdateLektionsgebuehrenController createOrUpdateLektionsgebuehrenController =
         new CreateOrUpdateLektionsgebuehrenController(
             createOrUpdateLektionsgebuehrenModel, false, "Neue Lektionsgebühren");
-    createOrUpdateLektionsgebuehrenController.showDialog();
+    createOrUpdateLektionsgebuehrenController.initialiseModelAndViewFieldsAndShowDialog();
   }
 
   @Override
@@ -49,6 +49,6 @@ public class LektionsgebuehrenListController
     CreateOrUpdateLektionsgebuehrenController createOrUpdateLektionsgebuehrenController =
         new CreateOrUpdateLektionsgebuehrenController(
             createOrUpdateLektionsgebuehrenModel, true, "Lektionsgebühren bearbeiten");
-    createOrUpdateLektionsgebuehrenController.showDialog();
+    createOrUpdateLektionsgebuehrenController.initialiseModelAndViewFieldsAndShowDialog();
   }
 }

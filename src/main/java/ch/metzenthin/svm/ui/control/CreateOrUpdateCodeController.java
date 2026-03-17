@@ -26,7 +26,12 @@ public class CreateOrUpdateCodeController
     configTxtKuerzel();
     configTxtBeschreibung();
     configCheckBoxSelektierbar();
-    onConstructionFinished();
+  }
+
+  @Override
+  protected void setDefaultValuesOnNeu() {
+    // Selektierbar als Default-Wert
+    model.setSelektierbar(true);
   }
 
   private ModelAndViewAccessor<String> kuerzelModelAndViewAccessor;
@@ -81,10 +86,6 @@ public class CreateOrUpdateCodeController
   }
 
   private void configCheckBoxSelektierbar() {
-    // Selektierbar als Default-Wert
-    if (!isBearbeiten) {
-      model.setSelektierbar(true);
-    }
     view.addCheckBoxSelektierbarItemListener(e -> onSelektierbarEvent());
   }
 
