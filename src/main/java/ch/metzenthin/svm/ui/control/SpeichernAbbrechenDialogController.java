@@ -12,6 +12,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
+ * Basisklasse für Dialog-Controller mit Speichern- und Abbrechen-Funktionalität.
+ *
  * @param <T> Model-Typ, z.B. CreateOrUpdateKursortModel
  * @param <U> View-Typ, z.B. CreateOrUpdateKursortView
  * @param <V> Save-Result-Typ, z.B. SaveKursortResult

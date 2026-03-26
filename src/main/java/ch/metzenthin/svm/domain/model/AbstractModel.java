@@ -16,6 +16,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
+ * Model Basisklasse.
+ *
  * @author Hans Stamm
  */
 public abstract class AbstractModel implements Model, ModelAttributeListener {
@@ -28,17 +30,34 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
     return commandInvoker;
   }
 
+  /**
+   * Flag zur Steuerung des bulkUpdate-Modus (Ein- bzw. Ausschalten der Validierung).
+   *
+   * <p>Steuert, ob sich der Controller, bzw. das Model im bulkUpdate-Modus befindet (true), oder
+   * nicht. Das Feld wird durch PropertyChange-Aufrufe des Models ein- und ausgeschaltet. Ist
+   * bulkUpdate eingeschaltet (true), wird die Validierung der Felder im Model ausgeschaltet. Wird
+   * bulkUpdate ausgeschaltet (auf false gesetzt), wird die Validierung angestossen.
+   *
+   * <p>Siehe auch {@link ch.metzenthin.svm.ui.control.AbstractController}
+   */
   private boolean bulkUpdate = false;
 
   /**
-   * Wird bei der Instanziierung des Controllers gesetzt und wird dann nicht mehr verändert.<br>
-   * modelValidationMode true: Model wird invalidiert bei Fehler<br>
-   * modelValidationMode false: Model wird nicht invalidiert bei Fehler
+   * Wird bei der Instanziierung des Controllers gesetzt und wird dann nicht mehr verändert.
+   *
+   * <p>Beschreibung siehe {@link
+   * ch.metzenthin.svm.ui.control.AbstractController#isModelValidationMode()}.
    */
   @Getter private boolean modelValidationMode = true;
 
   /**
-   * BulkUpdate true: es folgen mehrere Attribut-Updates nacheinander, für die keine Validierung
+   * Setzen des bulkUpdate-Modus.
+   *
+   * <p>Der neue Wert des bulkUpdate-Flags wird Listenern (Controller des Models) via
+   * PropertyChangeEvent mitgeteilt. Der PropertyChange bewirkt, dass die View und das Model
+   * validiert werden, falls der bulkUpdate-Modus ausgeschaltet (auf false gesetzt) wird.
+   *
+   * <p>BulkUpdate true: es folgen mehrere Attribut-Updates nacheinander, für die keine Validierung
    * durchgeführt werden muss (z.B. bei initializeComplete()).<br>
    * BulkUpdate false: Die Attribut-Updates sind durchgeführt. View und Model werden validiert.
    * Falls das Model nicht invalidiert wird bei Fehler (modelValidationMode = false), wird durch
@@ -52,6 +71,14 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
     }
   }
 
+  /**
+   * Abfrage des bulkUpdate-Modus.
+   *
+   * <p>true: bulkUpdate-Modus ist eingeschaltet, d.h. die Validierung ist ausgeschaltet.<br>
+   * false: bulkUpdate-Modus ist ausgeschaltet, d.h. die Validierung ist eingeschaltet.
+   *
+   * @return Status des bulkUpdate-Modus
+   */
   boolean isBulkUpdate() {
     return bulkUpdate;
   }
@@ -72,17 +99,20 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
     this.propertyChangeSupport.removePropertyChangeListener(listener);
   }
 
+  /**
+   * Information der PropertyChangeListener (Controller), dass der Wert des übergebenen Feldes
+   * geändert hat.
+   *
+   * @param field Feld, dessen Wert verändert wurde
+   * @param oldValue alter Wert des Feldes
+   * @param newValue neuer Wert des Feldes
+   */
   @Override
   public final void firePropertyChange(Field field, Object oldValue, Object newValue) {
     if ((oldValue == null) && (newValue == null)) {
       return;
     }
     this.propertyChangeSupport.firePropertyChange(field.toString(), oldValue, newValue);
-  }
-
-  @Override
-  public boolean checkIsFieldChange(Field field, PropertyChangeEvent evt) {
-    return field.toString().equals(evt.getPropertyName());
   }
 
   // ------------------------------------------------------------------------------------------------------------------
@@ -101,6 +131,14 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
     disableFieldsListeners.remove(disableFieldsListener);
   }
 
+  /**
+   * Information der DisableFieldsListener (Controller), dass die übergebenen Felder gemäss dem
+   * übergebenen Flag disabled bzw. enabled werden sollen.
+   *
+   * @param disable Flag, ob die übergebenen Felder disabled (true) bzw. enabled (false) werden
+   *     sollen
+   * @param fields Felder, die disabled bzw. enabled werden sollen
+   */
   void fireDisableFields(boolean disable, Set<Field> fields) {
     for (DisableFieldsListener disableFieldsListener : disableFieldsListeners) {
       disableFieldsListener.disableFields(disable, fields);
@@ -150,6 +188,12 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
     makeErrorLabelsInvisibleListeners.remove(makeErrorLabelsInvisibleListener);
   }
 
+  /**
+   * Information der MakeErrorLabelsInvisibleListener (Controller), für welche Felder die
+   * Error-Labels unsichtbar gemacht werden sollen.
+   *
+   * @param fields Felder, die unsichtbar gemacht werden sollen
+   */
   void fireMakeErrorLabelsInvisible(Set<Field> fields) {
     for (MakeErrorLabelsInvisibleListener makeErrorLabelsInvisibleListener :
         makeErrorLabelsInvisibleListeners) {
@@ -172,12 +216,22 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
     completedListeners.add(completedListener);
   }
 
+  /**
+   * Information der CompletedListener, ob das Model vollständig oder unvollständig ist.
+   *
+   * @param completed true: das Model ist vollständig, sonst unvollständig
+   */
   void fireCompleted(boolean completed) {
     for (CompletedListener completedListener : completedListeners) {
       completedListener.completed(completed);
     }
   }
 
+  /**
+   * Diese Methode wird von den Subklassen der noch nicht umgestellten Models mittels
+   * super.initializeCompleted() aufgerufen. Die Methode der Subklassen wird durch den Controller
+   * aufgerufen.
+   */
   @Override
   public void initializeCompleted() {
     fireInitializeCompleted();
@@ -191,6 +245,18 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
     }
   }
 
+  /**
+   * Generische Method für die Initialisierung des Model-Objekts, nachdem die Initialisierung des
+   * Controllers erfolgt ist.
+   *
+   * <p>Die Initialisierung wird nur für bestehende Model-Objekte (id nicht null) durchgeführt. Vor
+   * dem Aufruf des Callbacks zur Initialisierung der einzelnen Model-Werte wird der
+   * bulkUpdate-Modus eingeschaltet (d.h. die Validierung wird ausgeschaltet) und nachher wieder
+   * ausgeschaltet, was eine Validierung der View und des Models auslöst.
+   *
+   * @param id ID des zu initialisierenden Objekts
+   * @param allModelValuesSetter Callback zum Setzen der Model-Werte
+   */
   protected void initializeCompleted(Integer id, AllModelValuesSetter allModelValuesSetter) {
     if (id != null) {
       // Bestehende Entity
@@ -210,6 +276,12 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
     }
   }
 
+  /**
+   * Model auf ungültig setzen.
+   *
+   * <p>Es wird ein fireCompleted(false) durchgeführt. Dies bewirkt, dass der Speichern-Button
+   * deaktiviert wird im ModelValidationMode=true.
+   */
   @Override
   public final void invalidate() {
     if (isModelValidationMode()) {
@@ -217,7 +289,20 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
     }
   }
 
-  /** Template Method für die Validierung des Models. */
+  /**
+   * Template Methode für die Validierung des Models.
+   *
+   * <p>Ist der bulkUpdate-Modus eingeschaltet (d.h. die Validierung ist ausgeschaltet), wird die
+   * Validierung nicht ausgeführt.<br>
+   * Es werden nur Felder- und Objekt-übergreifende Regeln geprüft.<br>
+   * Bei einem Validierungsfehler wird das Model auf ungültig (invalidated) gesetzt (die
+   * Completed-Listener werden informiert, dass das Model unvollständig ist (fireCompleted(false)))
+   * und die Exception wird weiter geworfen.<br>
+   * Wird kein Validierungsfehler gefunden, werden die Completed-Listener informiert, dass das Model
+   * vollständig ist (fireCompleted(true)).
+   *
+   * @throws SvmValidationException bei Validierungsfehler
+   */
   @Override
   public void validate() throws SvmValidationException {
     if (isBulkUpdate()) {
@@ -233,7 +318,9 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
   }
 
   /**
-   * Subklassen prüfen ihren Teil des Models und schmeissen eine von SvmValidationException
+   * Validierung von Felder- und Objekt-übergreifenden Regeln.
+   *
+   * <p>Subklassen prüfen ihren Teil des Models und schmeissen eine von SvmValidationException
    * abgeleitete Exception bei Fehler. Die Invalidierung des Models erfolgt in der Template Method.
    */
   abstract void doValidate() throws SvmValidationException;
@@ -241,5 +328,17 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
   @Override
   public void setModelValidationMode(boolean modelValidationMode) {
     this.modelValidationMode = modelValidationMode;
+  }
+
+  /**
+   * Prüfung, ob der Property-Name des übergebenen Events dem übergebenen Feld entspricht.
+   *
+   * @param field Feld
+   * @param evt Event mit Property-Name
+   * @return true, wenn der Property-Name des Events dem übergebenen Feld entspricht.
+   */
+  @Override
+  public boolean checkIsFieldChange(Field field, PropertyChangeEvent evt) {
+    return field.toString().equals(evt.getPropertyName());
   }
 }
