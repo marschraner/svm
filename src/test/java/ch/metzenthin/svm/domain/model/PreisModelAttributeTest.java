@@ -360,9 +360,8 @@ class PreisModelAttributeTest {
     assertEquals(new BigDecimal("99.00"), preisModelAttribute.getValue());
     assertEquals(0, testModelAttributeListener.getInvalidateCounter());
     assertEquals(1, testModelAttributeListener.getFireCounter());
-    assertEquals(0, testModelAttributeListener.getPropertyChangeCounter());
-    // Folgender assert müsste eigentlich 99. Fehler im Code!
-    assertEquals("99.00", testModelAttributeListener.getOldValue());
+    assertEquals(1, testModelAttributeListener.getPropertyChangeCounter());
+    assertEquals("99", testModelAttributeListener.getOldValue());
     assertEquals("99.00", testModelAttributeListener.getNewValue());
   }
 
@@ -379,7 +378,7 @@ class PreisModelAttributeTest {
         assertThrows(
             SvmValidationException.class, () -> preisModelAttribute.setNewValue(true, "x", false));
     assertEquals("Kein gültiger Preis im Format 'Fr.Rp'", svmValidationException.getMessage());
-    assertEquals(0, testModelAttributeListener.getInvalidateCounter());
+    assertEquals(1, testModelAttributeListener.getInvalidateCounter());
     assertEquals(0, testModelAttributeListener.getFireCounter());
     assertEquals(0, testModelAttributeListener.getPropertyChangeCounter());
     assertNull(testModelAttributeListener.getOldValue());
