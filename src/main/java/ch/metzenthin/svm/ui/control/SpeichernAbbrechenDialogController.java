@@ -8,7 +8,6 @@ import ch.metzenthin.svm.domain.model.MakeErrorLabelsInvisibleListener;
 import ch.metzenthin.svm.service.result.SaveDialogResult;
 import ch.metzenthin.svm.ui.components.SpeichernAbbrechenDialog;
 import ch.metzenthin.svm.ui.view.SpeichernAbbrechenDialogView;
-import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,25 +36,16 @@ public abstract class SpeichernAbbrechenDialogController<
 
   protected boolean isBearbeiten;
 
-  /**
-   * modelValidationMode true: SvmRequiredExceptions werden nicht markiert (nur als Tooltip). Model
-   * wird invalidiert bei Fehler<br>
-   * modelValidationMode false: SvmRequiredExceptions werden sofort markiert (in Error labels).
-   * Model wird nicht invalidiert bei Fehler
-   */
-  @Getter private final boolean modelValidationMode;
-
   protected SpeichernAbbrechenDialogController(T model, U view, boolean isBearbeiten) {
     this(model, view, isBearbeiten, false);
   }
 
   protected SpeichernAbbrechenDialogController(
       T model, U view, boolean isBearbeiten, boolean modelValidationMode) {
-    super(model);
+    super(model, modelValidationMode);
     this.model = model;
     this.view = view;
     this.isBearbeiten = isBearbeiten;
-    this.modelValidationMode = modelValidationMode;
     view.configDialogClosing(this);
     configModel();
     configBtnSpeichern();

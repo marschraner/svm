@@ -33,10 +33,15 @@ public abstract class AbstractController
    * modelValidationMode false: SvmRequiredExceptions werden sofort markiert (in Error labels).
    * Model wird nicht invalidiert bei Fehler
    */
-  @Getter private boolean modelValidationMode = false;
+  @Getter private boolean modelValidationMode;
 
   protected AbstractController(Model untypedModel) {
+    this(untypedModel, false);
+  }
+
+  protected AbstractController(Model untypedModel, boolean modelValidationMode) {
     this.untypedModel = untypedModel;
+    this.modelValidationMode = modelValidationMode;
   }
 
   /**
@@ -149,11 +154,19 @@ public abstract class AbstractController
     makeErrorLabelsInvisible(fields);
   }
 
+  /**
+   * TODO Nachdem alle Controller umgestellt sind, kann setModelValidationMode(boolean) entfernt
+   * werden. Das Flag wird neu im Konstruktor übergeben.
+   */
   public void setModelValidationMode(boolean modelValidationMode) {
     this.modelValidationMode = modelValidationMode;
     untypedModel.setModelValidationMode(modelValidationMode);
   }
 
+  /**
+   * TODO Nachdem alle Controller umgestellt sind, kann setUntypedModel(Model) entfernt werden. Das
+   * Model wird dann im Konstruktor mit dem parametrisierten Typ übergeben.
+   */
   protected void setUntypedModel(Model untypedModel) {
     this.untypedModel = untypedModel;
   }

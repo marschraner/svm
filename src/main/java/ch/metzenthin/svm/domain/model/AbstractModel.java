@@ -46,8 +46,6 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
    */
   void setBulkUpdate(boolean bulkUpdate) {
     this.bulkUpdate = bulkUpdate;
-    // Der folgende firePropertyChange bewirkt, dass die View und das Model validiert werden, falls
-    // bulkUpdate false ist.
     firePropertyChange(Field.BULK_UPDATE, !bulkUpdate, bulkUpdate);
     if (!bulkUpdate && !isModelValidationMode()) {
       fireCompleted(true);
@@ -195,7 +193,7 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
 
   protected void initializeCompleted(Integer id, AllModelValuesSetter allModelValuesSetter) {
     if (id != null) {
-      // bestehende Entity
+      // Bestehende Entity
       // Validierung ausschalten
       setBulkUpdate(true);
       // Meldung der Attributwerte an die Listener
