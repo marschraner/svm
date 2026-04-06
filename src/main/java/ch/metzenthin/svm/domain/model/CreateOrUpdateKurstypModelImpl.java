@@ -8,8 +8,6 @@ import ch.metzenthin.svm.service.KurstypService;
 import ch.metzenthin.svm.service.result.SaveKurstypResult;
 import jakarta.persistence.OptimisticLockException;
 import java.util.Optional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
@@ -18,8 +16,6 @@ import org.springframework.dao.OptimisticLockingFailureException;
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class CreateOrUpdateKurstypModelImpl extends AbstractModel
     implements CreateOrUpdateKurstypModel {
-
-  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateKurstypModelImpl.class);
 
   private final Kurstyp kurstyp;
   private final KurstypService kurstypService;
@@ -97,18 +93,12 @@ public class CreateOrUpdateKurstypModelImpl extends AbstractModel
   @SuppressWarnings("DuplicatedCode")
   @Override
   public void initializeCompleted() {
-    if (kurstyp.getKurstypId() != null) {
-      setBulkUpdate(true);
-      try {
-        setBezeichnung(kurstyp.getBezeichnung(), true);
-        setSelektierbar(kurstyp.isSelektierbar(), true);
-      } catch (SvmValidationException e) {
-        LOGGER.error(e.getMessage());
-      }
-      setBulkUpdate(false);
-    } else {
-      super.initializeCompleted();
-    }
+    initializeCompleted(
+        kurstyp.getKurstypId(),
+        () -> {
+          setBezeichnung(kurstyp.getBezeichnung(), true);
+          setSelektierbar(kurstyp.isSelektierbar(), true);
+        });
   }
 
   @Override

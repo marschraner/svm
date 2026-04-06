@@ -15,8 +15,6 @@ import jakarta.persistence.OptimisticLockException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Optional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
@@ -26,7 +24,6 @@ import org.springframework.dao.OptimisticLockingFailureException;
 public class CreateOrUpdateSemesterModelImpl extends AbstractModel
     implements CreateOrUpdateSemesterModel {
 
-  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateSemesterModelImpl.class);
   private static final String KEINE_GUELTIGE_PERIODE = "Keine gültige Periode";
 
   private final Semester semester;
@@ -430,24 +427,18 @@ public class CreateOrUpdateSemesterModelImpl extends AbstractModel
 
   @Override
   public void initializeCompleted() {
-    if (semester.getSemesterId() != null) {
-      setBulkUpdate(true);
-      try {
-        setSchuljahr(semester.getSchuljahr(), true);
-        setSemesterbezeichnung(semester.getSemesterbezeichnung(), true);
-        setSemesterbeginn(asString(semester.getSemesterbeginn()), true);
-        setSemesterende(asString(semester.getSemesterende()), true);
-        setFerienbeginn1(asString(semester.getFerienbeginn1()), true);
-        setFerienende1(asString(semester.getFerienende1()), true);
-        setFerienbeginn2(asString(semester.getFerienbeginn2()), true);
-        setFerienende2(asString(semester.getFerienende2()), true);
-      } catch (SvmValidationException e) {
-        LOGGER.error(e.getMessage());
-      }
-      setBulkUpdate(false);
-    } else {
-      super.initializeCompleted();
-    }
+    initializeCompleted(
+        semester.getSemesterId(),
+        () -> {
+          setSchuljahr(semester.getSchuljahr(), true);
+          setSemesterbezeichnung(semester.getSemesterbezeichnung(), true);
+          setSemesterbeginn(asString(semester.getSemesterbeginn()), true);
+          setSemesterende(asString(semester.getSemesterende()), true);
+          setFerienbeginn1(asString(semester.getFerienbeginn1()), true);
+          setFerienende1(asString(semester.getFerienende1()), true);
+          setFerienbeginn2(asString(semester.getFerienbeginn2()), true);
+          setFerienende2(asString(semester.getFerienende2()), true);
+        });
   }
 
   @Override

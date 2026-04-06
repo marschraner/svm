@@ -9,8 +9,6 @@ import ch.metzenthin.svm.service.result.SaveLektionsgebuehrenResult;
 import jakarta.persistence.OptimisticLockException;
 import java.math.BigDecimal;
 import java.util.Optional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
@@ -20,8 +18,6 @@ import org.springframework.dao.OptimisticLockingFailureException;
 public class CreateOrUpdateLektionsgebuehrenModelImpl extends AbstractModel
     implements CreateOrUpdateLektionsgebuehrenModel {
 
-  private static final Logger LOGGER =
-      LogManager.getLogger(CreateOrUpdateLektionsgebuehrenModelImpl.class);
   private static final BigDecimal MIN_VALID_VALUE = new BigDecimal("0.00");
   private static final BigDecimal MAX_VALID_VALUE = new BigDecimal("999.95");
 
@@ -291,23 +287,17 @@ public class CreateOrUpdateLektionsgebuehrenModelImpl extends AbstractModel
 
   @Override
   public void initializeCompleted() {
-    if (lektionsgebuehren.getId() != null) {
-      setBulkUpdate(true);
-      try {
-        setLektionslaenge(Integer.toString(lektionsgebuehren.getLektionslaenge()), true);
-        setBetrag1Kind(lektionsgebuehren.getBetrag1Kind().toString(), true);
-        setBetrag2Kinder(lektionsgebuehren.getBetrag2Kinder().toString(), true);
-        setBetrag3Kinder(lektionsgebuehren.getBetrag3Kinder().toString(), true);
-        setBetrag4Kinder(lektionsgebuehren.getBetrag4Kinder().toString(), true);
-        setBetrag5Kinder(lektionsgebuehren.getBetrag5Kinder().toString(), true);
-        setBetrag6Kinder(lektionsgebuehren.getBetrag6Kinder().toString(), true);
-      } catch (SvmValidationException e) {
-        LOGGER.error(e.getMessage());
-      }
-      setBulkUpdate(false);
-    } else {
-      super.initializeCompleted();
-    }
+    initializeCompleted(
+        lektionsgebuehren.getId(),
+        () -> {
+          setLektionslaenge(Integer.toString(lektionsgebuehren.getLektionslaenge()), true);
+          setBetrag1Kind(lektionsgebuehren.getBetrag1Kind().toString(), true);
+          setBetrag2Kinder(lektionsgebuehren.getBetrag2Kinder().toString(), true);
+          setBetrag3Kinder(lektionsgebuehren.getBetrag3Kinder().toString(), true);
+          setBetrag4Kinder(lektionsgebuehren.getBetrag4Kinder().toString(), true);
+          setBetrag5Kinder(lektionsgebuehren.getBetrag5Kinder().toString(), true);
+          setBetrag6Kinder(lektionsgebuehren.getBetrag6Kinder().toString(), true);
+        });
   }
 
   @Override

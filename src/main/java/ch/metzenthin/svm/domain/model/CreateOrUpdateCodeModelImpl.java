@@ -7,8 +7,6 @@ import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.service.CodeService;
 import ch.metzenthin.svm.service.result.SaveCodeResult;
 import jakarta.persistence.OptimisticLockException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
@@ -16,8 +14,6 @@ import org.springframework.dao.OptimisticLockingFailureException;
  */
 public abstract class CreateOrUpdateCodeModelImpl<T extends Code> extends AbstractModel
     implements CreateOrUpdateCodeModel {
-
-  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateCodeModelImpl.class);
 
   private final T code;
   private final CodeService<T> codeService;
@@ -126,18 +122,13 @@ public abstract class CreateOrUpdateCodeModelImpl<T extends Code> extends Abstra
 
   @Override
   public void initializeCompleted() {
-    if (code.getCodeId() != null) {
-      setBulkUpdate(true);
-      try {
-        setKuerzel(code.getKuerzel(), true);
-        setBeschreibung(code.getBeschreibung(), true);
-        setSelektierbar(code.isSelektierbar(), true);
-      } catch (SvmValidationException e) {
-        LOGGER.error(e.getMessage());
-      }
-      setBulkUpdate(false);
-      super.initializeCompleted();
-    }
+    initializeCompleted(
+        code.getCodeId(),
+        () -> {
+          setKuerzel(code.getKuerzel(), true);
+          setBeschreibung(code.getBeschreibung(), true);
+          setSelektierbar(code.isSelektierbar(), true);
+        });
   }
 
   @Override
