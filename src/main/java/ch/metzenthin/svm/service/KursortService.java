@@ -12,6 +12,8 @@ public interface KursortService {
 
   List<Kursort> findAllKursorte();
 
+  boolean doesKursortAlreadyExist(Integer kursortId, String kursortBezeichnung);
+
   void saveKursort(Kursort kursort) throws EntityAlreadyExistsException;
 
   void deleteKursort(Kursort kursort) throws EntityStillReferencedException;

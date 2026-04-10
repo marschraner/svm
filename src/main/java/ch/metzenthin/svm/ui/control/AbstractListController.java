@@ -3,7 +3,6 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.AbstractListModel;
 import ch.metzenthin.svm.domain.model.AbstractTableData;
-import ch.metzenthin.svm.domain.model.Model;
 import ch.metzenthin.svm.service.result.SaveDialogResult;
 import ch.metzenthin.svm.ui.view.AbstractListPanelView;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import lombok.Getter;
  * @author Hans Stamm
  */
 public abstract class AbstractListController<
-    T extends AbstractListModel<? extends AbstractTableData<?>, ?, ? extends Model, U>,
+    T extends AbstractListModel<? extends AbstractTableData<?>, ?, ?, U>,
     U extends SaveDialogResult> {
 
   protected final SvmContext svmContext;

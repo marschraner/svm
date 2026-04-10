@@ -31,13 +31,24 @@ public class KursortServiceImpl implements KursortService {
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public boolean doesKursortAlreadyExist(Integer kursortId, String kursortBezeichnung) {
+    long numberOfAlreadyExistingKursorte =
+        getNumberOfAlreadyExistingKursorte(kursortId, kursortBezeichnung);
+    return numberOfAlreadyExistingKursorte > 0;
+  }
+
+  private long getNumberOfAlreadyExistingKursorte(Integer kursortId, String kursortBezeichnung) {
+    return (kursortId != null)
+        ? kursortRepository.countByBezeichnungAndIdNe(kursortBezeichnung, kursortId)
+        : kursortRepository.countByBezeichnung(kursortBezeichnung);
+  }
+
+  @Override
   @Transactional
   public void saveKursort(Kursort kursort) throws EntityAlreadyExistsException {
     long numberOfAlreadyExistingKursorte =
-        (kursort.getKursortId() != null)
-            ? kursortRepository.countByBezeichnungAndIdNe(
-                kursort.getBezeichnung(), kursort.getKursortId())
-            : kursortRepository.countByBezeichnung(kursort.getBezeichnung());
+        getNumberOfAlreadyExistingKursorte(kursort.getKursortId(), kursort.getBezeichnung());
     if (numberOfAlreadyExistingKursorte > 0) {
       throw new EntityAlreadyExistsException();
     }

@@ -1,18 +1,109 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateKursortModel;
-import ch.metzenthin.svm.service.result.SaveKursortResult;
+import ch.metzenthin.svm.domain.model.DialogClosingListener;
+import ch.metzenthin.svm.domain.model.validation.ValidationResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultAndSaveKursortResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateKursortView;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Martin Schraner
  */
-public class CreateOrUpdateKursortController
-    extends CreateOrUpdateBezeichnungAndSelektierbarController<
-        CreateOrUpdateKursortModel, CreateOrUpdateKursortView, SaveKursortResult> {
+public class CreateOrUpdateKursortController implements DialogClosingListener {
 
-  CreateOrUpdateKursortController(
-      CreateOrUpdateKursortModel createOrUpdateKursortModel, boolean isBearbeiten, String title) {
-    super(createOrUpdateKursortModel, new CreateOrUpdateKursortView(title), isBearbeiten);
+  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateKursortController.class);
+
+  private final CreateOrUpdateKursortModel model;
+  private final CreateOrUpdateKursortView view;
+
+  public CreateOrUpdateKursortController(
+      CreateOrUpdateKursortModel createOrUpdateKursortModel, String title) {
+    model = createOrUpdateKursortModel;
+    view = new CreateOrUpdateKursortView(title);
+    view.configDialogClosing(this);
+    configTxtBezeichnung();
+    configBtnSpeichern();
+    configBtnAbbrechen();
+    model.initialiseViewFields(view);
+  }
+
+  private void configTxtBezeichnung() {
+    view.addTxtBezeichnungActionListener(e -> onBezeichnungEvent());
+    view.addTxtBezeichnungFocusListener(
+        new FocusAdapter() {
+          @Override
+          public void focusLost(FocusEvent e) {
+            onBezeichnungEvent();
+          }
+        });
+  }
+
+  private void onBezeichnungEvent() {
+    LOGGER.trace("CreateOrUpdateKursortController Event Bezeichnung");
+    String formattedBezeichnung = model.formatBezeichnung(view.getTxtBezeichnungText());
+    view.setTxtBezeichnungText(formattedBezeichnung);
+    ValidationResult validationResult = model.validateBezeichnung(formattedBezeichnung);
+    if (validationResult.isValid()) {
+      view.setErrLblBezeichnungInvisible();
+    } else {
+      view.setErrLblBezeichnungVisible(validationResult.errorMessage());
+    }
+  }
+
+  private void configBtnSpeichern() {
+    view.addButtonSpeichernActionListener(e -> onSpeichern());
+  }
+
+  private void onSpeichern() {
+    ValidationResultAndSaveKursortResult validationResultAndSaveKursortResult =
+        model.speichern(view);
+
+    if (!validationResultAndSaveKursortResult.validationResult().isValid()
+        && validationResultAndSaveKursortResult
+            .validationResult()
+            .affectedFields()
+            .contains(Field.BEZEICHNUNG)) {
+      view.setTxtBezeichnungToolTipText(
+          validationResultAndSaveKursortResult.validationResult().errorMessage());
+      view.setButtonSpeichernFocusPainted(false);
+
+    } else if (validationResultAndSaveKursortResult.saveKursortResult().isErrorMessage()) {
+      view.showErrorMessageDialog(
+          validationResultAndSaveKursortResult.saveKursortResult().getMessage(), "Fehler");
+      if (validationResultAndSaveKursortResult.saveKursortResult().isCloseDialog()) {
+        closeDialog();
+      } else {
+        view.setButtonSpeichernFocusPainted(false);
+      }
+
+    } else {
+      closeDialog();
+    }
+  }
+
+  private void closeDialog() {
+    view.closeDialog();
+  }
+
+  private void configBtnAbbrechen() {
+    view.addButtonAbbrechenActionListener(e -> onAbbrechen());
+  }
+
+  private void onAbbrechen() {
+    closeDialog();
+  }
+
+  public void showDialog() {
+    view.showDialog();
+  }
+
+  @Override
+  public void onCloseDialog() {
+    closeDialog();
   }
 }

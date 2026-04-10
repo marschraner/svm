@@ -32,8 +32,8 @@ public class KursortListController
     CreateOrUpdateKursortModel createOrUpdateKursortModel =
         model.createCreateOrUpdateModel(svmContext);
     CreateOrUpdateKursortController createOrUpdateKursortController =
-        new CreateOrUpdateKursortController(createOrUpdateKursortModel, false, "Neuer Kursort");
-    createOrUpdateKursortController.initialiseModelValuesAndViewFieldsAndShowDialog();
+        new CreateOrUpdateKursortController(createOrUpdateKursortModel, "Neuer Kursort");
+    createOrUpdateKursortController.showDialog();
   }
 
   @Override
@@ -41,7 +41,7 @@ public class KursortListController
     CreateOrUpdateKursortModel createOrUpdateKursortModel =
         model.createCreateOrUpdateModel(svmContext, view.getSelectedRow());
     CreateOrUpdateKursortController createOrUpdateKursortController =
-        new CreateOrUpdateKursortController(createOrUpdateKursortModel, true, "Kursort bearbeiten");
-    createOrUpdateKursortController.initialiseModelValuesAndViewFieldsAndShowDialog();
+        new CreateOrUpdateKursortController(createOrUpdateKursortModel, "Kursort bearbeiten");
+    createOrUpdateKursortController.showDialog();
   }
 }
