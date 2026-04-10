@@ -39,12 +39,6 @@ public class CreateOrUpdateSemesterController
     configTxtFerienende2();
   }
 
-  @Override
-  protected void setDefaultValuesOnNeu() {
-    initSchuljahr();
-    initSemesterbezeichnung();
-  }
-
   private ModelAndViewAccessor<String> schuljarModelAndViewAccessor;
 
   private void configSpinnerSchuljahre() {
@@ -57,15 +51,6 @@ public class CreateOrUpdateSemesterController
             view::setSpinnerSchuljahreToolTipText);
     view.addSpinnerSchuljahreChangeListener(
         e -> onSchuljahrSelected(), e -> isModelInInitialisationMode());
-  }
-
-  private void initSchuljahr() {
-    String schuljahr = model.getNaechstesNochNichtErfasstesSemester().getSchuljahr();
-    try {
-      model.setSchuljahr(schuljahr);
-    } catch (SvmValidationException e) {
-      LOGGER.error(e.getMessage());
-    }
   }
 
   private void onSchuljahrSelected() {
@@ -88,16 +73,6 @@ public class CreateOrUpdateSemesterController
     view.setComboBoxSemesterbezeichnungValues(Semesterbezeichnung.values());
     view.addComboBoxSemesterbezeichnungActionListener(
         e -> onSemesterbezeichnungSelected(), e -> isModelInInitialisationMode());
-  }
-
-  private void initSemesterbezeichnung() {
-    Semesterbezeichnung semesterbezeichnung =
-        model.getNaechstesNochNichtErfasstesSemester().getSemesterbezeichnung();
-    try {
-      model.setSemesterbezeichnung(semesterbezeichnung);
-    } catch (SvmValidationException e) {
-      LOGGER.error(e.getMessage());
-    }
   }
 
   private void onSemesterbezeichnungSelected() {

@@ -77,24 +77,13 @@ public class CreateOrUpdateKurstypModelImpl extends AbstractModel
   }
 
   @Override
-  public SaveKurstypResult speichern() {
-    SaveKurstypResult saveKurstypResult;
-    try {
-      kurstypService.saveKurstyp(kurstyp);
-      saveKurstypResult = SaveKurstypResult.SPEICHERN_ERFOLGREICH;
-    } catch (EntityAlreadyExistsException e) {
-      saveKurstypResult = SaveKurstypResult.KURSTYP_BEREITS_ERFASST;
-    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
-      saveKurstypResult = SaveKurstypResult.KURSTYP_DURCH_ANDEREN_BENUTZER_VERAENDERT;
-    }
-    return saveKurstypResult;
+  public void initialiseModelValuesOnNeu() {
+    initialiseModelValuesOnNeu(() -> setSelektierbar(true));
   }
 
-  @SuppressWarnings("DuplicatedCode")
   @Override
-  public void initializeCompleted() {
-    initializeCompleted(
-        kurstyp.getKurstypId(),
+  public void initialiseModelValuesOnBearbeiten() {
+    initialiseModelValuesOnBearbeiten(
         () -> {
           setBezeichnung(kurstyp.getBezeichnung(), true);
           setSelektierbar(kurstyp.isSelektierbar(), true);
@@ -109,5 +98,19 @@ public class CreateOrUpdateKurstypModelImpl extends AbstractModel
   @Override
   void doValidate() throws SvmValidationException {
     // Keine feldübergreifende Validierung notwendig
+  }
+
+  @Override
+  public SaveKurstypResult speichern() {
+    SaveKurstypResult saveKurstypResult;
+    try {
+      kurstypService.saveKurstyp(kurstyp);
+      saveKurstypResult = SaveKurstypResult.SPEICHERN_ERFOLGREICH;
+    } catch (EntityAlreadyExistsException e) {
+      saveKurstypResult = SaveKurstypResult.KURSTYP_BEREITS_ERFASST;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      saveKurstypResult = SaveKurstypResult.KURSTYP_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+    return saveKurstypResult;
   }
 }

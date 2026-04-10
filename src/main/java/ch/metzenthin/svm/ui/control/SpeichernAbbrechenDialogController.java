@@ -67,18 +67,17 @@ public abstract class SpeichernAbbrechenDialogController<
    *
    * <p>Bei einem neuen Objekt können von den Subklassen noch die Initialwerte gesetzt werden.
    */
-  protected void initialiseModelAndViewFields() {
-    model.initializeCompleted();
-    if (!isBearbeiten && isModelValidationMode()) {
+  protected void initialiseModelValuesAndViewFields() {
+    if (!isBearbeiten) {
+      model.initialiseModelValuesOnNeu();
+    } else {
+      model.initialiseModelValuesOnBearbeiten();
+    }
+    if (isModelInInitialisationMode()) {
+      // Ggf. Speichern-Button deaktivieren
       validate();
     }
-    if (!isBearbeiten) {
-      setDefaultValuesOnNeu();
-    }
   }
-
-  /** Möglichkeit für Subklassen, das Model und die View mit Defaultwerten zu initialisieren. */
-  protected abstract void setDefaultValuesOnNeu();
 
   private void configModel() {
     model.addPropertyChangeListener(this);
@@ -88,8 +87,8 @@ public abstract class SpeichernAbbrechenDialogController<
     model.setModelValidationMode(isModelValidationMode());
   }
 
-  public void initialiseModelAndViewFieldsAndShowDialog() {
-    initialiseModelAndViewFields();
+  public void initialiseModelValuesAndViewFieldsAndShowDialog() {
+    initialiseModelValuesAndViewFields();
     view.showDialog();
   }
 

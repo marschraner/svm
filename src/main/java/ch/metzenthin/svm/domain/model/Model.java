@@ -39,7 +39,13 @@ public interface Model {
 
   void makeErrorLabelsInvisible(Set<Field> fields);
 
+  // TODO: Alte Initialisierung, kann entfernt werden, wenn alle Controller umgestellt sind.
   void initializeCompleted();
+
+  default void initialiseModelValuesOnNeu() {}
+
+  // TODO: default entfernen, wenn alle Controller umgestellt sind.
+  default void initialiseModelValuesOnBearbeiten() {}
 
   boolean isCompleted();
 

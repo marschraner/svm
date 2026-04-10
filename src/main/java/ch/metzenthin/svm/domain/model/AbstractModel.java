@@ -234,10 +234,10 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
    */
   @Override
   public void initializeCompleted() {
-    fireInitializeCompleted();
+    fireModelValueInitialisationCompleted();
   }
 
-  private void fireInitializeCompleted() {
+  private void fireModelValueInitialisationCompleted() {
     if (isModelValidationMode()) {
       fireCompleted(isCompleted());
     } else {
@@ -246,34 +246,42 @@ public abstract class AbstractModel implements Model, ModelAttributeListener {
   }
 
   /**
-   * Generische Method für die Initialisierung des Model-Objekts, nachdem die Initialisierung des
-   * Controllers erfolgt ist.
+   * Generische Methode für die Initialisierung für neue Model-Objekte, nachdem die Initialisierung
+   * des Controllers erfolgt ist.
    *
-   * <p>Die Initialisierung wird nur für bestehende Model-Objekte (id nicht null) durchgeführt. Vor
-   * dem Aufruf des Callbacks zur Initialisierung der einzelnen Model-Werte wird der
+   * @param allModelValuesSetter Callback zum Setzen der Model-Werte
+   */
+  protected void initialiseModelValuesOnNeu(AllModelValuesSetter allModelValuesSetter) {
+    try {
+      allModelValuesSetter.setAllModelValues();
+    } catch (SvmValidationException e) {
+      LOGGER.error(e.getMessage());
+    }
+    fireModelValueInitialisationCompleted();
+  }
+
+  /**
+   * Generische Methode für die Initialisierung für bestehende Model-Objekte, nachdem die
+   * Initialisierung des Controllers erfolgt ist.
+   *
+   * <p>Vor dem Aufruf des Callbacks zur Initialisierung der einzelnen Model-Werte wird der
    * bulkUpdate-Modus eingeschaltet (d.h. die Validierung wird ausgeschaltet) und nachher wieder
    * ausgeschaltet, was eine Validierung der View und des Models auslöst.
    *
-   * @param id ID des zu initialisierenden Objekts
    * @param allModelValuesSetter Callback zum Setzen der Model-Werte
    */
-  protected void initializeCompleted(Integer id, AllModelValuesSetter allModelValuesSetter) {
-    if (id != null) {
-      // Bestehende Entity
-      // Validierung ausschalten
-      setBulkUpdate(true);
-      // Meldung der Attributwerte an die Listener
-      try {
-        allModelValuesSetter.setAllModelValues();
-      } catch (SvmValidationException e) {
-        LOGGER.error(e.getMessage());
-      }
-      // Validierung anstossen
-      setBulkUpdate(false);
-    } else {
-      // neue Entity
-      fireInitializeCompleted();
+  protected void initialiseModelValuesOnBearbeiten(AllModelValuesSetter allModelValuesSetter) {
+    // Bestehende Entity
+    // Validierung ausschalten
+    setBulkUpdate(true);
+    // Meldung der Attributwerte an die Listener
+    try {
+      allModelValuesSetter.setAllModelValues();
+    } catch (SvmValidationException e) {
+      LOGGER.error(e.getMessage());
     }
+    // Validierung anstossen
+    setBulkUpdate(false);
   }
 
   /**

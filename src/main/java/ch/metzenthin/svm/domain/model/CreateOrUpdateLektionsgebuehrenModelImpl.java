@@ -271,24 +271,8 @@ public class CreateOrUpdateLektionsgebuehrenModelImpl extends AbstractModel
   }
 
   @Override
-  public SaveLektionsgebuehrenResult speichern() {
-    SaveLektionsgebuehrenResult saveLektionsgebuehrenResult;
-    try {
-      lektionsgebuehrenService.saveLektionsgebuehren(lektionsgebuehren);
-      saveLektionsgebuehrenResult = SaveLektionsgebuehrenResult.SPEICHERN_ERFOLGREICH;
-    } catch (EntityAlreadyExistsException e) {
-      saveLektionsgebuehrenResult = SaveLektionsgebuehrenResult.LEKTIONSGEBUEHREN_BEREITS_ERFASST;
-    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
-      saveLektionsgebuehrenResult =
-          SaveLektionsgebuehrenResult.LEKTIONSGEBUEHREN_DURCH_ANDEREN_BENUTZER_VERAENDERT;
-    }
-    return saveLektionsgebuehrenResult;
-  }
-
-  @Override
-  public void initializeCompleted() {
-    initializeCompleted(
-        lektionsgebuehren.getId(),
+  public void initialiseModelValuesOnBearbeiten() {
+    initialiseModelValuesOnBearbeiten(
         () -> {
           setLektionslaenge(Integer.toString(lektionsgebuehren.getLektionslaenge()), true);
           setBetrag1Kind(lektionsgebuehren.getBetrag1Kind().toString(), true);
@@ -308,5 +292,20 @@ public class CreateOrUpdateLektionsgebuehrenModelImpl extends AbstractModel
   @Override
   void doValidate() throws SvmValidationException {
     // Keine feldübergreifende Validierung notwendig
+  }
+
+  @Override
+  public SaveLektionsgebuehrenResult speichern() {
+    SaveLektionsgebuehrenResult saveLektionsgebuehrenResult;
+    try {
+      lektionsgebuehrenService.saveLektionsgebuehren(lektionsgebuehren);
+      saveLektionsgebuehrenResult = SaveLektionsgebuehrenResult.SPEICHERN_ERFOLGREICH;
+    } catch (EntityAlreadyExistsException e) {
+      saveLektionsgebuehrenResult = SaveLektionsgebuehrenResult.LEKTIONSGEBUEHREN_BEREITS_ERFASST;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      saveLektionsgebuehrenResult =
+          SaveLektionsgebuehrenResult.LEKTIONSGEBUEHREN_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+    return saveLektionsgebuehrenResult;
   }
 }

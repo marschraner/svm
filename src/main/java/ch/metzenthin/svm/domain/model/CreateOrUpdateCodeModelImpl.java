@@ -107,23 +107,13 @@ public abstract class CreateOrUpdateCodeModelImpl<T extends Code> extends Abstra
   }
 
   @Override
-  public SaveCodeResult speichern() {
-    SaveCodeResult saveCodeResult;
-    try {
-      codeService.saveCode(code);
-      saveCodeResult = SaveCodeResult.SPEICHERN_ERFOLGREICH;
-    } catch (EntityAlreadyExistsException e) {
-      saveCodeResult = SaveCodeResult.CODE_BEREITS_ERFASST;
-    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
-      saveCodeResult = SaveCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
-    }
-    return saveCodeResult;
+  public void initialiseModelValuesOnNeu() {
+    initialiseModelValuesOnNeu(() -> setSelektierbar(true));
   }
 
   @Override
-  public void initializeCompleted() {
-    initializeCompleted(
-        code.getCodeId(),
+  public void initialiseModelValuesOnBearbeiten() {
+    initialiseModelValuesOnBearbeiten(
         () -> {
           setKuerzel(code.getKuerzel(), true);
           setBeschreibung(code.getBeschreibung(), true);
@@ -139,5 +129,19 @@ public abstract class CreateOrUpdateCodeModelImpl<T extends Code> extends Abstra
   @Override
   void doValidate() throws SvmValidationException {
     // Keine feldübergreifende Validierung notwendig
+  }
+
+  @Override
+  public SaveCodeResult speichern() {
+    SaveCodeResult saveCodeResult;
+    try {
+      codeService.saveCode(code);
+      saveCodeResult = SaveCodeResult.SPEICHERN_ERFOLGREICH;
+    } catch (EntityAlreadyExistsException e) {
+      saveCodeResult = SaveCodeResult.CODE_BEREITS_ERFASST;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      saveCodeResult = SaveCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+    return saveCodeResult;
   }
 }

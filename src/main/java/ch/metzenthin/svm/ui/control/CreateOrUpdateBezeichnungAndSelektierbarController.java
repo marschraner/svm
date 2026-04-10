@@ -34,12 +34,6 @@ public abstract class CreateOrUpdateBezeichnungAndSelektierbarController<
     configCheckBoxSelektierbar();
   }
 
-  @Override
-  protected void setDefaultValuesOnNeu() {
-    // Selektierbar als Default-Wert
-    model.setSelektierbar(true);
-  }
-
   private ModelAndViewAccessor<String> bezeichnungModelAndViewAccessor;
 
   private void configTxtBezeichnung() {

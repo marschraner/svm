@@ -77,17 +77,8 @@ public class CreateOrUpdateKursortModelImpl extends AbstractModel
   }
 
   @Override
-  public SaveKursortResult speichern() {
-    SaveKursortResult saveKursortResult;
-    try {
-      kursortService.saveKursort(kursort);
-      saveKursortResult = SaveKursortResult.SPEICHERN_ERFOLGREICH;
-    } catch (EntityAlreadyExistsException e) {
-      saveKursortResult = SaveKursortResult.KURSORT_BEREITS_ERFASST;
-    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
-      saveKursortResult = SaveKursortResult.KURSORT_DURCH_ANDEREN_BENUTZER_VERAENDERT;
-    }
-    return saveKursortResult;
+  public void initialiseModelValuesOnNeu() {
+    initialiseModelValuesOnNeu(() -> setSelektierbar(true));
   }
 
   /**
@@ -95,9 +86,8 @@ public class CreateOrUpdateKursortModelImpl extends AbstractModel
    * Listener gemeldet und die Validierung wird angestossen.
    */
   @Override
-  public void initializeCompleted() {
-    initializeCompleted(
-        kursort.getKursortId(),
+  public void initialiseModelValuesOnBearbeiten() {
+    initialiseModelValuesOnBearbeiten(
         () -> {
           setBezeichnung(kursort.getBezeichnung(), true);
           setSelektierbar(kursort.isSelektierbar(), true);
@@ -112,5 +102,19 @@ public class CreateOrUpdateKursortModelImpl extends AbstractModel
   @Override
   void doValidate() throws SvmValidationException {
     // Keine feldübergreifende Validierung notwendig
+  }
+
+  @Override
+  public SaveKursortResult speichern() {
+    SaveKursortResult saveKursortResult;
+    try {
+      kursortService.saveKursort(kursort);
+      saveKursortResult = SaveKursortResult.SPEICHERN_ERFOLGREICH;
+    } catch (EntityAlreadyExistsException e) {
+      saveKursortResult = SaveKursortResult.KURSORT_BEREITS_ERFASST;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      saveKursortResult = SaveKursortResult.KURSORT_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+    return saveKursortResult;
   }
 }

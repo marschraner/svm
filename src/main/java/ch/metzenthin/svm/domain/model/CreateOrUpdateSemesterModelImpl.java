@@ -15,6 +15,8 @@ import jakarta.persistence.OptimisticLockException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Optional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
@@ -23,6 +25,8 @@ import org.springframework.dao.OptimisticLockingFailureException;
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public class CreateOrUpdateSemesterModelImpl extends AbstractModel
     implements CreateOrUpdateSemesterModel {
+
+  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateSemesterModelImpl.class);
 
   private static final String KEINE_GUELTIGE_PERIODE = "Keine gültige Periode";
 
@@ -401,34 +405,29 @@ public class CreateOrUpdateSemesterModelImpl extends AbstractModel
   }
 
   @Override
-  public SaveSemesterResult speichern() {
-    throw new UnsupportedOperationException("Methode speichern(boolean) verwenden!");
+  public void initialiseModelValuesOnNeu() {
+    initSchuljahrOnNeu();
+    initSemesterbezeichnungOnNeu();
   }
 
-  @Override
-  public SaveSemesterResult speichern(boolean updateSemesterrechnungen) {
-
-    SaveSemesterResult saveSemesterResult;
-
+  private void initSchuljahrOnNeu() {
+    String schuljahr = getNaechstesNochNichtErfasstesSemester().getSchuljahr();
     try {
-      semesterService.saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(
-          semester, updateSemesterrechnungen);
-      saveSemesterResult = SaveSemesterResult.SPEICHERN_ERFOLGREICH;
-    } catch (EntityAlreadyExistsException e) {
-      saveSemesterResult = SaveSemesterResult.SEMESTER_BEREITS_ERFASST;
-    } catch (EntityWithOverlappingPeriodsException e) {
-      saveSemesterResult = SaveSemesterResult.SEMESTER_UEBERLAPPT_MIT_ANDEREM_SEMESTER;
-    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
-      saveSemesterResult = SaveSemesterResult.SEMESTER_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+      setSchuljahr(schuljahr);
+    } catch (SvmValidationException e) {
+      LOGGER.error(e.getMessage());
     }
+  }
 
-    return saveSemesterResult;
+  private void initSemesterbezeichnungOnNeu() {
+    Semesterbezeichnung semesterbezeichnung =
+        getNaechstesNochNichtErfasstesSemester().getSemesterbezeichnung();
+    setSemesterbezeichnung(semesterbezeichnung);
   }
 
   @Override
-  public void initializeCompleted() {
-    initializeCompleted(
-        semester.getSemesterId(),
+  public void initialiseModelValuesOnBearbeiten() {
+    initialiseModelValuesOnBearbeiten(
         () -> {
           setSchuljahr(semester.getSchuljahr(), true);
           setSemesterbezeichnung(semester.getSemesterbezeichnung(), true);
@@ -490,5 +489,30 @@ public class CreateOrUpdateSemesterModelImpl extends AbstractModel
       throw new SvmValidationException(
           2064, "Ferienende muss vor Semesterende liegen", Field.FERIENENDE2);
     }
+  }
+
+  @Override
+  public SaveSemesterResult speichern() {
+    throw new UnsupportedOperationException("Methode speichern(boolean) verwenden!");
+  }
+
+  @Override
+  public SaveSemesterResult speichern(boolean updateSemesterrechnungen) {
+
+    SaveSemesterResult saveSemesterResult;
+
+    try {
+      semesterService.saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(
+          semester, updateSemesterrechnungen);
+      saveSemesterResult = SaveSemesterResult.SPEICHERN_ERFOLGREICH;
+    } catch (EntityAlreadyExistsException e) {
+      saveSemesterResult = SaveSemesterResult.SEMESTER_BEREITS_ERFASST;
+    } catch (EntityWithOverlappingPeriodsException e) {
+      saveSemesterResult = SaveSemesterResult.SEMESTER_UEBERLAPPT_MIT_ANDEREM_SEMESTER;
+    } catch (OptimisticLockException | OptimisticLockingFailureException e) {
+      saveSemesterResult = SaveSemesterResult.SEMESTER_DURCH_ANDEREN_BENUTZER_VERAENDERT;
+    }
+
+    return saveSemesterResult;
   }
 }

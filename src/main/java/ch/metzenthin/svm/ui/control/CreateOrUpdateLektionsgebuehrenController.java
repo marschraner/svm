@@ -36,11 +36,6 @@ public class CreateOrUpdateLektionsgebuehrenController
     configTxtBetrag6Kinder();
   }
 
-  @Override
-  protected void setDefaultValuesOnNeu() {
-    // Empty, keine Defaultwerte.
-  }
-
   private ModelAndViewAccessor<String> lektionslaengeModelAndViewAccessor;
 
   private void configTxtLektionslaenge() {

@@ -37,7 +37,7 @@ public class SemesterListController
         model.createCreateOrUpdateModel(svmContext);
     CreateOrUpdateSemesterController createOrUpdateSemesterController =
         new CreateOrUpdateSemesterController(createOrUpdateSemesterModel, false, "Neues Semester");
-    createOrUpdateSemesterController.initialiseModelAndViewFieldsAndShowDialog();
+    createOrUpdateSemesterController.initialiseModelValuesAndViewFieldsAndShowDialog();
   }
 
   @Override
@@ -47,7 +47,7 @@ public class SemesterListController
     CreateOrUpdateSemesterController createOrUpdateSemesterController =
         new CreateOrUpdateSemesterController(
             createOrUpdateSemesterModel, true, "Semester bearbeiten");
-    createOrUpdateSemesterController.initialiseModelAndViewFieldsAndShowDialog();
+    createOrUpdateSemesterController.initialiseModelValuesAndViewFieldsAndShowDialog();
   }
 
   @Override
