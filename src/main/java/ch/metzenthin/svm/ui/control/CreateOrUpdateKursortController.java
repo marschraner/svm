@@ -3,8 +3,8 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateKursortModel;
 import ch.metzenthin.svm.domain.model.DialogClosingListener;
+import ch.metzenthin.svm.domain.model.validation.ValidationAndSaveResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultAndSaveKursortResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateKursortView;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -60,22 +60,16 @@ public class CreateOrUpdateKursortController implements DialogClosingListener {
   }
 
   private void onSpeichern() {
-    ValidationResultAndSaveKursortResult validationResultAndSaveKursortResult =
-        model.speichern(view);
+    ValidationAndSaveResult validationAndSaveResult = model.speichern(view);
 
-    if (!validationResultAndSaveKursortResult.validationResult().isValid()
-        && validationResultAndSaveKursortResult
-            .validationResult()
-            .affectedFields()
-            .contains(Field.BEZEICHNUNG)) {
-      view.setTxtBezeichnungToolTipText(
-          validationResultAndSaveKursortResult.validationResult().errorMessage());
+    if (!validationAndSaveResult.isValidationSuccessful()
+        && validationAndSaveResult.affectedFieldsOfValidationContains(Field.BEZEICHNUNG)) {
+      view.setTxtBezeichnungToolTipText(validationAndSaveResult.getValidationErrorMessage());
       view.setButtonSpeichernFocusPainted(false);
 
-    } else if (validationResultAndSaveKursortResult.saveKursortResult().isErrorMessage()) {
-      view.showErrorMessageDialog(
-          validationResultAndSaveKursortResult.saveKursortResult().getMessage(), "Fehler");
-      if (validationResultAndSaveKursortResult.saveKursortResult().isCloseDialog()) {
+    } else if (!validationAndSaveResult.isSaveSuccessful()) {
+      view.showErrorMessageDialog(validationAndSaveResult.getSaveErrorMessage(), "Fehler");
+      if (validationAndSaveResult.isCloseDialogAfterSave()) {
         closeDialog();
       } else {
         view.setButtonSpeichernFocusPainted(false);

@@ -2,8 +2,8 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
+import ch.metzenthin.svm.domain.model.validation.ValidationAndSaveResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultAndSaveKursortResult;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.result.SaveKursortResult;
@@ -71,50 +71,40 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
   }
 
   private ValidationResult validateNotEmpty(String bezeichnung) {
-    return (bezeichnung != null && !bezeichnung.isBlank())
-        ? new ValidationResult(true, null, null)
-        : new ValidationResult(false, "Eintrag ist obligatorisch!", Set.of(Field.BEZEICHNUNG));
+    return (bezeichnung == null || bezeichnung.isBlank())
+        ? new ValidationResult("Eintrag ist obligatorisch!", Set.of(Field.BEZEICHNUNG))
+        : new ValidationResult();
   }
 
   private ValidationResult validateNotTooShort(String bezeichnung) {
     return (bezeichnung.length() < MIN_KURSORT_LENGTH)
         ? new ValidationResult(
-            false,
-            "Länge muss mindestens " + MIN_KURSORT_LENGTH + " sein!",
-            Set.of(Field.BEZEICHNUNG))
-        : new ValidationResult(true, null, null);
+            "Länge muss mindestens " + MIN_KURSORT_LENGTH + " sein!", Set.of(Field.BEZEICHNUNG))
+        : new ValidationResult();
   }
 
   private ValidationResult validateNotTooLong(String bezeichnung) {
     return (bezeichnung.length() > MAX_KURSORT_LENGTH)
         ? new ValidationResult(
-            false,
-            "Länge darf höchstens " + MAX_KURSORT_LENGTH + " sein!",
-            Set.of(Field.BEZEICHNUNG))
-        : new ValidationResult(true, null, null);
+            "Länge darf höchstens " + MAX_KURSORT_LENGTH + " sein!", Set.of(Field.BEZEICHNUNG))
+        : new ValidationResult();
   }
 
   private ValidationResult validateKursortNotAlreadyExists(String bezeichnung) {
     return (kursortService.doesKursortAlreadyExist(kursort.getKursortId(), bezeichnung))
-        ? new ValidationResult(
-            false, "Bezeichnung bereits in Verwendung.", Set.of(Field.BEZEICHNUNG))
-        : new ValidationResult(true, null, null);
+        ? new ValidationResult("Bezeichnung bereits in Verwendung.", Set.of(Field.BEZEICHNUNG))
+        : new ValidationResult();
   }
 
   @Override
-  public ValidationResultAndSaveKursortResult speichern(
-      CreateOrUpdateKursortView createOrUpdateKursortView) {
-
+  public ValidationAndSaveResult speichern(CreateOrUpdateKursortView createOrUpdateKursortView) {
     ValidationResult validationResult = validate(createOrUpdateKursortView);
     if (!validationResult.isValid()) {
-      return new ValidationResultAndSaveKursortResult(validationResult, null);
+      return new ValidationAndSaveResult(validationResult);
     }
-
     updateModel(createOrUpdateKursortView);
-
     SaveKursortResult saveKursortResult = saveKursort();
-
-    return new ValidationResultAndSaveKursortResult(validationResult, saveKursortResult);
+    return new ValidationAndSaveResult(validationResult, saveKursortResult);
   }
 
   private ValidationResult validate(CreateOrUpdateKursortView createOrUpdateKursortView) {

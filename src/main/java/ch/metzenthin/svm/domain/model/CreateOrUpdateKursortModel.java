@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.domain.model.validation.ValidationAndSaveResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultAndSaveKursortResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateKursortView;
 
 /**
@@ -15,6 +15,5 @@ public interface CreateOrUpdateKursortModel {
 
   ValidationResult validateBezeichnung(String bezeichnung);
 
-  ValidationResultAndSaveKursortResult speichern(
-      CreateOrUpdateKursortView createOrUpdateKursortView);
+  ValidationAndSaveResult speichern(CreateOrUpdateKursortView createOrUpdateKursortView);
 }
