@@ -7,24 +7,24 @@ public enum DeleteLektionsgebuehrenResult implements SaveDialogResult {
   LEKTIONSGEBUEHREN_VON_KURS_REFERENZIERT(
       "Die Lektionsgebühren können nicht gelöscht werden,\n"
           + "weil Kurse mit dieser Lektionslänge existieren.",
-      true,
+      false,
       false),
   LEKTIONSGEBUEHREN_DURCH_ANDEREN_BENUTZER_VERAENDERT(
       "Die Lektionsgebühren können nicht gelöscht werden, da der Eintrag "
           + "unterdessen durch \n"
           + "einen anderen Benutzer verändert oder gelöscht wurde.",
-      true,
+      false,
       true),
-  LOESCHEN_ERFOLGREICH("Löschen erfolgreich", false, true);
+  LOESCHEN_ERFOLGREICH("Löschen erfolgreich", true, true);
 
   private final String message;
-  private final boolean isErrorMessage;
-  private final boolean isCloseDialog;
+  private final boolean saveSuccessful;
+  private final boolean dialogToBeClosed;
 
-  DeleteLektionsgebuehrenResult(String message, boolean isErrorMessage, boolean isCloseDialog) {
+  DeleteLektionsgebuehrenResult(String message, boolean saveSuccessful, boolean dialogToBeClosed) {
     this.message = message;
-    this.isErrorMessage = isErrorMessage;
-    this.isCloseDialog = isCloseDialog;
+    this.saveSuccessful = saveSuccessful;
+    this.dialogToBeClosed = dialogToBeClosed;
   }
 
   @Override
@@ -33,12 +33,12 @@ public enum DeleteLektionsgebuehrenResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isErrorMessage() {
-    return isErrorMessage;
+  public boolean isSaveSuccessful() {
+    return saveSuccessful;
   }
 
   @Override
-  public boolean isCloseDialog() {
-    return isCloseDialog;
+  public boolean isDialogToBeClosed() {
+    return dialogToBeClosed;
   }
 }

@@ -93,9 +93,9 @@ public abstract class AbstractListController<
             model.getListItemName() + " löschen");
     if (n == 0) {
       U saveDialogResult = model.eintragLoeschen(view.getSelectedRow());
-      if (saveDialogResult.isErrorMessage()) {
+      if (!saveDialogResult.isSaveSuccessful()) {
         showErrorMessageDialog(saveDialogResult.getMessage());
-        if (saveDialogResult.isCloseDialog()) {
+        if (saveDialogResult.isDialogToBeClosed()) {
           reloadTableData();
         }
       } else {

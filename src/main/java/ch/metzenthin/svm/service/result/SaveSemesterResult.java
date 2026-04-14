@@ -4,23 +4,23 @@ package ch.metzenthin.svm.service.result;
  * @author Hans Stamm
  */
 public enum SaveSemesterResult implements SaveDialogResult {
-  SEMESTER_BEREITS_ERFASST("Semester bereits erfasst.", true, false),
-  SEMESTER_UEBERLAPPT_MIT_ANDEREM_SEMESTER("Semester dürfen sich nicht überlappen.", true, false),
+  SEMESTER_BEREITS_ERFASST("Semester bereits erfasst.", false, false),
+  SEMESTER_UEBERLAPPT_MIT_ANDEREM_SEMESTER("Semester dürfen sich nicht überlappen.", false, false),
   SEMESTER_DURCH_ANDEREN_BENUTZER_VERAENDERT(
       "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
           + "einen anderen Benutzer verändert oder gelöscht wurde.",
-      true,
+      false,
       true),
-  SPEICHERN_ERFOLGREICH("Semester wurde erfolgreich gespeichert.", false, true);
+  SPEICHERN_ERFOLGREICH("Semester wurde erfolgreich gespeichert.", true, true);
 
   private final String message;
-  private final boolean isErrorMessage;
-  private final boolean isCloseDialog;
+  private final boolean saveSuccessful;
+  private final boolean dialogToBeClosed;
 
-  SaveSemesterResult(String message, boolean isErrorMessage, boolean isCloseDialog) {
+  SaveSemesterResult(String message, boolean saveSuccessful, boolean dialogToBeClosed) {
     this.message = message;
-    this.isErrorMessage = isErrorMessage;
-    this.isCloseDialog = isCloseDialog;
+    this.saveSuccessful = saveSuccessful;
+    this.dialogToBeClosed = dialogToBeClosed;
   }
 
   @Override
@@ -29,12 +29,12 @@ public enum SaveSemesterResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isErrorMessage() {
-    return isErrorMessage;
+  public boolean isSaveSuccessful() {
+    return saveSuccessful;
   }
 
   @Override
-  public boolean isCloseDialog() {
-    return isCloseDialog;
+  public boolean isDialogToBeClosed() {
+    return dialogToBeClosed;
   }
 }

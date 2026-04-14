@@ -110,9 +110,9 @@ public abstract class SpeichernAbbrechenDialogController<
 
   protected void speichern() {
     V saveDialogResult = model.speichern();
-    if (saveDialogResult.isErrorMessage()) {
+    if (!saveDialogResult.isSaveSuccessful()) {
       view.showErrorMessageDialog(saveDialogResult.getMessage(), "Fehler");
-      if (saveDialogResult.isCloseDialog()) {
+      if (saveDialogResult.isDialogToBeClosed()) {
         closeDialog();
       } else {
         view.setButtonSpeichernFocusPainted(false);

@@ -26,14 +26,14 @@ public record ValidationAndSaveResult(
   }
 
   public boolean isSaveSuccessful() {
-    return saveResult != null && !saveResult.isErrorMessage();
+    return saveResult != null && saveResult.isSaveSuccessful();
   }
 
   public String getSaveErrorMessage() {
     return saveResult != null ? saveResult.getMessage() : null;
   }
 
-  public boolean isCloseDialogAfterSave() {
-    return saveResult != null && saveResult.isCloseDialog();
+  public boolean isDialogToBeClosedAfterSave() {
+    return saveResult != null && saveResult.isDialogToBeClosed();
   }
 }

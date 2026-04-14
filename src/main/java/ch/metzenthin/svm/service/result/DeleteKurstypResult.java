@@ -7,23 +7,23 @@ public enum DeleteKurstypResult implements SaveDialogResult {
   KURSTYP_VON_KURS_REFERENZIERT(
       "Der Kurstyp wird durch mindestens einen Kurs referenziert und "
           + "kann nicht gelöscht werden.",
-      true,
+      false,
       false),
   KURSTYP_DURCH_ANDEREN_BENUTZER_VERAENDERT(
       "Der Kurstyp konnte nicht gelöscht werden, da der Eintrag unterdessen \n"
           + "durch einen anderen Benutzer verändert oder gelöscht wurde.",
-      true,
+      false,
       true),
-  LOESCHEN_ERFOLGREICH("Löschen erfolgreich", false, true);
+  LOESCHEN_ERFOLGREICH("Löschen erfolgreich", true, true);
 
   private final String message;
-  private final boolean isErrorMessage;
-  private final boolean isCloseDialog;
+  private final boolean saveSuccessful;
+  private final boolean dialogToBeClosed;
 
-  DeleteKurstypResult(String message, boolean isErrorMessage, boolean isCloseDialog) {
+  DeleteKurstypResult(String message, boolean saveSuccessful, boolean dialogToBeClosed) {
     this.message = message;
-    this.isErrorMessage = isErrorMessage;
-    this.isCloseDialog = isCloseDialog;
+    this.saveSuccessful = saveSuccessful;
+    this.dialogToBeClosed = dialogToBeClosed;
   }
 
   @Override
@@ -32,12 +32,12 @@ public enum DeleteKurstypResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isErrorMessage() {
-    return isErrorMessage;
+  public boolean isSaveSuccessful() {
+    return saveSuccessful;
   }
 
   @Override
-  public boolean isCloseDialog() {
-    return isCloseDialog;
+  public boolean isDialogToBeClosed() {
+    return dialogToBeClosed;
   }
 }

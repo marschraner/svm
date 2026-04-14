@@ -7,7 +7,7 @@ public interface SaveDialogResult {
 
   String getMessage();
 
-  boolean isErrorMessage();
+  boolean isSaveSuccessful();
 
-  boolean isCloseDialog();
+  boolean isDialogToBeClosed();
 }

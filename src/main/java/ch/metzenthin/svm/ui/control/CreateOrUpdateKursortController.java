@@ -69,7 +69,7 @@ public class CreateOrUpdateKursortController implements DialogClosingListener {
 
     } else if (!validationAndSaveResult.isSaveSuccessful()) {
       view.showErrorMessageDialog(validationAndSaveResult.getSaveErrorMessage(), "Fehler");
-      if (validationAndSaveResult.isCloseDialogAfterSave()) {
+      if (validationAndSaveResult.isDialogToBeClosedAfterSave()) {
         closeDialog();
       } else {
         view.setButtonSpeichernFocusPainted(false);

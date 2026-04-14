@@ -4,23 +4,23 @@ package ch.metzenthin.svm.service.result;
  * @author Hans Stamm
  */
 public enum SaveCodeResult implements SaveDialogResult {
-  CODE_BEREITS_ERFASST("Kürzel bereits in Verwendung.", true, false),
+  CODE_BEREITS_ERFASST("Kürzel bereits in Verwendung.", false, false),
   CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT(
       "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
           + "einen anderen Benutzer verändert oder gelöscht wurde.",
-      true,
+      false,
       true),
-  SPEICHERN_ERFOLGREICH("Speichern erfolgreich", false, true),
+  SPEICHERN_ERFOLGREICH("Speichern erfolgreich", true, true),
   ;
 
   private final String message;
-  private final boolean isErrorMessage;
-  private final boolean isCloseDialog;
+  private final boolean saveSuccessful;
+  private final boolean dialogToBeClosed;
 
-  SaveCodeResult(String message, boolean isErrorMessage, boolean isCloseDialog) {
+  SaveCodeResult(String message, boolean saveSuccessful, boolean dialogToBeClosed) {
     this.message = message;
-    this.isErrorMessage = isErrorMessage;
-    this.isCloseDialog = isCloseDialog;
+    this.saveSuccessful = saveSuccessful;
+    this.dialogToBeClosed = dialogToBeClosed;
   }
 
   @Override
@@ -29,12 +29,12 @@ public enum SaveCodeResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isErrorMessage() {
-    return isErrorMessage;
+  public boolean isSaveSuccessful() {
+    return saveSuccessful;
   }
 
   @Override
-  public boolean isCloseDialog() {
-    return isCloseDialog;
+  public boolean isDialogToBeClosed() {
+    return dialogToBeClosed;
   }
 }

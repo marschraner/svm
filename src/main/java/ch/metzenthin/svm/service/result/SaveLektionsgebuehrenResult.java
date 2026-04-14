@@ -4,22 +4,22 @@ package ch.metzenthin.svm.service.result;
  * @author Martin Schraner
  */
 public enum SaveLektionsgebuehrenResult implements SaveDialogResult {
-  LEKTIONSGEBUEHREN_BEREITS_ERFASST("Lektionslänge bereits erfasst.", true, false),
+  LEKTIONSGEBUEHREN_BEREITS_ERFASST("Lektionslänge bereits erfasst.", false, false),
   LEKTIONSGEBUEHREN_DURCH_ANDEREN_BENUTZER_VERAENDERT(
       "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
           + "einen anderen Benutzer verändert oder gelöscht wurde.",
-      true,
+      false,
       true),
-  SPEICHERN_ERFOLGREICH("Speichern erfolgreich", false, true);
+  SPEICHERN_ERFOLGREICH("Speichern erfolgreich", true, true);
 
   private final String message;
-  private final boolean isErrorMessage;
-  private final boolean isCloseDialog;
+  private final boolean saveSuccessful;
+  private final boolean dialogToBeClosed;
 
-  SaveLektionsgebuehrenResult(String message, boolean isErrorMessage, boolean isCloseDialog) {
+  SaveLektionsgebuehrenResult(String message, boolean saveSuccessful, boolean dialogToBeClosed) {
     this.message = message;
-    this.isErrorMessage = isErrorMessage;
-    this.isCloseDialog = isCloseDialog;
+    this.saveSuccessful = saveSuccessful;
+    this.dialogToBeClosed = dialogToBeClosed;
   }
 
   @Override
@@ -28,12 +28,12 @@ public enum SaveLektionsgebuehrenResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isErrorMessage() {
-    return isErrorMessage;
+  public boolean isSaveSuccessful() {
+    return saveSuccessful;
   }
 
   @Override
-  public boolean isCloseDialog() {
-    return isCloseDialog;
+  public boolean isDialogToBeClosed() {
+    return dialogToBeClosed;
   }
 }
