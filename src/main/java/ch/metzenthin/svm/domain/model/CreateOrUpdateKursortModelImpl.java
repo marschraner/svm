@@ -1,5 +1,10 @@
 package ch.metzenthin.svm.domain.model;
 
+import static ch.metzenthin.svm.domain.model.formatting.FormattingUtils.formatString;
+import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotEmpty;
+import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotTooLong;
+import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotTooShort;
+
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
 import ch.metzenthin.svm.domain.model.validation.ValidationAndSaveResult;
@@ -21,73 +26,51 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
   private static final int MIN_KURSORT_LENGTH = 2;
   private static final int MAX_KURSORT_LENGTH = 50;
 
+  private final boolean isNeu;
   private final Kursort kursort;
   private final KursortService kursortService;
 
   @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
   public CreateOrUpdateKursortModelImpl(
       Optional<Kursort> kursortToBeModifiedOptional, KursortService kursortService) {
-    boolean isNeu = kursortToBeModifiedOptional.isEmpty();
+    this.isNeu = kursortToBeModifiedOptional.isEmpty();
     this.kursort = kursortToBeModifiedOptional.orElseGet(Kursort::new);
     this.kursortService = kursortService;
-    if (isNeu) {
-      initialiseModelValuesOnNeu();
-    }
-  }
-
-  private void initialiseModelValuesOnNeu() {
-    kursort.setSelektierbar(true);
   }
 
   @Override
   public void initialiseViewFields(CreateOrUpdateKursortView createOrUpdateKursortView) {
     createOrUpdateKursortView.setTxtBezeichnungText(kursort.getBezeichnung());
-    createOrUpdateKursortView.setCheckBoxSelektierbarSelected(kursort.isSelektierbar());
+    if (isNeu) {
+      createOrUpdateKursortView.setCheckBoxSelektierbarSelected(true);
+    } else {
+      createOrUpdateKursortView.setCheckBoxSelektierbarSelected(kursort.isSelektierbar());
+    }
   }
 
   @Override
   public String formatBezeichnung(String bezeichnung) {
-    return (bezeichnung != null) ? bezeichnung.trim() : null;
+    return formatString(bezeichnung);
   }
 
   @Override
   public ValidationResult validateBezeichnung(String bezeichnung) {
-    ValidationResult validationResult = validateNotEmpty(bezeichnung);
+    ValidationResult validationResult = validateNotEmpty(bezeichnung, Field.BEZEICHNUNG);
     if (!validationResult.isValid()) {
       return validationResult;
     }
 
-    validationResult = validateNotTooShort(bezeichnung);
+    validationResult = validateNotTooShort(bezeichnung, MIN_KURSORT_LENGTH, Field.BEZEICHNUNG);
     if (!validationResult.isValid()) {
       return validationResult;
     }
 
-    validationResult = validateNotTooLong(bezeichnung);
+    validationResult = validateNotTooLong(bezeichnung, MAX_KURSORT_LENGTH, Field.BEZEICHNUNG);
     if (!validationResult.isValid()) {
       return validationResult;
     }
 
     return validateKursortNotAlreadyExists(bezeichnung);
-  }
-
-  private ValidationResult validateNotEmpty(String bezeichnung) {
-    return (bezeichnung == null || bezeichnung.isBlank())
-        ? new ValidationResult("Eintrag ist obligatorisch!", Set.of(Field.BEZEICHNUNG))
-        : new ValidationResult();
-  }
-
-  private ValidationResult validateNotTooShort(String bezeichnung) {
-    return (bezeichnung.length() < MIN_KURSORT_LENGTH)
-        ? new ValidationResult(
-            "Länge muss mindestens " + MIN_KURSORT_LENGTH + " sein!", Set.of(Field.BEZEICHNUNG))
-        : new ValidationResult();
-  }
-
-  private ValidationResult validateNotTooLong(String bezeichnung) {
-    return (bezeichnung.length() > MAX_KURSORT_LENGTH)
-        ? new ValidationResult(
-            "Länge darf höchstens " + MAX_KURSORT_LENGTH + " sein!", Set.of(Field.BEZEICHNUNG))
-        : new ValidationResult();
   }
 
   private ValidationResult validateKursortNotAlreadyExists(String bezeichnung) {
