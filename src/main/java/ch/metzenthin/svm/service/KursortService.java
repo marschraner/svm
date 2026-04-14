@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface KursortService {
 
-  List<Kursort> findAllKursorte();
-
   boolean doesKursortAlreadyExist(Integer kursortId, String kursortBezeichnung);
+
+  List<Kursort> findAllKursorte();
 
   void saveKursort(Kursort kursort) throws EntityAlreadyExistsException;
 

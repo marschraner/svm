@@ -274,25 +274,25 @@ public class CreateOrUpdateLektionsgebuehrenController
   @Override
   void showErrMsg(SvmValidationException e) {
     if (e.getAffectedFields().contains(Field.LEKTIONSLAENGE)) {
-      view.setErrLblLektionslaengeVisible(e.getMessage());
+      view.setErrorLabelLektionslaengeVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_1_KIND)) {
-      view.setErrLblBetrag1KindVisible(e.getMessage());
+      view.setErrorLabelBetrag1KindVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_2_KINDER)) {
-      view.setErrLblBetrag2KinderVisible(e.getMessage());
+      view.setErrorLabelBetrag2KinderVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_3_KINDER)) {
-      view.setErrLblBetrag3KinderVisible(e.getMessage());
+      view.setErrorLabelBetrag3KinderVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_4_KINDER)) {
-      view.setErrLblBetrag4KinderVisible(e.getMessage());
+      view.setErrorLabelBetrag4KinderVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_5_KINDER)) {
-      view.setErrLblBetrag5KinderVisible(e.getMessage());
+      view.setErrorLabelBetrag5KinderVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BETRAG_6_KINDER)) {
-      view.setErrLblBetrag6KinderVisible(e.getMessage());
+      view.setErrorLabelBetrag6KinderVisible(e.getMessage());
     }
   }
 
@@ -324,25 +324,25 @@ public class CreateOrUpdateLektionsgebuehrenController
   @Override
   public void makeErrorLabelsInvisible(Set<Field> fields) {
     if (fields.contains(Field.ALLE) || fields.contains(Field.LEKTIONSLAENGE)) {
-      view.setErrLblLektionslaengeInvisible();
+      view.setErrorLabelLektionslaengeInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_1_KIND)) {
-      view.setErrLblBetrag1KindInvisible();
+      view.setErrorLabelBetrag1KindInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_2_KINDER)) {
-      view.setErrLblBetrag2KinderInvisible();
+      view.setErrorLabelBetrag2KinderInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_3_KINDER)) {
-      view.setErrLblBetrag3KinderInvisible();
+      view.setErrorLabelBetrag3KinderInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_4_KINDER)) {
-      view.setErrLblBetrag4KinderInvisible();
+      view.setErrorLabelBetrag4KinderInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_5_KINDER)) {
-      view.setErrLblBetrag5KinderInvisible();
+      view.setErrorLabelBetrag5KinderInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.BETRAG_6_KINDER)) {
-      view.setErrLblBetrag6KinderInvisible();
+      view.setErrorLabelBetrag6KinderInvisible();
     }
   }
 

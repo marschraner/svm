@@ -117,10 +117,10 @@ public class CreateOrUpdateCodeController
   @Override
   void showErrMsg(SvmValidationException e) {
     if (e.getAffectedFields().contains(Field.KUERZEL)) {
-      view.setErrLblKuerzelVisible(e.getMessage());
+      view.setErrorLabelKuerzelVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.BESCHREIBUNG)) {
-      view.setErrLblBeschreibungVisible(e.getMessage());
+      view.setErrorLabelBeschreibungVisible(e.getMessage());
     }
   }
 
@@ -137,10 +137,10 @@ public class CreateOrUpdateCodeController
   @Override
   public void makeErrorLabelsInvisible(Set<Field> fields) {
     if (fields.contains(Field.ALLE) || fields.contains(Field.KUERZEL)) {
-      view.setErrLblKuerzelInvisible();
+      view.setErrorLabelKuerzelInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.BESCHREIBUNG)) {
-      view.setErrLblBeschreibungInvisible();
+      view.setErrorLabelBeschreibungInvisible();
     }
   }
 

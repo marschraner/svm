@@ -53,7 +53,6 @@ public class CreateOrUpdateSemesterView
   }
 
   // Schuljahre
-
   public void addSpinnerSchuljahreChangeListener(
       ChangeListener changeListenerDelegate, Predicate<ChangeEvent> isInInitialisationMode) {
     spinnerSchuljahre.addChangeListener(
@@ -77,7 +76,6 @@ public class CreateOrUpdateSemesterView
   }
 
   // Semesterbezeichnung
-
   public void addComboBoxSemesterbezeichnungActionListener(
       ActionListener actionListenerDelegate, Predicate<ActionEvent> isInInitialisationMode) {
     comboBoxSemesterbezeichnung.addActionListener(
@@ -105,13 +103,12 @@ public class CreateOrUpdateSemesterView
   }
 
   // Semesterbeginn
-
-  public void setErrLblSemesterbeginnVisible(String errorMessage) {
+  public void setErrorLabelSemesterbeginnVisible(String errorMessage) {
     semesterbeginnWithErrorLabel.setErrorLabelVisible(true);
     semesterbeginnWithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblSemesterbeginnInvisible() {
+  public void setErrorLabelSemesterbeginnInvisible() {
     semesterbeginnWithErrorLabel.setErrorLabelVisible(false);
     semesterbeginnWithErrorLabel.setToolTipText(null);
   }
@@ -141,13 +138,12 @@ public class CreateOrUpdateSemesterView
   }
 
   // Semesterende
-
-  public void setErrLblSemesterendeVisible(String errorMessage) {
+  public void setErrorLabelSemesterendeVisible(String errorMessage) {
     semesterendeWithErrorLabel.setErrorLabelVisible(true);
     semesterendeWithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblSemesterendeInvisible() {
+  public void setErrorLabelSemesterendeInvisible() {
     semesterendeWithErrorLabel.setErrorLabelVisible(false);
     semesterendeWithErrorLabel.setToolTipText(null);
   }
@@ -177,13 +173,12 @@ public class CreateOrUpdateSemesterView
   }
 
   // Ferienbeginn1
-
-  public void setErrLblFerienbeginn1Visible(String errorMessage) {
+  public void setErrorLabelFerienbeginn1Visible(String errorMessage) {
     ferienbeginn1WithErrorLabel.setErrorLabelVisible(true);
     ferienbeginn1WithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblFerienbeginn1Invisible() {
+  public void setErrorLabelFerienbeginn1Invisible() {
     ferienbeginn1WithErrorLabel.setErrorLabelVisible(false);
     ferienbeginn1WithErrorLabel.setToolTipText(null);
   }
@@ -213,13 +208,12 @@ public class CreateOrUpdateSemesterView
   }
 
   // Ferienende1
-
-  public void setErrLblFerienende1Visible(String errorMessage) {
+  public void setErrorLabelFerienende1Visible(String errorMessage) {
     ferienende1WithErrorLabel.setErrorLabelVisible(true);
     ferienende1WithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblFerienende1Invisible() {
+  public void setErrorLabelFerienende1Invisible() {
     ferienende1WithErrorLabel.setErrorLabelVisible(false);
     ferienende1WithErrorLabel.setToolTipText(null);
   }
@@ -249,13 +243,12 @@ public class CreateOrUpdateSemesterView
   }
 
   // Ferienbeginn2
-
-  public void setErrLblFerienbeginn2Visible(String errorMessage) {
+  public void setErrorLabelFerienbeginn2Visible(String errorMessage) {
     ferienbeginn2WithErrorLabel.setErrorLabelVisible(true);
     ferienbeginn2WithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblFerienbeginn2Invisible() {
+  public void setErrorLabelFerienbeginn2Invisible() {
     ferienbeginn2WithErrorLabel.setErrorLabelVisible(false);
     ferienbeginn2WithErrorLabel.setToolTipText(null);
   }
@@ -285,13 +278,12 @@ public class CreateOrUpdateSemesterView
   }
 
   // Ferienende2
-
-  public void setErrLblFerienende2Visible(String errorMessage) {
+  public void setErrorLabelFerienende2Visible(String errorMessage) {
     ferienende2WithErrorLabel.setErrorLabelVisible(true);
     ferienende2WithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblFerienende2Invisible() {
+  public void setErrorLabelFerienende2Invisible() {
     ferienende2WithErrorLabel.setErrorLabelVisible(false);
     ferienende2WithErrorLabel.setToolTipText(null);
   }

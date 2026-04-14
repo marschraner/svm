@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.domain.model.validation.ValidationAndSaveResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 
 /**
  * @author Martin Schraner
@@ -12,7 +12,7 @@ public interface CreateOrUpdateKursortModel {
 
   ValidationResult validateBezeichnung(String bezeichnung);
 
-  ValidationAndSaveResult speichern(KursortFields kursortFields);
+  ValidationResultsAndSaveResult speichern(KursortFields kursortFields);
 
   boolean isNeu();
 

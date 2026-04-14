@@ -27,13 +27,12 @@ public class CreateOrUpdateCodeView extends SpeichernAbbrechenDialogView<CreateO
   }
 
   // Kuerzel
-
-  public void setErrLblKuerzelVisible(String errorMessage) {
+  public void setErrorLabelKuerzelVisible(String errorMessage) {
     kuerzelWithErrorLabel.setErrorLabelVisible(true);
     kuerzelWithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblKuerzelInvisible() {
+  public void setErrorLabelKuerzelInvisible() {
     kuerzelWithErrorLabel.setErrorLabelVisible(false);
     kuerzelWithErrorLabel.setToolTipText(null);
   }
@@ -63,13 +62,12 @@ public class CreateOrUpdateCodeView extends SpeichernAbbrechenDialogView<CreateO
   }
 
   // Beschreibung
-
-  public void setErrLblBeschreibungVisible(String errorMessage) {
+  public void setErrorLabelBeschreibungVisible(String errorMessage) {
     beschreibungWithErrorLabel.setErrorLabelVisible(true);
     beschreibungWithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblBeschreibungInvisible() {
+  public void setErrorLabelBeschreibungInvisible() {
     beschreibungWithErrorLabel.setErrorLabelVisible(false);
     beschreibungWithErrorLabel.setToolTipText(null);
   }
@@ -99,7 +97,6 @@ public class CreateOrUpdateCodeView extends SpeichernAbbrechenDialogView<CreateO
   }
 
   // Selektierbar
-
   public void addCheckBoxSelektierbarItemListener(ItemListener itemListener) {
     checkBoxSelektierbar.addItemListener(itemListener);
   }

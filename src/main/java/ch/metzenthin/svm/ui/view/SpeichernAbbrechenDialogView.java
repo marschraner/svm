@@ -16,7 +16,7 @@ import javax.swing.WindowConstants;
  * @author Hans Stamm
  */
 public abstract class SpeichernAbbrechenDialogView<T extends SpeichernAbbrechenDialog>
-    extends AbstractView {
+    extends AbstractView implements CreateOrUpdateView {
 
   protected final T dialog;
   private final JButton buttonSpeichern;

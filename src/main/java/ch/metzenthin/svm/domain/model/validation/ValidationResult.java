@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model.validation;
 
 import ch.metzenthin.svm.common.datatypes.Field;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,7 +17,7 @@ public record ValidationResult(boolean isValid, String errorMessage, Set<Field> 
     this(false, errorMessage, affectedFields);
   }
 
-  public boolean affectedFieldsContains(Field field) {
-    return affectedFields != null && affectedFields.contains(field);
+  public static boolean allValidationResultsValid(List<ValidationResult> validationResults) {
+    return validationResults.stream().allMatch(ValidationResult::isValid);
   }
 }

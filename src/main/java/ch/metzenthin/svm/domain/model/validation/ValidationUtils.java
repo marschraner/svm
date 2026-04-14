@@ -27,4 +27,19 @@ public class ValidationUtils {
         ? new ValidationResult("Länge darf höchstens " + maxLength + " sein!", Set.of(field))
         : new ValidationResult();
   }
+
+  public static ValidationResult validateNotEmptyAndLength(
+      String value, int minLength, int maxLength, Field field) {
+    ValidationResult validationResult = validateNotEmpty(value, field);
+    if (!validationResult.isValid()) {
+      return validationResult;
+    }
+
+    validationResult = validateNotTooShort(value, minLength, field);
+    if (!validationResult.isValid()) {
+      return validationResult;
+    }
+
+    return validateNotTooLong(value, maxLength, field);
+  }
 }

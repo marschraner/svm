@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface KurstypService {
 
+  boolean doesKurstypAlreadyExist(Integer kurstypId, String kurstypBezeichnung);
+
   List<Kurstyp> findAllKurstypen();
 
   void saveKurstyp(Kurstyp kurstyp) throws EntityAlreadyExistsException;

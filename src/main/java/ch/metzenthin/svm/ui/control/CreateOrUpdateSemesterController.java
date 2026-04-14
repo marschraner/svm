@@ -374,22 +374,22 @@ public class CreateOrUpdateSemesterController
   @Override
   void showErrMsg(SvmValidationException e) {
     if (e.getAffectedFields().contains(Field.SEMESTERBEGINN)) {
-      view.setErrLblSemesterbeginnVisible(e.getMessage());
+      view.setErrorLabelSemesterbeginnVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.SEMESTERENDE)) {
-      view.setErrLblSemesterendeVisible(e.getMessage());
+      view.setErrorLabelSemesterendeVisible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.FERIENBEGINN1)) {
-      view.setErrLblFerienbeginn1Visible(e.getMessage());
+      view.setErrorLabelFerienbeginn1Visible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.FERIENENDE1)) {
-      view.setErrLblFerienende1Visible(e.getMessage());
+      view.setErrorLabelFerienende1Visible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.FERIENBEGINN2)) {
-      view.setErrLblFerienbeginn2Visible(e.getMessage());
+      view.setErrorLabelFerienbeginn2Visible(e.getMessage());
     }
     if (e.getAffectedFields().contains(Field.FERIENENDE2)) {
-      view.setErrLblFerienende2Visible(e.getMessage());
+      view.setErrorLabelFerienende2Visible(e.getMessage());
     }
   }
 
@@ -418,22 +418,22 @@ public class CreateOrUpdateSemesterController
   @Override
   public void makeErrorLabelsInvisible(Set<Field> fields) {
     if (fields.contains(Field.ALLE) || fields.contains(Field.SEMESTERBEGINN)) {
-      view.setErrLblSemesterbeginnInvisible();
+      view.setErrorLabelSemesterbeginnInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.SEMESTERENDE)) {
-      view.setErrLblSemesterendeInvisible();
+      view.setErrorLabelSemesterendeInvisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.FERIENBEGINN1)) {
-      view.setErrLblFerienbeginn1Invisible();
+      view.setErrorLabelFerienbeginn1Invisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.FERIENENDE1)) {
-      view.setErrLblFerienende1Invisible();
+      view.setErrorLabelFerienende1Invisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.FERIENBEGINN2)) {
-      view.setErrLblFerienbeginn2Invisible();
+      view.setErrorLabelFerienbeginn2Invisible();
     }
     if (fields.contains(Field.ALLE) || fields.contains(Field.FERIENENDE2)) {
-      view.setErrLblFerienende2Invisible();
+      view.setErrorLabelFerienende2Invisible();
     }
   }
 

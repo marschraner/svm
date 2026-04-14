@@ -26,12 +26,6 @@ public class KursortServiceImpl implements KursortService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<Kursort> findAllKursorte() {
-    return kursortRepository.findAllOrderByBezeichnung();
-  }
-
-  @Override
-  @Transactional(readOnly = true)
   public boolean doesKursortAlreadyExist(Integer kursortId, String kursortBezeichnung) {
     long numberOfAlreadyExistingKursorte =
         getNumberOfAlreadyExistingKursorte(kursortId, kursortBezeichnung);
@@ -42,6 +36,12 @@ public class KursortServiceImpl implements KursortService {
     return (kursortId != null)
         ? kursortRepository.countByBezeichnungAndIdNe(kursortBezeichnung, kursortId)
         : kursortRepository.countByBezeichnung(kursortBezeichnung);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<Kursort> findAllKursorte() {
+    return kursortRepository.findAllOrderByBezeichnung();
   }
 
   @Override

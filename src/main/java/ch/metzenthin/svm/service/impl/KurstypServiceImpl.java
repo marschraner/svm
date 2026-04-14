@@ -26,6 +26,20 @@ public class KurstypServiceImpl implements KurstypService {
 
   @Override
   @Transactional(readOnly = true)
+  public boolean doesKurstypAlreadyExist(Integer kurstypId, String kurstypBezeichnung) {
+    long numberOfAlreadyExistingKurstypen =
+        getNumberOfAlreadyExistingKurstypen(kurstypId, kurstypBezeichnung);
+    return numberOfAlreadyExistingKurstypen > 0;
+  }
+
+  private long getNumberOfAlreadyExistingKurstypen(Integer kurstypId, String kurstypBezeichnung) {
+    return (kurstypId != null)
+        ? kurstypRepository.countByBezeichnungAndIdNe(kurstypBezeichnung, kurstypId)
+        : kurstypRepository.countByBezeichnung(kurstypBezeichnung);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public List<Kurstyp> findAllKurstypen() {
     return kurstypRepository.findAllOrderByBezeichnung();
   }
@@ -34,10 +48,7 @@ public class KurstypServiceImpl implements KurstypService {
   @Transactional
   public void saveKurstyp(Kurstyp kurstyp) throws EntityAlreadyExistsException {
     long numberOfAlreadyExistingKurstypen =
-        (kurstyp.getKurstypId() != null)
-            ? kurstypRepository.countByBezeichnungAndIdNe(
-                kurstyp.getBezeichnung(), kurstyp.getKurstypId())
-            : kurstypRepository.countByBezeichnung(kurstyp.getBezeichnung());
+        getNumberOfAlreadyExistingKurstypen(kurstyp.getKurstypId(), kurstyp.getBezeichnung());
     if (numberOfAlreadyExistingKurstypen > 0) {
       throw new EntityAlreadyExistsException();
     }

@@ -45,13 +45,12 @@ public class CreateOrUpdateLektionsgebuehrenView
   }
 
   // Lektionslaenge
-
-  public void setErrLblLektionslaengeVisible(String errorMessage) {
+  public void setErrorLabelLektionslaengeVisible(String errorMessage) {
     lektionslaengeWithErrorLabel.setErrorLabelVisible(true);
     lektionslaengeWithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblLektionslaengeInvisible() {
+  public void setErrorLabelLektionslaengeInvisible() {
     lektionslaengeWithErrorLabel.setErrorLabelVisible(false);
     lektionslaengeWithErrorLabel.setToolTipText(null);
   }
@@ -81,13 +80,12 @@ public class CreateOrUpdateLektionsgebuehrenView
   }
 
   // Betrag1Kind
-
-  public void setErrLblBetrag1KindVisible(String errorMessage) {
+  public void setErrorLabelBetrag1KindVisible(String errorMessage) {
     betrag1KindWithErrorLabel.setErrorLabelVisible(true);
     betrag1KindWithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblBetrag1KindInvisible() {
+  public void setErrorLabelBetrag1KindInvisible() {
     betrag1KindWithErrorLabel.setErrorLabelVisible(false);
     betrag1KindWithErrorLabel.setToolTipText(null);
   }
@@ -117,13 +115,12 @@ public class CreateOrUpdateLektionsgebuehrenView
   }
 
   // Betrag2Kinder
-
-  public void setErrLblBetrag2KinderVisible(String errorMessage) {
+  public void setErrorLabelBetrag2KinderVisible(String errorMessage) {
     betrag2KinderWithErrorLabel.setErrorLabelVisible(true);
     betrag2KinderWithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblBetrag2KinderInvisible() {
+  public void setErrorLabelBetrag2KinderInvisible() {
     betrag2KinderWithErrorLabel.setErrorLabelVisible(false);
     betrag2KinderWithErrorLabel.setToolTipText(null);
   }
@@ -153,13 +150,12 @@ public class CreateOrUpdateLektionsgebuehrenView
   }
 
   // Betrag3Kinder
-
-  public void setErrLblBetrag3KinderVisible(String errorMessage) {
+  public void setErrorLabelBetrag3KinderVisible(String errorMessage) {
     betrag3KinderWithErrorLabel.setErrorLabelVisible(true);
     betrag3KinderWithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblBetrag3KinderInvisible() {
+  public void setErrorLabelBetrag3KinderInvisible() {
     betrag3KinderWithErrorLabel.setErrorLabelVisible(false);
     betrag3KinderWithErrorLabel.setToolTipText(null);
   }
@@ -189,13 +185,12 @@ public class CreateOrUpdateLektionsgebuehrenView
   }
 
   // Betrag4Kinder
-
-  public void setErrLblBetrag4KinderVisible(String errorMessage) {
+  public void setErrorLabelBetrag4KinderVisible(String errorMessage) {
     betrag4KinderWithErrorLabel.setErrorLabelVisible(true);
     betrag4KinderWithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblBetrag4KinderInvisible() {
+  public void setErrorLabelBetrag4KinderInvisible() {
     betrag4KinderWithErrorLabel.setErrorLabelVisible(false);
     betrag4KinderWithErrorLabel.setToolTipText(null);
   }
@@ -225,13 +220,12 @@ public class CreateOrUpdateLektionsgebuehrenView
   }
 
   // Betrag5Kinder
-
-  public void setErrLblBetrag5KinderVisible(String errorMessage) {
+  public void setErrorLabelBetrag5KinderVisible(String errorMessage) {
     betrag5KinderWithErrorLabel.setErrorLabelVisible(true);
     betrag5KinderWithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblBetrag5KinderInvisible() {
+  public void setErrorLabelBetrag5KinderInvisible() {
     betrag5KinderWithErrorLabel.setErrorLabelVisible(false);
     betrag5KinderWithErrorLabel.setToolTipText(null);
   }
@@ -261,13 +255,12 @@ public class CreateOrUpdateLektionsgebuehrenView
   }
 
   // Betrag6Kinder
-
-  public void setErrLblBetrag6KinderVisible(String errorMessage) {
+  public void setErrorLabelBetrag6KinderVisible(String errorMessage) {
     betrag6KinderWithErrorLabel.setErrorLabelVisible(true);
     betrag6KinderWithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblBetrag6KinderInvisible() {
+  public void setErrorLabelBetrag6KinderInvisible() {
     betrag6KinderWithErrorLabel.setErrorLabelVisible(false);
     betrag6KinderWithErrorLabel.setToolTipText(null);
   }

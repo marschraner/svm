@@ -1,107 +1,85 @@
 package ch.metzenthin.svm.domain.model;
 
+import static ch.metzenthin.svm.domain.model.formatting.FormattingUtils.formatString;
+import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotEmptyAndLength;
+
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.model.validation.ValidationResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.service.KurstypService;
 import ch.metzenthin.svm.service.result.SaveKurstypResult;
 import jakarta.persistence.OptimisticLockException;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
  * @author Martin Schraner
  */
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-public class CreateOrUpdateKurstypModelImpl extends AbstractModel
-    implements CreateOrUpdateKurstypModel {
+public class CreateOrUpdateKurstypModelImpl implements CreateOrUpdateKurstypModel {
 
+  private static final int MIN_KURSTYP_LENGTH = 2;
+  private static final int MAX_KURSTYP_LENGTH = 50;
+
+  private final boolean neu;
   private final Kurstyp kurstyp;
   private final KurstypService kurstypService;
 
+  @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
   public CreateOrUpdateKurstypModelImpl(
       Optional<Kurstyp> kurstypToBeModifiedOptional, KurstypService kurstypService) {
+    this.neu = kurstypToBeModifiedOptional.isEmpty();
     this.kurstyp = kurstypToBeModifiedOptional.orElseGet(Kurstyp::new);
     this.kurstypService = kurstypService;
   }
 
-  private final StringModelAttribute bezeichnungModelAttribute =
-      new StringModelAttribute(
-          this,
-          Field.BEZEICHNUNG,
-          2,
-          50,
-          new AttributeAccessor<>() {
-            @Override
-            public String getValue() {
-              return kurstyp.getBezeichnung();
-            }
-
-            @Override
-            public void setValue(String value) {
-              kurstyp.setBezeichnung(value);
-            }
-          });
-
   @Override
-  public String getBezeichnung() {
-    return bezeichnungModelAttribute.getValue();
+  public String formatBezeichnung(String bezeichnung) {
+    return formatString(bezeichnung);
   }
 
   @Override
-  public void setBezeichnung(String bezeichnung) throws SvmValidationException {
-    setBezeichnung(bezeichnung, false);
+  public ValidationResult validateBezeichnung(String bezeichnung) {
+    ValidationResult validationResult =
+        validateNotEmptyAndLength(
+            bezeichnung, MIN_KURSTYP_LENGTH, MAX_KURSTYP_LENGTH, Field.BEZEICHNUNG);
+    if (!validationResult.isValid()) {
+      return validationResult;
+    }
+
+    return validateKurstypNotAlreadyExists(bezeichnung);
   }
 
-  private void setBezeichnung(String bezeichnung, boolean enforcePropertyChangeEvent)
-      throws SvmValidationException {
-    bezeichnungModelAttribute.setNewValue(
-        true, bezeichnung, isBulkUpdate(), enforcePropertyChangeEvent);
-  }
-
-  @Override
-  public void setSelektierbar(Boolean isSelected) {
-    setSelektierbar(isSelected, false);
-  }
-
-  private void setSelektierbar(Boolean isSelected, boolean enforcePropertyChangeEvent) {
-    Boolean oldValue = (enforcePropertyChangeEvent) ? !isSelected : kurstyp.isSelektierbar();
-    kurstyp.setSelektierbar(isSelected);
-    firePropertyChange(Field.SELEKTIERBAR, oldValue, isSelected);
+  private ValidationResult validateKurstypNotAlreadyExists(String bezeichnung) {
+    return (kurstypService.doesKurstypAlreadyExist(kurstyp.getKurstypId(), bezeichnung))
+        ? new ValidationResult("Bezeichnung bereits in Verwendung.", Set.of(Field.BEZEICHNUNG))
+        : new ValidationResult();
   }
 
   @Override
-  public Boolean isSelektierbar() {
-    return kurstyp.isSelektierbar();
+  public ValidationResultsAndSaveResult speichern(KurstypFields kurstypFields) {
+    List<ValidationResult> validationResults = validateAll(kurstypFields);
+    if (!ValidationResult.allValidationResultsValid(validationResults)) {
+      return new ValidationResultsAndSaveResult(validationResults);
+    }
+    updateModel(kurstypFields);
+    SaveKurstypResult saveKurstypResult = saveKurstyp();
+    return new ValidationResultsAndSaveResult(validationResults, saveKurstypResult);
   }
 
-  @Override
-  public void initialiseModelValuesOnNeu() {
-    initialiseModelValuesOnNeu(() -> setSelektierbar(true));
+  private List<ValidationResult> validateAll(KurstypFields kurstypFields) {
+    return List.of(validateBezeichnung(kurstypFields.bezeichnung()));
   }
 
-  @Override
-  public void initialiseModelValuesOnBearbeiten() {
-    initialiseModelValuesOnBearbeiten(
-        () -> {
-          setBezeichnung(kurstyp.getBezeichnung(), true);
-          setSelektierbar(kurstyp.isSelektierbar(), true);
-        });
+  void updateModel(KurstypFields kurstypFields) {
+    kurstyp.setBezeichnung(kurstypFields.bezeichnung());
+    kurstyp.setSelektierbar(kurstypFields.selektierbar());
   }
 
-  @Override
-  public boolean isCompleted() {
-    return true;
-  }
-
-  @Override
-  void doValidate() throws SvmValidationException {
-    // Keine feldübergreifende Validierung notwendig
-  }
-
-  @Override
-  public SaveKurstypResult speichern() {
+  private SaveKurstypResult saveKurstyp() {
     SaveKurstypResult saveKurstypResult;
     try {
       kurstypService.saveKurstyp(kurstyp);
@@ -112,5 +90,15 @@ public class CreateOrUpdateKurstypModelImpl extends AbstractModel
       saveKurstypResult = SaveKurstypResult.KURSTYP_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }
     return saveKurstypResult;
+  }
+
+  @Override
+  public boolean isNeu() {
+    return neu;
+  }
+
+  @Override
+  public KurstypFields getKurstypFields() {
+    return new KurstypFields(kurstyp.getBezeichnung(), kurstyp.isSelektierbar());
   }
 }

@@ -4,7 +4,6 @@ import ch.metzenthin.svm.ui.components.CreateOrUpdateBezeichnungAndSelektierbarD
 import ch.metzenthin.svm.ui.components.TextFieldWithErrorLabelComponent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
-import java.awt.event.ItemListener;
 import javax.swing.JCheckBox;
 
 /**
@@ -26,12 +25,12 @@ public abstract class CreateOrUpdateBezeichnungAndSelektierbarDialogView<
     this.checkBoxSelektierbar = dialog.getCheckBoxSelektierbar();
   }
 
-  public void setErrLblBezeichnungVisible(String errorMessage) {
+  public void setErrorLabelBezeichnungVisible(String errorMessage) {
     bezeichnungWithErrorLabel.setErrorLabelVisible(true);
     bezeichnungWithErrorLabel.setErrorLabelText(errorMessage);
   }
 
-  public void setErrLblBezeichnungInvisible() {
+  public void setErrorLabelBezeichnungInvisible() {
     bezeichnungWithErrorLabel.setErrorLabelVisible(false);
     bezeichnungWithErrorLabel.setToolTipText(null);
   }
@@ -50,18 +49,6 @@ public abstract class CreateOrUpdateBezeichnungAndSelektierbarDialogView<
 
   public void setTxtBezeichnungText(String text) {
     bezeichnungWithErrorLabel.setText(text);
-  }
-
-  public void setTxtBezeichnungToolTipText(String text) {
-    bezeichnungWithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtBezeichnungEnabled() {
-    return bezeichnungWithErrorLabel.isEnabled();
-  }
-
-  public void addCheckBoxSelektierbarItemListener(ItemListener itemListener) {
-    checkBoxSelektierbar.addItemListener(itemListener);
   }
 
   public boolean isCheckBoxSelektierbarSelected() {

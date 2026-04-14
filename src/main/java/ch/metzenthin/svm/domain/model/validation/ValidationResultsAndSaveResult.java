@@ -1,28 +1,21 @@
 package ch.metzenthin.svm.domain.model.validation;
 
-import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.service.result.SaveDialogResult;
+import java.util.List;
 
 /**
  * @author Martin Schraner
  */
-public record ValidationAndSaveResult(
-    ValidationResult validationResult, SaveDialogResult saveResult) {
+public record ValidationResultsAndSaveResult(
+    List<ValidationResult> validationResults, SaveDialogResult saveResult) {
 
-  public ValidationAndSaveResult(ValidationResult validationResult) {
-    this(validationResult, null);
+  public ValidationResultsAndSaveResult(List<ValidationResult> validationResults) {
+    this(validationResults, null);
   }
 
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted")
   public boolean isValidationSuccessful() {
-    return validationResult.isValid();
-  }
-
-  public String getValidationErrorMessage() {
-    return validationResult.errorMessage();
-  }
-
-  public boolean affectedFieldsOfValidationContains(Field field) {
-    return validationResult.affectedFieldsContains(field);
+    return ValidationResult.allValidationResultsValid(validationResults);
   }
 
   public boolean isSaveSuccessful() {

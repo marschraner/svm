@@ -32,8 +32,8 @@ public class KurstypListController
     CreateOrUpdateKurstypModel createOrUpdateKurstypModel =
         model.createCreateOrUpdateModel(svmContext);
     CreateOrUpdateKurstypController createOrUpdateKurstypController =
-        new CreateOrUpdateKurstypController(createOrUpdateKurstypModel, false, "Neuer Kurstyp");
-    createOrUpdateKurstypController.initialiseModelValuesAndViewFieldsAndShowDialog();
+        new CreateOrUpdateKurstypController(createOrUpdateKurstypModel, "Neuer Kurstyp");
+    createOrUpdateKurstypController.showDialog();
   }
 
   @Override
@@ -41,7 +41,7 @@ public class KurstypListController
     CreateOrUpdateKurstypModel createOrUpdateKurstypModel =
         model.createCreateOrUpdateModel(svmContext, view.getSelectedRow());
     CreateOrUpdateKurstypController createOrUpdateKurstypController =
-        new CreateOrUpdateKurstypController(createOrUpdateKurstypModel, true, "Kurstyp bearbeiten");
-    createOrUpdateKurstypController.initialiseModelValuesAndViewFieldsAndShowDialog();
+        new CreateOrUpdateKurstypController(createOrUpdateKurstypModel, "Kurstyp bearbeiten");
+    createOrUpdateKurstypController.showDialog();
   }
 }

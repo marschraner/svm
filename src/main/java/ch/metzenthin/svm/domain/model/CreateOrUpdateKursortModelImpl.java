@@ -1,18 +1,17 @@
 package ch.metzenthin.svm.domain.model;
 
 import static ch.metzenthin.svm.domain.model.formatting.FormattingUtils.formatString;
-import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotEmpty;
-import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotTooLong;
-import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotTooShort;
+import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotEmptyAndLength;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.model.validation.ValidationAndSaveResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.result.SaveKursortResult;
 import jakarta.persistence.OptimisticLockException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -44,17 +43,9 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
 
   @Override
   public ValidationResult validateBezeichnung(String bezeichnung) {
-    ValidationResult validationResult = validateNotEmpty(bezeichnung, Field.BEZEICHNUNG);
-    if (!validationResult.isValid()) {
-      return validationResult;
-    }
-
-    validationResult = validateNotTooShort(bezeichnung, MIN_KURSORT_LENGTH, Field.BEZEICHNUNG);
-    if (!validationResult.isValid()) {
-      return validationResult;
-    }
-
-    validationResult = validateNotTooLong(bezeichnung, MAX_KURSORT_LENGTH, Field.BEZEICHNUNG);
+    ValidationResult validationResult =
+        validateNotEmptyAndLength(
+            bezeichnung, MIN_KURSORT_LENGTH, MAX_KURSORT_LENGTH, Field.BEZEICHNUNG);
     if (!validationResult.isValid()) {
       return validationResult;
     }
@@ -69,18 +60,18 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
   }
 
   @Override
-  public ValidationAndSaveResult speichern(KursortFields kursortFields) {
-    ValidationResult validationResult = validate(kursortFields);
-    if (!validationResult.isValid()) {
-      return new ValidationAndSaveResult(validationResult);
+  public ValidationResultsAndSaveResult speichern(KursortFields kursortFields) {
+    List<ValidationResult> validationResults = validateAll(kursortFields);
+    if (!ValidationResult.allValidationResultsValid(validationResults)) {
+      return new ValidationResultsAndSaveResult(validationResults);
     }
     updateModel(kursortFields);
     SaveKursortResult saveKursortResult = saveKursort();
-    return new ValidationAndSaveResult(validationResult, saveKursortResult);
+    return new ValidationResultsAndSaveResult(validationResults, saveKursortResult);
   }
 
-  private ValidationResult validate(KursortFields kursortFields) {
-    return validateBezeichnung(kursortFields.bezeichnung());
+  private List<ValidationResult> validateAll(KursortFields kursortFields) {
+    return List.of(validateBezeichnung(kursortFields.bezeichnung()));
   }
 
   void updateModel(KursortFields kursortFields) {
