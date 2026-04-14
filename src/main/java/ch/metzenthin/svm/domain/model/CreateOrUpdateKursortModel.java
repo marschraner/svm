@@ -8,13 +8,13 @@ import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
  */
 public interface CreateOrUpdateKursortModel {
 
+  boolean isNeu();
+
+  KursortFields getKursortFields();
+
   String formatBezeichnung(String bezeichnung);
 
   ValidationResult validateBezeichnung(String bezeichnung);
 
   ValidationResultsAndSaveResult speichern(KursortFields kursortFields);
-
-  boolean isNeu();
-
-  KursortFields getKursortFields();
 }

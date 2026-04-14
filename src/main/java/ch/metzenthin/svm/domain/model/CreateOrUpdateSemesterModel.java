@@ -1,54 +1,35 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
-import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.persistence.entities.Semester;
-import ch.metzenthin.svm.service.result.SaveSemesterResult;
+import ch.metzenthin.svm.domain.model.conversion.CalendarAndConversionResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import java.util.Calendar;
 
 /**
  * @author Martin Schraner
  */
-public interface CreateOrUpdateSemesterModel extends CreateOrUpdateModel<SaveSemesterResult> {
+public interface CreateOrUpdateSemesterModel {
 
-  Semesterbezeichnung getSemesterbezeichnung();
+  boolean isNeu();
 
-  String getSchuljahr();
+  SemesterFields getSemesterFields();
 
-  Calendar getSemesterbeginn();
+  String formatDateAsString(String dateAsString);
 
-  Calendar getSemesterende();
+  CalendarAndConversionResult convertDateAsStringToCalendar(String dateAsString);
 
-  Calendar getFerienbeginn1();
+  ValidationResult validateSemesterbeginn(Calendar semesterbeginn);
 
-  Calendar getFerienende1();
+  ValidationResult validateSemesterende(Calendar semesterende);
 
-  Calendar getFerienbeginn2();
+  ValidationResult validateFerienbeginn1(Calendar ferienbeginn1);
 
-  Calendar getFerienende2();
+  ValidationResult validateFerienende1(Calendar ferienende1);
 
-  Semester getSemester();
+  ValidationResult validateFerienbeginn2(Calendar ferienbeginn2);
 
-  void setSemesterbezeichnung(Semesterbezeichnung semesterbezeichnung)
-      throws SvmValidationException;
+  ValidationResult validateFerienende2(Calendar ferienende2);
 
-  void setSchuljahr(String text) throws SvmValidationException;
-
-  void setSemesterbeginn(String text) throws SvmValidationException;
-
-  void setSemesterende(String text) throws SvmValidationException;
-
-  void setFerienbeginn1(String text) throws SvmValidationException;
-
-  void setFerienende1(String text) throws SvmValidationException;
-
-  void setFerienbeginn2(String text) throws SvmValidationException;
-
-  void setFerienende2(String text) throws SvmValidationException;
-
-  boolean checkIfUpdateAffectsSemesterrechnungen();
-
-  Semester getNaechstesNochNichtErfasstesSemester();
-
-  SaveSemesterResult speichern(boolean updateSemesterrechnungen);
+  ValidationResultsAndSaveResult speichern(
+      SemesterFields semesterFields, boolean updateSemesterrechnungen);
 }

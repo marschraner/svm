@@ -37,6 +37,16 @@ public class CreateOrUpdateKurstypModelImpl implements CreateOrUpdateKurstypMode
   }
 
   @Override
+  public boolean isNeu() {
+    return neu;
+  }
+
+  @Override
+  public KurstypFields getKurstypFields() {
+    return new KurstypFields(kurstyp.getBezeichnung(), kurstyp.isSelektierbar());
+  }
+
+  @Override
   public String formatBezeichnung(String bezeichnung) {
     return formatString(bezeichnung);
   }
@@ -49,13 +59,12 @@ public class CreateOrUpdateKurstypModelImpl implements CreateOrUpdateKurstypMode
     if (!validationResult.isValid()) {
       return validationResult;
     }
-
     return validateKurstypNotAlreadyExists(bezeichnung);
   }
 
   private ValidationResult validateKurstypNotAlreadyExists(String bezeichnung) {
     return (kurstypService.doesKurstypAlreadyExist(kurstyp.getKurstypId(), bezeichnung))
-        ? new ValidationResult("Bezeichnung bereits in Verwendung.", Set.of(Field.BEZEICHNUNG))
+        ? new ValidationResult("Bezeichnung bereits in Verwendung!", Set.of(Field.BEZEICHNUNG))
         : new ValidationResult();
   }
 
@@ -90,15 +99,5 @@ public class CreateOrUpdateKurstypModelImpl implements CreateOrUpdateKurstypMode
       saveKurstypResult = SaveKurstypResult.KURSTYP_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }
     return saveKurstypResult;
-  }
-
-  @Override
-  public boolean isNeu() {
-    return neu;
-  }
-
-  @Override
-  public KurstypFields getKurstypFields() {
-    return new KurstypFields(kurstyp.getBezeichnung(), kurstyp.isSelektierbar());
   }
 }

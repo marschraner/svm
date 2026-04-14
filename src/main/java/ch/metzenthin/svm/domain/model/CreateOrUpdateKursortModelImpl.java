@@ -37,6 +37,16 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
   }
 
   @Override
+  public boolean isNeu() {
+    return neu;
+  }
+
+  @Override
+  public KursortFields getKursortFields() {
+    return new KursortFields(kursort.getBezeichnung(), kursort.isSelektierbar());
+  }
+
+  @Override
   public String formatBezeichnung(String bezeichnung) {
     return formatString(bezeichnung);
   }
@@ -49,13 +59,12 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
     if (!validationResult.isValid()) {
       return validationResult;
     }
-
     return validateKursortNotAlreadyExists(bezeichnung);
   }
 
   private ValidationResult validateKursortNotAlreadyExists(String bezeichnung) {
     return (kursortService.doesKursortAlreadyExist(kursort.getKursortId(), bezeichnung))
-        ? new ValidationResult("Bezeichnung bereits in Verwendung.", Set.of(Field.BEZEICHNUNG))
+        ? new ValidationResult("Bezeichnung bereits in Verwendung!", Set.of(Field.BEZEICHNUNG))
         : new ValidationResult();
   }
 
@@ -90,15 +99,5 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
       saveKursortResult = SaveKursortResult.KURSORT_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }
     return saveKursortResult;
-  }
-
-  @Override
-  public boolean isNeu() {
-    return neu;
-  }
-
-  @Override
-  public KursortFields getKursortFields() {
-    return new KursortFields(kursort.getBezeichnung(), kursort.isSelektierbar());
   }
 }

@@ -20,7 +20,7 @@ public class SemesterListModel
     extends AbstractListModel<
         SemesterTableData,
         SemesterAndNumberOfKurse,
-        CreateOrUpdateSemesterModel,
+        CreateOrUpdateSemesterModelOld,
         DeleteSemesterResult> {
 
   private final KursService kursService;
@@ -46,12 +46,12 @@ public class SemesterListModel
   }
 
   @Override
-  public CreateOrUpdateSemesterModel createCreateOrUpdateModel(SvmContext svmContext) {
+  public CreateOrUpdateSemesterModelOld createCreateOrUpdateModel(SvmContext svmContext) {
     return svmContext.getModelFactory().createCreateOrUpdateSemesterModel(Optional.empty());
   }
 
   @Override
-  public CreateOrUpdateSemesterModel createCreateOrUpdateModel(
+  public CreateOrUpdateSemesterModelOld createCreateOrUpdateModel(
       SvmContext svmContext, int indexSemesterToBeUpdated) {
     Semester semesterToBeUpdated = getSelectedRow(indexSemesterToBeUpdated).semester();
     return svmContext

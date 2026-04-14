@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModel;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModelOld;
 import ch.metzenthin.svm.domain.model.SemesterAndNumberOfKurse;
 import ch.metzenthin.svm.domain.model.SemesterListModel;
 import ch.metzenthin.svm.domain.model.SemesterTableData;
@@ -33,20 +33,21 @@ public class SemesterListController
 
   @Override
   protected void showOnNeuDialog() {
-    CreateOrUpdateSemesterModel createOrUpdateSemesterModel =
+    CreateOrUpdateSemesterModelOld createOrUpdateSemesterModelOld =
         model.createCreateOrUpdateModel(svmContext);
     CreateOrUpdateSemesterController createOrUpdateSemesterController =
-        new CreateOrUpdateSemesterController(createOrUpdateSemesterModel, false, "Neues Semester");
+        new CreateOrUpdateSemesterController(
+            createOrUpdateSemesterModelOld, false, "Neues Semester");
     createOrUpdateSemesterController.initialiseModelValuesAndViewFieldsAndShowDialog();
   }
 
   @Override
   protected void showOnBearbeitenDialog() {
-    CreateOrUpdateSemesterModel createOrUpdateSemesterModel =
+    CreateOrUpdateSemesterModelOld createOrUpdateSemesterModelOld =
         model.createCreateOrUpdateModel(svmContext, view.getSelectedRow());
     CreateOrUpdateSemesterController createOrUpdateSemesterController =
         new CreateOrUpdateSemesterController(
-            createOrUpdateSemesterModel, true, "Semester bearbeiten");
+            createOrUpdateSemesterModelOld, true, "Semester bearbeiten");
     createOrUpdateSemesterController.initialiseModelValuesAndViewFieldsAndShowDialog();
   }
 

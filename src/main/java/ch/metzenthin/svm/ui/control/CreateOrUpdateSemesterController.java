@@ -6,7 +6,7 @@ import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModel;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModelOld;
 import ch.metzenthin.svm.service.result.SaveSemesterResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateSemesterView;
 import java.awt.event.*;
@@ -22,13 +22,15 @@ import org.apache.logging.log4j.Logger;
  */
 public class CreateOrUpdateSemesterController
     extends SpeichernAbbrechenDialogController<
-        CreateOrUpdateSemesterModel, CreateOrUpdateSemesterView, SaveSemesterResult> {
+        CreateOrUpdateSemesterModelOld, CreateOrUpdateSemesterView, SaveSemesterResult> {
 
   private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateSemesterController.class);
 
   public CreateOrUpdateSemesterController(
-      CreateOrUpdateSemesterModel createOrUpdateSemesterModel, boolean isBearbeiten, String title) {
-    super(createOrUpdateSemesterModel, new CreateOrUpdateSemesterView(title), isBearbeiten);
+      CreateOrUpdateSemesterModelOld createOrUpdateSemesterModelOld,
+      boolean isBearbeiten,
+      String title) {
+    super(createOrUpdateSemesterModelOld, new CreateOrUpdateSemesterView(title), isBearbeiten);
     configSpinnerSchuljahre();
     configComboBoxSemesterbezeichnung();
     configTxtSemesterbeginn();
