@@ -12,7 +12,6 @@ import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.result.SaveKursortResult;
-import ch.metzenthin.svm.ui.view.CreateOrUpdateKursortView;
 import jakarta.persistence.OptimisticLockException;
 import java.util.Optional;
 import java.util.Set;
@@ -26,26 +25,16 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
   private static final int MIN_KURSORT_LENGTH = 2;
   private static final int MAX_KURSORT_LENGTH = 50;
 
-  private final boolean isNeu;
+  private final boolean neu;
   private final Kursort kursort;
   private final KursortService kursortService;
 
   @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
   public CreateOrUpdateKursortModelImpl(
       Optional<Kursort> kursortToBeModifiedOptional, KursortService kursortService) {
-    this.isNeu = kursortToBeModifiedOptional.isEmpty();
+    this.neu = kursortToBeModifiedOptional.isEmpty();
     this.kursort = kursortToBeModifiedOptional.orElseGet(Kursort::new);
     this.kursortService = kursortService;
-  }
-
-  @Override
-  public void initialiseViewFields(CreateOrUpdateKursortView createOrUpdateKursortView) {
-    createOrUpdateKursortView.setTxtBezeichnungText(kursort.getBezeichnung());
-    if (isNeu) {
-      createOrUpdateKursortView.setCheckBoxSelektierbarSelected(true);
-    } else {
-      createOrUpdateKursortView.setCheckBoxSelektierbarSelected(kursort.isSelektierbar());
-    }
   }
 
   @Override
@@ -80,23 +69,23 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
   }
 
   @Override
-  public ValidationAndSaveResult speichern(CreateOrUpdateKursortView createOrUpdateKursortView) {
-    ValidationResult validationResult = validate(createOrUpdateKursortView);
+  public ValidationAndSaveResult speichern(KursortFields kursortFields) {
+    ValidationResult validationResult = validate(kursortFields);
     if (!validationResult.isValid()) {
       return new ValidationAndSaveResult(validationResult);
     }
-    updateModel(createOrUpdateKursortView);
+    updateModel(kursortFields);
     SaveKursortResult saveKursortResult = saveKursort();
     return new ValidationAndSaveResult(validationResult, saveKursortResult);
   }
 
-  private ValidationResult validate(CreateOrUpdateKursortView createOrUpdateKursortView) {
-    return validateBezeichnung(createOrUpdateKursortView.getTxtBezeichnungText());
+  private ValidationResult validate(KursortFields kursortFields) {
+    return validateBezeichnung(kursortFields.bezeichnung());
   }
 
-  void updateModel(CreateOrUpdateKursortView createOrUpdateKursortView) {
-    kursort.setBezeichnung(createOrUpdateKursortView.getTxtBezeichnungText());
-    kursort.setSelektierbar(createOrUpdateKursortView.isCheckBoxSelektierbarSelected());
+  void updateModel(KursortFields kursortFields) {
+    kursort.setBezeichnung(kursortFields.bezeichnung());
+    kursort.setSelektierbar(kursortFields.selektierbar());
   }
 
   private SaveKursortResult saveKursort() {
@@ -110,5 +99,15 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
       saveKursortResult = SaveKursortResult.KURSORT_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }
     return saveKursortResult;
+  }
+
+  @Override
+  public boolean isNeu() {
+    return neu;
+  }
+
+  @Override
+  public KursortFields getKursortFields() {
+    return new KursortFields(kursort.getBezeichnung(), kursort.isSelektierbar());
   }
 }

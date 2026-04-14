@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateKursortModel;
 import ch.metzenthin.svm.domain.model.DialogClosingListener;
+import ch.metzenthin.svm.domain.model.KursortFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationAndSaveResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateKursortView;
@@ -29,7 +30,17 @@ public class CreateOrUpdateKursortController implements DialogClosingListener {
     configTxtBezeichnung();
     configBtnSpeichern();
     configBtnAbbrechen();
-    model.initialiseViewFields(view);
+    initialiseViewFields();
+  }
+
+  private void initialiseViewFields() {
+    KursortFields kursortFields = model.getKursortFields();
+    view.setTxtBezeichnungText(kursortFields.bezeichnung());
+    if (model.isNeu()) {
+      view.setCheckBoxSelektierbarSelected(true);
+    } else {
+      view.setCheckBoxSelektierbarSelected(kursortFields.selektierbar());
+    }
   }
 
   private void configTxtBezeichnung() {
@@ -60,7 +71,9 @@ public class CreateOrUpdateKursortController implements DialogClosingListener {
   }
 
   private void onSpeichern() {
-    ValidationAndSaveResult validationAndSaveResult = model.speichern(view);
+    KursortFields kursortFields =
+        new KursortFields(view.getTxtBezeichnungText(), view.isCheckBoxSelektierbarSelected());
+    ValidationAndSaveResult validationAndSaveResult = model.speichern(kursortFields);
 
     if (!validationAndSaveResult.isValidationSuccessful()
         && validationAndSaveResult.affectedFieldsOfValidationContains(Field.BEZEICHNUNG)) {
