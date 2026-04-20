@@ -218,4 +218,33 @@ public enum Field {
   public String toString() {
     return name;
   }
+
+  public static ch.metzenthin.svm.common.datatypes.Field valueOfFieldName(String input) {
+    ch.metzenthin.svm.common.datatypes.Field field;
+    switch (input) {
+      case "deleted" -> field = ch.metzenthin.svm.common.datatypes.Field.GELOESCHT;
+      case "strasse", "hausnummer" ->
+          field = ch.metzenthin.svm.common.datatypes.Field.STRASSE_HAUSNUMMER;
+      case "zusatzattribut" ->
+          field = ch.metzenthin.svm.common.datatypes.Field.ZUSATZATTRIBUT_MAERCHEN;
+      default -> {
+        return ch.metzenthin.svm.common.datatypes.Field.valueOf(camelToUpperUnderscore(input));
+      }
+    }
+    return field;
+  }
+
+  private static String camelToUpperUnderscore(String input) {
+    String replacement = "$1_$2";
+    return input
+        // aB → a_B
+        .replaceAll("([a-z0-9])([A-Z])", replacement)
+        // ABc → A_Bc
+        .replaceAll("([A-Z])([A-Z][a-z])", replacement)
+        // a1 → a_1, aber nur wenn danach noch etwas kommt
+        .replaceAll("([a-zA-Z])(\\d)(?=.)", replacement)
+        // optional: 1a → 1_a
+        .replaceAll("(\\d)([a-zA-Z])", replacement)
+        .toUpperCase();
+  }
 }
