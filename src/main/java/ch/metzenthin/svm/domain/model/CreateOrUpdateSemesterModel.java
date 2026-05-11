@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.model.conversion.CalendarAndConversionResult;
+import ch.metzenthin.svm.domain.model.entityfields.SemesterFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import java.util.Calendar;

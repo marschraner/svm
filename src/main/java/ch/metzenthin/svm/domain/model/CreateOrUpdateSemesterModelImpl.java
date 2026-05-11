@@ -2,11 +2,13 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.datatypes.Schuljahre;
-import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
 import ch.metzenthin.svm.domain.EntityWithOverlappingPeriodsException;
 import ch.metzenthin.svm.domain.model.conversion.CalendarAndConversionResult;
 import ch.metzenthin.svm.domain.model.conversion.CalendarConverter;
+import ch.metzenthin.svm.domain.model.conversion.ConvertedFieldsAndConversionResults;
+import ch.metzenthin.svm.domain.model.entityfields.ConvertedSemesterFields;
+import ch.metzenthin.svm.domain.model.entityfields.SemesterFields;
 import ch.metzenthin.svm.domain.model.formatting.FormattingUtils;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
@@ -18,7 +20,6 @@ import jakarta.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -28,62 +29,6 @@ import org.springframework.dao.OptimisticLockingFailureException;
  * @author Martin Schraner
  */
 public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterModel {
-
-  private record ConvertedSemesterFieldsAndConversionResults(
-      String schuljahr,
-      Semesterbezeichnung semesterbezeichnung,
-      CalendarAndConversionResult semesterbeginnAndConversionResult,
-      CalendarAndConversionResult semesterendeAndConversionResult,
-      CalendarAndConversionResult ferienbeginn1AndConversionResult,
-      CalendarAndConversionResult ferienende1AndConversionResult,
-      CalendarAndConversionResult ferienbeginn2AndConversionResult,
-      CalendarAndConversionResult ferienende2AndConversionResult) {
-
-    Set<Field> getFieldsWithInvalidConversion() {
-      Set<Field> fieldsWithInvalidConversion = new HashSet<>();
-      if (!semesterbeginnAndConversionResult.isValid()) {
-        fieldsWithInvalidConversion.add(Field.SEMESTERBEGINN);
-      }
-      if (!semesterendeAndConversionResult.isValid()) {
-        fieldsWithInvalidConversion.add(Field.SEMESTERENDE);
-      }
-      if (!ferienbeginn1AndConversionResult.isValid()) {
-        fieldsWithInvalidConversion.add(Field.FERIENBEGINN1);
-      }
-      if (!ferienende1AndConversionResult.isValid()) {
-        fieldsWithInvalidConversion.add(Field.FERIENENDE1);
-      }
-      if (!ferienbeginn2AndConversionResult.isValid()) {
-        fieldsWithInvalidConversion.add(Field.FERIENBEGINN2);
-      }
-      if (!ferienende2AndConversionResult.isValid()) {
-        fieldsWithInvalidConversion.add(Field.FERIENENDE2);
-      }
-      return fieldsWithInvalidConversion;
-    }
-
-    ConvertedSemesterFields toConvertedFields() {
-      return new ConvertedSemesterFields(
-          schuljahr,
-          semesterbezeichnung,
-          semesterbeginnAndConversionResult.calendar(),
-          semesterendeAndConversionResult.calendar(),
-          ferienbeginn1AndConversionResult.calendar(),
-          ferienende1AndConversionResult.calendar(),
-          ferienbeginn2AndConversionResult.calendar(),
-          ferienende2AndConversionResult.calendar());
-    }
-  }
-
-  private record ConvertedSemesterFields(
-      String schuljahr,
-      Semesterbezeichnung semesterbezeichnung,
-      Calendar semesterbeginn,
-      Calendar semesterende,
-      Calendar ferienbeginn1,
-      Calendar ferienende1,
-      Calendar ferienbeginn2,
-      Calendar ferienende2) {}
 
   private final boolean neu;
   private final Semester semester;
@@ -104,21 +49,7 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
 
   @Override
   public SemesterFields getSemesterFields() {
-    String semesterbeginn = CalendarConverter.toString(semester.getSemesterbeginn());
-    String semesterende = CalendarConverter.toString(semester.getSemesterende());
-    String ferienbeginn1 = CalendarConverter.toString(semester.getFerienbeginn1());
-    String ferienende1 = CalendarConverter.toString(semester.getFerienende1());
-    String ferienbeginn2 = CalendarConverter.toString(semester.getFerienbeginn2());
-    String ferienende2 = CalendarConverter.toString(semester.getFerienende2());
-    return new SemesterFields(
-        semester.getSchuljahr(),
-        semester.getSemesterbezeichnung(),
-        semesterbeginn,
-        semesterende,
-        ferienbeginn1,
-        ferienende1,
-        ferienbeginn2,
-        ferienende2);
+    return SemesterFields.of(semester);
   }
 
   @Override
@@ -189,17 +120,17 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
   public ValidationResultsAndSaveResult speichern(
       SemesterFields semesterFields, boolean updateSemesterrechnungen) {
 
-    ConvertedSemesterFieldsAndConversionResults convertedSemesterFieldsAndConversionResults =
-        convertAll(semesterFields);
-    Set<Field> fieldsWithInvalidConversion =
-        convertedSemesterFieldsAndConversionResults.getFieldsWithInvalidConversion();
-    if (!fieldsWithInvalidConversion.isEmpty()) {
+    ConvertedFieldsAndConversionResults<ConvertedSemesterFields>
+        convertedSemesterFieldsAndConversionResults = convertAll(semesterFields);
+    if (!convertedSemesterFieldsAndConversionResults.isValid()) {
+      Set<Field> fieldsWithInvalidConversion =
+          convertedSemesterFieldsAndConversionResults.getFieldsWithInvalidConversion();
       ValidationResult validationResult =
           new ValidationResult("Ungültiges Format!", fieldsWithInvalidConversion);
       return new ValidationResultsAndSaveResult(List.of(validationResult));
     }
     ConvertedSemesterFields convertedSemesterFields =
-        convertedSemesterFieldsAndConversionResults.toConvertedFields();
+        convertedSemesterFieldsAndConversionResults.convertedFields();
 
     List<ValidationResult> validationResults = validateAll(convertedSemesterFields);
     if (!ValidationResult.allValidationResultsValid(validationResults)) {
@@ -212,28 +143,9 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
     return new ValidationResultsAndSaveResult(validationResults, saveSemesterResult);
   }
 
-  private ConvertedSemesterFieldsAndConversionResults convertAll(SemesterFields semesterFields) {
-    CalendarAndConversionResult semesterbeginnAndConversionResult =
-        convertDateAsStringToCalendar(semesterFields.semesterbeginn());
-    CalendarAndConversionResult semesterendeAndConversionResult =
-        convertDateAsStringToCalendar(semesterFields.semesterende());
-    CalendarAndConversionResult ferienbeginn1AndConversionResult =
-        convertDateAsStringToCalendar(semesterFields.ferienbeginn1());
-    CalendarAndConversionResult ferienende1AndConversionResult =
-        convertDateAsStringToCalendar(semesterFields.ferienende1());
-    CalendarAndConversionResult ferienbeginn2AndConversionResult =
-        convertDateAsStringToCalendar(semesterFields.ferienbeginn2());
-    CalendarAndConversionResult ferienende2AndConversionResult =
-        convertDateAsStringToCalendar(semesterFields.ferienende2());
-    return new ConvertedSemesterFieldsAndConversionResults(
-        semesterFields.schuljahr(),
-        semesterFields.semesterbezeichnung(),
-        semesterbeginnAndConversionResult,
-        semesterendeAndConversionResult,
-        ferienbeginn1AndConversionResult,
-        ferienende1AndConversionResult,
-        ferienbeginn2AndConversionResult,
-        ferienende2AndConversionResult);
+  private static ConvertedFieldsAndConversionResults<ConvertedSemesterFields> convertAll(
+      SemesterFields semesterFields) {
+    return semesterFields.convert();
   }
 
   private List<ValidationResult> validateAll(ConvertedSemesterFields convertedSemesterFields) {
@@ -248,14 +160,7 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
   }
 
   void updateModel(ConvertedSemesterFields semesterFields) {
-    semester.setSchuljahr(semesterFields.schuljahr());
-    semester.setSemesterbezeichnung(semesterFields.semesterbezeichnung());
-    semester.setSemesterbeginn(semesterFields.semesterbeginn());
-    semester.setSemesterende(semesterFields.semesterende());
-    semester.setFerienbeginn1(semesterFields.ferienbeginn1());
-    semester.setFerienende1(semesterFields.ferienende1());
-    semester.setFerienbeginn2(semesterFields.ferienbeginn2());
-    semester.setFerienende2(semesterFields.ferienende2());
+    semesterFields.mergeIntoEntity(semester);
   }
 
   private SaveSemesterResult saveSemester(boolean updateSemesterrechnungen) {
