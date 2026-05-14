@@ -14,15 +14,15 @@ import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import java.sql.Time;
 import java.util.List;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
  */
 public class KursErfassenModelImpl extends AbstractModel implements KursErfassenModel {
 
-  private static final Logger LOGGER = LogManager.getLogger(KursErfassenModelImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(KursErfassenModelImpl.class);
   private static final Mitarbeiter MITARBEITER_KEINE = new Mitarbeiter();
 
   private final Kurs kurs = new Kurs();

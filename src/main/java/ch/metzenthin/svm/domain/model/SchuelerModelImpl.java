@@ -13,15 +13,15 @@ import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import java.util.Calendar;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Hans Stamm
  */
 final class SchuelerModelImpl extends PersonModelImpl implements SchuelerModel {
 
-  private static final Logger LOGGER = LogManager.getLogger(SchuelerModelImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SchuelerModelImpl.class);
 
   private final Schueler schueler;
   private Schueler schuelerOrigin;

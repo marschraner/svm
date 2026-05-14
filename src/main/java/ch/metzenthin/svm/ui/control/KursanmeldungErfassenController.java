@@ -22,8 +22,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import javax.swing.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -31,7 +31,8 @@ import org.apache.logging.log4j.Logger;
 @SuppressWarnings("LoggingSimilarMessage")
 public class KursanmeldungErfassenController extends AbstractController {
 
-  private static final Logger LOGGER = LogManager.getLogger(KursanmeldungErfassenController.class);
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(KursanmeldungErfassenController.class);
   private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE =
       "Validierung wegen equalFieldAndModelValue";
   private static final String FEHLER = "Fehler";

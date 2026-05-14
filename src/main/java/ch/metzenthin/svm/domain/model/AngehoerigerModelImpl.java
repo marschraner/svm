@@ -10,15 +10,15 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Person;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Hans Stamm
  */
 public class AngehoerigerModelImpl extends PersonModelImpl implements AngehoerigerModel {
 
-  private static final Logger LOGGER = LogManager.getLogger(AngehoerigerModelImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(AngehoerigerModelImpl.class);
 
   private final Angehoeriger angehoeriger;
   private Angehoeriger angehoerigerOrigin;

@@ -7,15 +7,15 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Hans Stamm
  */
 public class SwingExceptionHandler implements Thread.UncaughtExceptionHandler {
 
-  private static final Logger LOGGER = LogManager.getLogger(SwingExceptionHandler.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SwingExceptionHandler.class);
   private SvmDesktop svmDesktop;
 
   public void uncaughtException(final Thread t, final Throwable e) {

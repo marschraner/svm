@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -26,7 +26,7 @@ final class SemesterrechnungBearbeitenModelImpl extends SemesterrechnungModelImp
     implements SemesterrechnungBearbeitenModel {
 
   private static final Logger LOGGER =
-      LogManager.getLogger(SemesterrechnungBearbeitenModelImpl.class);
+      LoggerFactory.getLogger(SemesterrechnungBearbeitenModelImpl.class);
   private static final String DATUM_NICHT_GESETZT = "Datum nicht gesetzt";
   private static final String BETRAG_NICHT_GESETZT = "Betrag nicht gesetzt";
 

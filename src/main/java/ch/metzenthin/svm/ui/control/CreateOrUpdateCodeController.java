@@ -8,8 +8,8 @@ import ch.metzenthin.svm.ui.view.CreateOrUpdateCodeView;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -18,7 +18,7 @@ public class CreateOrUpdateCodeController
     extends SpeichernAbbrechenDialogController<
         CreateOrUpdateCodeModel, CreateOrUpdateCodeView, SaveCodeResult> {
 
-  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateCodeController.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(CreateOrUpdateCodeController.class);
 
   public CreateOrUpdateCodeController(
       CreateOrUpdateCodeModel createOrUpdateCodeModel, boolean isBearbeiten, String title) {

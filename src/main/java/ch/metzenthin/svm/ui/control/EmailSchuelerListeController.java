@@ -14,15 +14,15 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 import javax.swing.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
  */
 public class EmailSchuelerListeController extends AbstractController {
 
-  private static final Logger LOGGER = LogManager.getLogger(EmailSchuelerListeController.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(EmailSchuelerListeController.class);
 
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
   private static final boolean MODEL_VALIDATION_MODE = false;

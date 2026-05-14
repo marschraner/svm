@@ -20,8 +20,8 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -29,7 +29,7 @@ import org.apache.logging.log4j.Logger;
 @SuppressWarnings("LoggingSimilarMessage")
 public class ListenExportController extends AbstractController {
 
-  private static final Logger LOGGER = LogManager.getLogger(ListenExportController.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ListenExportController.class);
 
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
   private static final boolean MODEL_VALIDATION_MODE = false;

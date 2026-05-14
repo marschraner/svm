@@ -9,15 +9,15 @@ import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import java.sql.Time;
 import java.text.ParseException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
  */
 public class TimeModelAttribute {
 
-  private static final Logger LOGGER = LogManager.getLogger(TimeModelAttribute.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(TimeModelAttribute.class);
 
   private final ModelAttributeListener modelAttributeListener;
   private final AttributeAccessor<Time> attributeAccessor;

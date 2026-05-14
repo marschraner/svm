@@ -5,16 +5,16 @@ import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.OptimisticLockException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.StaleObjectStateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Hans Stamm
  */
 public class CommandInvokerImpl implements CommandInvoker {
 
-  private static final Logger LOGGER = LogManager.getLogger(CommandInvokerImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(CommandInvokerImpl.class);
 
   private final DB db = DBFactory.getInstance();
 

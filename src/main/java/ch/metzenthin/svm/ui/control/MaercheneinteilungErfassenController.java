@@ -23,8 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.swing.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -33,7 +33,7 @@ import org.apache.logging.log4j.Logger;
 public class MaercheneinteilungErfassenController extends PersonController {
 
   private static final Logger LOGGER =
-      LogManager.getLogger(MaercheneinteilungErfassenController.class);
+      LoggerFactory.getLogger(MaercheneinteilungErfassenController.class);
   private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE =
       "Validierung wegen equalFieldAndModelValue";
 
@@ -1186,7 +1186,7 @@ public class MaercheneinteilungErfassenController extends PersonController {
         maercheneinteilungErfassenModel.setBemerkungen(
             "Eltern-Mithilfe bei " + geschwister + " erfasst.");
       } catch (SvmValidationException e) {
-        LOGGER.error(e);
+        LOGGER.error(e.getMessage(), e);
       }
     }
   }

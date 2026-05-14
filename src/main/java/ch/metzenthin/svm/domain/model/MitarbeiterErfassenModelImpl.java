@@ -16,8 +16,8 @@ import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.Person;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 import java.util.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -25,7 +25,7 @@ import org.apache.logging.log4j.Logger;
 public class MitarbeiterErfassenModelImpl extends PersonModelImpl
     implements MitarbeiterErfassenModel {
 
-  private static final Logger LOGGER = LogManager.getLogger(MitarbeiterErfassenModelImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MitarbeiterErfassenModelImpl.class);
   private static final IbanNummerValidator IBAN_NUMMER_VALIDATOR = new IbanNummerValidator();
 
   private final Mitarbeiter mitarbeiter = new Mitarbeiter();

@@ -14,8 +14,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -24,7 +24,7 @@ public class SchuelerSuchenCommand implements Command {
 
   public static final int MAX_RESULTS = 5000;
 
-  private static final Logger LOGGER = LogManager.getLogger(SchuelerSuchenCommand.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SchuelerSuchenCommand.class);
 
   private final DB db = DBFactory.getInstance();
 

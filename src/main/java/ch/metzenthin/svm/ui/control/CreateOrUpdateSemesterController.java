@@ -14,8 +14,8 @@ import java.beans.PropertyChangeEvent;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -24,7 +24,8 @@ public class CreateOrUpdateSemesterController
     extends SpeichernAbbrechenDialogController<
         CreateOrUpdateSemesterModelOld, CreateOrUpdateSemesterView, SaveSemesterResult> {
 
-  private static final Logger LOGGER = LogManager.getLogger(CreateOrUpdateSemesterController.class);
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(CreateOrUpdateSemesterController.class);
 
   public CreateOrUpdateSemesterController(
       CreateOrUpdateSemesterModelOld createOrUpdateSemesterModelOld,

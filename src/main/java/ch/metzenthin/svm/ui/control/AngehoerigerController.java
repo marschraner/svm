@@ -8,15 +8,15 @@ import ch.metzenthin.svm.domain.model.AngehoerigerModel;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 import javax.swing.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Hans Stamm
  */
 public class AngehoerigerController extends PersonController {
 
-  private static final Logger LOGGER = LogManager.getLogger(AngehoerigerController.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(AngehoerigerController.class);
 
   private JCheckBox checkBoxGleicheAdresseWieSchueler;
   private JCheckBox checkBoxRechnungsempfaenger;

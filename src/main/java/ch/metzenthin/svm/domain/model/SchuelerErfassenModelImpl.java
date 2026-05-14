@@ -18,8 +18,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Dieses Model ist eigentlich Model und Controller (verwaltet die Submodels Schüler, Mutter, Vater,
@@ -30,7 +30,7 @@ import org.apache.logging.log4j.Logger;
 public class SchuelerErfassenModelImpl extends AbstractModel
     implements SchuelerErfassenModel, ValidateSchuelerModel {
 
-  private static final Logger LOGGER = LogManager.getLogger(SchuelerErfassenModelImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SchuelerErfassenModelImpl.class);
 
   private SchuelerModel schuelerModel;
   private AngehoerigerModel mutterModel;

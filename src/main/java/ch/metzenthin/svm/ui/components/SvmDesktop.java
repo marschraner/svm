@@ -26,8 +26,8 @@ import java.io.Serial;
 import java.net.URL;
 import javax.swing.*;
 import lombok.Getter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /*
  * SVM Applikation
@@ -36,7 +36,7 @@ public class SvmDesktop extends JFrame implements ActionListener {
 
   @Serial private static final long serialVersionUID = 1L;
 
-  private static final Logger LOGGER = LogManager.getLogger(SvmDesktop.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SvmDesktop.class);
   private static final String SCHUELER_SUCHEN = "Schüler suchen";
 
   private final transient DB db = DBFactory.getInstance();

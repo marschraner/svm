@@ -12,8 +12,8 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 import javax.swing.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 @SuppressWarnings("LoggingSimilarMessage")
 public class MaerchenErfassenController extends AbstractController {
 
-  private static final Logger LOGGER = LogManager.getLogger(MaerchenErfassenController.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MaerchenErfassenController.class);
   private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE =
       "Validierung wegen equalFieldAndModelValue";
 
@@ -100,7 +100,7 @@ public class MaerchenErfassenController extends AbstractController {
     try {
       maerchenErfassenModel.setSchuljahr(initSchuljahr);
     } catch (SvmValidationException e) {
-      LOGGER.error(e);
+      LOGGER.error(e.getMessage(), e);
     }
   }
 

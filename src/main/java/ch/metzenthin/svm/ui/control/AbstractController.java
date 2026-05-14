@@ -13,8 +13,8 @@ import java.beans.PropertyChangeListener;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Getter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Controller Basis-Klasse.
@@ -24,7 +24,7 @@ import org.apache.logging.log4j.Logger;
 public abstract class AbstractController
     implements PropertyChangeListener, DisableFieldsListener, MakeErrorLabelsInvisibleListener {
 
-  private static final Logger LOGGER = LogManager.getLogger(AbstractController.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(AbstractController.class);
 
   /**
    * Model ohne parametrisierten Typ.

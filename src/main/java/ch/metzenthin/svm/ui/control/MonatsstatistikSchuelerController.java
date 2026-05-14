@@ -20,8 +20,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Set;
 import javax.swing.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -29,7 +29,7 @@ import org.apache.logging.log4j.Logger;
 public class MonatsstatistikSchuelerController extends AbstractController {
 
   private static final Logger LOGGER =
-      LogManager.getLogger(MonatsstatistikSchuelerController.class);
+      LoggerFactory.getLogger(MonatsstatistikSchuelerController.class);
 
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
   private static final boolean MODEL_VALIDATION_MODE = false;
@@ -89,7 +89,7 @@ public class MonatsstatistikSchuelerController extends AbstractController {
       monatsstatistikSchuelerModel.setMonatJahr(
           asString(monatJahrInit, MONAT_JAHR_DATE_FORMAT_STRING));
     } catch (SvmValidationException e) {
-      LOGGER.error(e);
+      LOGGER.error(e.getMessage(), e);
     }
   }
 

@@ -9,8 +9,8 @@ import ch.metzenthin.svm.ui.view.CreateOrUpdateLektionsgebuehrenView;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -22,7 +22,7 @@ public class CreateOrUpdateLektionsgebuehrenController
         SaveLektionsgebuehrenResult> {
 
   private static final Logger LOGGER =
-      LogManager.getLogger(CreateOrUpdateLektionsgebuehrenController.class);
+      LoggerFactory.getLogger(CreateOrUpdateLektionsgebuehrenController.class);
 
   public CreateOrUpdateLektionsgebuehrenController(
       CreateOrUpdateLektionsgebuehrenModel model, boolean isBearbeiten, String title) {

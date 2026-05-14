@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import javax.swing.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Hans Stamm
@@ -43,7 +43,7 @@ public class GtkPlusLookAndFeelWorkaround {
    * uses reflection to change the GTK style objects of Swing so popup menu borders have a minimum
    * thickness of 1 and menu separators have a minimum vertical thickness of 1.
    */
-  private static final Logger LOGGER = LogManager.getLogger(GtkPlusLookAndFeelWorkaround.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(GtkPlusLookAndFeelWorkaround.class);
 
   private GtkPlusLookAndFeelWorkaround() {}
 

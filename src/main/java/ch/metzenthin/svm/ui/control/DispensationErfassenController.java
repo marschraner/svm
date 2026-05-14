@@ -13,8 +13,8 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 import javax.swing.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -22,7 +22,8 @@ import org.apache.logging.log4j.Logger;
 @SuppressWarnings("LoggingSimilarMessage")
 public class DispensationErfassenController extends AbstractController {
 
-  private static final Logger LOGGER = LogManager.getLogger(DispensationErfassenController.class);
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(DispensationErfassenController.class);
   private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE =
       "Validierung wegen equalFieldAndModelValue";
 

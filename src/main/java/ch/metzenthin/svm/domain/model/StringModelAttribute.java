@@ -8,15 +8,15 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Hans Stamm
  */
 public class StringModelAttribute {
 
-  private static final Logger LOGGER = LogManager.getLogger(StringModelAttribute.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(StringModelAttribute.class);
 
   private final ModelAttributeListener modelAttributeListener;
   private final AttributeAccessor<String> attributeAccessor;

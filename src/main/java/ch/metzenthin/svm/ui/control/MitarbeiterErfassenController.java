@@ -16,8 +16,8 @@ import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.util.Set;
 import javax.swing.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -25,7 +25,7 @@ import org.apache.logging.log4j.Logger;
 @SuppressWarnings("LoggingSimilarMessage")
 public class MitarbeiterErfassenController extends PersonController {
 
-  private static final Logger LOGGER = LogManager.getLogger(MitarbeiterErfassenController.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MitarbeiterErfassenController.class);
   private static final String VALIDIERUNG_WEGEN_EQUAL_FIELD_AND_MODEL_VALUE =
       "Validierung wegen equalFieldAndModelValue";
 

@@ -15,8 +15,8 @@ import jakarta.persistence.OptimisticLockException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Optional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
@@ -27,7 +27,7 @@ public class CreateOrUpdateSemesterModelOldImplOld extends AbstractModel
     implements CreateOrUpdateSemesterModelOld {
 
   private static final Logger LOGGER =
-      LogManager.getLogger(CreateOrUpdateSemesterModelOldImplOld.class);
+      LoggerFactory.getLogger(CreateOrUpdateSemesterModelOldImplOld.class);
 
   private static final String KEINE_GUELTIGE_PERIODE = "Keine gültige Periode";
 

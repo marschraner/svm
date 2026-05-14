@@ -12,8 +12,8 @@ import ch.metzenthin.svm.persistence.entities.Dispensation;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.DispensationenTableModel;
 import java.util.Calendar;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 public class DispensationErfassenModelImpl extends AbstractModel
     implements DispensationErfassenModel {
 
-  private static final Logger LOGGER = LogManager.getLogger(DispensationErfassenModelImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(DispensationErfassenModelImpl.class);
 
   private final Dispensation dispensation = new Dispensation();
   private Dispensation dispensationOrigin;

@@ -10,15 +10,15 @@ import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.ui.componentmodel.MaerchensTableModel;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
  */
 public class MaerchenErfassenModelImpl extends AbstractModel implements MaerchenErfassenModel {
 
-  private static final Logger LOGGER = LogManager.getLogger(MaerchenErfassenModelImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MaerchenErfassenModelImpl.class);
 
   private final Maerchen maerchen = new Maerchen();
   private Maerchen maerchenOrigin;

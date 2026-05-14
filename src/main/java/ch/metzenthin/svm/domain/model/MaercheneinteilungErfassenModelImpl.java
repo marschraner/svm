@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Schraner
@@ -28,7 +28,7 @@ public class MaercheneinteilungErfassenModelImpl extends PersonModelImpl
     implements MaercheneinteilungErfassenModel {
 
   private static final Logger LOGGER =
-      LogManager.getLogger(MaercheneinteilungErfassenModelImpl.class);
+      LoggerFactory.getLogger(MaercheneinteilungErfassenModelImpl.class);
   private static final ElternmithilfeCode ELTERNMITHILFE_CODE_KEINER = new ElternmithilfeCode();
   private static final String ROLLE_NICHT_GESETZT = "Rolle nicht gesetzt";
 

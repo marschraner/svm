@@ -8,8 +8,8 @@ import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import java.math.BigDecimal;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Hans Stamm
@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 @SuppressWarnings("ClassCanBeRecord")
 public class PreisModelAttribute {
 
-  private static final Logger LOGGER = LogManager.getLogger(PreisModelAttribute.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(PreisModelAttribute.class);
 
   private final ModelAttributeListener modelAttributeListener;
   private final AttributeAccessor<BigDecimal> attributeAccessor;

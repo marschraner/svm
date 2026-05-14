@@ -16,8 +16,8 @@ import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Controller, der die Models von Schüler erfassen überwacht.
@@ -26,7 +26,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class SchuelerErfassenController extends AbstractController {
 
-  private static final Logger LOGGER = LogManager.getLogger(SchuelerErfassenController.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SchuelerErfassenController.class);
   private static final String FEHLER = "Fehler";
 
   // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)

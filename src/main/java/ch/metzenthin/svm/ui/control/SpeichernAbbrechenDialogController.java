@@ -8,8 +8,8 @@ import ch.metzenthin.svm.domain.model.MakeErrorLabelsInvisibleListener;
 import ch.metzenthin.svm.service.result.SaveDialogResult;
 import ch.metzenthin.svm.ui.components.SpeichernAbbrechenDialog;
 import ch.metzenthin.svm.ui.view.SpeichernAbbrechenDialogView;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Basisklasse für Dialog-Controller mit Speichern- und Abbrechen-Funktionalität.
@@ -30,7 +30,7 @@ public abstract class SpeichernAbbrechenDialogController<
         DialogClosingListener {
 
   private static final Logger LOGGER =
-      LogManager.getLogger(SpeichernAbbrechenDialogController.class);
+      LoggerFactory.getLogger(SpeichernAbbrechenDialogController.class);
 
   protected final T model;
 

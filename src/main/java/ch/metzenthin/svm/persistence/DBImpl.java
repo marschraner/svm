@@ -4,8 +4,8 @@ import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Singleton zur Verwaltung der EntityManagerFactory (global) und des EntityManager
@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class DBImpl implements DB {
 
-  private static final Logger LOGGER = LogManager.getLogger(DBImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(DBImpl.class);
 
   private static final EntityManagerFactory ENTITY_MANAGER_FACTORY;
 
