@@ -1,18 +1,18 @@
 package ch.metzenthin.svm.persistence.entities;
 
 import static ch.metzenthin.svm.common.utils.Converter.toCalendar;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class AnmeldungTest {
+class AnmeldungTest {
 
   @Test
-  public void testCompareTo() {
+  void testCompareTo() {
     List<Anmeldung> anmeldungen = new ArrayList<>();
     anmeldungen.add(
         new Anmeldung(
@@ -35,7 +35,7 @@ public class AnmeldungTest {
   }
 
   @Test
-  public void testCopyFieldValuesFrom() throws Exception {
+  void testCopyFieldValuesFrom() throws Exception {
     Anmeldung to = new Anmeldung(toCalendar("01.01.2015"), null);
     Anmeldung from = new Anmeldung(toCalendar("01.02.2015"), toCalendar("31.12.2015"));
     to.copyFieldValuesFrom(from);
@@ -44,25 +44,25 @@ public class AnmeldungTest {
   }
 
   @Test
-  public void testIsInPast_NoAbmeldung() throws Exception {
+  void testIsInPast_NoAbmeldung() throws Exception {
     Anmeldung anmeldung = new Anmeldung(toCalendar("01.01.2015"), null);
     assertFalse(anmeldung.isInPast());
   }
 
   @Test
-  public void testIsInPast_AbmeldungInFuture() throws Exception {
+  void testIsInPast_AbmeldungInFuture() throws Exception {
     Anmeldung anmeldung = new Anmeldung(toCalendar("01.01.2015"), toCalendar("31.12.2115"));
     assertFalse(anmeldung.isInPast());
   }
 
   @Test
-  public void testIsInPast_True() throws Exception {
+  void testIsInPast_True() throws Exception {
     Anmeldung anmeldung = new Anmeldung(toCalendar("01.01.2015"), toCalendar("30.06.2015"));
     assertTrue(anmeldung.isInPast());
   }
 
   @Test
-  public void testIsInPast_AnmeldungInFuture() throws Exception {
+  void testIsInPast_AnmeldungInFuture() throws Exception {
     Anmeldung anmeldung = new Anmeldung(toCalendar("01.01.2116"), toCalendar("30.06.2116"));
     assertFalse(anmeldung.isInPast());
   }

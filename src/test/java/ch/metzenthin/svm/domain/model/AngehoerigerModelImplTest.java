@@ -1,55 +1,55 @@
 package ch.metzenthin.svm.domain.model;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import test.TestCompletedListener;
 
 /**
  * @author Hans Stamm
  */
-public class AngehoerigerModelImplTest {
+class AngehoerigerModelImplTest {
 
   private AngehoerigerModel angehoerigerModel;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     angehoerigerModel = new AngehoerigerModelImpl();
   }
 
   @Test
-  public void testSetIsRechnungsempfaenger() {
+  void testSetIsRechnungsempfaenger() {
     angehoerigerModel.setIsRechnungsempfaenger(true);
-    assertTrue("IsRechnungsempfaenger true erwartet", angehoerigerModel.isRechnungsempfaenger());
+    assertTrue(angehoerigerModel.isRechnungsempfaenger(), "IsRechnungsempfaenger true erwartet");
   }
 
   @Test
-  public void testSetIsRechnungsempfaenger_False() {
+  void testSetIsRechnungsempfaenger_False() {
     angehoerigerModel.setIsRechnungsempfaenger(false);
-    assertFalse("IsRechnungsempfaenger false erwartet", angehoerigerModel.isRechnungsempfaenger());
+    assertFalse(angehoerigerModel.isRechnungsempfaenger(), "IsRechnungsempfaenger false erwartet");
   }
 
   @Test
-  public void testSetIsRechnungsempfaenger_FalseAgain() {
+  void testSetIsRechnungsempfaenger_FalseAgain() {
     angehoerigerModel.setIsRechnungsempfaenger(true);
     angehoerigerModel.setIsRechnungsempfaenger(false);
-    assertFalse("IsRechnungsempfaenger false erwartet", angehoerigerModel.isRechnungsempfaenger());
+    assertFalse(angehoerigerModel.isRechnungsempfaenger(), "IsRechnungsempfaenger false erwartet");
   }
 
   @Test
-  public void testGetAngehoeriger() {
-    assertNotNull("Angehoeriger nicht null erwartet", angehoerigerModel.getAngehoeriger());
+  void testGetAngehoeriger() {
+    assertNotNull(angehoerigerModel.getAngehoeriger(), "Angehoeriger nicht null erwartet");
   }
 
   @Test
-  public void testGetAdresse() {
-    assertNotNull("Adresse nicht null erwartet", angehoerigerModel.getAdresse());
+  void testGetAdresse() {
+    assertNotNull(angehoerigerModel.getAdresse(), "Adresse nicht null erwartet");
   }
 
   @Test
-  public void testIsCompleted() {
+  void testIsCompleted() {
     TestCompletedListener testCompletedListener = new TestCompletedListener();
     angehoerigerModel.addCompletedListener(testCompletedListener);
     try {
@@ -62,7 +62,7 @@ public class AngehoerigerModelImplTest {
       e.printStackTrace(System.err);
       fail("Keine Exception erwartet");
     }
-    assertTrue("IsCompleted true erwartet", angehoerigerModel.isCompleted());
+    assertTrue(angehoerigerModel.isCompleted(), "IsCompleted true erwartet");
     try {
       angehoerigerModel.validate();
     } catch (SvmValidationException e) {
@@ -70,16 +70,16 @@ public class AngehoerigerModelImplTest {
       fail("Keine Exception erwartet");
     }
     assertEquals(
-        "Aufruf von CompletedListener einmal erwartet", 1, testCompletedListener.getCounter());
+        1, testCompletedListener.getCounter(), "Aufruf von CompletedListener einmal erwartet");
   }
 
   @Test
-  public void testIsCompleted_True() {
-    assertTrue("IsCompleted true erwartet", angehoerigerModel.isCompleted());
+  void testIsCompleted_True() {
+    assertTrue(angehoerigerModel.isCompleted(), "IsCompleted true erwartet");
   }
 
   @Test
-  public void testIsCompleted_False() {
+  void testIsCompleted_False() {
     TestCompletedListener testCompletedListener = new TestCompletedListener();
     angehoerigerModel.addCompletedListener(testCompletedListener);
     try {
@@ -88,7 +88,7 @@ public class AngehoerigerModelImplTest {
       e.printStackTrace(System.err);
       fail("Keine Exception erwartet");
     }
-    assertFalse("IsCompleted false erwartet", angehoerigerModel.isCompleted());
+    assertFalse(angehoerigerModel.isCompleted(), "IsCompleted false erwartet");
     try {
       angehoerigerModel.validate();
       fail("Exception erwartet");
@@ -96,39 +96,39 @@ public class AngehoerigerModelImplTest {
       e.printStackTrace(System.out);
     }
     assertEquals(
-        "Aufruf von CompletedListener einmal erwartet", 1, testCompletedListener.getCounter());
+        1, testCompletedListener.getCounter(), "Aufruf von CompletedListener einmal erwartet");
   }
 
   @Test
-  public void testIsEmpty() {
-    assertTrue("Empty erwartet", angehoerigerModel.isEmpty());
+  void testIsEmpty() {
+    assertTrue(angehoerigerModel.isEmpty(), "Empty erwartet");
   }
 
   @Test
-  public void testIsEmpty_FalseNachname() throws SvmValidationException {
+  void testIsEmpty_FalseNachname() throws SvmValidationException {
     angehoerigerModel.setNachname("Nachname");
-    assertFalse("Not Empty erwartet (Nachname)", angehoerigerModel.isEmpty());
+    assertFalse(angehoerigerModel.isEmpty(), "Not Empty erwartet (Nachname)");
   }
 
   @Test
-  public void testIsEmpty_FalseVorname() throws SvmValidationException {
+  void testIsEmpty_FalseVorname() throws SvmValidationException {
     angehoerigerModel.setVorname("Vorname");
-    assertFalse("Not Empty erwartet (Vorname)", angehoerigerModel.isEmpty());
+    assertFalse(angehoerigerModel.isEmpty(), "Not Empty erwartet (Vorname)");
   }
 
   @Test
-  public void testIsEmpty_FalseStrasse() throws SvmValidationException {
+  void testIsEmpty_FalseStrasse() throws SvmValidationException {
     angehoerigerModel.setStrasseHausnummer("StrasseHausnummer");
-    assertFalse("Not Empty erwartet (StrasseHausnummer)", angehoerigerModel.isEmpty());
+    assertFalse(angehoerigerModel.isEmpty(), "Not Empty erwartet (StrasseHausnummer)");
   }
 
   @Test
-  public void testIsEmpty_FalseNameAdresse() throws SvmValidationException {
+  void testIsEmpty_FalseNameAdresse() throws SvmValidationException {
     angehoerigerModel.setNachname("Nachname");
     angehoerigerModel.setVorname("Vorname");
     angehoerigerModel.setStrasseHausnummer("StrasseHausnummer");
     angehoerigerModel.setPlz("Plzz");
     angehoerigerModel.setOrt("Ort");
-    assertFalse("Not Empty erwartet (Name, Adresse)", angehoerigerModel.isEmpty());
+    assertFalse(angehoerigerModel.isEmpty(), "Not Empty erwartet (Name, Adresse)");
   }
 }

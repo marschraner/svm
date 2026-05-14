@@ -1,135 +1,135 @@
 package ch.metzenthin.svm.common.utils;
 
 import static ch.metzenthin.svm.common.utils.SimpleValidator.*;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Time;
 import java.util.Date;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Hans Stamm
  */
-public class SimpleValidatorTest {
+class SimpleValidatorTest {
 
   @Test
-  public void testCheckNotEmpty_Null() {
-    assertFalse("False erwartet (null)", checkNotEmpty(null));
+  void testCheckNotEmpty_Null() {
+    assertFalse(checkNotEmpty(null), "False erwartet (null)");
   }
 
   @Test
-  public void testCheckNotEmpty_Empty() {
-    assertFalse("False erwartet (empty)", checkNotEmpty(""));
+  void testCheckNotEmpty_Empty() {
+    assertFalse(checkNotEmpty(""), "False erwartet (empty)");
   }
 
   @Test
-  public void testCheckNotEmpty_NotEmpty() {
-    assertTrue("True erwartet (not empty)", checkNotEmpty("abc"));
-  }
-
-  @SuppressWarnings("ConstantValue")
-  @Test
-  public void testCheckNotNull_Null() {
-    assertFalse("False erwartet (null)", checkNotNull(null));
+  void testCheckNotEmpty_NotEmpty() {
+    assertTrue(checkNotEmpty("abc"), "True erwartet (not empty)");
   }
 
   @SuppressWarnings("ConstantValue")
   @Test
-  public void testCheckNotNull_NotNullString() {
-    assertTrue("True erwartet (String)", checkNotNull("xx"));
+  void testCheckNotNull_Null() {
+    assertFalse(checkNotNull(null), "False erwartet (null)");
   }
 
   @SuppressWarnings("ConstantValue")
   @Test
-  public void testCheckNotNull_NotNullEmptyString() {
-    assertTrue("True erwartet (empty string)", checkNotNull(""));
+  void testCheckNotNull_NotNullString() {
+    assertTrue(checkNotNull("xx"), "True erwartet (String)");
   }
 
   @SuppressWarnings("ConstantValue")
   @Test
-  public void testCheckNotNull_NotNullDate() {
-    assertTrue("True erwartet (Date)", checkNotNull(new Date()));
+  void testCheckNotNull_NotNullEmptyString() {
+    assertTrue(checkNotNull(""), "True erwartet (empty string)");
+  }
+
+  @SuppressWarnings("ConstantValue")
+  @Test
+  void testCheckNotNull_NotNullDate() {
+    assertTrue(checkNotNull(new Date()), "True erwartet (Date)");
   }
 
   @Test
-  public void testCheckNumber_Null() {
-    assertFalse("False erwartet (null)", checkNumber(null));
+  void testCheckNumber_Null() {
+    assertFalse(checkNumber(null), "False erwartet (null)");
   }
 
   @Test
-  public void testCheckNumber_NullEmptyString() {
-    assertFalse("False erwartet (empty string)", checkNumber(""));
+  void testCheckNumber_NullEmptyString() {
+    assertFalse(checkNumber(""), "False erwartet (empty string)");
   }
 
   @Test
-  public void testCheckNumber_NotNumber() {
-    assertFalse("False erwartet (not a number)", checkNumber("5.5"));
+  void testCheckNumber_NotNumber() {
+    assertFalse(checkNumber("5.5"), "False erwartet (not a number)");
   }
 
   @Test
-  public void testCheckNumber_Number() {
-    assertTrue("True erwartet (number)", checkNumber("5"));
+  void testCheckNumber_Number() {
+    assertTrue(checkNumber("5"), "True erwartet (number)");
   }
 
   @Test
-  public void testEqualsNullSafe_Equals() {
+  void testEqualsNullSafe_Equals() {
     assertTrue(equalsNullSafe("1", "1"));
   }
 
   @Test
-  public void testEqualsNullSafe_EqualsNullStrings() {
+  void testEqualsNullSafe_EqualsNullStrings() {
     assertTrue(equalsNullSafe("", ""));
   }
 
   @Test
-  public void testEqualsNullSafe_NotEquals() {
+  void testEqualsNullSafe_NotEquals() {
     assertFalse(equalsNullSafe("1", "2"));
   }
 
   @Test
-  public void testEqualsNullSafe_NotEqualsDifferentObjects() {
+  void testEqualsNullSafe_NotEqualsDifferentObjects() {
     assertFalse(equalsNullSafe("1", 1));
   }
 
   @SuppressWarnings("ConstantValue")
   @Test
-  public void testEqualsNullSafe_NotEqualsFirstNull() {
+  void testEqualsNullSafe_NotEqualsFirstNull() {
     assertFalse(equalsNullSafe(null, "2"));
   }
 
   @Test
-  public void testEqualsNullSafe_NotEqualsSecondNull() {
+  void testEqualsNullSafe_NotEqualsSecondNull() {
     assertFalse(equalsNullSafe("1", null));
   }
 
   @Test
-  public void testEqualsNullSafe_EqualsBothNull() {
+  void testEqualsNullSafe_EqualsBothNull() {
     assertTrue(equalsNullSafe(null, null));
   }
 
   @Test
-  public void testEqualsNullSafe_EqualsStringEqualsCalendar() throws Exception {
+  void testEqualsNullSafe_EqualsStringEqualsCalendar() throws Exception {
     assertTrue(equalsNullSafe("01.01.2015", Converter.toCalendar("01.01.2015")));
   }
 
   @Test
-  public void testEqualsNullSafe_NotEqualsStringEqualsCalendar() throws Exception {
+  void testEqualsNullSafe_NotEqualsStringEqualsCalendar() throws Exception {
     assertFalse(equalsNullSafe("01.01.2015", Converter.toCalendar("01.02.2015")));
   }
 
   @Test
-  public void testEqualsNullSafe_NotEqualsStringEqualsNull() {
+  void testEqualsNullSafe_NotEqualsStringEqualsNull() {
     assertFalse(equalsNullSafe("01.01.2015", null));
   }
 
   @Test
-  public void testEqualsNullSafe_NotEqualsNullEqualsCalendar() throws Exception {
+  void testEqualsNullSafe_NotEqualsNullEqualsCalendar() throws Exception {
     assertFalse(equalsNullSafe(null, Converter.toCalendar("01.01.2015")));
   }
 
   @Test
-  public void testIsTimePeriodValid() {
+  void testIsTimePeriodValid() {
     assertTrue(isTimePeriodValid(Time.valueOf("12:30:00"), Time.valueOf("12:31:00")));
     assertTrue(isTimePeriodValid(Time.valueOf("12:30:00"), Time.valueOf("13:30:00")));
     assertFalse(isTimePeriodValid(Time.valueOf("12:30:00"), Time.valueOf("12:29:00")));

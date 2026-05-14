@@ -1,24 +1,24 @@
 package ch.metzenthin.svm.domain.model;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class BindestrichLeerzeichenFormatterTest {
+class BindestrichLeerzeichenFormatterTest {
 
   private final BindestrichLeerzeichenFormatter bindestrichLeerzeichenFormatter =
       new BindestrichLeerzeichenFormatter();
 
   @Test
-  public void testFormatStr1() {
+  void testFormatStr1() {
     assertEquals("Müller-Meier", bindestrichLeerzeichenFormatter.format("Müller - Meier"));
   }
 
   @Test
-  public void testFormatStr2() {
+  void testFormatStr2() {
     assertEquals("Müller Meier", bindestrichLeerzeichenFormatter.format("Müller   Meier"));
   }
 }

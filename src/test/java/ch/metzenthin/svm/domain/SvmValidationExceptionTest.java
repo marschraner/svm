@@ -1,31 +1,31 @@
 package ch.metzenthin.svm.domain;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.common.datatypes.Field;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Hans Stamm
  */
 @SuppressWarnings("ThrowableInstanceNeverThrown")
-public class SvmValidationExceptionTest {
+class SvmValidationExceptionTest {
 
   @Test
-  public void testGetMessage_NoFields() {
+  void testGetMessage_NoFields() {
     SvmValidationException e = new SvmValidationException(1, "Fehler");
     assertEquals("Fehler", e.getMessage());
   }
 
   @Test
-  public void testGetMessageLong_OneField() {
+  void testGetMessageLong_OneField() {
     SvmValidationException e = new SvmValidationException(1, "Fehler", Field.NACHNAME);
     assertEquals("Fehler: [" + Field.NACHNAME + "]", e.getMessageLong());
   }
 
   @Test
-  public void testGetMessageLong_TwoFields() {
+  void testGetMessageLong_TwoFields() {
     SvmValidationException e =
         new SvmValidationException(1, "Fehler", Field.NACHNAME, Field.VORNAME);
     assertTrue(e.getMessageLong().startsWith("Fehler: ["));
@@ -37,13 +37,13 @@ public class SvmValidationExceptionTest {
   }
 
   @Test
-  public void testGetMessage_SvmRequiredException() {
+  void testGetMessage_SvmRequiredException() {
     SvmValidationException e = new SvmRequiredException(Field.NACHNAME);
     assertEquals("Eintrag ist obligatorisch", e.getMessage());
   }
 
   @Test
-  public void testGetMessageLong_SvmRequiredException() {
+  void testGetMessageLong_SvmRequiredException() {
     SvmValidationException e = new SvmRequiredException(Field.NACHNAME);
     assertEquals("Eintrag ist obligatorisch: [" + Field.NACHNAME + "]", e.getMessageLong());
   }

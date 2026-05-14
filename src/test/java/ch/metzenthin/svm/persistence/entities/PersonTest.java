@@ -1,18 +1,18 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class PersonTest {
+class PersonTest {
 
   private final Person person = new Angehoeriger();
 
   @Test
-  public void testGetEmailToBeDisplayedInWord() {
+  void testGetEmailToBeDisplayedInWord() {
 
     // Keine E-Mail
     person.setEmail(null);

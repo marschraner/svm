@@ -1,17 +1,17 @@
 package ch.metzenthin.svm.common.utils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class SvmStringUtilsTest {
+class SvmStringUtilsTest {
 
   @Test
-  public void testReplaceLineBreaksBySemicolonOrPeriod() {
+  void testReplaceLineBreaksBySemicolonOrPeriod() {
 
     assertEquals(
         "Nur eine Zeile", SvmStringUtils.replaceLineBreaksBySemicolonOrPeriod("Nur eine Zeile"));
@@ -38,7 +38,7 @@ public class SvmStringUtilsTest {
   }
 
   @Test
-  public void testReplaceLineBreaksByCommaOrPeriod() {
+  void testReplaceLineBreaksByCommaOrPeriod() {
 
     assertEquals(
         "Nur eine Zeile", SvmStringUtils.replaceLineBreaksByCommaOrPeriod("Nur eine Zeile"));

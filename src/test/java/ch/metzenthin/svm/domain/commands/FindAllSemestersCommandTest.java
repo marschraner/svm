@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.DB;
@@ -10,14 +10,14 @@ import ch.metzenthin.svm.persistence.daos.SemesterDao;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import jakarta.persistence.EntityManager;
 import java.util.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class FindAllSemestersCommandTest {
+class FindAllSemestersCommandTest {
 
   private final SemesterDao semesterDao = new SemesterDao();
   private final Set<Semester> semesterTestdata = new HashSet<>();
@@ -25,22 +25,22 @@ public class FindAllSemestersCommandTest {
   private DB db;
   private CommandInvoker commandInvoker;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
     commandInvoker = new CommandInvokerImpl();
     createTestdata();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     deleteTestdata();
     db.closeSession();
   }
 
   @Test
-  public void testExecute() {
+  void testExecute() {
     FindAllSemestersCommand findAllSemestersCommand = new FindAllSemestersCommand();
     commandInvoker.executeCommand(findAllSemestersCommand);
 

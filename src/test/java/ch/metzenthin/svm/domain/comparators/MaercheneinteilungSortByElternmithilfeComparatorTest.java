@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.comparators;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
@@ -11,15 +11,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class MaercheneinteilungSortByElternmithilfeComparatorTest {
+class MaercheneinteilungSortByElternmithilfeComparatorTest {
 
   @Test
-  public void testCompare() {
+  void testCompare() {
     Schueler schueler1 =
         new Schueler(
             "Jana",

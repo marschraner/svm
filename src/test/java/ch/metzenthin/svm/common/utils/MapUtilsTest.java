@@ -1,18 +1,21 @@
 package ch.metzenthin.svm.common.utils;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class MapUtilsTest {
+class MapUtilsTest {
 
   @Test
-  public void testSortByValue() {
+  void testSortByValue() {
     // http://stackoverflow.com/questions/109383/how-to-sort-a-mapkey-value-on-the-values-in-java
     Random random = new Random(System.currentTimeMillis());
     Map<String, Integer> testMap = new HashMap<>(1000);
@@ -21,13 +24,13 @@ public class MapUtilsTest {
     }
 
     testMap = MapUtils.sortByValue(testMap);
-    Assert.assertEquals(1000, testMap.size());
+    assertEquals(1000, testMap.size());
 
     Integer previous = null;
     for (Map.Entry<String, Integer> entry : testMap.entrySet()) {
-      Assert.assertNotNull(entry.getValue());
+      assertNotNull(entry.getValue());
       if (previous != null) {
-        Assert.assertTrue(entry.getValue() >= previous);
+        assertTrue(entry.getValue() >= previous);
       }
       previous = entry.getValue();
     }

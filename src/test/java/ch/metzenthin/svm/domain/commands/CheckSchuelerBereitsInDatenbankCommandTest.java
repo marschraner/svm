@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Geschlecht;
@@ -16,12 +16,12 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 import jakarta.persistence.EntityManager;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /** Created by Martin Schraner. */
-public class CheckSchuelerBereitsInDatenbankCommandTest {
+class CheckSchuelerBereitsInDatenbankCommandTest {
 
   private final SchuelerDao schuelerDao = new SchuelerDao();
 
@@ -29,23 +29,22 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
   private CommandInvoker commandInvoker;
   private Schueler schuelerTestdata;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
     commandInvoker = new CommandInvokerImpl();
     createTestdata();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     deleteTestdata();
     db.closeSession();
   }
 
-  @SuppressWarnings("ExtractMethodRecommender")
   @Test
-  public void testExecute_NICHT_IN_DATENBANK() {
+  void testExecute_NICHT_IN_DATENBANK() {
 
     Schueler schueler =
         new Schueler(
@@ -74,7 +73,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
 
   @SuppressWarnings("ExtractMethodRecommender")
   @Test
-  public void testExecute_IN_DATENBANK() {
+  void testExecute_IN_DATENBANK() {
     Schueler schueler =
         new Schueler(
             "Carla",
@@ -104,7 +103,7 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
   }
 
   @Test
-  public void testExecute_IN_DATENBANK_EIGENE() {
+  void testExecute_IN_DATENBANK_EIGENE() {
     CheckSchuelerBereitsInDatenbankCommand checkSchuelerBereitsInDatenbankCommand =
         new CheckSchuelerBereitsInDatenbankCommand(schuelerTestdata);
     commandInvoker.executeCommand(checkSchuelerBereitsInDatenbankCommand);
@@ -114,7 +113,6 @@ public class CheckSchuelerBereitsInDatenbankCommandTest {
     assertNull(schuelerFound);
   }
 
-  @SuppressWarnings("ExtractMethodRecommender")
   private void createTestdata() {
     EntityManager entityManager = db.getCurrentEntityManager();
     entityManager.getTransaction().begin();

@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence.daos;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Geschlecht;
@@ -15,34 +15,34 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Hans Stamm
  */
-public class AnmeldungDaoTest {
+class AnmeldungDaoTest {
 
   private final AnmeldungDao anmeldungDao = new AnmeldungDao();
   private final SchuelerDao schuelerDao = new SchuelerDao();
 
   private DB db;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     db.closeSession();
   }
 
   @SuppressWarnings("ExtractMethodRecommender")
   @Test
-  public void testFindById() {
+  void testFindById() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -86,13 +86,13 @@ public class AnmeldungDaoTest {
       entityManager.refresh(anmeldungFound);
 
       assertEquals(
-          "Anmeldedatum falsch",
           new GregorianCalendar(2014, Calendar.JANUARY, 15),
-          anmeldungFound.getAnmeldedatum());
+          anmeldungFound.getAnmeldedatum(),
+          "Anmeldedatum falsch");
       assertEquals(
-          "Abmeldedatum falsch",
           new GregorianCalendar(2015, Calendar.MARCH, 31),
-          anmeldungFound.getAbmeldedatum());
+          anmeldungFound.getAbmeldedatum(),
+          "Abmeldedatum falsch");
 
     } finally {
       if (tx != null) {
@@ -103,7 +103,7 @@ public class AnmeldungDaoTest {
 
   @SuppressWarnings("ExtractMethodRecommender")
   @Test
-  public void testAddToSchuelerAndSave() {
+  void testAddToSchuelerAndSave() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -176,7 +176,7 @@ public class AnmeldungDaoTest {
 
   @SuppressWarnings("ExtractMethodRecommender")
   @Test
-  public void testRemoveFromSchuelerAndUpdate() {
+  void testRemoveFromSchuelerAndUpdate() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {

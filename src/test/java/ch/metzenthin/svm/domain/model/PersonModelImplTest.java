@@ -1,21 +1,21 @@
 package ch.metzenthin.svm.domain.model;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.domain.SvmValidationException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Hans Stamm
  */
-public class PersonModelImplTest {
+class PersonModelImplTest {
 
   // ------------------------------------------------------------------------------------------------------------------
   // Schüler
   // ------------------------------------------------------------------------------------------------------------------
 
   @Test
-  public void test_EmptySchueler() {
+  void test_EmptySchueler() {
     PersonModel personModel = createSchuelerModel();
     assertTrue(personModel.isEmpty());
     assertFalse(personModel.isCompleted());
@@ -23,7 +23,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_SchuelerWithNachname() throws SvmValidationException {
+  void test_SchuelerWithNachname() throws SvmValidationException {
     PersonModel personModel = createSchuelerModel();
     personModel.setNachname("Nachname");
     assertFalse(personModel.isEmpty());
@@ -32,7 +32,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_SchuelerWithVorname() throws SvmValidationException {
+  void test_SchuelerWithVorname() throws SvmValidationException {
     PersonModel personModel = createSchuelerModel();
     personModel.setVorname("Vorname");
     assertFalse(personModel.isEmpty());
@@ -41,7 +41,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_SchuelerWithName() throws SvmValidationException {
+  void test_SchuelerWithName() throws SvmValidationException {
     PersonModel personModel = createSchuelerModel();
     personModel.setNachname("Nachname");
     personModel.setVorname("Vorname");
@@ -51,7 +51,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_SchuelerWithStrasse() throws SvmValidationException {
+  void test_SchuelerWithStrasse() throws SvmValidationException {
     PersonModel personModel = createSchuelerModel();
     personModel.setStrasseHausnummer("Strasse");
     assertFalse(personModel.isEmpty());
@@ -60,7 +60,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_SchuelerWithAnschrift() throws SvmValidationException {
+  void test_SchuelerWithAnschrift() throws SvmValidationException {
     PersonModel personModel = createSchuelerModel();
     personModel.setStrasseHausnummer("Strasse");
     personModel.setPlz("Plzz");
@@ -71,7 +71,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_SchuelerWithNameAnschriftComplete() throws SvmValidationException {
+  void test_SchuelerWithNameAnschriftComplete() throws SvmValidationException {
     PersonModel personModel = createSchuelerModel();
     personModel.setNachname("Nachname");
     personModel.setVorname("Vorname");
@@ -84,7 +84,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_SchuelerWithNameAnschriftFestnetzComplete() throws SvmValidationException {
+  void test_SchuelerWithNameAnschriftFestnetzComplete() throws SvmValidationException {
     PersonModel personModel = createSchuelerModel();
     personModel.setNachname("Nachname");
     personModel.setVorname("Vorname");
@@ -98,7 +98,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_SchuelerWithNameNoAnschriftFestnetz() throws SvmValidationException {
+  void test_SchuelerWithNameNoAnschriftFestnetz() throws SvmValidationException {
     PersonModel personModel = createSchuelerModel();
     personModel.setNachname("Nachname");
     personModel.setVorname("Vorname");
@@ -109,7 +109,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_SchuelerWithVornameNoAnschriftFestnetz() throws SvmValidationException {
+  void test_SchuelerWithVornameNoAnschriftFestnetz() throws SvmValidationException {
     PersonModel personModel = createSchuelerModel();
     personModel.setVorname("Vorname");
     personModel.setFestnetz("052 555 33 44");
@@ -119,7 +119,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_SchuelerWithNameAnschriftNachnameMissing() throws SvmValidationException {
+  void test_SchuelerWithNameAnschriftNachnameMissing() throws SvmValidationException {
     PersonModel personModel = createSchuelerModel();
     personModel.setVorname("Vorname");
     personModel.setStrasseHausnummer("Strasse");
@@ -131,7 +131,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_SchuelerWithNameAnschriftOrtMissing() throws SvmValidationException {
+  void test_SchuelerWithNameAnschriftOrtMissing() throws SvmValidationException {
     PersonModel personModel = createSchuelerModel();
     personModel.setNachname("Nachname");
     personModel.setVorname("Vorname");
@@ -147,7 +147,7 @@ public class PersonModelImplTest {
   // ------------------------------------------------------------------------------------------------------------------
 
   @Test
-  public void test_EmptyAngehoerigerIsRechnungsempfaengerFalse() {
+  void test_EmptyAngehoerigerIsRechnungsempfaengerFalse() {
     PersonModel personModel = createAngehoerigerModel();
     assertTrue(personModel.isEmpty());
     assertTrue(personModel.isCompleted());
@@ -155,7 +155,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerWithNachname() throws SvmValidationException {
+  void test_AngehoerigerWithNachname() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModel();
     personModel.setNachname("Nachname");
     assertFalse(personModel.isEmpty());
@@ -164,7 +164,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerWithVorname() throws SvmValidationException {
+  void test_AngehoerigerWithVorname() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModel();
     personModel.setVorname("Vorname");
     assertFalse(personModel.isEmpty());
@@ -173,7 +173,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerWithName() throws SvmValidationException {
+  void test_AngehoerigerWithName() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModel();
     personModel.setNachname("Nachname");
     personModel.setVorname("Vorname");
@@ -183,7 +183,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerWithStrasse() throws SvmValidationException {
+  void test_AngehoerigerWithStrasse() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModel();
     personModel.setStrasseHausnummer("Strasse");
     assertFalse(personModel.isEmpty());
@@ -192,7 +192,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerWithAnschrift() throws SvmValidationException {
+  void test_AngehoerigerWithAnschrift() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModel();
     personModel.setStrasseHausnummer("Strasse");
     personModel.setPlz("Plzz");
@@ -203,7 +203,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerWithNameAnschriftComplete() throws SvmValidationException {
+  void test_AngehoerigerWithNameAnschriftComplete() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModel();
     personModel.setNachname("Nachname");
     personModel.setVorname("Vorname");
@@ -216,7 +216,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerWithNameAnschriftFestnetzComplete() throws SvmValidationException {
+  void test_AngehoerigerWithNameAnschriftFestnetzComplete() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModel();
     personModel.setNachname("Nachname");
     personModel.setVorname("Vorname");
@@ -230,7 +230,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerWithNameNoAnschriftFestnetz() throws SvmValidationException {
+  void test_AngehoerigerWithNameNoAnschriftFestnetz() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModel();
     personModel.setNachname("Nachname");
     personModel.setVorname("Vorname");
@@ -241,7 +241,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerWithVornameNoAnschriftFestnetz() throws SvmValidationException {
+  void test_AngehoerigerWithVornameNoAnschriftFestnetz() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModel();
     personModel.setVorname("Vorname");
     personModel.setFestnetz("052 555 33 44");
@@ -251,7 +251,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerWithNameAnschriftNachnameMissing() throws SvmValidationException {
+  void test_AngehoerigerWithNameAnschriftNachnameMissing() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModel();
     personModel.setVorname("Vorname");
     personModel.setStrasseHausnummer("Strasse");
@@ -263,7 +263,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerWithNameAnschriftOrtMissing() throws SvmValidationException {
+  void test_AngehoerigerWithNameAnschriftOrtMissing() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModel();
     personModel.setNachname("Nachname");
     personModel.setVorname("Vorname");
@@ -279,7 +279,7 @@ public class PersonModelImplTest {
   // ------------------------------------------------------------------------------------------------------------------
 
   @Test
-  public void test_EmptyAngehoerigerIsRechnungsempfaengerTrue() {
+  void test_EmptyAngehoerigerIsRechnungsempfaengerTrue() {
     PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
     assertTrue(personModel.isEmpty());
     assertFalse(personModel.isCompleted());
@@ -287,7 +287,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerRechnungsempfaengerWithNachname() throws SvmValidationException {
+  void test_AngehoerigerRechnungsempfaengerWithNachname() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
     personModel.setNachname("Nachname");
     assertFalse(personModel.isEmpty());
@@ -296,7 +296,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerRechnungsempfaengerWithVorname() throws SvmValidationException {
+  void test_AngehoerigerRechnungsempfaengerWithVorname() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
     personModel.setVorname("Vorname");
     assertFalse(personModel.isEmpty());
@@ -305,7 +305,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerRechnungsempfaengerWithName() throws SvmValidationException {
+  void test_AngehoerigerRechnungsempfaengerWithName() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
     personModel.setNachname("Nachname");
     personModel.setVorname("Vorname");
@@ -315,7 +315,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerRechnungsempfaengerWithStrasse() throws SvmValidationException {
+  void test_AngehoerigerRechnungsempfaengerWithStrasse() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
     personModel.setStrasseHausnummer("Strasse");
     assertFalse(personModel.isEmpty());
@@ -324,7 +324,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerRechnungsempfaengerWithAnschrift() throws SvmValidationException {
+  void test_AngehoerigerRechnungsempfaengerWithAnschrift() throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
     personModel.setStrasseHausnummer("Strasse");
     personModel.setPlz("Plzz");
@@ -335,7 +335,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerRechnungsempfaengerWithNameAnschriftComplete()
+  void test_AngehoerigerRechnungsempfaengerWithNameAnschriftComplete()
       throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
     personModel.setNachname("Nachname");
@@ -349,7 +349,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerRechnungsempfaengerWithNameAnschriftFestnetzComplete()
+  void test_AngehoerigerRechnungsempfaengerWithNameAnschriftFestnetzComplete()
       throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
     personModel.setNachname("Nachname");
@@ -364,7 +364,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerRechnungsempfaengerWithNameNoAnschriftFestnetz()
+  void test_AngehoerigerRechnungsempfaengerWithNameNoAnschriftFestnetz()
       throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
     personModel.setNachname("Nachname");
@@ -376,7 +376,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerRechnungsempfaengerWithVornameNoAnschriftFestnetz()
+  void test_AngehoerigerRechnungsempfaengerWithVornameNoAnschriftFestnetz()
       throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
     personModel.setVorname("Vorname");
@@ -387,7 +387,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerRechnungsempfaengerWithNameAnschriftNachnameMissing()
+  void test_AngehoerigerRechnungsempfaengerWithNameAnschriftNachnameMissing()
       throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
     personModel.setVorname("Vorname");
@@ -400,7 +400,7 @@ public class PersonModelImplTest {
   }
 
   @Test
-  public void test_AngehoerigerRechnungsempfaengerWithNameAnschriftOrtMissing()
+  void test_AngehoerigerRechnungsempfaengerWithNameAnschriftOrtMissing()
       throws SvmValidationException {
     PersonModel personModel = createAngehoerigerModelRechnungsempfaenger();
     personModel.setNachname("Nachname");
@@ -432,14 +432,14 @@ public class PersonModelImplTest {
     try {
       personModel.validate();
       assertNull(
-          "Keine SvmValidationException erwartet mit FehlerId " + expectedErrorId, expectedErrorId);
+          expectedErrorId, "Keine SvmValidationException erwartet mit FehlerId " + expectedErrorId);
     } catch (SvmValidationException e) {
       e.printStackTrace(System.out);
-      assertNotNull("SvmValidationException erwartet", expectedErrorId);
+      assertNotNull(expectedErrorId, "SvmValidationException erwartet");
       assertEquals(
-          "SvmValidationException erwartet mit FehlerId " + expectedErrorId,
           expectedErrorId,
-          (Integer) e.getErrorId());
+          (Integer) e.getErrorId(),
+          "SvmValidationException erwartet mit FehlerId " + expectedErrorId);
     } catch (Throwable e) {
       e.printStackTrace(System.err);
       fail("Unexpected exception: " + e.getMessage());

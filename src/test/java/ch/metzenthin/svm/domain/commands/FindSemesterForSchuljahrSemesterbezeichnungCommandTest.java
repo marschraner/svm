@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -9,19 +9,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class FindSemesterForSchuljahrSemesterbezeichnungCommandTest {
+class FindSemesterForSchuljahrSemesterbezeichnungCommandTest {
 
   private final CommandInvoker commandInvoker = new CommandInvokerImpl();
   private final List<Semester> erfassteSemesters = new ArrayList<>();
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     erfassteSemesters.add(
         new Semester(
             "2011/2012",
@@ -45,7 +45,7 @@ public class FindSemesterForSchuljahrSemesterbezeichnungCommandTest {
   }
 
   @Test
-  public void testExecute_SemesterFound() {
+  void testExecute_SemesterFound() {
     FindSemesterForSchuljahrSemesterbezeichnungCommand
         findSemesterForSchuljahrSemesterbezeichnungCommand =
             new FindSemesterForSchuljahrSemesterbezeichnungCommand(
@@ -64,7 +64,7 @@ public class FindSemesterForSchuljahrSemesterbezeichnungCommandTest {
   }
 
   @Test
-  public void testExecute_NoSemesterFound() {
+  void testExecute_NoSemesterFound() {
     FindSemesterForSchuljahrSemesterbezeichnungCommand
         findSemesterForSchuljahrSemesterbezeichnungCommand =
             new FindSemesterForSchuljahrSemesterbezeichnungCommand(

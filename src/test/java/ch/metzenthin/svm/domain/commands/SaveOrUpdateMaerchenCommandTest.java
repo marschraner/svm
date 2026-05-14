@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
@@ -10,35 +10,35 @@ import ch.metzenthin.svm.persistence.entities.Maerchen;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class SaveOrUpdateMaerchenCommandTest {
+class SaveOrUpdateMaerchenCommandTest {
 
   private final MaerchenDao maerchenDao = new MaerchenDao();
 
   private DB db;
   private CommandInvoker commandInvoker;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
     commandInvoker = new CommandInvokerImpl();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     db.closeSession();
   }
 
   @SuppressWarnings("java:S5961")
   @Test
-  public void testExecute() {
+  void testExecute() {
 
     // Vor Transaktionen
     assertFalse(checkIfMaerchenAvailable("1912/1913", "Schneewittchen", 7));

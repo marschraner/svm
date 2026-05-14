@@ -1,17 +1,17 @@
 package ch.metzenthin.svm.domain.commands;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class SplitStringIntoMultipleLinesCommandTest {
+class SplitStringIntoMultipleLinesCommandTest {
 
   @Test
-  public void testExecuteLeerschlag() {
+  void testExecuteLeerschlag() {
     String string = "Dies ist eine Zeile, die zu lange ist.";
     SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand =
         new SplitStringIntoMultipleLinesCommand(string, 15, 3);
@@ -24,7 +24,7 @@ public class SplitStringIntoMultipleLinesCommandTest {
   }
 
   @Test
-  public void testExecuteLeerschlagMaxLines() {
+  void testExecuteLeerschlagMaxLines() {
     String string = "Dies ist eine Zeile, die zu lange ist.";
     SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand =
         new SplitStringIntoMultipleLinesCommand(string, 15, 2);
@@ -36,7 +36,7 @@ public class SplitStringIntoMultipleLinesCommandTest {
   }
 
   @Test
-  public void testExecuteBindestrich() {
+  void testExecuteBindestrich() {
     String string = "Rhythmik-Darstellendes Spiel";
     SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand =
         new SplitStringIntoMultipleLinesCommand(string, 20, 2);
@@ -48,7 +48,7 @@ public class SplitStringIntoMultipleLinesCommandTest {
   }
 
   @Test
-  public void testExecuteSchraegstrich() {
+  void testExecuteSchraegstrich() {
     String string = "Mittwoch Morgen/Abend";
     SplitStringIntoMultipleLinesCommand splitStringIntoMultipleLinesCommand =
         new SplitStringIntoMultipleLinesCommand(string, 18, 2);

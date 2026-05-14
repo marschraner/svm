@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence.daos;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
@@ -17,35 +17,35 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class MaercheneinteilungDaoTest {
+class MaercheneinteilungDaoTest {
 
   private final MaercheneinteilungDao maercheneinteilungDao = new MaercheneinteilungDao();
 
   private DB db;
   private boolean neusteZuoberst;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
     Properties svmProperties = SvmProperties.getSvmProperties();
     neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     db.closeSession();
   }
 
   @Test
-  public void testFindById() {
+  void testFindById() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -137,7 +137,7 @@ public class MaercheneinteilungDaoTest {
   }
 
   @Test
-  public void testSave() {
+  void testSave() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -217,7 +217,7 @@ public class MaercheneinteilungDaoTest {
   }
 
   @Test
-  public void testRemove() {
+  void testRemove() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -298,7 +298,7 @@ public class MaercheneinteilungDaoTest {
   }
 
   @Test
-  public void testFindMaercheneinteilungenSchueler() {
+  void testFindMaercheneinteilungenSchueler() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {

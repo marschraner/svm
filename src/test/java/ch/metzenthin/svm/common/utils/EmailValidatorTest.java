@@ -1,14 +1,14 @@
 package ch.metzenthin.svm.common.utils;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class EmailValidatorTest {
+class EmailValidatorTest {
 
   // Source:
   // http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/
@@ -16,7 +16,7 @@ public class EmailValidatorTest {
   private final EmailValidator emailValidator = new EmailValidator();
 
   @Test
-  public void testValidate_validEmails() {
+  void testValidate_validEmails() {
     assertTrue(emailValidator.isValid("mkyong@yahoo.com"));
     assertTrue(emailValidator.isValid("mkyong-100@yahoo.com"));
     assertTrue(emailValidator.isValid("mkyong.100@yahoo.com"));
@@ -31,7 +31,7 @@ public class EmailValidatorTest {
   }
 
   @Test
-  public void testValidate_invalidEmails() {
+  void testValidate_invalidEmails() {
     assertFalse(emailValidator.isValid("mkyong"));
     assertFalse(emailValidator.isValid("mkyong@.com.my"));
     assertFalse(emailValidator.isValid("mkyong123@gmail.a"));

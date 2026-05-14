@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.persistence.DB;
@@ -12,35 +12,35 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Hans Stamm
  */
-public class SaveAngehoerigeCommandTest {
+class SaveAngehoerigeCommandTest {
 
   private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
 
   private DB db;
   private CommandInvoker commandInvoker;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
     commandInvoker = new CommandInvokerImpl();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     db.closeSession();
   }
 
   @SuppressWarnings("ExtractMethodRecommender")
   @Test
-  public void testExecute() {
+  void testExecute() {
 
     List<Angehoeriger> angehoerige = new ArrayList<>();
 
@@ -61,20 +61,20 @@ public class SaveAngehoerigeCommandTest {
     List<Angehoeriger> savedAngehoerige = saveAngehoerigeCommand.getSavedAngehoerige();
 
     Angehoeriger savedAngehoeriger0 = savedAngehoerige.get(0);
-    assertEquals("Vorname not found", "Eugen", savedAngehoeriger0.getVorname());
+    assertEquals("Eugen", savedAngehoeriger0.getVorname(), "Vorname not found");
     assertEquals(
-        "Strasse not found", "Hohenklingenstrasse", savedAngehoeriger0.getAdresse().getStrasse());
+        "Hohenklingenstrasse", savedAngehoeriger0.getAdresse().getStrasse(), "Strasse not found");
 
     Angehoeriger savedAngehoeriger1 = savedAngehoerige.get(1);
-    assertEquals("Vorname not found", "Regula", savedAngehoeriger1.getVorname());
+    assertEquals("Regula", savedAngehoeriger1.getVorname(), "Vorname not found");
     assertEquals(
-        "Strasse not found", "Hohenklingenstrasse", savedAngehoeriger1.getAdresse().getStrasse());
+        "Hohenklingenstrasse", savedAngehoeriger1.getAdresse().getStrasse(), "Strasse not found");
 
     // Do both Angehoeriger have the same adresseId?
     assertEquals(
-        "Adresse_id not equal",
         savedAngehoeriger0.getAdresse().getAdresseId(),
-        savedAngehoeriger1.getAdresse().getAdresseId());
+        savedAngehoeriger1.getAdresse().getAdresseId(),
+        "Adresse_id not equal");
 
     // Delete
     EntityManager entityManager = db.getCurrentEntityManager();

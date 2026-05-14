@@ -1,17 +1,17 @@
 package ch.metzenthin.svm.domain.commands;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class CheckDrittpersonIdentischMitElternteilCommandTest {
+class CheckDrittpersonIdentischMitElternteilCommandTest {
 
   private final CommandInvoker commandInvoker = new CommandInvokerImpl();
 
@@ -20,8 +20,8 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
   private Angehoeriger vater1;
   private Angehoeriger vater2;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     mutter1 = new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", "056 426 69 15", null, null, true);
     Adresse adresseMutter1 = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
     mutter1.setAdresse(adresseMutter1);
@@ -35,7 +35,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
   }
 
   @Test
-  public void testExecute_NICHT_IDENTISCH() {
+  void testExecute_NICHT_IDENTISCH() {
     Angehoeriger rechnungsempfaenger =
         new Angehoeriger(Anrede.HERR, "Urs", "Meister", null, null, null, false);
     CheckDrittpersonIdentischMitElternteilCommand checkDrittpersonIdentischMitElternteilCommand =
@@ -45,7 +45,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
   }
 
   @Test
-  public void testExecute_IDENTISCH_MIT_MUTTER() {
+  void testExecute_IDENTISCH_MIT_MUTTER() {
     Angehoeriger rechnungsempfaenger =
         new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", "056 426 69 15", null, null, true);
     Adresse adresseRechnungsempfaenger = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
@@ -60,7 +60,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
   }
 
   @Test
-  public void testExecute_SCHEINT_IDENTISCH_MIT_MUTTER_ZU_SEIN() {
+  void testExecute_SCHEINT_IDENTISCH_MIT_MUTTER_ZU_SEIN() {
     Angehoeriger rechnungsempfaenger =
         new Angehoeriger(Anrede.FRAU, "Susanne", "Müller", "056 426 69 15", null, null, true);
     Adresse adresseRechnungsempfaenger = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
@@ -77,7 +77,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
   }
 
   @Test
-  public void testExecute_IDENTISCH_MIT_VATER() {
+  void testExecute_IDENTISCH_MIT_VATER() {
     Angehoeriger rechnungsempfaenger =
         new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null, false);
     Adresse adresseRechnungsempfaenger = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
@@ -92,7 +92,7 @@ public class CheckDrittpersonIdentischMitElternteilCommandTest {
   }
 
   @Test
-  public void testExecute_SCHEINT_IDENTISCH_MIT_VATER_ZU_SEIN() {
+  void testExecute_SCHEINT_IDENTISCH_MIT_VATER_ZU_SEIN() {
     Angehoeriger rechnungsempfaenger =
         new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", "056 426 69 15", null, null, false);
     Adresse adresseRechnungsempfaenger = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");

@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Geschlecht;
@@ -9,13 +9,13 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class CheckIdentischeAdressenCommandTest {
+class CheckIdentischeAdressenCommandTest {
 
   private final CommandInvoker commandInvoker = new CommandInvokerImpl();
 
@@ -34,8 +34,8 @@ public class CheckIdentischeAdressenCommandTest {
   private Angehoeriger rechnungsempfaengerDrittperson2;
   private Angehoeriger rechnungsempfaengerDrittperson3;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     schueler1 =
         new Schueler(
             "Carla",
@@ -117,7 +117,7 @@ public class CheckIdentischeAdressenCommandTest {
 
   // 1.
   @Test
-  public void testExecute_SCHUELER_MUTTER_VATER_DRITTPERSON_IDENTISCH() {
+  void testExecute_SCHUELER_MUTTER_VATER_DRITTPERSON_IDENTISCH() {
     Schueler schueler = schueler1;
     schueler.setMutter(mutter1);
     schueler.setVater(vater1);
@@ -134,7 +134,7 @@ public class CheckIdentischeAdressenCommandTest {
 
   // 2.
   @Test
-  public void testExecute_SCHUELER_MUTTER_VATER_IDENTISCH() {
+  void testExecute_SCHUELER_MUTTER_VATER_IDENTISCH() {
     // mit Drittperson
     Schueler schueler = schueler1;
     schueler.setMutter(mutter1);
@@ -162,7 +162,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_SCHUELER_MUTTER_DRITTPERSON_IDENTISCH() {
+  void testExecute_SCHUELER_MUTTER_DRITTPERSON_IDENTISCH() {
     // Vater mit Adresse
     Schueler schueler = schueler1;
     schueler.setMutter(mutter1);
@@ -199,7 +199,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_SCHUELER_VATER_DRITTPERSON_IDENTISCH() {
+  void testExecute_SCHUELER_VATER_DRITTPERSON_IDENTISCH() {
     // Mutter mit Adresse
     Schueler schueler = schueler1;
     schueler.setMutter(mutter2);
@@ -236,7 +236,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_MUTTER_VATER_DRITTPERSON_IDENTISCH() {
+  void testExecute_MUTTER_VATER_DRITTPERSON_IDENTISCH() {
     Schueler schueler = schueler2;
     schueler.setMutter(mutter1);
     schueler.setVater(vater1);
@@ -253,7 +253,7 @@ public class CheckIdentischeAdressenCommandTest {
 
   // 3.a
   @Test
-  public void testExecute_SCHUELER_MUTTER_IDENTISCH_VATER_DRITTPERSON_IDENTISCH() {
+  void testExecute_SCHUELER_MUTTER_IDENTISCH_VATER_DRITTPERSON_IDENTISCH() {
     Schueler schueler = schueler1;
     schueler.setMutter(mutter1);
     schueler.setVater(vater2);
@@ -271,7 +271,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_SCHUELER_VATER_IDENTISCH_MUTTER_DRITTPERSON_IDENTISCH() {
+  void testExecute_SCHUELER_VATER_IDENTISCH_MUTTER_DRITTPERSON_IDENTISCH() {
     Schueler schueler = schueler1;
     schueler.setMutter(mutter2);
     schueler.setVater(vater1);
@@ -289,7 +289,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_SCHUELER_DRITTPERSON_IDENTISCH_MUTTER_VATER_IDENTISCH() {
+  void testExecute_SCHUELER_DRITTPERSON_IDENTISCH_MUTTER_VATER_IDENTISCH() {
     Schueler schueler = schueler1;
     schueler.setMutter(mutter2);
     schueler.setVater(vater2);
@@ -307,7 +307,7 @@ public class CheckIdentischeAdressenCommandTest {
 
   // 3.b
   @Test
-  public void testExecute_SCHUELER_MUTTER_IDENTISCH() {
+  void testExecute_SCHUELER_MUTTER_IDENTISCH() {
     // mit Drittperson, Vater mit Adresse
     Schueler schueler = schueler1;
     schueler.setMutter(mutter1);
@@ -368,7 +368,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_SCHUELER_VATER_IDENTISCH() {
+  void testExecute_SCHUELER_VATER_IDENTISCH() {
     // mit Drittperson, Mutter mit Adresse
     Schueler schueler = schueler1;
     schueler.setMutter(mutter2);
@@ -429,7 +429,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_SCHUELER_DRITTPERSON_IDENTISCH() {
+  void testExecute_SCHUELER_DRITTPERSON_IDENTISCH() {
     // Mutter und Vater mit Adresse
     Schueler schueler = schueler1;
     schueler.setMutter(mutter2);
@@ -529,7 +529,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_MUTTER_VATER_IDENTISCH() {
+  void testExecute_MUTTER_VATER_IDENTISCH() {
     // mit Drittperson
     Schueler schueler = schueler1;
     schueler.setMutter(mutter2);
@@ -553,7 +553,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_MUTTER_DRITTPERSON_IDENTISCH() {
+  void testExecute_MUTTER_DRITTPERSON_IDENTISCH() {
     // Vater mit Adresse
     Schueler schueler = schueler1;
     schueler.setMutter(mutter2);
@@ -591,7 +591,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_VATER_DRITTPERSON_IDENTISCH() {
+  void testExecute_VATER_DRITTPERSON_IDENTISCH() {
     // Mutter mit Adresse
     Schueler schueler = schueler1;
     schueler.setMutter(mutter3);
@@ -630,7 +630,7 @@ public class CheckIdentischeAdressenCommandTest {
 
   // 4.
   @Test
-  public void testExecute_SCHUELER_MUTTER_VATER_DRITTPERSON_VERSCHIEDEN() {
+  void testExecute_SCHUELER_MUTTER_VATER_DRITTPERSON_VERSCHIEDEN() {
     Schueler schueler = schueler3;
     schueler.setMutter(mutter3);
     schueler.setVater(vater3);
@@ -646,7 +646,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_SCHUELER_MUTTER_DRITTPERSON_VERSCHIEDEN() {
+  void testExecute_SCHUELER_MUTTER_DRITTPERSON_VERSCHIEDEN() {
     // Vater ohne Adresse
     Schueler schueler = schueler3;
     schueler.setMutter(mutter3);
@@ -673,7 +673,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_SCHUELER_VATER_DRITTPERSON_VERSCHIEDEN() {
+  void testExecute_SCHUELER_VATER_DRITTPERSON_VERSCHIEDEN() {
     // Mutter ohne Adresse
     Schueler schueler = schueler3;
     schueler.setMutter(mutter4);
@@ -700,7 +700,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_SCHUELER_DRITTPERSON_VERSCHIEDEN() {
+  void testExecute_SCHUELER_DRITTPERSON_VERSCHIEDEN() {
     // Vater und Mutter ohne Adresse
     Schueler schueler = schueler3;
     schueler.setMutter(mutter4);
@@ -748,7 +748,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_SCHUELER_MUTTER_VATER_VERSCHIEDEN() {
+  void testExecute_SCHUELER_MUTTER_VATER_VERSCHIEDEN() {
     Schueler schueler = schueler3;
     schueler.setMutter(mutter3);
     schueler.setVater(vater3);
@@ -764,7 +764,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_SCHUELER_MUTTER_VERSCHIEDEN() {
+  void testExecute_SCHUELER_MUTTER_VERSCHIEDEN() {
     // Vater ohne Adresse
     Schueler schueler = schueler3;
     schueler.setMutter(mutter3);
@@ -787,7 +787,7 @@ public class CheckIdentischeAdressenCommandTest {
   }
 
   @Test
-  public void testExecute_SCHUELER_VATER_VERSCHIEDEN() {
+  void testExecute_SCHUELER_VATER_VERSCHIEDEN() {
     // Mutter ohne Adresse
     Schueler schueler = schueler3;
     schueler.setMutter(mutter4);

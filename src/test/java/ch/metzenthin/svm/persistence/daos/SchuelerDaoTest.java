@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence.daos;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Geschlecht;
@@ -12,14 +12,14 @@ import ch.metzenthin.svm.persistence.entities.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import java.util.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Hans Stamm
  */
-public class SchuelerDaoTest {
+class SchuelerDaoTest {
 
   private final SchuelerDao schuelerDao = new SchuelerDao();
   private final AdresseDao adresseDao = new AdresseDao();
@@ -31,21 +31,21 @@ public class SchuelerDaoTest {
   private DB db;
   private boolean neusteZuoberst;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
     Properties svmProperties = SvmProperties.getSvmProperties();
     neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     db.closeSession();
   }
 
   @Test
-  public void testFindById() {
+  void testFindById() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -81,9 +81,9 @@ public class SchuelerDaoTest {
       Schueler schuelerFound = schuelerDao.findById(schueler.getPersonId());
 
       assertEquals(
-          "Anmeldedatum falsch",
           new GregorianCalendar(2015, Calendar.JANUARY, 1),
-          schuelerFound.getAnmeldungen().get(0).getAnmeldedatum());
+          schuelerFound.getAnmeldungen().get(0).getAnmeldedatum(),
+          "Anmeldedatum falsch");
 
     } finally {
       if (tx != null) tx.rollback();
@@ -92,7 +92,7 @@ public class SchuelerDaoTest {
 
   @SuppressWarnings({"ExtractMethodRecommender", "java:S5961"})
   @Test
-  public void testSave() {
+  void testSave() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -157,46 +157,46 @@ public class SchuelerDaoTest {
 
       Schueler schuelerFound = schuelerDao.findById(schuelerSaved.getPersonId());
 
-      assertEquals("Vater not correct", "Eugen", schuelerFound.getVater().getVorname());
-      assertEquals("Mutter not correct", "Regula", schuelerFound.getMutter().getVorname());
+      assertEquals("Eugen", schuelerFound.getVater().getVorname(), "Vater not correct");
+      assertEquals("Regula", schuelerFound.getMutter().getVorname(), "Mutter not correct");
       assertEquals(
-          "Vater not correct", "Eugen", schuelerFound.getRechnungsempfaenger().getVorname());
+          "Eugen", schuelerFound.getRechnungsempfaenger().getVorname(), "Vater not correct");
       assertEquals(
-          "Adresse not correct", "Hohenklingenstrasse", schuelerFound.getAdresse().getStrasse());
+          "Hohenklingenstrasse", schuelerFound.getAdresse().getStrasse(), "Adresse not correct");
 
       // Ist Vater identisch mit Rechnungsempfänger?
       assertEquals(
-          "person_id not equal",
           schuelerFound.getVater().getPersonId(),
-          schuelerFound.getRechnungsempfaenger().getPersonId());
+          schuelerFound.getRechnungsempfaenger().getPersonId(),
+          "person_id not equal");
 
       // Sind adresseIds identisch?
       assertEquals(
-          "adresse_id not equal",
           schuelerFound.getAdresse().getAdresseId(),
-          schuelerFound.getMutter().getAdresse().getAdresseId());
+          schuelerFound.getMutter().getAdresse().getAdresseId(),
+          "adresse_id not equal");
 
       // Anmeldungen
       List<Anmeldung> anmeldungen = schuelerFound.getAnmeldungen();
-      assertEquals("2 Anmeldungen erwartet", 2, anmeldungen.size());
+      assertEquals(2, anmeldungen.size(), "2 Anmeldungen erwartet");
       assertEquals(
-          "Falsches Anmeldedatum",
           new GregorianCalendar(2015, Calendar.FEBRUARY, 1),
-          anmeldungen.get(0).getAnmeldedatum()); // neuste zuerst
+          anmeldungen.get(0).getAnmeldedatum(), // neuste zuerst
+          "Falsches Anmeldedatum");
       assertEquals(
-          "Falsches Anmeldedatum",
           new GregorianCalendar(2014, Calendar.JANUARY, 1),
-          anmeldungen.get(1).getAnmeldedatum());
+          anmeldungen.get(1).getAnmeldedatum(),
+          "Falsches Anmeldedatum");
 
       // Dispensationen
       List<Dispensation> dispensationen = schuelerFound.getDispensationen();
-      assertEquals("2 Dispensationen erwartet", 2, dispensationen.size());
+      assertEquals(2, dispensationen.size(), "2 Dispensationen erwartet");
       if (neusteZuoberst) {
-        assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());
-        assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
+        assertEquals("Arm gebrochen", dispensationen.get(0).getGrund(), "Arm gebrochen erwartet");
+        assertEquals("Beinbruch", dispensationen.get(1).getGrund(), "Beinbruch erwartet");
       } else {
-        assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(1).getGrund());
-        assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(0).getGrund());
+        assertEquals("Arm gebrochen", dispensationen.get(1).getGrund(), "Arm gebrochen erwartet");
+        assertEquals("Beinbruch", dispensationen.get(0).getGrund(), "Beinbruch erwartet");
       }
 
       // Erzwingen, dass von DB gelesen wird
@@ -204,25 +204,25 @@ public class SchuelerDaoTest {
 
       // Anmeldungen
       anmeldungen = schuelerFound.getAnmeldungen();
-      assertEquals("2 Anmeldungen erwartet", 2, anmeldungen.size());
+      assertEquals(2, anmeldungen.size(), "2 Anmeldungen erwartet");
       assertEquals(
-          "Falsches Anmeldedatum",
           new GregorianCalendar(2015, Calendar.FEBRUARY, 1),
-          anmeldungen.get(0).getAnmeldedatum()); // neuste zuerst
+          anmeldungen.get(0).getAnmeldedatum(), // neuste zuerst
+          "Falsches Anmeldedatum");
       assertEquals(
-          "Falsches Anmeldedatum",
           new GregorianCalendar(2014, Calendar.JANUARY, 1),
-          anmeldungen.get(1).getAnmeldedatum());
+          anmeldungen.get(1).getAnmeldedatum(),
+          "Falsches Anmeldedatum");
 
       // Dispensationen
       dispensationen = schuelerFound.getDispensationen();
-      assertEquals("2 Dispensationen erwartet", 2, dispensationen.size());
+      assertEquals(2, dispensationen.size(), "2 Dispensationen erwartet");
       if (neusteZuoberst) {
-        assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());
-        assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
+        assertEquals("Arm gebrochen", dispensationen.get(0).getGrund(), "Arm gebrochen erwartet");
+        assertEquals("Beinbruch", dispensationen.get(1).getGrund(), "Beinbruch erwartet");
       } else {
-        assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(1).getGrund());
-        assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(0).getGrund());
+        assertEquals("Arm gebrochen", dispensationen.get(1).getGrund(), "Arm gebrochen erwartet");
+        assertEquals("Beinbruch", dispensationen.get(0).getGrund(), "Beinbruch erwartet");
       }
 
       // Arm gebrochen löschen
@@ -230,18 +230,18 @@ public class SchuelerDaoTest {
       schuelerFound.deleteDispensation(dispensationen.get(indexArmGebrochen));
 
       List<Dispensation> dispensationen2 = schuelerFound.getDispensationen();
-      assertEquals("1 Dispensation erwartet", 1, dispensationen2.size());
-      assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(0).getGrund());
+      assertEquals(1, dispensationen2.size(), "1 Dispensation erwartet");
+      assertEquals("Beinbruch", dispensationen.get(0).getGrund(), "Beinbruch erwartet");
 
       // Alte Anmeldung löschen
       schuelerFound.deleteAnmeldung(anmeldungen.get(1));
 
       List<Anmeldung> anmeldungen2 = schuelerFound.getAnmeldungen();
-      assertEquals("1 Anmeldung erwartet", 1, anmeldungen2.size());
+      assertEquals(1, anmeldungen2.size(), "1 Anmeldung erwartet");
       assertEquals(
-          "Falsches Anmeldedatum",
           new GregorianCalendar(2015, Calendar.FEBRUARY, 1),
-          anmeldungen2.get(0).getAnmeldedatum());
+          anmeldungen2.get(0).getAnmeldedatum(),
+          "Falsches Anmeldedatum");
 
     } finally {
       if (tx != null) tx.rollback();
@@ -250,7 +250,7 @@ public class SchuelerDaoTest {
 
   @SuppressWarnings("java:S5961")
   @Test
-  public void testRemove() {
+  void testRemove() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -401,7 +401,7 @@ public class SchuelerDaoTest {
   }
 
   @Test
-  public void testFindSchueler() {
+  void testFindSchueler() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -479,32 +479,32 @@ public class SchuelerDaoTest {
       schueler2.setRechnungsempfaenger(rechnungsempfaenger2);
 
       List<Schueler> schuelerList2 = schuelerDao.findSchueler(schueler2);
-      assertEquals("Nur 1 Schüler erwartet", 1, schuelerList2.size());
+      assertEquals(1, schuelerList2.size(), "Nur 1 Schüler erwartet");
       Schueler schuelerFound2 = schuelerList2.get(0);
 
-      assertNotNull("Schüler nicht gefunden", schuelerFound2);
+      assertNotNull(schuelerFound2, "Schüler nicht gefunden");
 
       // Anmeldung: Reihenfolge prüfen:
       List<Anmeldung> anmeldungen = schuelerFound2.getAnmeldungen();
-      assertEquals("2 Anmeldungen erwartet", 2, anmeldungen.size());
+      assertEquals(2, anmeldungen.size(), "2 Anmeldungen erwartet");
       assertEquals(
-          "Falsches Anmeldedatum",
           new GregorianCalendar(2015, Calendar.JANUARY, 1),
-          anmeldungen.get(0).getAnmeldedatum()); // neuste zuerst
+          anmeldungen.get(0).getAnmeldedatum(), // neuste zuerst
+          "Falsches Anmeldedatum");
       assertEquals(
-          "Falsches Abmeldedatum",
           new GregorianCalendar(2014, Calendar.JANUARY, 15),
-          anmeldungen.get(1).getAbmeldedatum());
+          anmeldungen.get(1).getAbmeldedatum(),
+          "Falsches Abmeldedatum");
 
       // Dispensationen: Reihenfolge prüfen:
       List<Dispensation> dispensationen = schuelerFound2.getDispensationen();
-      assertEquals("2 Dispensationen erwartet", 2, dispensationen.size());
+      assertEquals(2, dispensationen.size(), "2 Dispensationen erwartet");
       if (neusteZuoberst) {
-        assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());
-        assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
+        assertEquals("Arm gebrochen", dispensationen.get(0).getGrund(), "Arm gebrochen erwartet");
+        assertEquals("Beinbruch", dispensationen.get(1).getGrund(), "Beinbruch erwartet");
       } else {
-        assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(1).getGrund());
-        assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(0).getGrund());
+        assertEquals("Arm gebrochen", dispensationen.get(1).getGrund(), "Arm gebrochen erwartet");
+        assertEquals("Beinbruch", dispensationen.get(0).getGrund(), "Beinbruch erwartet");
       }
 
       // Erzwingen, dass von DB gelesen wird
@@ -512,25 +512,25 @@ public class SchuelerDaoTest {
 
       // Anmeldung: Reihenfolge prüfen:
       anmeldungen = schuelerFound2.getAnmeldungen();
-      assertEquals("2 Anmeldungen erwartet", 2, anmeldungen.size());
+      assertEquals(2, anmeldungen.size(), "2 Anmeldungen erwartet");
       assertEquals(
-          "Falsches Anmeldedatum",
           new GregorianCalendar(2015, Calendar.JANUARY, 1),
-          anmeldungen.get(0).getAnmeldedatum()); // neuste zuerst
+          anmeldungen.get(0).getAnmeldedatum(), // neuste zuerst
+          "Falsches Anmeldedatum");
       assertEquals(
-          "Falsches Abmeldedatum",
           new GregorianCalendar(2014, Calendar.JANUARY, 15),
-          anmeldungen.get(1).getAbmeldedatum());
+          anmeldungen.get(1).getAbmeldedatum(),
+          "Falsches Abmeldedatum");
 
       // Dispensationen: Reihenfolge prüfen:
       dispensationen = schuelerFound2.getDispensationen();
-      assertEquals("2 Dispensationen erwartet", 2, dispensationen.size());
+      assertEquals(2, dispensationen.size(), "2 Dispensationen erwartet");
       if (neusteZuoberst) {
-        assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(0).getGrund());
-        assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(1).getGrund());
+        assertEquals("Arm gebrochen", dispensationen.get(0).getGrund(), "Arm gebrochen erwartet");
+        assertEquals("Beinbruch", dispensationen.get(1).getGrund(), "Beinbruch erwartet");
       } else {
-        assertEquals("Arm gebrochen erwartet", "Arm gebrochen", dispensationen.get(1).getGrund());
-        assertEquals("Beinbruch erwartet", "Beinbruch", dispensationen.get(0).getGrund());
+        assertEquals("Arm gebrochen", dispensationen.get(1).getGrund(), "Arm gebrochen erwartet");
+        assertEquals("Beinbruch", dispensationen.get(0).getGrund(), "Beinbruch erwartet");
       }
 
       // Ditto, aber andere Strasse:

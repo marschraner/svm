@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence.daos;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.persistence.DB;
@@ -11,33 +11,33 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Hans Stamm
  */
-public class AngehoerigerDaoTest {
+class AngehoerigerDaoTest {
 
   private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
   private final AdresseDao adresseDao = new AdresseDao();
 
   private DB db;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     db.closeSession();
   }
 
   @Test
-  public void testFindById() {
+  void testFindById() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -50,14 +50,14 @@ public class AngehoerigerDaoTest {
       entityManager.persist(angehoeriger);
       Angehoeriger angehoerigerFound = angehoerigerDao.findById(angehoeriger.getPersonId());
       assertEquals(
-          "Adresse falsch", "Hohenklingenstrasse", angehoerigerFound.getAdresse().getStrasse());
+          "Hohenklingenstrasse", angehoerigerFound.getAdresse().getStrasse(), "Adresse falsch");
     } finally {
       if (tx != null) tx.rollback();
     }
   }
 
   @Test
-  public void testSave() {
+  void testSave() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -71,7 +71,7 @@ public class AngehoerigerDaoTest {
       vater.setAdresse(adresse);
       Angehoeriger vaterSaved = angehoerigerDao.save(vater);
       Angehoeriger vaterFound = angehoerigerDao.findById(vaterSaved.getPersonId());
-      assertEquals("Adresse falsch", "Hohenklingenstrasse", vaterFound.getAdresse().getStrasse());
+      assertEquals("Hohenklingenstrasse", vaterFound.getAdresse().getStrasse(), "Adresse falsch");
 
       // Mutter
       Angehoeriger mutter =
@@ -79,18 +79,18 @@ public class AngehoerigerDaoTest {
       mutter.setAdresse(vaterFound.getAdresse());
       Angehoeriger mutterSaved = angehoerigerDao.save(mutter);
       Angehoeriger mutterFound = angehoerigerDao.findById(mutterSaved.getPersonId());
-      assertEquals("Adresse falsch", "Hohenklingenstrasse", mutterFound.getAdresse().getStrasse());
+      assertEquals("Hohenklingenstrasse", mutterFound.getAdresse().getStrasse(), "Adresse falsch");
 
       // Are adresseIds equal?
       assertEquals(
-          "adresse_ids nicht identisch",
           vaterFound.getAdresse().getAdresseId(),
-          mutterFound.getAdresse().getAdresseId());
+          mutterFound.getAdresse().getAdresseId(),
+          "adresse_ids nicht identisch");
 
       // Angehöriger ohne Adresse
       Angehoeriger vater2 = new Angehoeriger(Anrede.HERR, "Urs", "Müller", null, null, null, false);
       Angehoeriger vaterSaved2 = angehoerigerDao.save(vater2);
-      assertNull("Adresse nicht null", vaterSaved2.getAdresse());
+      assertNull(vaterSaved2.getAdresse(), "Adresse nicht null");
 
     } finally {
       if (tx != null) tx.rollback();
@@ -98,7 +98,7 @@ public class AngehoerigerDaoTest {
   }
 
   @Test
-  public void testRemove() {
+  void testRemove() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -149,7 +149,7 @@ public class AngehoerigerDaoTest {
   }
 
   @Test
-  public void testFindAngehoerige() {
+  void testFindAngehoerige() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -172,18 +172,18 @@ public class AngehoerigerDaoTest {
       angehoeriger2.setAdresse(adresse2);
 
       List<Angehoeriger> angehoerigeFound2 = angehoerigerDao.findAngehoerige(angehoeriger2);
-      assertEquals("Mehr als 1 Angehörigen gefunden", 1, angehoerigeFound2.size());
+      assertEquals(1, angehoerigeFound2.size(), "Mehr als 1 Angehörigen gefunden");
 
       // Ditto, aber ohne Adresse
       Angehoeriger angehoeriger3 =
           new Angehoeriger(Anrede.HERR, "Urs", "Berger", null, null, null, false);
 
       List<Angehoeriger> angehoerigeFound3 = angehoerigerDao.findAngehoerige(angehoeriger3);
-      assertEquals("Mehr als 1 Angehörigen gefunden", 1, angehoerigeFound3.size());
+      assertEquals(1, angehoerigeFound3.size(), "Mehr als 1 Angehörigen gefunden");
       // Adresse ist diejenige von Angehoeriger 1
-      assertNotNull("Hat keine Adresse", angehoerigeFound3.get(0).getAdresse());
+      assertNotNull(angehoerigeFound3.get(0).getAdresse(), "Hat keine Adresse");
       assertEquals(
-          "Strasse nicht korrekt", "Gugusweg", angehoerigeFound3.get(0).getAdresse().getStrasse());
+          "Gugusweg", angehoerigeFound3.get(0).getAdresse().getStrasse(), "Strasse nicht korrekt");
 
       // Ditto, aber andere Strasse:
       Angehoeriger angehoeriger4 =
@@ -192,11 +192,11 @@ public class AngehoerigerDaoTest {
       angehoeriger4.setAdresse(adresse4);
 
       List<Angehoeriger> angehoerigeFound4 = angehoerigerDao.findAngehoerige(angehoeriger4);
-      assertTrue("Angehörigen gefunden", angehoerigeFound4.isEmpty());
+      assertTrue(angehoerigeFound4.isEmpty(), "Angehörigen gefunden");
 
       // Sämtliche Angehörige suchen
       List<Angehoeriger> angehoerigeFound5 = angehoerigerDao.findAngehoerige(null);
-      assertFalse("Keine Angehörigen gefunden", angehoerigeFound5.isEmpty());
+      assertFalse(angehoerigeFound5.isEmpty(), "Keine Angehörigen gefunden");
 
       // Angehörigen löschen
       angehoerigerDao.remove(angehoerigerSaved);

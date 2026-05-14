@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.model;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Geschlecht;
@@ -13,19 +13,19 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Properties;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Hans Stamm
  */
-public class SchuelerDatenblattModelImplTest {
+class SchuelerDatenblattModelImplTest {
 
   private SchuelerDatenblattModel schuelerDatenblattModel;
   private boolean neusteZuoberst;
 
-  @Before
-  public void setup() {
+  @BeforeEach
+  void setup() {
     createSvmPropertiesFileDefault();
     Properties svmProperties = SvmProperties.getSvmProperties();
     neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
@@ -63,22 +63,22 @@ public class SchuelerDatenblattModelImplTest {
   }
 
   @Test
-  public void testGetSchuelerNachname() {
+  void testGetSchuelerNachname() {
     assertEquals("Nachname", schuelerDatenblattModel.getSchuelerNachname());
   }
 
   @Test
-  public void testGetSchuelerVorname() {
+  void testGetSchuelerVorname() {
     assertEquals("Vorname", schuelerDatenblattModel.getSchuelerVorname());
   }
 
   @Test
-  public void testGetLabelSchueler() {
+  void testGetLabelSchueler() {
     assertEquals("Schülerin:", schuelerDatenblattModel.getLabelSchueler());
   }
 
   @Test
-  public void testGetSchuelerAsString() {
+  void testGetSchuelerAsString() {
     assertTrue(schuelerDatenblattModel.getSchuelerAsString().contains("Vorname"));
     assertTrue(schuelerDatenblattModel.getSchuelerAsString().contains("Nachname"));
     assertTrue(schuelerDatenblattModel.getSchuelerAsString().contains("Natel"));
@@ -86,68 +86,68 @@ public class SchuelerDatenblattModelImplTest {
   }
 
   @Test
-  public void testGetMutterAsString() {
+  void testGetMutterAsString() {
     assertEquals(
         "Frau Vorname Mutter Nachname Mutter, Festnetz Mutter, Natel Mutter, Email Mutter",
         schuelerDatenblattModel.getMutterAsString());
   }
 
   @Test
-  public void testGetVaterAsString() {
+  void testGetVaterAsString() {
     assertEquals("-", schuelerDatenblattModel.getVaterAsString());
   }
 
   @Test
-  public void testGetLabelRechnungsempfaenger() {
+  void testGetLabelRechnungsempfaenger() {
     assertEquals("Rechnungsempfängerin:", schuelerDatenblattModel.getLabelRechnungsempfaenger());
   }
 
   @Test
-  public void testGetRechnungsempfaengerAsString() {
+  void testGetRechnungsempfaengerAsString() {
     assertEquals("Mutter", schuelerDatenblattModel.getRechnungsempfaengerAsString());
   }
 
   @Test
-  public void testGetGeschwisterAsString() {
+  void testGetGeschwisterAsString() {
     assertEquals("-", schuelerDatenblattModel.getGeschwisterAsString());
   }
 
   @Test
-  public void testGetLabelSchuelerGleicherRechnungsempfaenger1() {
+  void testGetLabelSchuelerGleicherRechnungsempfaenger1() {
     assertEquals(
         "Andere Schüler mit gleicher",
         schuelerDatenblattModel.getLabelSchuelerGleicherRechnungsempfaenger1());
   }
 
   @Test
-  public void testGetLabelSchuelerGleicherRechnungsempfaenger2() {
+  void testGetLabelSchuelerGleicherRechnungsempfaenger2() {
     assertEquals(
         "Rechnungsempfängerin:",
         schuelerDatenblattModel.getLabelSchuelerGleicherRechnungsempfaenger2());
   }
 
   @Test
-  public void testGetSchuelerGleicherRechnungsempfaengerAsString() {
+  void testGetSchuelerGleicherRechnungsempfaengerAsString() {
     assertEquals("", schuelerDatenblattModel.getSchuelerGleicherRechnungsempfaengerAsString());
   }
 
   @Test
-  public void testGetSchuelerGeburtsdatumAsString() {
+  void testGetSchuelerGeburtsdatumAsString() {
     assertEquals("12.05.2000", schuelerDatenblattModel.getSchuelerGeburtsdatumAsString());
   }
 
   @Test
-  public void testGetAnmeldedatumAsString() {
+  void testGetAnmeldedatumAsString() {
     assertEquals("01.04.2015", schuelerDatenblattModel.getAnmeldedatumAsString());
   }
 
   @Test
-  public void testGetAbmeldedatumAsString() {
+  void testGetAbmeldedatumAsString() {
     assertEquals("", schuelerDatenblattModel.getAbmeldedatumAsString());
   }
 
   @Test
-  public void testGetFruehereAnmeldungenAsString() {
+  void testGetFruehereAnmeldungenAsString() {
     String expected =
         (neusteZuoberst
             ? "<html>01.06.2011 - 31.12.2012<br>11.11.2009 - 31.03.2010</html>"

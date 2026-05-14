@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Elternmithilfe;
@@ -11,15 +11,15 @@ import ch.metzenthin.svm.persistence.entities.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class CheckElternmithilfeBereitsBeiGeschwisterErfasstCommandTest {
+class CheckElternmithilfeBereitsBeiGeschwisterErfasstCommandTest {
 
   @Test
-  public void testExecute() {
+  void testExecute() {
 
     // Geschwister 1, Märchen, ElternmithilfeCode erzeugen
     Schueler geschwister1 =

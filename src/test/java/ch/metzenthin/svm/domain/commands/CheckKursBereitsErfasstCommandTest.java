@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class CheckKursBereitsErfasstCommandTest {
+class CheckKursBereitsErfasstCommandTest {
 
   private final CommandInvoker commandInvoker = new CommandInvokerImpl();
   private final List<Kurs> bereitsErfassteKurse = new ArrayList<>();
@@ -75,8 +75,8 @@ public class CheckKursBereitsErfasstCommandTest {
           null,
           true);
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     Kurs kurs =
         new Kurs(
             "2-3 J",
@@ -93,7 +93,7 @@ public class CheckKursBereitsErfasstCommandTest {
   }
 
   @Test
-  public void testExecute_KursBereitsErfasst() {
+  void testExecute_KursBereitsErfasst() {
     Kurs kurs =
         new Kurs(
             "2-3 J",
@@ -110,7 +110,7 @@ public class CheckKursBereitsErfasstCommandTest {
   }
 
   @Test
-  public void testExecute_KursNochNichtErfasstAndereLehrkraft() {
+  void testExecute_KursNochNichtErfasstAndereLehrkraft() {
     Kurs kurs =
         new Kurs(
             "2-3 J",
@@ -127,7 +127,7 @@ public class CheckKursBereitsErfasstCommandTest {
   }
 
   @Test
-  public void testExecute_KursNochNichtErfasstAndereZeit() {
+  void testExecute_KursNochNichtErfasstAndereZeit() {
     Kurs kurs =
         new Kurs(
             "2-3 J",
@@ -144,7 +144,7 @@ public class CheckKursBereitsErfasstCommandTest {
   }
 
   @Test
-  public void testExecute_KursNochNichtErfasstAndererWochentag() {
+  void testExecute_KursNochNichtErfasstAndererWochentag() {
     Kurs kurs =
         new Kurs(
             "2-3 J",
@@ -161,7 +161,7 @@ public class CheckKursBereitsErfasstCommandTest {
   }
 
   @Test
-  public void testExecute_KursNochNichtErfasstAnderesSemester() {
+  void testExecute_KursNochNichtErfasstAnderesSemester() {
     Kurs kurs =
         new Kurs(
             "2-3 J",
@@ -178,7 +178,7 @@ public class CheckKursBereitsErfasstCommandTest {
   }
 
   @Test
-  public void testExecute_KursOrigin() {
+  void testExecute_KursOrigin() {
     Kurs kurs =
         new Kurs(
             "2-3 J",

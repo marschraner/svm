@@ -1,21 +1,21 @@
 package ch.metzenthin.svm.domain.comparators;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Person;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class PersonComparatorTest {
+class PersonComparatorTest {
 
   @Test
-  public void testCompare() {
+  void testCompare() {
     Person person1 = new Angehoeriger(Anrede.HERR, "Ruth", "Huber", null, null, null, false);
     Person person2 = new Angehoeriger(Anrede.HERR, "Hans", "Huber", null, null, null, false);
     Person person3 = new Angehoeriger(Anrede.HERR, "Hans", "Hofer", null, null, null, false);

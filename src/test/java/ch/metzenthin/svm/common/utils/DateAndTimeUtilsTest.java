@@ -1,19 +1,19 @@
 package ch.metzenthin.svm.common.utils;
 
 import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.*;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class DateAndTimeUtilsTest {
+class DateAndTimeUtilsTest {
 
   @Test
-  public void testGetNumberOfDaysOfPeriod() {
+  void testGetNumberOfDaysOfPeriod() {
     assertEquals(
         0,
         getNumberOfDaysOfPeriod(
@@ -42,7 +42,7 @@ public class DateAndTimeUtilsTest {
   }
 
   @Test
-  public void testGetNumberOfWeeksBetween() {
+  void testGetNumberOfWeeksBetween() {
     assertEquals(
         0,
         getNumberOfWeeksBetween(
@@ -66,7 +66,7 @@ public class DateAndTimeUtilsTest {
   }
 
   @Test
-  public void testGetCalendarAsDDMMYYYY() {
+  void testGetCalendarAsDDMMYYYY() {
     Calendar calendar = new GregorianCalendar(2014, Calendar.JUNE, 24);
     assertEquals("24.06.2014", getCalendarAsDDMMYYYY(calendar));
   }

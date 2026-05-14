@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence.daos;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
@@ -15,14 +15,14 @@ import java.sql.Time;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class KursDaoTest {
+class KursDaoTest {
 
   private final KursDao kursDao = new KursDao();
   private final SemesterDao semesterDao = new SemesterDao();
@@ -32,19 +32,19 @@ public class KursDaoTest {
 
   private DB db;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     db.closeSession();
   }
 
   @Test
-  public void testFindById() {
+  void testFindById() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -121,7 +121,7 @@ public class KursDaoTest {
   }
 
   @Test
-  public void testSave() {
+  void testSave() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -240,7 +240,7 @@ public class KursDaoTest {
   }
 
   @Test
-  public void testRemove() {
+  void testRemove() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -367,7 +367,7 @@ public class KursDaoTest {
   }
 
   @Test
-  public void testFindKurseSemester_and_testFindKurs() {
+  void testFindKurseSemester_and_testFindKurs() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {

@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Geschlecht;
@@ -14,14 +14,14 @@ import jakarta.persistence.EntityManager;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Properties;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class RemoveDispensationFromSchuelerCommandTest {
+class RemoveDispensationFromSchuelerCommandTest {
 
   private final SchuelerDao schuelerDao = new SchuelerDao();
 
@@ -29,8 +29,8 @@ public class RemoveDispensationFromSchuelerCommandTest {
   private CommandInvoker commandInvoker;
   private boolean neusteZuoberst;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
     commandInvoker = new CommandInvokerImpl();
@@ -38,13 +38,13 @@ public class RemoveDispensationFromSchuelerCommandTest {
     neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     db.closeSession();
   }
 
   @Test
-  public void testExecute() {
+  void testExecute() {
 
     // Schueler erfassen und 3 Dispensationen hinzufügen
     Schueler schueler =

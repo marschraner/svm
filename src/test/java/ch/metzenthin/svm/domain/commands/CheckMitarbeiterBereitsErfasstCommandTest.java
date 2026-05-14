@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.persistence.entities.Adresse;
@@ -10,19 +10,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class CheckMitarbeiterBereitsErfasstCommandTest {
+class CheckMitarbeiterBereitsErfasstCommandTest {
 
   private final CommandInvoker commandInvoker = new CommandInvokerImpl();
   private final List<Mitarbeiter> bereitsErfassteLehrkraefte = new ArrayList<>();
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     Mitarbeiter mitarbeiter =
         new Mitarbeiter(
             Anrede.FRAU,
@@ -44,7 +44,7 @@ public class CheckMitarbeiterBereitsErfasstCommandTest {
   }
 
   @Test
-  public void testExecute_LehrkraftBereitsErfasst() {
+  void testExecute_LehrkraftBereitsErfasst() {
     Mitarbeiter mitarbeiter =
         new Mitarbeiter(
             Anrede.FRAU,
@@ -69,7 +69,7 @@ public class CheckMitarbeiterBereitsErfasstCommandTest {
   }
 
   @Test
-  public void testExecute_LehrkraftNochNichtErfasst() {
+  void testExecute_LehrkraftNochNichtErfasst() {
     Mitarbeiter mitarbeiter =
         new Mitarbeiter(
             Anrede.FRAU,
@@ -94,7 +94,7 @@ public class CheckMitarbeiterBereitsErfasstCommandTest {
   }
 
   @Test
-  public void testExecute_LehrkraftOrigin() {
+  void testExecute_LehrkraftOrigin() {
     Mitarbeiter mitarbeiter =
         new Mitarbeiter(
             Anrede.FRAU,

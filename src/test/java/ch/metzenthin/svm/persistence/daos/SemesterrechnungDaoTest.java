@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence.daos;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Geschlecht;
@@ -16,33 +16,33 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class SemesterrechnungDaoTest {
+class SemesterrechnungDaoTest {
 
   private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
 
   private DB db;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     db.closeSession();
   }
 
   @SuppressWarnings("ExtractMethodRecommender")
   @Test
-  public void testFindById() {
+  void testFindById() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -169,7 +169,7 @@ public class SemesterrechnungDaoTest {
 
   @SuppressWarnings("ExtractMethodRecommender")
   @Test
-  public void testSave() {
+  void testSave() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -268,7 +268,7 @@ public class SemesterrechnungDaoTest {
 
   @SuppressWarnings("ExtractMethodRecommender")
   @Test
-  public void testRemove() {
+  void testRemove() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -370,7 +370,7 @@ public class SemesterrechnungDaoTest {
 
   @SuppressWarnings("ExtractMethodRecommender")
   @Test
-  public void testFindSemesterrechnungenRechnungsempfaenger() {
+  void testFindSemesterrechnungenRechnungsempfaenger() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {

@@ -1,65 +1,65 @@
 package ch.metzenthin.svm.domain.model;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.common.datatypes.Geschlecht;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import test.TestCompletedListener;
 import test.TestPropertyChangeListener;
 
 /**
  * @author Hans Stamm
  */
-public class SchuelerModelImplTest {
+class SchuelerModelImplTest {
 
   private SchuelerModel schuelerModel;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     schuelerModel = new SchuelerModelImpl();
   }
 
   @Test
-  public void testSetGeschlecht() throws SvmRequiredException {
+  void testSetGeschlecht() throws SvmRequiredException {
     schuelerModel.setGeschlecht(Geschlecht.M);
-    assertEquals("Geschlecht.M erwartet", Geschlecht.M, schuelerModel.getGeschlecht());
-  }
-
-  @Test(expected = SvmRequiredException.class)
-  public void testSetGeschlecht_Null() throws SvmRequiredException {
-    schuelerModel.setGeschlecht(null);
-  }
-
-  @Test(expected = SvmRequiredException.class)
-  public void testSetGeschlecht_NullAgain() throws SvmRequiredException {
-    schuelerModel.setGeschlecht(Geschlecht.M);
-    schuelerModel.setGeschlecht(null);
+    assertEquals(Geschlecht.M, schuelerModel.getGeschlecht(), "Geschlecht.M erwartet");
   }
 
   @Test
-  public void testSetGeschlecht_PropertyChangeOneEvent() throws SvmRequiredException {
+  void testSetGeschlecht_Null() {
+    assertThrows(SvmRequiredException.class, () -> schuelerModel.setGeschlecht(null));
+  }
+
+  @Test
+  void testSetGeschlecht_NullAgain() throws SvmRequiredException {
+    schuelerModel.setGeschlecht(Geschlecht.M);
+    assertThrows(SvmRequiredException.class, () -> schuelerModel.setGeschlecht(null));
+  }
+
+  @Test
+  void testSetGeschlecht_PropertyChangeOneEvent() throws SvmRequiredException {
     TestPropertyChangeListener listener = new TestPropertyChangeListener();
     schuelerModel.addPropertyChangeListener(listener);
     schuelerModel.setGeschlecht(Geschlecht.M);
-    assertEquals("Ein Event erwartet", 1, listener.eventsSize());
+    assertEquals(1, listener.eventsSize(), "Ein Event erwartet");
   }
 
   @Test
-  public void testSetGeschlecht_PropertyChangeNoEvent() throws SvmRequiredException {
+  void testSetGeschlecht_PropertyChangeNoEvent() throws SvmRequiredException {
     schuelerModel.setGeschlecht(Geschlecht.M);
     TestPropertyChangeListener listener = new TestPropertyChangeListener();
     schuelerModel.addPropertyChangeListener(listener);
     schuelerModel.setGeschlecht(Geschlecht.M);
-    assertEquals("Kein Event erwartet", 0, listener.eventsSize());
+    assertEquals(0, listener.eventsSize(), "Kein Event erwartet");
   }
 
   @Test
-  public void testSetAnmeldedatum() {
+  void testSetAnmeldedatum() {
     try {
       schuelerModel.setAnmeldedatum("12.06.2015");
     } catch (SvmValidationException e) {
@@ -69,7 +69,7 @@ public class SchuelerModelImplTest {
   }
 
   @Test
-  public void testSetAnmeldedatum_BadFormatNoException() {
+  void testSetAnmeldedatum_BadFormatNoException() {
     try {
       schuelerModel.setAnmeldedatum("12.16.2015");
       fail("Exception erwartet");
@@ -79,7 +79,7 @@ public class SchuelerModelImplTest {
   }
 
   @Test
-  public void testSetAnmeldedatum_BadFormatException() {
+  void testSetAnmeldedatum_BadFormatException() {
     try {
       schuelerModel.setAnmeldedatum("2015-06-12");
       fail("Exception erwartet");
@@ -89,7 +89,7 @@ public class SchuelerModelImplTest {
   }
 
   @Test
-  public void testSetGeburtsdatum() {
+  void testSetGeburtsdatum() {
     try {
       Calendar cal = new GregorianCalendar();
       cal.add(Calendar.YEAR, -10);
@@ -104,7 +104,7 @@ public class SchuelerModelImplTest {
   }
 
   @Test
-  public void testSetGeburtsdatum_BadFormatNoException() {
+  void testSetGeburtsdatum_BadFormatNoException() {
     try {
       Calendar cal = new GregorianCalendar();
       cal.add(Calendar.YEAR, -10);
@@ -119,7 +119,7 @@ public class SchuelerModelImplTest {
   }
 
   @Test
-  public void testSetGeburtsdatum_BadFormatException() {
+  void testSetGeburtsdatum_BadFormatException() {
     try {
       schuelerModel.setGeburtsdatum("1999-06-12");
       fail("Exception erwartet");
@@ -129,17 +129,17 @@ public class SchuelerModelImplTest {
   }
 
   @Test
-  public void testGetSchueler() {
-    assertNotNull("Schueler nicht null erwartet", schuelerModel.getSchueler());
+  void testGetSchueler() {
+    assertNotNull(schuelerModel.getSchueler(), "Schueler nicht null erwartet");
   }
 
   @Test
-  public void testGetAdresse() {
-    assertNotNull("Adresse nicht null erwartet", schuelerModel.getAdresse());
+  void testGetAdresse() {
+    assertNotNull(schuelerModel.getAdresse(), "Adresse nicht null erwartet");
   }
 
   @Test
-  public void testIsCompleted() {
+  void testIsCompleted() {
     TestCompletedListener testCompletedListener = new TestCompletedListener();
     schuelerModel.addCompletedListener(testCompletedListener);
     try {
@@ -152,7 +152,7 @@ public class SchuelerModelImplTest {
       e.printStackTrace(System.err);
       fail("Keine Exception erwartet");
     }
-    assertTrue("IsCompleted true erwartet", schuelerModel.isCompleted());
+    assertTrue(schuelerModel.isCompleted(), "IsCompleted true erwartet");
     try {
       schuelerModel.validate();
     } catch (SvmValidationException e) {
@@ -160,11 +160,11 @@ public class SchuelerModelImplTest {
       fail("Keine Exception erwartet");
     }
     assertEquals(
-        "Aufruf von CompletedListener einmal erwartet", 1, testCompletedListener.getCounter());
+        1, testCompletedListener.getCounter(), "Aufruf von CompletedListener einmal erwartet");
   }
 
   @Test
-  public void testIsCompleted_False() {
-    assertFalse("IsCompleted false erwartet", schuelerModel.isCompleted());
+  void testIsCompleted_False() {
+    assertFalse(schuelerModel.isCompleted(), "IsCompleted false erwartet");
   }
 }

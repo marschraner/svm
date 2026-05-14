@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.commands;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.datatypes.Wochentag;
@@ -10,12 +10,12 @@ import ch.metzenthin.svm.persistence.entities.Semester;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class CalculateAnzWochenCommandTest {
+class CalculateAnzWochenCommandTest {
 
   private final Semester erstesSemester =
       new Semester(
@@ -44,7 +44,7 @@ public class CalculateAnzWochenCommandTest {
 
   @SuppressWarnings("java:S5961")
   @Test
-  public void testCalculateAnzWochenKursanmeldung_MittwochKurs() {
+  void testCalculateAnzWochenKursanmeldung_MittwochKurs() {
 
     Kurs kurs =
         new Kurs(
@@ -669,7 +669,7 @@ public class CalculateAnzWochenCommandTest {
   }
 
   @Test
-  public void testCalculateAnzWochenKursanmeldung_MontagKurs() {
+  void testCalculateAnzWochenKursanmeldung_MontagKurs() {
 
     Kurs kurs =
         new Kurs(
@@ -837,7 +837,7 @@ public class CalculateAnzWochenCommandTest {
   }
 
   @Test
-  public void testCalculateAnzWochenKursanmeldung_SamstagKurs() {
+  void testCalculateAnzWochenKursanmeldung_SamstagKurs() {
 
     Kurs kurs =
         new Kurs(

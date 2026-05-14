@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.persistence.daos;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Geschlecht;
@@ -17,14 +17,14 @@ import jakarta.persistence.EntityTransaction;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Properties;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Hans Stamm
  */
-public class DispensationDaoTest {
+class DispensationDaoTest {
 
   private final DispensationDao dispensationDao = new DispensationDao();
   private final SchuelerDao schuelerDao = new SchuelerDao();
@@ -32,22 +32,22 @@ public class DispensationDaoTest {
   private DB db;
   private boolean neusteZuoberst;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
     Properties svmProperties = SvmProperties.getSvmProperties();
     neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     db.closeSession();
   }
 
   @SuppressWarnings("ExtractMethodRecommender")
   @Test
-  public void testFindById() {
+  void testFindById() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -90,9 +90,9 @@ public class DispensationDaoTest {
       Dispensation dispensationFound = dispensationDao.findById(dispensation.getDispensationId());
 
       assertEquals(
-          "Dispensationsbeginn not correct",
           new GregorianCalendar(2014, Calendar.JANUARY, 15),
-          dispensationFound.getDispensationsbeginn());
+          dispensationFound.getDispensationsbeginn(),
+          "Dispensationsbeginn not correct");
 
     } finally {
       if (tx != null) {
@@ -103,7 +103,7 @@ public class DispensationDaoTest {
 
   @SuppressWarnings("ExtractMethodRecommender")
   @Test
-  public void testAddToSchuelerAndSave() {
+  void testAddToSchuelerAndSave() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -167,18 +167,18 @@ public class DispensationDaoTest {
       Dispensation dispensation1Found = dispensationDao.findById(dispensation1.getDispensationId());
       entityManager.refresh(dispensation1Found);
       assertEquals(
-          "Dispensationsbeginn falsch",
           new GregorianCalendar(2013, Calendar.JANUARY, 15),
-          dispensation1Found.getDispensationsbeginn());
+          dispensation1Found.getDispensationsbeginn(),
+          "Dispensationsbeginn falsch");
       assertEquals(
-          "Dispensationsende falsch",
           new GregorianCalendar(2015, Calendar.MARCH, 31),
-          dispensation1Found.getDispensationsende());
+          dispensation1Found.getDispensationsende(),
+          "Dispensationsende falsch");
       assertEquals(
-          "Voraussichtliche Dauer falsch",
           "2 Jahre",
-          dispensation1Found.getVoraussichtlicheDauer());
-      assertEquals("Grund falsch", "Zu klein", dispensation1Found.getGrund());
+          dispensation1Found.getVoraussichtlicheDauer(),
+          "Voraussichtliche Dauer falsch");
+      assertEquals("Zu klein", dispensation1Found.getGrund(), "Grund falsch");
 
     } finally {
       if (tx != null) {
@@ -189,7 +189,7 @@ public class DispensationDaoTest {
 
   @SuppressWarnings("ExtractMethodRecommender")
   @Test
-  public void testRemoveFromSchuelerAndUpdate() {
+  void testRemoveFromSchuelerAndUpdate() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {

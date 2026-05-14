@@ -1,27 +1,27 @@
 package ch.metzenthin.svm.domain.commands;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.persistence.entities.Dispensation;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
 @SuppressWarnings("java:S5976")
-public class CheckDispensationUeberlapptAndereDispensationenCommandTest {
+class CheckDispensationUeberlapptAndereDispensationenCommandTest {
 
   private final CommandInvoker commandInvoker = new CommandInvokerImpl();
   private final List<Dispensation> bereitsErfassteDispensationen = new ArrayList<>();
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     bereitsErfassteDispensationen.add(
         new Dispensation(
             new GregorianCalendar(2010, Calendar.JULY, 1),
@@ -39,7 +39,7 @@ public class CheckDispensationUeberlapptAndereDispensationenCommandTest {
   }
 
   @Test
-  public void testExecute_NichtUeberlappend() {
+  void testExecute_NichtUeberlappend() {
     Dispensation dispensation =
         new Dispensation(
             new GregorianCalendar(2010, Calendar.SEPTEMBER, 1),
@@ -55,7 +55,7 @@ public class CheckDispensationUeberlapptAndereDispensationenCommandTest {
   }
 
   @Test
-  public void testExecute_UeberlappendAmEnde() {
+  void testExecute_UeberlappendAmEnde() {
     Dispensation dispensation =
         new Dispensation(
             new GregorianCalendar(2010, Calendar.SEPTEMBER, 1),
@@ -71,7 +71,7 @@ public class CheckDispensationUeberlapptAndereDispensationenCommandTest {
   }
 
   @Test
-  public void testExecute_UeberlappendAmAnfang() {
+  void testExecute_UeberlappendAmAnfang() {
     Dispensation dispensation =
         new Dispensation(
             new GregorianCalendar(2010, Calendar.AUGUST, 30),
@@ -87,7 +87,7 @@ public class CheckDispensationUeberlapptAndereDispensationenCommandTest {
   }
 
   @Test
-  public void testExecute_EndeIdentischMitBereitsErfasstemAnfang() {
+  void testExecute_EndeIdentischMitBereitsErfasstemAnfang() {
     Dispensation dispensation =
         new Dispensation(
             new GregorianCalendar(2010, Calendar.SEPTEMBER, 1),
@@ -103,7 +103,7 @@ public class CheckDispensationUeberlapptAndereDispensationenCommandTest {
   }
 
   @Test
-  public void testExecute_AnfangIdentischMitBereitsErfasstemEnde() {
+  void testExecute_AnfangIdentischMitBereitsErfasstemEnde() {
     Dispensation dispensation =
         new Dispensation(
             new GregorianCalendar(2010, Calendar.AUGUST, 31),
@@ -119,7 +119,7 @@ public class CheckDispensationUeberlapptAndereDispensationenCommandTest {
   }
 
   @Test
-  public void testExecute_AlleUeberlappend() {
+  void testExecute_AlleUeberlappend() {
     Dispensation dispensation =
         new Dispensation(
             new GregorianCalendar(2008, Calendar.AUGUST, 31),
@@ -135,7 +135,7 @@ public class CheckDispensationUeberlapptAndereDispensationenCommandTest {
   }
 
   @Test
-  public void testExecute_NachHintenOffenePeriodeUeberlappend() {
+  void testExecute_NachHintenOffenePeriodeUeberlappend() {
     Dispensation dispensation =
         new Dispensation(new GregorianCalendar(2015, Calendar.AUGUST, 31), null, null, null);
     CheckDispensationUeberlapptAndereDispensationenCommand
@@ -147,7 +147,7 @@ public class CheckDispensationUeberlapptAndereDispensationenCommandTest {
   }
 
   @Test
-  public void testExecute_DispensationOrig() {
+  void testExecute_DispensationOrig() {
     Dispensation dispensation =
         new Dispensation(
             new GregorianCalendar(2010, Calendar.JULY, 2),

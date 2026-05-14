@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Field;
@@ -11,18 +11,18 @@ import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import java.util.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Hans Stamm
  */
-public class SchuelerSuchenTableDataTest {
+class SchuelerSuchenTableDataTest {
 
   private SchuelerSuchenTableData schuelerSuchenTableData;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     List<Schueler> schuelerList = new ArrayList<>();
     Schueler schueler1 =
         new Schueler(
@@ -102,17 +102,17 @@ public class SchuelerSuchenTableDataTest {
   }
 
   @Test
-  public void testGetColumnCount() {
+  void testGetColumnCount() {
     assertTrue(schuelerSuchenTableData.getColumnCount() > 0);
   }
 
   @Test
-  public void testSize() {
+  void testSize() {
     assertEquals(3, schuelerSuchenTableData.size());
   }
 
   @Test
-  public void testGetValueAt() {
+  void testGetValueAt() {
     assertEquals(
         "V2", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.VORNAME.toString())));
     assertEquals(
@@ -130,7 +130,7 @@ public class SchuelerSuchenTableDataTest {
   }
 
   @Test
-  public void testGetValueAt_Mutter() {
+  void testGetValueAt_Mutter() {
     assertEquals(
         "N1A V1A", schuelerSuchenTableData.getValueAt(0, getColumnIndex(Field.MUTTER.toString())));
     assertNull(schuelerSuchenTableData.getValueAt(0, getColumnIndex(Field.VATER.toString())));
@@ -141,7 +141,7 @@ public class SchuelerSuchenTableDataTest {
   }
 
   @Test
-  public void testGetValueAt_Vater() {
+  void testGetValueAt_Vater() {
     assertEquals(
         "N2A V2A", schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.VATER.toString())));
     assertNull(schuelerSuchenTableData.getValueAt(1, getColumnIndex(Field.MUTTER.toString())));
@@ -152,7 +152,7 @@ public class SchuelerSuchenTableDataTest {
   }
 
   @Test
-  public void testGetValueAt_Rechnungsempfaenger() {
+  void testGetValueAt_Rechnungsempfaenger() {
     assertEquals(
         "N3A V3A",
         schuelerSuchenTableData.getValueAt(
@@ -162,12 +162,12 @@ public class SchuelerSuchenTableDataTest {
   }
 
   @Test
-  public void testGetColumnName() {
+  void testGetColumnName() {
     assertEquals(1, getColumnIndex(Field.NACHNAME.toString()));
   }
 
   @Test
-  public void testGetSchuelerDatenblattModel() {
+  void testGetSchuelerDatenblattModel() {
     assertNotNull(schuelerSuchenTableData.getSchuelerDatenblattModel(2));
   }
 

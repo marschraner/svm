@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.persistence;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.common.utils.PersistenceProperties;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
@@ -10,9 +10,9 @@ import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * EntityManagerFactory = persistence unit = logical database one shared instance EntityManager:
@@ -45,15 +45,15 @@ import org.junit.Test;
  * @author Hans Stamm
  */
 @SuppressWarnings("java:S125")
-public class EntityManagerTest {
+class EntityManagerTest {
 
   private EntityManagerFactory entityManagerFactory;
   private SchuelerCode detachedInitialSchuelerCode;
 
   private final List<String> createdCodes = new ArrayList<>();
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     entityManagerFactory = createEntityManagerFactory();
     EntityManager em = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCode = createSchuelerCode("ini", "initial test insert");
@@ -69,8 +69,8 @@ public class EntityManagerTest {
         "svm", PersistenceProperties.getPersistenceProperties());
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     EntityManager em = entityManagerFactory.createEntityManager(); // starts persistence context
     em.getTransaction().begin();
     for (String kuerzel : createdCodes) {
@@ -91,7 +91,7 @@ public class EntityManagerTest {
    * commit) allowed
    */
   @Test
-  public void testUnsynchronized() {
+  void testUnsynchronized() {
     EntityManager emA = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = getInitialSchuelerCode(emA);
     assertEquals(schuelerCodeA.getCodeId(), detachedInitialSchuelerCode.getCodeId());
@@ -122,7 +122,7 @@ public class EntityManagerTest {
 
   /** Modification in unsynchronised mode without transaction (begin..commit) has no effect */
   @Test
-  public void testUnsynchronizedNewSchuelerCode() {
+  void testUnsynchronizedNewSchuelerCode() {
     EntityManager em = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = createSchuelerCode("xx", "xx");
     em.persist(schuelerCodeA);
@@ -131,7 +131,7 @@ public class EntityManagerTest {
 
     em = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeB = getSchuelerCodeByKuerzel(em, "xx");
-    assertNull("SchuelerCode not expected to be persistent.", schuelerCodeB);
+    assertNull(schuelerCodeB, "SchuelerCode not expected to be persistent.");
 
     em.close();
   }
@@ -139,16 +139,16 @@ public class EntityManagerTest {
   /** Modification in unsynchronised mode followed by a transaction (begin..commit) has effect */
   @SuppressWarnings("CommentedOutCode")
   @Test
-  public void testUnsynchronizedModifySchuelerCodeAndJoinTransaction() {
+  void testUnsynchronizedModifySchuelerCodeAndJoinTransaction() {
     EntityManager em = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = getInitialSchuelerCode(em);
     assertEquals(detachedInitialSchuelerCode.getBeschreibung(), schuelerCodeA.getBeschreibung());
     schuelerCodeA.setBeschreibung("Test unsynchronized"); // Note: outside of transaction
     schuelerCodeA = getInitialSchuelerCode(em);
     assertEquals(
-        "Modification was expected to be still here",
         "Test unsynchronized",
-        schuelerCodeA.getBeschreibung());
+        schuelerCodeA.getBeschreibung(),
+        "Modification was expected to be still here");
     assertFalse(em.isJoinedToTransaction());
 
     em.getTransaction().begin(); // Note: begin() seems to join to transaction
@@ -161,15 +161,15 @@ public class EntityManagerTest {
     em = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeC = getInitialSchuelerCode(em);
     assertEquals(
-        "Modification was expected to be persisted",
         "Test unsynchronized",
-        schuelerCodeC.getBeschreibung());
+        schuelerCodeC.getBeschreibung(),
+        "Modification was expected to be persisted");
     em.close();
   }
 
   /** New instance in unsynchronised mode followed by a transaction (begin..commit) has effect */
   @Test
-  public void testUnsynchronizedNewSchuelerCodeAndJoinTransaction() {
+  void testUnsynchronizedNewSchuelerCodeAndJoinTransaction() {
     EntityManager em = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = createSchuelerCode("xx", "xx");
     em.persist(schuelerCodeA);
@@ -182,7 +182,7 @@ public class EntityManagerTest {
 
     em = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeB = getSchuelerCodeByKuerzel(em, "xx");
-    assertNotNull("SchuelerCode expected to be persistent.", schuelerCodeB);
+    assertNotNull(schuelerCodeB, "SchuelerCode expected to be persistent.");
 
     em.getTransaction().begin();
     em.remove(schuelerCodeB);
@@ -191,12 +191,12 @@ public class EntityManagerTest {
 
     em = entityManagerFactory.createEntityManager();
     schuelerCodeB = getSchuelerCodeByKuerzel(em, "xx");
-    assertNull("SchuelerCode not expected to be persistent.", schuelerCodeB);
+    assertNull(schuelerCodeB, "SchuelerCode not expected to be persistent.");
     em.close();
   }
 
   @Test
-  public void testVisibilityOfModificationInSecondEntityManager_afterCloseOfA() {
+  void testVisibilityOfModificationInSecondEntityManager_afterCloseOfA() {
     EntityManager emA = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = getInitialSchuelerCode(emA);
 
@@ -264,7 +264,7 @@ public class EntityManagerTest {
   }
 
   @Test
-  public void testVisibilityOfModificationInSecondEntityManager_afterCloseOfA_synchronize() {
+  void testVisibilityOfModificationInSecondEntityManager_afterCloseOfA_synchronize() {
     EntityManager emA = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = getInitialSchuelerCode(emA);
 
@@ -312,7 +312,7 @@ public class EntityManagerTest {
   }
 
   @Test
-  public void testVisibilityOfModificationInSecondEntityManager_afterCloseOfB() {
+  void testVisibilityOfModificationInSecondEntityManager_afterCloseOfB() {
     EntityManager emA = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = getInitialSchuelerCode(emA);
 
@@ -390,7 +390,7 @@ public class EntityManagerTest {
   }
 
   @Test
-  public void testVisibilityOfModificationInSecondEntityManager_afterCloseOfB_synchronize() {
+  void testVisibilityOfModificationInSecondEntityManager_afterCloseOfB_synchronize() {
     EntityManager emA = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = getInitialSchuelerCode(emA);
 
@@ -435,7 +435,7 @@ public class EntityManagerTest {
   }
 
   @Test
-  public void testVisibilityOfModificationInSecondEntityManager_afterCommitOfB_synchronize() {
+  void testVisibilityOfModificationInSecondEntityManager_afterCommitOfB_synchronize() {
     EntityManager emA = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = getInitialSchuelerCode(emA);
 
@@ -469,7 +469,7 @@ public class EntityManagerTest {
   }
 
   @Test
-  public void testVisibilityOfModificationInSecondEntityManager_afterImmediateCloseOfA() {
+  void testVisibilityOfModificationInSecondEntityManager_afterImmediateCloseOfA() {
     EntityManager emA = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = getInitialSchuelerCode(emA);
 
@@ -537,8 +537,7 @@ public class EntityManagerTest {
   }
 
   @Test
-  public void
-      testVisibilityOfModificationInSecondEntityManager_afterImmediateCloseOfA_synchronize() {
+  void testVisibilityOfModificationInSecondEntityManager_afterImmediateCloseOfA_synchronize() {
     EntityManager emA = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = getInitialSchuelerCode(emA);
 
@@ -584,7 +583,7 @@ public class EntityManagerTest {
   }
 
   @Test
-  public void testVisibilityOfModificationInSecondEntityManager_createEmBAfterCommit() {
+  void testVisibilityOfModificationInSecondEntityManager_createEmBAfterCommit() {
     EntityManager emA = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = getInitialSchuelerCode(emA);
 
@@ -624,7 +623,7 @@ public class EntityManagerTest {
   }
 
   @Test
-  public void testVisibilityOfModificationInSecondEntityManager_refresh() {
+  void testVisibilityOfModificationInSecondEntityManager_refresh() {
     EntityManager emA = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = getInitialSchuelerCode(emA);
 
@@ -682,7 +681,7 @@ public class EntityManagerTest {
   }
 
   @Test
-  public void testBeginTransactionCloseEntityManager() {
+  void testBeginTransactionCloseEntityManager() {
     EntityManager em = entityManagerFactory.createEntityManager();
     em.getTransaction().begin();
     assertTrue(em.getTransaction().isActive());
@@ -698,7 +697,7 @@ public class EntityManagerTest {
   }
 
   @Test
-  public void testBeginTransactionCloseEntityManagerNewEntityManager() {
+  void testBeginTransactionCloseEntityManagerNewEntityManager() {
     EntityManager em1 = entityManagerFactory.createEntityManager();
     em1.getTransaction().begin();
     assertTrue(em1.getTransaction().isActive());
@@ -708,16 +707,16 @@ public class EntityManagerTest {
     EntityManager em2 = entityManagerFactory.createEntityManager();
     schuelerCodeA = getInitialSchuelerCode(em2);
     assertEquals(
-        "Rollback expected",
         detachedInitialSchuelerCode.getBeschreibung(),
-        schuelerCodeA.getBeschreibung());
+        schuelerCodeA.getBeschreibung(),
+        "Rollback expected");
     em2.close();
     // Ohne rollback kommt es im Log zu einem "Connection leak detected"-Fehler
     em1.getTransaction().rollback(); // rollbacks transaction even when EntityManager is closed!
   }
 
   @Test
-  public void testBeginTransactionFlushAndCloseEntityManager() {
+  void testBeginTransactionFlushAndCloseEntityManager() {
     EntityManager em = entityManagerFactory.createEntityManager();
     em.getTransaction().begin();
     assertTrue(em.getTransaction().isActive());
@@ -734,7 +733,7 @@ public class EntityManagerTest {
   }
 
   @Test
-  public void testBeginTransactionBeforeCommit() {
+  void testBeginTransactionBeforeCommit() {
     EntityManager em = entityManagerFactory.createEntityManager();
     try (em) {
       em.getTransaction().begin();
@@ -755,7 +754,7 @@ public class EntityManagerTest {
   }
 
   @Test
-  public void testConcurrentUpdate() {
+  void testConcurrentUpdate() {
     sleepOneSecond(); // wegen Versionierung mit Timestamp-Problem.
     // Alternative:
     // -- Ergänzen des Timestamp um Millisekunden (Fraction). Ohne die Millisekunden kann es
@@ -793,49 +792,49 @@ public class EntityManagerTest {
   // ------------------------------------------------------------------------------------------------------------------
 
   @Test
-  public void testPersistenceState_unsynchronized() {
+  void testPersistenceState_unsynchronized() {
     EntityManager em = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = getInitialSchuelerCode(em);
     SchuelerCode schuelerCodeB = createSchuelerCode("xx", "xx");
     em.persist(schuelerCodeB);
 
-    assertTrue("schuelerCodeA persisted expected", isPersisted(em, schuelerCodeA));
-    assertTrue("schuelerCodeA persistent expected", isPersistent(em, schuelerCodeA));
-    assertTrue("schuelerCodeA database persistent expected", isDatabasePersistent(schuelerCodeA));
-    assertFalse("schuelerCodeA not detached expected", isDetached(em, schuelerCodeA));
-    assertFalse("schuelerCodeA not transient expected", isTransient(em, schuelerCodeA));
-    assertTrue("schuelerCodeB persisted expected", isPersisted(em, schuelerCodeB));
-    assertTrue("schuelerCodeB persistent expected", isPersistent(em, schuelerCodeB));
+    assertTrue(isPersisted(em, schuelerCodeA), "schuelerCodeA persisted expected");
+    assertTrue(isPersistent(em, schuelerCodeA), "schuelerCodeA persistent expected");
+    assertTrue(isDatabasePersistent(schuelerCodeA), "schuelerCodeA database persistent expected");
+    assertFalse(isDetached(em, schuelerCodeA), "schuelerCodeA not detached expected");
+    assertFalse(isTransient(em, schuelerCodeA), "schuelerCodeA not transient expected");
+    assertTrue(isPersisted(em, schuelerCodeB), "schuelerCodeB persisted expected");
+    assertTrue(isPersistent(em, schuelerCodeB), "schuelerCodeB persistent expected");
     assertFalse(
-        "schuelerCodeB not database persistent expected", isDatabasePersistent(schuelerCodeB));
-    assertFalse("schuelerCodeB not detached expected", isDetached(em, schuelerCodeB));
-    assertFalse("schuelerCodeB not transient expected", isTransient(em, schuelerCodeB));
+        isDatabasePersistent(schuelerCodeB), "schuelerCodeB not database persistent expected");
+    assertFalse(isDetached(em, schuelerCodeB), "schuelerCodeB not detached expected");
+    assertFalse(isTransient(em, schuelerCodeB), "schuelerCodeB not transient expected");
 
     em.clear();
 
-    assertFalse("schuelerCodeA not persisted expected", isPersisted(em, schuelerCodeA));
-    assertTrue("schuelerCodeA persistent expected", isPersistent(em, schuelerCodeA));
-    assertTrue("schuelerCodeA database persistent expected", isDatabasePersistent(schuelerCodeA));
-    assertTrue("schuelerCodeA detached expected", isDetached(em, schuelerCodeA));
-    assertFalse("schuelerCodeA not transient expected", isTransient(em, schuelerCodeA));
-    assertFalse("schuelerCodeB not persisted expected", isPersisted(em, schuelerCodeB));
-    assertFalse("schuelerCodeB not persistent expected", isPersistent(em, schuelerCodeB));
+    assertFalse(isPersisted(em, schuelerCodeA), "schuelerCodeA not persisted expected");
+    assertTrue(isPersistent(em, schuelerCodeA), "schuelerCodeA persistent expected");
+    assertTrue(isDatabasePersistent(schuelerCodeA), "schuelerCodeA database persistent expected");
+    assertTrue(isDetached(em, schuelerCodeA), "schuelerCodeA detached expected");
+    assertFalse(isTransient(em, schuelerCodeA), "schuelerCodeA not transient expected");
+    assertFalse(isPersisted(em, schuelerCodeB), "schuelerCodeB not persisted expected");
+    assertFalse(isPersistent(em, schuelerCodeB), "schuelerCodeB not persistent expected");
     assertFalse(
-        "schuelerCodeB not database persistent expected", isDatabasePersistent(schuelerCodeB));
-    assertFalse("schuelerCodeB not detached expected", isDetached(em, schuelerCodeB));
-    assertTrue("schuelerCodeB transient expected", isTransient(em, schuelerCodeB));
+        isDatabasePersistent(schuelerCodeB), "schuelerCodeB not database persistent expected");
+    assertFalse(isDetached(em, schuelerCodeB), "schuelerCodeB not detached expected");
+    assertTrue(isTransient(em, schuelerCodeB), "schuelerCodeB transient expected");
 
     em.close();
 
     em = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCode = getSchuelerCodeByKuerzel(em, "xx");
-    assertNull("SchuelerCode not expected to be persistent.", schuelerCode);
+    assertNull(schuelerCode, "SchuelerCode not expected to be persistent.");
 
     em.close();
   }
 
   @Test
-  public void testPersistenceState_synchronized() {
+  void testPersistenceState_synchronized() {
     EntityManager em = entityManagerFactory.createEntityManager();
     SchuelerCode schuelerCodeA = getInitialSchuelerCode(em);
     SchuelerCode schuelerCodeB = createSchuelerCode("xx", "xx");
@@ -843,30 +842,30 @@ public class EntityManagerTest {
 
     em.getTransaction().begin();
 
-    assertTrue("schuelerCodeA persisted expected", isPersisted(em, schuelerCodeA));
-    assertTrue("schuelerCodeA persistent expected", isPersistent(em, schuelerCodeA));
-    assertTrue("schuelerCodeA database persistent expected", isDatabasePersistent(schuelerCodeA));
-    assertFalse("schuelerCodeA not detached expected", isDetached(em, schuelerCodeA));
-    assertFalse("schuelerCodeA not transient expected", isTransient(em, schuelerCodeA));
-    assertTrue("schuelerCodeB persisted expected", isPersisted(em, schuelerCodeB));
-    assertTrue("schuelerCodeB persistent expected", isPersistent(em, schuelerCodeB));
+    assertTrue(isPersisted(em, schuelerCodeA), "schuelerCodeA persisted expected");
+    assertTrue(isPersistent(em, schuelerCodeA), "schuelerCodeA persistent expected");
+    assertTrue(isDatabasePersistent(schuelerCodeA), "schuelerCodeA database persistent expected");
+    assertFalse(isDetached(em, schuelerCodeA), "schuelerCodeA not detached expected");
+    assertFalse(isTransient(em, schuelerCodeA), "schuelerCodeA not transient expected");
+    assertTrue(isPersisted(em, schuelerCodeB), "schuelerCodeB persisted expected");
+    assertTrue(isPersistent(em, schuelerCodeB), "schuelerCodeB persistent expected");
     assertFalse(
-        "schuelerCodeB not database persistent expected", isDatabasePersistent(schuelerCodeB));
-    assertFalse("schuelerCodeB not detached expected", isDetached(em, schuelerCodeB));
-    assertFalse("schuelerCodeB not transient expected", isTransient(em, schuelerCodeB));
+        isDatabasePersistent(schuelerCodeB), "schuelerCodeB not database persistent expected");
+    assertFalse(isDetached(em, schuelerCodeB), "schuelerCodeB not detached expected");
+    assertFalse(isTransient(em, schuelerCodeB), "schuelerCodeB not transient expected");
 
     em.getTransaction().commit();
 
-    assertTrue("schuelerCodeA persisted expected", isPersisted(em, schuelerCodeA));
-    assertTrue("schuelerCodeA persistent expected", isPersistent(em, schuelerCodeA));
-    assertTrue("schuelerCodeA database persistent expected", isDatabasePersistent(schuelerCodeA));
-    assertFalse("schuelerCodeA not detached expected", isDetached(em, schuelerCodeA));
-    assertFalse("schuelerCodeA not transient expected", isTransient(em, schuelerCodeA));
-    assertTrue("schuelerCodeB persisted expected", isPersisted(em, schuelerCodeB));
-    assertTrue("schuelerCodeB persistent expected", isPersistent(em, schuelerCodeB));
-    assertTrue("schuelerCodeB database persistent expected", isDatabasePersistent(schuelerCodeB));
-    assertFalse("schuelerCodeB not detached expected", isDetached(em, schuelerCodeB));
-    assertFalse("schuelerCodeB not transient expected", isTransient(em, schuelerCodeB));
+    assertTrue(isPersisted(em, schuelerCodeA), "schuelerCodeA persisted expected");
+    assertTrue(isPersistent(em, schuelerCodeA), "schuelerCodeA persistent expected");
+    assertTrue(isDatabasePersistent(schuelerCodeA), "schuelerCodeA database persistent expected");
+    assertFalse(isDetached(em, schuelerCodeA), "schuelerCodeA not detached expected");
+    assertFalse(isTransient(em, schuelerCodeA), "schuelerCodeA not transient expected");
+    assertTrue(isPersisted(em, schuelerCodeB), "schuelerCodeB persisted expected");
+    assertTrue(isPersistent(em, schuelerCodeB), "schuelerCodeB persistent expected");
+    assertTrue(isDatabasePersistent(schuelerCodeB), "schuelerCodeB database persistent expected");
+    assertFalse(isDetached(em, schuelerCodeB), "schuelerCodeB not detached expected");
+    assertFalse(isTransient(em, schuelerCodeB), "schuelerCodeB not transient expected");
 
     em.close();
   }

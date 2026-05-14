@@ -1,39 +1,39 @@
 package ch.metzenthin.svm.persistence.daos;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Hans Stamm
  */
-public class AdresseDaoTest {
+class AdresseDaoTest {
 
   private final AdresseDao adresseDao = new AdresseDao();
 
   private DB db;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     db.closeSession();
   }
 
   @Test
-  public void testFindById() {
+  void testFindById() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -42,7 +42,7 @@ public class AdresseDaoTest {
       Adresse adresse = new Adresse("Buechackerstrasse", "4", "8234", "Stetten");
       entityManager.persist(adresse);
       Adresse adresseFound = adresseDao.findById(adresse.getAdresseId());
-      assertEquals("Strasse falsch", "Buechackerstrasse", adresseFound.getStrasse());
+      assertEquals("Buechackerstrasse", adresseFound.getStrasse(), "Strasse falsch");
 
     } finally {
       if (tx != null) {
@@ -52,7 +52,7 @@ public class AdresseDaoTest {
   }
 
   @Test
-  public void testSave() {
+  void testSave() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {
@@ -61,7 +61,7 @@ public class AdresseDaoTest {
       Adresse adresse = new Adresse("Buechackerstrasse", "4", "8234", "Stetten");
       Adresse adresseSaved = adresseDao.save(adresse);
       Adresse adresseFound = adresseDao.findById(adresseSaved.getAdresseId());
-      assertEquals("Adresse not correct", "Buechackerstrasse", adresseFound.getStrasse());
+      assertEquals("Buechackerstrasse", adresseFound.getStrasse(), "Adresse not correct");
 
     } finally {
       if (tx != null) {
@@ -71,7 +71,7 @@ public class AdresseDaoTest {
   }
 
   @Test
-  public void testRemove() {
+  void testRemove() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {

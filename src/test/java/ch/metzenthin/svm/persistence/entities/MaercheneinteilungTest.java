@@ -1,16 +1,16 @@
 package ch.metzenthin.svm.persistence.entities;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class MaercheneinteilungTest {
+class MaercheneinteilungTest {
 
   @Test
-  public void getRolle1WithoutSorterCharacters() {
+  void getRolle1WithoutSorterCharacters() {
     Maercheneinteilung maercheneinteilung = new Maercheneinteilung();
 
     maercheneinteilung.setRolle1("Hund 2");

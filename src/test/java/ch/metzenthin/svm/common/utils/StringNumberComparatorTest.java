@@ -1,18 +1,18 @@
 package ch.metzenthin.svm.common.utils;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class StringNumberComparatorTest {
+class StringNumberComparatorTest {
 
   @Test
-  public void testCompare() {
+  void testCompare() {
     List<String> strings =
         Arrays.asList(
             "2. Klasse",

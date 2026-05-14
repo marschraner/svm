@@ -1,24 +1,24 @@
 package ch.metzenthin.svm.common.utils;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.metzenthin.svm.common.datatypes.Geschlecht;
 import ch.metzenthin.svm.common.datatypes.Gruppe;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import java.util.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class MaercheneinteilungenSorterTest {
+class MaercheneinteilungenSorterTest {
 
   private final MaercheneinteilungenSorter maercheneinteilungenSorter =
       new MaercheneinteilungenSorter();
 
   @Test
-  public void testSortMaercheneinteilungenByGruppeAndRolle() {
+  void testSortMaercheneinteilungenByGruppeAndRolle() {
 
     String vorname1 = "Jana";
     String vorname2 = "Valentin";

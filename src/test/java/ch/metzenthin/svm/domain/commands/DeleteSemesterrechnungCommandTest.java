@@ -1,9 +1,9 @@
 package ch.metzenthin.svm.domain.commands;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Geschlecht;
@@ -22,14 +22,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class DeleteSemesterrechnungCommandTest {
+class DeleteSemesterrechnungCommandTest {
 
   private final SemesterrechnungDao semesterrechnungDao = new SemesterrechnungDao();
   private final SemesterDao semesterDao = new SemesterDao();
@@ -39,20 +39,20 @@ public class DeleteSemesterrechnungCommandTest {
   private DB db;
   private CommandInvoker commandInvoker;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
     commandInvoker = new CommandInvokerImpl();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     db.closeSession();
   }
 
   @Test
-  public void testExecute() {
+  void testExecute() {
 
     List<Semester> erfassteSemester = new ArrayList<>();
     List<SemesterrechnungCode> erfassteSemesterrechnungCodes = new ArrayList<>();

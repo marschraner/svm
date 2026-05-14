@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Geschlecht;
@@ -12,17 +12,17 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /** Created by Martin Schraner. */
-public class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
+class CheckGeschwisterSchuelerRechnungsempfaengerCommandTest {
 
   private final CommandInvoker commandInvoker = new CommandInvokerImpl();
 
   // 1.
   @SuppressWarnings("java:S5961")
   @Test
-  public void testExecute() {
+  void testExecute() {
 
     Angehoeriger angehoeriger1 =
         new Angehoeriger(Anrede.FRAU, "Eva", "Juchli", null, null, null, true);

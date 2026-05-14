@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
@@ -13,14 +13,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class FindAllLektionsgebuehrenCommandTest {
+class FindAllLektionsgebuehrenCommandTest {
 
   private final LektionsgebuehrenDao lektionsgebuehrenDao = new LektionsgebuehrenDao();
   private final Set<Lektionsgebuehren> lektionsgebuehrenTestdata = new HashSet<>();
@@ -28,22 +28,22 @@ public class FindAllLektionsgebuehrenCommandTest {
   private DB db;
   private CommandInvoker commandInvoker;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
     commandInvoker = new CommandInvokerImpl();
     createTestdata();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     deleteTestdata();
     db.closeSession();
   }
 
   @Test
-  public void testExecute_getList() {
+  void testExecute_getList() {
     FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand =
         new FindAllLektionsgebuehrenCommand();
     commandInvoker.executeCommand(findAllLektionsgebuehrenCommand);
@@ -68,7 +68,7 @@ public class FindAllLektionsgebuehrenCommandTest {
   }
 
   @Test
-  public void testExecute_getMap() {
+  void testExecute_getMap() {
     FindAllLektionsgebuehrenCommand findAllLektionsgebuehrenCommand =
         new FindAllLektionsgebuehrenCommand();
     commandInvoker.executeCommand(findAllLektionsgebuehrenCommand);

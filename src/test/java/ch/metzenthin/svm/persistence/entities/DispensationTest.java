@@ -1,29 +1,29 @@
 package ch.metzenthin.svm.persistence.entities;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import java.util.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class DispensationTest {
+class DispensationTest {
 
   private boolean neusteZuoberst;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     Properties svmProperties = SvmProperties.getSvmProperties();
     neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
   }
 
   @Test
-  public void testCompareTo() {
+  void testCompareTo() {
     List<Dispensation> dispensationen = new ArrayList<>();
     dispensationen.add(
         new Dispensation(

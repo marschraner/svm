@@ -2,19 +2,19 @@ package ch.metzenthin.svm.persistence.entities;
 
 import static ch.metzenthin.svm.common.utils.Converter.toCalendar;
 import static ch.metzenthin.svm.common.utils.Converter.toTime;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Wochentag;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Hans Stamm
  */
-public class KursTest {
+class KursTest {
 
   @Test
-  public void testToString() throws Exception {
+  void testToString() throws Exception {
     Kurs kurs =
         new Kurs("11/12", "1", Wochentag.DIENSTAG, toTime("18.00"), toTime("19.00"), "test");
     Mitarbeiter mitarbeiter =

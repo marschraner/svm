@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import static ch.metzenthin.svm.common.utils.SvmProperties.createSvmPropertiesFileDefault;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.persistence.DB;
@@ -12,12 +12,12 @@ import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import jakarta.persistence.EntityManager;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /** Created by Martin Schraner. */
-public class CheckAngehoerigerBereitsInDatenbankCommandTest {
+class CheckAngehoerigerBereitsInDatenbankCommandTest {
 
   private final AngehoerigerDao angehoerigerDao = new AngehoerigerDao();
 
@@ -27,22 +27,22 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
   private Angehoeriger angehoerigerTestdata1;
   private Angehoeriger angehoerigerTestdata2;
 
-  @Before
-  public void setUp() {
+  @BeforeEach
+  void setUp() {
     createSvmPropertiesFileDefault();
     db = DBFactory.getInstance();
     commandInvoker = new CommandInvokerImpl();
     createTestdata();
   }
 
-  @After
-  public void tearDown() {
+  @AfterEach
+  void tearDown() {
     deleteTestdata();
     db.closeSession();
   }
 
   @Test
-  public void testExecute_NICHT_IN_DATENBANK() {
+  void testExecute_NICHT_IN_DATENBANK() {
     Angehoeriger angehoeriger =
         new Angehoeriger(Anrede.HERR, "Armin", "Bruggisser", "056 426 69 15", null, null, false);
     Adresse adresse = new Adresse("Wiesenstrasse", "5", "5430", "Wettingen");
@@ -53,13 +53,13 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
     commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
 
     assertEquals(
-        "Angehöriger in Datenbank",
         CheckAngehoerigerBereitsInDatenbankCommand.Result.NICHT_IN_DATENBANK,
-        checkAngehoerigerBereitsInDatenbankCommand.getResult());
+        checkAngehoerigerBereitsInDatenbankCommand.getResult(),
+        "Angehöriger in Datenbank");
   }
 
   @Test
-  public void testExecute_EIN_EINTRAG_PASST() {
+  void testExecute_EIN_EINTRAG_PASST() {
     Angehoeriger angehoeriger =
         new Angehoeriger(
             Anrede.HERR, "Andreas", "Bruggisser", null, null, null, false); // ohne Festnetz
@@ -71,9 +71,9 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
     commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
 
     assertEquals(
-        "Angehöriger nicht in Datenbank",
         CheckAngehoerigerBereitsInDatenbankCommand.Result.EIN_EINTRAG_PASST,
-        checkAngehoerigerBereitsInDatenbankCommand.getResult());
+        checkAngehoerigerBereitsInDatenbankCommand.getResult(),
+        "Angehöriger nicht in Datenbank");
     Angehoeriger angehoerigerFound =
         checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
     assertNotNull(angehoerigerFound);
@@ -83,7 +83,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
   }
 
   @Test
-  public void testExecute_MEHRERE_EINTRAEGE_PASSEN() {
+  void testExecute_MEHRERE_EINTRAEGE_PASSEN() {
     Angehoeriger angehoeriger =
         new Angehoeriger(
             Anrede.HERR, "Andreas", "Bruggisser", null, null, null, false); // ohne Adresse
@@ -92,9 +92,9 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
         new CheckAngehoerigerBereitsInDatenbankCommand(angehoeriger);
     commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
     assertEquals(
-        "Angehöriger nicht in Datenbank",
         CheckAngehoerigerBereitsInDatenbankCommand.Result.MEHRERE_EINTRAEGE_PASSEN,
-        checkAngehoerigerBereitsInDatenbankCommand.getResult());
+        checkAngehoerigerBereitsInDatenbankCommand.getResult(),
+        "Angehöriger nicht in Datenbank");
     List<Angehoeriger> angehoerigerFoundList =
         checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
     assertNotNull(angehoerigerFoundList);
@@ -106,7 +106,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
   }
 
   @Test
-  public void testExecute_EIN_EINTRAG_PASST_TEILWEISE() {
+  void testExecute_EIN_EINTRAG_PASST_TEILWEISE() {
     Angehoeriger angehoeriger =
         new Angehoeriger(Anrede.FRAU, "Hanny", "Bruggisser", "056 426 69 15", null, null, true);
     Adresse adresse1 = new Adresse("Wiesenstrasse", "55", "5430", "Wettingen"); // andere Hausnummer
@@ -117,10 +117,10 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
     commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
 
     assertEquals(
-        "Angehöriger nicht in Datenbank",
         CheckAngehoerigerBereitsInDatenbankCommand.Result
             .EIN_EINTRAG_GLEICHER_NAME_ANDERE_ATTRIBUTE,
-        checkAngehoerigerBereitsInDatenbankCommand.getResult());
+        checkAngehoerigerBereitsInDatenbankCommand.getResult(),
+        "Angehöriger nicht in Datenbank");
     Angehoeriger angehoerigerFound =
         checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFound();
     assertNotNull(angehoerigerFound);
@@ -130,7 +130,7 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
   }
 
   @Test
-  public void testExecute_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE() {
+  void testExecute_MEHRERE_EINTRAEGE_PASSEN_TEILWEISE() {
     Angehoeriger angehoeriger =
         new Angehoeriger(Anrede.HERR, "Andreas", "Bruggisser", null, null, null, false);
     Adresse adresse1 = new Adresse("Wiesenstrasse", "5", "8803", "Rüschlikon"); // anderer Ort
@@ -141,10 +141,10 @@ public class CheckAngehoerigerBereitsInDatenbankCommandTest {
     commandInvoker.executeCommand(checkAngehoerigerBereitsInDatenbankCommand);
 
     assertEquals(
-        "Angehöriger nicht in Datenbank",
         CheckAngehoerigerBereitsInDatenbankCommand.Result
             .MEHRERE_EINTRAEGE_GLEICHER_NAME_ANDERE_ATTRIBUTE,
-        checkAngehoerigerBereitsInDatenbankCommand.getResult());
+        checkAngehoerigerBereitsInDatenbankCommand.getResult(),
+        "Angehöriger nicht in Datenbank");
     List<Angehoeriger> angehoerigerFoundList =
         checkAngehoerigerBereitsInDatenbankCommand.getAngehoerigerFoundList();
     assertNotNull(angehoerigerFoundList);

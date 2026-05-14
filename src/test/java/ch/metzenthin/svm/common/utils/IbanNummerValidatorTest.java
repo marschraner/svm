@@ -1,19 +1,19 @@
 package ch.metzenthin.svm.common.utils;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Martin Schraner
  */
-public class IbanNummerValidatorTest {
+class IbanNummerValidatorTest {
 
   private final IbanNummerValidator ibanNummerValidator = new IbanNummerValidator();
 
   @Test
-  public void testIsValid_Ch() {
+  void testIsValid_Ch() {
 
     // Genau 21 Zeichen
     assertTrue(ibanNummerValidator.isValid("CH3181239000001245689"));
@@ -36,7 +36,7 @@ public class IbanNummerValidatorTest {
   }
 
   @Test
-  public void testIsValid_notCh() {
+  void testIsValid_notCh() {
 
     // Mindestens 15, aber höchstens 34 Zeichen
     assertTrue(ibanNummerValidator.isValid("NO31 8123 9000 001"));
