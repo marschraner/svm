@@ -19,7 +19,6 @@ import ch.metzenthin.svm.ui.control.MitarbeiterCodeListController;
 import ch.metzenthin.svm.ui.control.SchuelerCodeListController;
 import ch.metzenthin.svm.ui.control.SemesterListController;
 import ch.metzenthin.svm.ui.control.SemesterrechnungCodeListController;
-import com.apple.eawt.Application;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serial;
@@ -69,8 +68,9 @@ public class SvmDesktop extends JFrame implements ActionListener {
     if (iconURL != null) {
       setIconImage(new ImageIcon(iconURL).getImage());
       // Mac Dock-Icon
-      if (System.getProperty("os.name").toLowerCase().startsWith("mac")) {
-        Application.getApplication().setDockIconImage(new ImageIcon(iconURL).getImage());
+      if (Taskbar.isTaskbarSupported()) {
+        Taskbar taskbar = Taskbar.getTaskbar();
+        taskbar.setIconImage(new ImageIcon(iconURL).getImage());
       }
     }
 

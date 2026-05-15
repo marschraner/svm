@@ -75,11 +75,6 @@
 			<artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
 			<version>11.4.9</version>
 		</dependency>
-		<dependency>
-			<groupId>com.apple</groupId>
-			<artifactId>AppleJavaExtensions</artifactId>
-			<version>1.4</version>
-		</dependency>
 	</dependencies>
 
 	<build>
