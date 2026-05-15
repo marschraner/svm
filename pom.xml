@@ -17,6 +17,9 @@
 
 	<properties>
 		<java.version>17</java.version>
+		<docx4j.version>11.4.9</docx4j.version>
+		<forms_rt.version>7.0.3</forms_rt.version>
+		<poi-ooxml.version>5.2.4</poi-ooxml.version>
 		<spotless-maven-plugin.version>3.4.0</spotless-maven-plugin.version>
 	</properties>
 
@@ -53,17 +56,17 @@
 		<dependency>
 			<groupId>com.intellij</groupId>
 			<artifactId>forms_rt</artifactId>
-			<version>7.0.3</version>
+			<version>${forms_rt.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>5.2.4</version>
+			<version>${poi-ooxml.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.docx4j</groupId>
 			<artifactId>docx4j-core</artifactId>
-			<version>11.4.9</version>
+			<version>${docx4j.version}</version>
 		</dependency>
 		<!-- https://www.docx4java.org/docx4j/Docx4j_GettingStarted.pdf:  -->
 		<!-- There are 2 significant changes in docx4j 8.0.0: -->
@@ -73,7 +76,7 @@
 		<dependency>
 			<groupId>org.docx4j</groupId>
 			<artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
-			<version>11.4.9</version>
+			<version>${docx4j.version}</version>
 		</dependency>
 	</dependencies>
 
