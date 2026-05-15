@@ -120,6 +120,35 @@
           </execution>
         </executions>
 			</plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <!-- Mindest-Java-Version -->
+                <requireJavaVersion>
+                  <version>[17,)</version>
+                </requireJavaVersion>
+                <!-- Mindest-Maven-Version -->
+                <requireMavenVersion>
+                  <version>[3.9,)</version>
+                </requireMavenVersion>
+                <!-- Verhindert unterschiedliche Dependency-Versionen -->
+                <dependencyConvergence />
+                <!-- Keine SNAPSHOT-Dependencies -->
+                <requireReleaseDeps />
+              </rules>
+              <fail>false</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 		</plugins>
 	</build>
 </project>
