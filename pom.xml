@@ -46,13 +46,6 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- Verhinderung der Warnung "Unknown enum constant javax.xml.bind.annotation.XmlAccessType.FIELD beim Builden, siehe" -->
-		<!-- https://stackoverflow.com/questions/68892633/package-javax-xml-bind-annotation-does-not-exist-error -->
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.3.1</version>
-		</dependency>
 		<dependency>
 			<groupId>com.intellij</groupId>
 			<artifactId>forms_rt</artifactId>
