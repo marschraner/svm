@@ -46,11 +46,11 @@ public class LektionsgebuehrenTableData extends AbstractTableData<Lektionsgebueh
     return switch (COLUMNS[columnIndex]) {
       case LEKTIONSLAENGE -> Integer.class;
       case BETRAG_1_KIND,
-              BETRAG_2_KINDER,
-              BETRAG_3_KINDER,
-              BETRAG_4_KINDER,
-              BETRAG_5_KINDER,
-              BETRAG_6_KINDER ->
+          BETRAG_2_KINDER,
+          BETRAG_3_KINDER,
+          BETRAG_4_KINDER,
+          BETRAG_5_KINDER,
+          BETRAG_6_KINDER ->
           BigDecimal.class;
       default -> String.class;
     };

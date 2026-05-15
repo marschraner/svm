@@ -438,8 +438,8 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
         }
       }
       case MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM,
-              MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM,
-              MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN ->
+          MITARBEITER_ADRESSLISTE_OHNE_GEBURTSDATUM,
+          MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM_AHV_IBAN_VERTRETUNGSMOEGLICHKEITEN ->
           titleInit = "Mitarbeitende";
       case VERTRETUNGSLISTE -> titleInit = "Vertretungsliste";
       case KURSLISTE_WORD -> titleInit = "Kurse";

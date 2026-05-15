@@ -17,7 +17,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<spotless-maven-plugin.version>2.43.0</spotless-maven-plugin.version>
+		<spotless-maven-plugin.version>3.4.0</spotless-maven-plugin.version>
 	</properties>
 
 	<!-- Check dependency-updates: versions:display-dependency-updates (unter Plugins, versions) -->
@@ -111,6 +111,14 @@
 						</googleJavaFormat>
 					</java>
 				</configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>validate</phase>
+          </execution>
+        </executions>
 			</plugin>
 		</plugins>
 	</build>
