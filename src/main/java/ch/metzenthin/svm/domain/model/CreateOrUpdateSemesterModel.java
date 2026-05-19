@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.domain.model.conversion.CalendarAndConversionResult;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.model.entityfields.SemesterFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
@@ -15,11 +15,13 @@ public interface CreateOrUpdateSemesterModel {
 
   SemesterFields getSemesterFields();
 
-  String formatDateAsString(String dateAsString);
-
-  CalendarAndConversionResult convertDateAsStringToCalendar(String dateAsString);
+  SemesterFields getNaechstesNochNichtErfasstesSemester();
 
   ValidationResult validateSemesterbeginn(Calendar semesterbeginn);
+
+  ValidationResult validateSchuljahr(String schuljahr);
+
+  ValidationResult validateSemesterbezeichnung(Semesterbezeichnung semesterbezeichnung);
 
   ValidationResult validateSemesterende(Calendar semesterende);
 
@@ -30,6 +32,14 @@ public interface CreateOrUpdateSemesterModel {
   ValidationResult validateFerienbeginn2(Calendar ferienbeginn2);
 
   ValidationResult validateFerienende2(Calendar ferienende2);
+
+  boolean checkIfUpdateAffectsSemesterrechnungen(
+      String semesterbeginnAsString,
+      String semesterendeAsString,
+      String ferienbeginn1AsString,
+      String ferienende1AsString,
+      String ferienbeginn2AsString,
+      String ferienende2AsString);
 
   ValidationResultsAndSaveResult speichern(
       SemesterFields semesterFields, boolean updateSemesterrechnungen);

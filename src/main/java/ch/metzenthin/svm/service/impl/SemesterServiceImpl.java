@@ -53,15 +53,28 @@ public class SemesterServiceImpl implements SemesterService {
 
   @Override
   @Transactional(readOnly = true)
-  public boolean checkIfUpdateAffectsSemesterrechnungen(Semester semester) {
-    if (semester.getSemesterId() != null
-        && semesterrechnungService.countSemesterrechnungenBySemesterId(semester.getSemesterId())
-            > 0) {
-      Optional<Semester> originalSemesterOptional =
-          semesterRepository.findById(semester.getSemesterId());
+  public boolean checkIfUpdateAffectsSemesterrechnungen(
+      Integer semesterId,
+      Calendar semesterbeginn,
+      Calendar semesterende,
+      Calendar ferienbeginn1,
+      Calendar ferienende1,
+      Calendar ferienbeginn2,
+      Calendar ferienende2) {
+
+    if (semesterId != null
+        && semesterrechnungService.countSemesterrechnungenBySemesterId(semesterId) > 0) {
+      Optional<Semester> originalSemesterOptional = semesterRepository.findById(semesterId);
       if (originalSemesterOptional.isPresent()) {
         Semester originalSemester = originalSemesterOptional.get();
-        return originalSemester.getAnzahlSchulwochen() != semester.getAnzahlSchulwochen();
+        Semester newSemester = new Semester();
+        newSemester.setSemesterbeginn(semesterbeginn);
+        newSemester.setSemesterende(semesterende);
+        newSemester.setFerienbeginn1(ferienbeginn1);
+        newSemester.setFerienende1(ferienende1);
+        newSemester.setFerienbeginn2(ferienbeginn2);
+        newSemester.setFerienende2(ferienende2);
+        return originalSemester.getAnzahlSchulwochen() != newSemester.getAnzahlSchulwochen();
       }
     }
     return false;

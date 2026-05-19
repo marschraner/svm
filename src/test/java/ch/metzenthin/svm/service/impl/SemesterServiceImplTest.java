@@ -16,6 +16,7 @@ import ch.metzenthin.svm.service.ServiceTestConfiguration;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -51,11 +52,27 @@ class SemesterServiceImplTest {
     entityManager.detach(semester);
 
     // Keine Änderung
-    assertFalse(semesterService.checkIfUpdateAffectsSemesterrechnungen(semester));
+    assertFalse(
+        semesterService.checkIfUpdateAffectsSemesterrechnungen(
+            semester.getSemesterId(),
+            semester.getSemesterbeginn(),
+            semester.getSemesterende(),
+            semester.getFerienbeginn1(),
+            semester.getFerienende1(),
+            semester.getFerienbeginn2(),
+            semester.getFerienende2()));
 
     // Semesterende eine Woche früher. Anzahl Wochen neu: 26
-    semester.setSemesterende(Converter.toCalendar("08.02.2026"));
-    assertTrue(semesterService.checkIfUpdateAffectsSemesterrechnungen(semester));
+    Calendar semesterende = Converter.toCalendar("08.02.2026");
+    assertTrue(
+        semesterService.checkIfUpdateAffectsSemesterrechnungen(
+            semester.getSemesterId(),
+            semester.getSemesterbeginn(),
+            semesterende,
+            semester.getFerienbeginn1(),
+            semester.getFerienende1(),
+            semester.getFerienbeginn2(),
+            semester.getFerienende2()));
   }
 
   @Test

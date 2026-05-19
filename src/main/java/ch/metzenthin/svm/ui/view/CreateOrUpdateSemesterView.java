@@ -3,14 +3,11 @@ package ch.metzenthin.svm.ui.view;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.ui.components.CreateOrUpdateSemesterDialog;
 import ch.metzenthin.svm.ui.components.TextFieldWithErrorLabelComponent;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
-import java.util.function.Predicate;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JSpinner;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
@@ -53,14 +50,8 @@ public class CreateOrUpdateSemesterView
   }
 
   // Schuljahre
-  public void addSpinnerSchuljahreChangeListener(
-      ChangeListener changeListenerDelegate, Predicate<ChangeEvent> isInInitialisationMode) {
-    spinnerSchuljahre.addChangeListener(
-        e -> {
-          if (!isInInitialisationMode.test(e)) {
-            changeListenerDelegate.stateChanged(e);
-          }
-        });
+  public void addSpinnerSchuljahreChangeListener(ChangeListener changeListenerDelegate) {
+    spinnerSchuljahre.addChangeListener(changeListenerDelegate);
   }
 
   public String getSpinnerSchuljahreValue() {
@@ -71,19 +62,9 @@ public class CreateOrUpdateSemesterView
     spinnerSchuljahre.setValue(value);
   }
 
-  public void setSpinnerSchuljahreToolTipText(String text) {
-    spinnerSchuljahre.setToolTipText(text);
-  }
-
   // Semesterbezeichnung
-  public void addComboBoxSemesterbezeichnungActionListener(
-      ActionListener actionListenerDelegate, Predicate<ActionEvent> isInInitialisationMode) {
-    comboBoxSemesterbezeichnung.addActionListener(
-        e -> {
-          if (!isInInitialisationMode.test(e)) {
-            actionListenerDelegate.actionPerformed(e);
-          }
-        });
+  public void addComboBoxSemesterbezeichnungActionListener(ActionListener actionListener) {
+    comboBoxSemesterbezeichnung.addActionListener(actionListener);
   }
 
   public void setComboBoxSemesterbezeichnungValues(Semesterbezeichnung[] semesterbezeichnungen) {
@@ -96,10 +77,6 @@ public class CreateOrUpdateSemesterView
 
   public void setComboBoxSemesterbezeichnungSelectedItem(Semesterbezeichnung semesterbezeichnung) {
     comboBoxSemesterbezeichnung.setSelectedItem(semesterbezeichnung);
-  }
-
-  public void setComboBoxSemesterbezeichnungToolTipText(String text) {
-    comboBoxSemesterbezeichnung.setToolTipText(text);
   }
 
   // Semesterbeginn
@@ -129,14 +106,6 @@ public class CreateOrUpdateSemesterView
     semesterbeginnWithErrorLabel.setText(text);
   }
 
-  public void setTxtSemesterbeginnToolTipText(String text) {
-    semesterbeginnWithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtSemesterbeginnEnabled() {
-    return semesterbeginnWithErrorLabel.isEnabled();
-  }
-
   // Semesterende
   public void setErrorLabelSemesterendeVisible(String errorMessage) {
     semesterendeWithErrorLabel.setErrorLabelVisible(true);
@@ -162,14 +131,6 @@ public class CreateOrUpdateSemesterView
 
   public void setTxtSemesterendeText(String text) {
     semesterendeWithErrorLabel.setText(text);
-  }
-
-  public void setTxtSemesterendeToolTipText(String text) {
-    semesterendeWithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtSemesterendeEnabled() {
-    return semesterendeWithErrorLabel.isEnabled();
   }
 
   // Ferienbeginn1
@@ -199,14 +160,6 @@ public class CreateOrUpdateSemesterView
     ferienbeginn1WithErrorLabel.setText(text);
   }
 
-  public void setTxtFerienbeginn1ToolTipText(String text) {
-    ferienbeginn1WithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtFerienbeginn1Enabled() {
-    return ferienbeginn1WithErrorLabel.isEnabled();
-  }
-
   // Ferienende1
   public void setErrorLabelFerienende1Visible(String errorMessage) {
     ferienende1WithErrorLabel.setErrorLabelVisible(true);
@@ -232,14 +185,6 @@ public class CreateOrUpdateSemesterView
 
   public void setTxtFerienende1Text(String text) {
     ferienende1WithErrorLabel.setText(text);
-  }
-
-  public void setTxtFerienende1ToolTipText(String text) {
-    ferienende1WithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtFerienende1Enabled() {
-    return ferienende1WithErrorLabel.isEnabled();
   }
 
   // Ferienbeginn2
@@ -269,14 +214,6 @@ public class CreateOrUpdateSemesterView
     ferienbeginn2WithErrorLabel.setText(text);
   }
 
-  public void setTxtFerienbeginn2ToolTipText(String text) {
-    ferienbeginn2WithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtFerienbeginn2Enabled() {
-    return ferienbeginn2WithErrorLabel.isEnabled();
-  }
-
   // Ferienende2
   public void setErrorLabelFerienende2Visible(String errorMessage) {
     ferienende2WithErrorLabel.setErrorLabelVisible(true);
@@ -302,13 +239,5 @@ public class CreateOrUpdateSemesterView
 
   public void setTxtFerienende2Text(String text) {
     ferienende2WithErrorLabel.setText(text);
-  }
-
-  public void setTxtFerienende2ToolTipText(String text) {
-    ferienende2WithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtFerienende2Enabled() {
-    return ferienende2WithErrorLabel.isEnabled();
   }
 }

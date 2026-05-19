@@ -2,11 +2,16 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.DialogClosingListener;
+import ch.metzenthin.svm.domain.model.conversion.CalendarAndConversionResult;
+import ch.metzenthin.svm.domain.model.conversion.CalendarConverter;
+import ch.metzenthin.svm.domain.model.formatting.FormattingUtils;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateView;
+import java.util.Calendar;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * @author Martin Schraner
@@ -45,6 +50,29 @@ public abstract class AbstractCreateOrUpdateController<T extends CreateOrUpdateV
   }
 
   protected abstract ValidationResultsAndSaveResult speichern();
+
+  protected static void formatConvertAndValidateDateAsString(
+      String fieldValue,
+      Function<Calendar, ValidationResult> validateFieldFunction,
+      Consumer<String> setFieldConsumer,
+      Consumer<String> setErrorLabelVisibleConsumer,
+      Runnable setErrorLabelInvisibleRunnable) {
+    String formattedFieldValue = FormattingUtils.formatCalendar(fieldValue);
+    setFieldConsumer.accept(formattedFieldValue);
+    CalendarAndConversionResult convertedFieldValueAndConversionResult =
+        CalendarConverter.toCalendar(formattedFieldValue);
+    if (!convertedFieldValueAndConversionResult.isValid()) {
+      setErrorLabelVisibleConsumer.accept(convertedFieldValueAndConversionResult.errorMessage());
+    } else {
+      ValidationResult validationResult =
+          validateFieldFunction.apply(convertedFieldValueAndConversionResult.calendar());
+      if (validationResult.isValid()) {
+        setErrorLabelInvisibleRunnable.run();
+      } else {
+        setErrorLabelVisibleConsumer.accept(validationResult.errorMessage());
+      }
+    }
+  }
 
   protected abstract void setErrorLabelsVisible(List<ValidationResult> validationResults);
 

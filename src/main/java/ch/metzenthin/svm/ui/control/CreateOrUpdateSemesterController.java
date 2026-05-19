@@ -1,17 +1,15 @@
 package ch.metzenthin.svm.ui.control;
 
-import static ch.metzenthin.svm.common.utils.Converter.asString;
-
 import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
-import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModelOld;
-import ch.metzenthin.svm.service.result.SaveSemesterResult;
+import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModel;
+import ch.metzenthin.svm.domain.model.entityfields.SemesterFields;
+import ch.metzenthin.svm.domain.model.validation.ValidationResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateSemesterView;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.util.Set;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 import org.slf4j.Logger;
@@ -21,17 +19,17 @@ import org.slf4j.LoggerFactory;
  * @author Martin Schraner
  */
 public class CreateOrUpdateSemesterController
-    extends SpeichernAbbrechenDialogController<
-        CreateOrUpdateSemesterModelOld, CreateOrUpdateSemesterView, SaveSemesterResult> {
+    extends AbstractCreateOrUpdateController<CreateOrUpdateSemesterView> {
 
   private static final Logger LOGGER =
       LoggerFactory.getLogger(CreateOrUpdateSemesterController.class);
 
+  private final CreateOrUpdateSemesterModel model;
+
   public CreateOrUpdateSemesterController(
-      CreateOrUpdateSemesterModelOld createOrUpdateSemesterModelOld,
-      boolean isBearbeiten,
-      String title) {
-    super(createOrUpdateSemesterModelOld, new CreateOrUpdateSemesterView(title), isBearbeiten);
+      CreateOrUpdateSemesterModel createOrUpdateSemesterModel, String title) {
+    super(createView(title));
+    model = createOrUpdateSemesterModel;
     configSpinnerSchuljahre();
     configComboBoxSemesterbezeichnung();
     configTxtSemesterbeginn();
@@ -40,211 +38,198 @@ public class CreateOrUpdateSemesterController
     configTxtFerienende1();
     configTxtFerienbeginn2();
     configTxtFerienende2();
+    initialiseViewFields();
   }
 
-  private ModelAndViewAccessor<String> schuljarModelAndViewAccessor;
+  private static CreateOrUpdateSemesterView createView(String title) {
+    return new CreateOrUpdateSemesterView(title);
+  }
 
   private void configSpinnerSchuljahre() {
-    schuljarModelAndViewAccessor =
-        new ModelAndViewAccessor<>(
-            Field.SCHULJAHR,
-            model::getSchuljahr,
-            model::setSchuljahr,
-            view::getSpinnerSchuljahreValue,
-            view::setSpinnerSchuljahreToolTipText);
-    view.addSpinnerSchuljahreChangeListener(
-        e -> onSchuljahrSelected(), e -> isModelInInitialisationMode());
+    view.addSpinnerSchuljahreChangeListener(e -> onSchuljahrSelected());
   }
 
   private void onSchuljahrSelected() {
     LOGGER.trace(
         "CreateOrUpdateSemesterController Event Schuljahre selected ={}",
         view.getSpinnerSchuljahreValue());
-    setModelValueFromViewWithViewValueChangedCheck(schuljarModelAndViewAccessor, false);
+    ValidationResult validationResult = model.validateSchuljahr(view.getSpinnerSchuljahreValue());
+    if (!validationResult.isValid()) {
+      view.showErrorMessageDialog(validationResult.errorMessage(), "Fehler");
+    }
   }
 
-  private ModelAndViewAccessor<Semesterbezeichnung> semesterbezeichnungModelAndViewAccessor;
-
   private void configComboBoxSemesterbezeichnung() {
-    semesterbezeichnungModelAndViewAccessor =
-        new ModelAndViewAccessor<>(
-            Field.SEMESTERBEZEICHNUNG,
-            model::getSemesterbezeichnung,
-            model::setSemesterbezeichnung,
-            view::getComboBoxSemesterbezeichnungSelectedItem,
-            view::setComboBoxSemesterbezeichnungToolTipText);
     view.setComboBoxSemesterbezeichnungValues(Semesterbezeichnung.values());
-    view.addComboBoxSemesterbezeichnungActionListener(
-        e -> onSemesterbezeichnungSelected(), e -> isModelInInitialisationMode());
+    view.addComboBoxSemesterbezeichnungActionListener(e -> onSemesterbezeichnungSelected());
   }
 
   private void onSemesterbezeichnungSelected() {
     LOGGER.trace(
         "CreateOrUpdateSemesterController Event Semesterbezeichnung selected={}",
         view.getComboBoxSemesterbezeichnungSelectedItem());
-    setModelValueFromViewWithViewValueChangedCheck(semesterbezeichnungModelAndViewAccessor, false);
+    ValidationResult validationResult =
+        model.validateSemesterbezeichnung(view.getComboBoxSemesterbezeichnungSelectedItem());
+    if (!validationResult.isValid()) {
+      view.showErrorMessageDialog(validationResult.errorMessage(), "Fehler");
+    }
   }
 
-  private ModelAndViewAccessor<String> semesterbeginnModelAndViewAccessor;
-
   private void configTxtSemesterbeginn() {
-    semesterbeginnModelAndViewAccessor =
-        new ModelAndViewAccessor<>(
-            Field.SEMESTERBEGINN,
-            () -> asString(model.getSemesterbeginn()),
-            model::setSemesterbeginn,
-            view::getTxtSemesterbeginnText,
-            view::setTxtSemesterbeginnToolTipText);
-    view.addTxtSemesterbeginnActionListener(e -> onSemesterbeginnEvent(true));
+    view.addTxtSemesterbeginnActionListener(e -> onSemesterbeginnEvent());
     view.addTxtSemesterbeginnFocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
-            onSemesterbeginnEvent(false);
+            onSemesterbeginnEvent();
           }
         });
   }
 
-  private void onSemesterbeginnEvent(boolean showRequiredErrMsg) {
+  private void onSemesterbeginnEvent() {
     LOGGER.trace("CreateOrUpdateSemesterController Event Semesterbeginn");
-    setModelValueFromViewWithViewValueChangedCheck(
-        semesterbeginnModelAndViewAccessor, showRequiredErrMsg);
+    formatConvertAndValidateDateAsString(
+        view.getTxtSemesterbeginnText(),
+        model::validateSemesterbeginn,
+        view::setTxtSemesterbeginnText,
+        view::setErrorLabelSemesterbeginnVisible,
+        view::setErrorLabelSemesterbeginnInvisible);
   }
 
-  private ModelAndViewAccessor<String> semesterendeModelAndViewAccessor;
-
   private void configTxtSemesterende() {
-    semesterendeModelAndViewAccessor =
-        new ModelAndViewAccessor<>(
-            Field.SEMESTERENDE,
-            () -> asString(model.getSemesterende()),
-            model::setSemesterende,
-            view::getTxtSemesterendeText,
-            view::setTxtSemesterendeToolTipText);
-    view.addTxtSemesterendeActionListener(e -> onSemesterendeEvent(true));
+    view.addTxtSemesterendeActionListener(e -> onSemesterendeEvent());
     view.addTxtSemesterendeFocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
-            onSemesterendeEvent(false);
+            onSemesterendeEvent();
           }
         });
   }
 
-  private void onSemesterendeEvent(boolean showRequiredErrMsg) {
+  private void onSemesterendeEvent() {
     LOGGER.trace("CreateOrUpdateSemesterController Event Semesterende");
-    setModelValueFromViewWithViewValueChangedCheck(
-        semesterendeModelAndViewAccessor, showRequiredErrMsg);
+    formatConvertAndValidateDateAsString(
+        view.getTxtSemesterendeText(),
+        model::validateSemesterende,
+        view::setTxtSemesterendeText,
+        view::setErrorLabelSemesterendeVisible,
+        view::setErrorLabelSemesterendeInvisible);
   }
 
-  private ModelAndViewAccessor<String> ferienbeginn1ModelAndViewAccessor;
-
   private void configTxtFerienbeginn1() {
-    ferienbeginn1ModelAndViewAccessor =
-        new ModelAndViewAccessor<>(
-            Field.FERIENBEGINN1,
-            () -> asString(model.getFerienbeginn1()),
-            model::setFerienbeginn1,
-            view::getTxtFerienbeginn1Text,
-            view::setTxtFerienbeginn1ToolTipText);
-    view.addTxtFerienbeginn1ActionListener(e -> onFerienbeginn1Event(true));
+    view.addTxtFerienbeginn1ActionListener(e -> onFerienbeginn1Event());
     view.addTxtFerienbeginn1FocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
-            onFerienbeginn1Event(false);
+            onFerienbeginn1Event();
           }
         });
   }
 
-  private void onFerienbeginn1Event(boolean showRequiredErrMsg) {
+  private void onFerienbeginn1Event() {
     LOGGER.trace("CreateOrUpdateSemesterController Event Ferienbeginn1");
-    setModelValueFromViewWithViewValueChangedCheck(
-        ferienbeginn1ModelAndViewAccessor, showRequiredErrMsg);
+    formatConvertAndValidateDateAsString(
+        view.getTxtFerienbeginn1Text(),
+        model::validateFerienbeginn1,
+        view::setTxtFerienbeginn1Text,
+        view::setErrorLabelFerienbeginn1Visible,
+        view::setErrorLabelFerienbeginn1Invisible);
   }
 
-  private ModelAndViewAccessor<String> ferienende1ModelAndViewAccessor;
-
   private void configTxtFerienende1() {
-    ferienende1ModelAndViewAccessor =
-        new ModelAndViewAccessor<>(
-            Field.FERIENENDE1,
-            () -> asString(model.getFerienende1()),
-            model::setFerienende1,
-            view::getTxtFerienende1Text,
-            view::setTxtFerienende1ToolTipText);
-    view.addTxtFerienende1ActionListener(e -> onFerienende1Event(true));
+    view.addTxtFerienende1ActionListener(e -> onFerienende1Event());
     view.addTxtFerienende1FocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
-            onFerienende1Event(false);
+            onFerienende1Event();
           }
         });
   }
 
-  private void onFerienende1Event(boolean showRequiredErrMsg) {
+  private void onFerienende1Event() {
     LOGGER.trace("CreateOrUpdateSemesterController Event Ferienende1");
-    setModelValueFromViewWithViewValueChangedCheck(
-        ferienende1ModelAndViewAccessor, showRequiredErrMsg);
+    formatConvertAndValidateDateAsString(
+        view.getTxtFerienende1Text(),
+        model::validateFerienende1,
+        view::setTxtFerienende1Text,
+        view::setErrorLabelFerienende1Visible,
+        view::setErrorLabelFerienende1Invisible);
   }
 
-  private ModelAndViewAccessor<String> ferienbeginn2ModelAndViewAccessor;
-
   private void configTxtFerienbeginn2() {
-    ferienbeginn2ModelAndViewAccessor =
-        new ModelAndViewAccessor<>(
-            Field.FERIENBEGINN2,
-            () -> asString(model.getFerienbeginn2()),
-            model::setFerienbeginn2,
-            view::getTxtFerienbeginn2Text,
-            view::setTxtFerienbeginn2ToolTipText);
-    view.addTxtFerienbeginn2ActionListener(e -> onFerienbeginn2Event(true));
+    view.addTxtFerienbeginn2ActionListener(e -> onFerienbeginn2Event());
     view.addTxtFerienbeginn2FocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
-            onFerienbeginn2Event(false);
+            onFerienbeginn2Event();
           }
         });
   }
 
-  private void onFerienbeginn2Event(boolean showRequiredErrMsg) {
+  private void onFerienbeginn2Event() {
     LOGGER.trace("CreateOrUpdateSemesterController Event Ferienbeginn2");
-    setModelValueFromViewWithViewValueChangedCheck(
-        ferienbeginn2ModelAndViewAccessor, showRequiredErrMsg);
+    formatConvertAndValidateDateAsString(
+        view.getTxtFerienbeginn2Text(),
+        model::validateFerienbeginn2,
+        view::setTxtFerienbeginn2Text,
+        view::setErrorLabelFerienbeginn2Visible,
+        view::setErrorLabelFerienbeginn2Invisible);
   }
 
-  private ModelAndViewAccessor<String> ferienende2ModelAndViewAccessor;
-
   private void configTxtFerienende2() {
-    ferienende2ModelAndViewAccessor =
-        new ModelAndViewAccessor<>(
-            Field.FERIENENDE2,
-            () -> asString(model.getFerienende2()),
-            model::setFerienende2,
-            view::getTxtFerienende2Text,
-            view::setTxtFerienende2ToolTipText);
-    view.addTxtFerienende2ActionListener(e -> onFerienende2Event(true));
+    view.addTxtFerienende2ActionListener(e -> onFerienende2Event());
     view.addTxtFerienende2FocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
-            onFerienende2Event(false);
+            onFerienende2Event();
           }
         });
   }
 
-  private void onFerienende2Event(boolean showRequiredErrMsg) {
+  private void onFerienende2Event() {
     LOGGER.trace("CreateOrUpdateSemesterController Event Ferienende2");
-    setModelValueFromViewWithViewValueChangedCheck(
-        ferienende2ModelAndViewAccessor, showRequiredErrMsg);
+    formatConvertAndValidateDateAsString(
+        view.getTxtFerienende2Text(),
+        model::validateFerienende2,
+        view::setTxtFerienende2Text,
+        view::setErrorLabelFerienende2Visible,
+        view::setErrorLabelFerienende2Invisible);
+  }
+
+  private void initialiseViewFields() {
+    SemesterFields semesterFields = model.getSemesterFields();
+    if (model.isNeu()) {
+      SemesterFields naechstesSemester = model.getNaechstesNochNichtErfasstesSemester();
+      view.setSpinnerSchuljahreValue(naechstesSemester.schuljahr());
+      view.setComboBoxSemesterbezeichnungSelectedItem(naechstesSemester.semesterbezeichnung());
+    } else {
+      view.setSpinnerSchuljahreValue(semesterFields.schuljahr());
+      view.setComboBoxSemesterbezeichnungSelectedItem(semesterFields.semesterbezeichnung());
+    }
+    view.setTxtSemesterbeginnText(semesterFields.semesterbeginn());
+    view.setTxtSemesterendeText(semesterFields.semesterende());
+    view.setTxtFerienbeginn1Text(semesterFields.ferienbeginn1());
+    view.setTxtFerienende1Text(semesterFields.ferienende1());
+    view.setTxtFerienbeginn2Text(semesterFields.ferienbeginn2());
+    view.setTxtFerienende2Text(semesterFields.ferienende2());
   }
 
   @Override
-  protected void speichern() {
-    boolean affectsSemesterrechnungen = model.checkIfUpdateAffectsSemesterrechnungen();
-    SaveSemesterResult saveSemesterResult;
+  protected ValidationResultsAndSaveResult speichern() {
+    boolean affectsSemesterrechnungen =
+        model.checkIfUpdateAffectsSemesterrechnungen(
+            view.getTxtSemesterbeginnText(),
+            view.getTxtSemesterendeText(),
+            view.getTxtFerienbeginn1Text(),
+            view.getTxtFerienende1Text(),
+            view.getTxtFerienbeginn2Text(),
+            view.getTxtFerienende2Text());
+    ValidationResultsAndSaveResult validationResultsAndSaveResult;
     if (affectsSemesterrechnungen) {
       int n =
           view.showYesNoDialog(
@@ -255,42 +240,42 @@ public class CreateOrUpdateSemesterController
         JDialog semesterSpeichernBusyDialog =
             view.createBusyDialog(
                 "Das Semester und die betroffenen Semesterrechnungen werden gespeichert.");
-        SwingWorker<SaveSemesterResult, Void> semesterSpeichernSwingWorker =
-            getSpeichernSwingWorker(semesterSpeichernBusyDialog);
+        SwingWorker<ValidationResultsAndSaveResult, Void> semesterSpeichernSwingWorker =
+            executeSpeichernOnSwingWorker(semesterSpeichernBusyDialog);
         semesterSpeichernBusyDialog.setVisible(true);
-        // der nachfolgende Code ist blockiert, bis der Worker beendet ist und den BusyDialog
+        // Der nachfolgende Code ist blockiert, bis der Worker beendet ist und den BusyDialog
         // schliesst
-        saveSemesterResult = getSaveSemesterResult(semesterSpeichernSwingWorker);
-
+        validationResultsAndSaveResult =
+            getValidationResultAndSaveResult(semesterSpeichernSwingWorker);
       } else {
-        saveSemesterResult = model.speichern(false);
+        validationResultsAndSaveResult = model.speichern(createSemesterFieldsFromView(), false);
       }
     } else {
-      saveSemesterResult = model.speichern(false);
+      validationResultsAndSaveResult = model.speichern(createSemesterFieldsFromView(), false);
     }
 
-    switch (saveSemesterResult) {
-      case SEMESTER_BEREITS_ERFASST, SEMESTER_UEBERLAPPT_MIT_ANDEREM_SEMESTER -> {
-        showMessageDialogError(saveSemesterResult.getMessage());
-        view.setButtonSpeichernFocusPainted(false);
-      }
-      case SEMESTER_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
-        closeDialog();
-        showMessageDialogError(saveSemesterResult.getMessage());
-      }
-      case SPEICHERN_ERFOLGREICH -> {
-        closeDialog();
-        view.showInfoMessageDialog(saveSemesterResult.getMessage(), "Speichern erfolgreich");
-      }
-    }
+    return validationResultsAndSaveResult;
   }
 
-  private SwingWorker<SaveSemesterResult, Void> getSpeichernSwingWorker(JDialog busyDialog) {
-    SwingWorker<SaveSemesterResult, Void> worker =
+  private SemesterFields createSemesterFieldsFromView() {
+    return new SemesterFields(
+        view.getSpinnerSchuljahreValue(),
+        view.getComboBoxSemesterbezeichnungSelectedItem(),
+        view.getTxtSemesterbeginnText(),
+        view.getTxtSemesterendeText(),
+        view.getTxtFerienbeginn1Text(),
+        view.getTxtFerienende1Text(),
+        view.getTxtFerienbeginn2Text(),
+        view.getTxtFerienende2Text());
+  }
+
+  private SwingWorker<ValidationResultsAndSaveResult, Void> executeSpeichernOnSwingWorker(
+      JDialog busyDialog) {
+    SwingWorker<ValidationResultsAndSaveResult, Void> worker =
         new SwingWorker<>() {
           @Override
-          protected SaveSemesterResult doInBackground() {
-            return model.speichern(true);
+          protected ValidationResultsAndSaveResult doInBackground() {
+            return model.speichern(createSemesterFieldsFromView(), true);
           }
 
           @Override
@@ -305,143 +290,58 @@ public class CreateOrUpdateSemesterController
     return worker;
   }
 
-  private static SaveSemesterResult getSaveSemesterResult(
-      SwingWorker<SaveSemesterResult, Void> semesterSpeichernSwingWorker) {
-    SaveSemesterResult saveSemesterResult;
+  private static ValidationResultsAndSaveResult getValidationResultAndSaveResult(
+      SwingWorker<ValidationResultsAndSaveResult, Void> semesterSpeichernSwingWorker) {
+    ValidationResultsAndSaveResult validationResultsAndSaveResult;
     try {
-      saveSemesterResult = semesterSpeichernSwingWorker.get();
+      validationResultsAndSaveResult = semesterSpeichernSwingWorker.get();
     } catch (InterruptedException e) {
-      LOGGER.warn("Speichern Worker Interrupted!", e);
       Thread.currentThread().interrupt();
       throw new SvmRuntimeException(e.getMessage(), e);
     } catch (ExecutionException e) {
       throw new SvmRuntimeException(e.getMessage(), e);
     }
-    return saveSemesterResult;
-  }
-
-  private void showMessageDialogError(String message) {
-    view.showErrorMessageDialog(message, "Fehler");
+    return validationResultsAndSaveResult;
   }
 
   @Override
-  void doPropertyChange(PropertyChangeEvent evt) {
-    super.doPropertyChange(evt);
-    if (checkIsFieldChange(Field.SCHULJAHR, evt)) {
-      view.setSpinnerSchuljahreValue(model.getSchuljahr());
-    } else if (checkIsFieldChange(Field.SEMESTERBEZEICHNUNG, evt)) {
-      view.setComboBoxSemesterbezeichnungSelectedItem(model.getSemesterbezeichnung());
-    } else if (checkIsFieldChange(Field.SEMESTERBEGINN, evt)) {
-      view.setTxtSemesterbeginnText(asString(model.getSemesterbeginn()));
-    } else if (checkIsFieldChange(Field.SEMESTERENDE, evt)) {
-      view.setTxtSemesterendeText(asString(model.getSemesterende()));
-    } else if (checkIsFieldChange(Field.FERIENBEGINN1, evt)) {
-      view.setTxtFerienbeginn1Text(asString(model.getFerienbeginn1()));
-    } else if (checkIsFieldChange(Field.FERIENENDE1, evt)) {
-      view.setTxtFerienende1Text(asString(model.getFerienende1()));
-    } else if (checkIsFieldChange(Field.FERIENBEGINN2, evt)) {
-      view.setTxtFerienbeginn2Text(asString(model.getFerienbeginn2()));
-    } else if (checkIsFieldChange(Field.FERIENENDE2, evt)) {
-      view.setTxtFerienende2Text(asString(model.getFerienende2()));
-    }
-  }
-
-  @Override
-  void validateFields() throws SvmValidationException {
-    if (view.isTxtSemesterbeginnEnabled()) {
-      LOGGER.trace("Validate field Semesterbeginn");
-      setModelValueFromView(semesterbeginnModelAndViewAccessor, true);
-    }
-    if (view.isTxtSemesterendeEnabled()) {
-      LOGGER.trace("Validate field Semesterende");
-      setModelValueFromView(semesterendeModelAndViewAccessor, true);
-    }
-    if (view.isTxtFerienbeginn1Enabled()) {
-      LOGGER.trace("Validate field Ferienbeginn1");
-      setModelValueFromView(ferienbeginn1ModelAndViewAccessor, true);
-    }
-    if (view.isTxtFerienende1Enabled()) {
-      LOGGER.trace("Validate field Ferienende1");
-      setModelValueFromView(ferienende1ModelAndViewAccessor, true);
-    }
-    if (view.isTxtFerienbeginn2Enabled()) {
-      LOGGER.trace("Validate field Ferienbeginn2");
-      setModelValueFromView(ferienbeginn2ModelAndViewAccessor, true);
-    }
-    if (view.isTxtFerienende2Enabled()) {
-      LOGGER.trace("Validate field Ferienende2");
-      setModelValueFromView(ferienende2ModelAndViewAccessor, true);
+  protected void setErrorLabelsVisible(List<ValidationResult> validationResults) {
+    for (ValidationResult validationResult : validationResults) {
+      if (!validationResult.isValid()) {
+        for (Field field : validationResult.affectedFields()) {
+          switch (field) {
+            case SEMESTERBEGINN ->
+                setErrorLabelVisibleIfRequired(
+                    validationResult, field, view::setErrorLabelSemesterbeginnVisible);
+            case SEMESTERENDE ->
+                setErrorLabelVisibleIfRequired(
+                    validationResult, field, view::setErrorLabelSemesterendeVisible);
+            case FERIENBEGINN1 ->
+                setErrorLabelVisibleIfRequired(
+                    validationResult, field, view::setErrorLabelFerienbeginn1Visible);
+            case FERIENENDE1 ->
+                setErrorLabelVisibleIfRequired(
+                    validationResult, field, view::setErrorLabelFerienende1Visible);
+            case FERIENBEGINN2 ->
+                setErrorLabelVisibleIfRequired(
+                    validationResult, field, view::setErrorLabelFerienbeginn2Visible);
+            case FERIENENDE2 ->
+                setErrorLabelVisibleIfRequired(
+                    validationResult, field, view::setErrorLabelFerienende2Visible);
+            default -> throw new IllegalStateException("Unexpected value: " + field);
+          }
+        }
+      }
     }
   }
 
   @Override
-  void showErrMsg(SvmValidationException e) {
-    if (e.getAffectedFields().contains(Field.SEMESTERBEGINN)) {
-      view.setErrorLabelSemesterbeginnVisible(e.getMessage());
-    }
-    if (e.getAffectedFields().contains(Field.SEMESTERENDE)) {
-      view.setErrorLabelSemesterendeVisible(e.getMessage());
-    }
-    if (e.getAffectedFields().contains(Field.FERIENBEGINN1)) {
-      view.setErrorLabelFerienbeginn1Visible(e.getMessage());
-    }
-    if (e.getAffectedFields().contains(Field.FERIENENDE1)) {
-      view.setErrorLabelFerienende1Visible(e.getMessage());
-    }
-    if (e.getAffectedFields().contains(Field.FERIENBEGINN2)) {
-      view.setErrorLabelFerienbeginn2Visible(e.getMessage());
-    }
-    if (e.getAffectedFields().contains(Field.FERIENENDE2)) {
-      view.setErrorLabelFerienende2Visible(e.getMessage());
-    }
-  }
-
-  @Override
-  void showErrMsgAsToolTip(SvmValidationException e) {
-    if (e.getAffectedFields().contains(Field.SEMESTERBEGINN)) {
-      view.setTxtSemesterbeginnToolTipText(e.getMessage());
-    }
-    if (e.getAffectedFields().contains(Field.SEMESTERENDE)) {
-      view.setTxtSemesterendeToolTipText(e.getMessage());
-    }
-    if (e.getAffectedFields().contains(Field.FERIENBEGINN1)) {
-      view.setTxtFerienbeginn1ToolTipText(e.getMessage());
-    }
-    if (e.getAffectedFields().contains(Field.FERIENENDE1)) {
-      view.setTxtFerienende1ToolTipText(e.getMessage());
-    }
-    if (e.getAffectedFields().contains(Field.FERIENBEGINN2)) {
-      view.setTxtFerienbeginn2ToolTipText(e.getMessage());
-    }
-    if (e.getAffectedFields().contains(Field.FERIENENDE2)) {
-      view.setTxtFerienende2ToolTipText(e.getMessage());
-    }
-  }
-
-  @Override
-  public void makeErrorLabelsInvisible(Set<Field> fields) {
-    if (fields.contains(Field.ALLE) || fields.contains(Field.SEMESTERBEGINN)) {
-      view.setErrorLabelSemesterbeginnInvisible();
-    }
-    if (fields.contains(Field.ALLE) || fields.contains(Field.SEMESTERENDE)) {
-      view.setErrorLabelSemesterendeInvisible();
-    }
-    if (fields.contains(Field.ALLE) || fields.contains(Field.FERIENBEGINN1)) {
-      view.setErrorLabelFerienbeginn1Invisible();
-    }
-    if (fields.contains(Field.ALLE) || fields.contains(Field.FERIENENDE1)) {
-      view.setErrorLabelFerienende1Invisible();
-    }
-    if (fields.contains(Field.ALLE) || fields.contains(Field.FERIENBEGINN2)) {
-      view.setErrorLabelFerienbeginn2Invisible();
-    }
-    if (fields.contains(Field.ALLE) || fields.contains(Field.FERIENENDE2)) {
-      view.setErrorLabelFerienende2Invisible();
-    }
-  }
-
-  @Override
-  public void disableFields(boolean disable, Set<Field> fields) {
-    // Keine Felder, die inaktiviert werden müssen
+  protected void setAllErrorLabelsInvisible() {
+    view.setErrorLabelSemesterbeginnInvisible();
+    view.setErrorLabelSemesterendeInvisible();
+    view.setErrorLabelFerienbeginn1Invisible();
+    view.setErrorLabelFerienende1Invisible();
+    view.setErrorLabelFerienbeginn2Invisible();
+    view.setErrorLabelFerienende2Invisible();
   }
 }

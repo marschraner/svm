@@ -5,6 +5,7 @@ import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.domain.EntityWithOverlappingPeriodsException;
 import ch.metzenthin.svm.domain.model.SemesterAndNumberOfKurse;
 import ch.metzenthin.svm.persistence.entities.Semester;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -12,7 +13,14 @@ import java.util.List;
  */
 public interface SemesterService {
 
-  boolean checkIfUpdateAffectsSemesterrechnungen(Semester semester);
+  boolean checkIfUpdateAffectsSemesterrechnungen(
+      Integer semesterId,
+      Calendar semesterbeginn,
+      Calendar semesterende,
+      Calendar ferienbeginn1,
+      Calendar ferienende1,
+      Calendar ferienbeginn2,
+      Calendar ferienende2);
 
   Semester determineNaechstesNochNichtErfasstesSemester();
 
