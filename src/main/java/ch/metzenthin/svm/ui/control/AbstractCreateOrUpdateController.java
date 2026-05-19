@@ -51,6 +51,22 @@ public abstract class AbstractCreateOrUpdateController<T extends CreateOrUpdateV
 
   protected abstract ValidationResultsAndSaveResult speichern();
 
+  protected static void formatAndValidateString(
+      String fieldValue,
+      Function<String, ValidationResult> validateFieldFunction,
+      Consumer<String> setFieldConsumer,
+      Consumer<String> setErrorLabelVisibleConsumer,
+      Runnable setErrorLabelInvisibleRunnable) {
+    String formattedFieldValue = FormattingUtils.formatString(fieldValue);
+    setFieldConsumer.accept(formattedFieldValue);
+    ValidationResult validationResult = validateFieldFunction.apply(formattedFieldValue);
+    if (validationResult.isValid()) {
+      setErrorLabelInvisibleRunnable.run();
+    } else {
+      setErrorLabelVisibleConsumer.accept(validationResult.errorMessage());
+    }
+  }
+
   protected static void formatConvertAndValidateDateAsString(
       String fieldValue,
       Function<Calendar, ValidationResult> validateFieldFunction,

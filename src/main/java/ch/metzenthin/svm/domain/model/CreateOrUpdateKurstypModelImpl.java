@@ -1,10 +1,10 @@
 package ch.metzenthin.svm.domain.model;
 
-import static ch.metzenthin.svm.domain.model.formatting.FormattingUtils.formatString;
 import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotEmptyAndLength;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
+import ch.metzenthin.svm.domain.model.entityfields.KurstypFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
@@ -43,12 +43,7 @@ public class CreateOrUpdateKurstypModelImpl implements CreateOrUpdateKurstypMode
 
   @Override
   public KurstypFields getKurstypFields() {
-    return new KurstypFields(kurstyp.getBezeichnung(), kurstyp.isSelektierbar());
-  }
-
-  @Override
-  public String formatBezeichnung(String bezeichnung) {
-    return formatString(bezeichnung);
+    return KurstypFields.of(kurstyp);
   }
 
   @Override
@@ -74,7 +69,9 @@ public class CreateOrUpdateKurstypModelImpl implements CreateOrUpdateKurstypMode
     if (!ValidationResult.allValidationResultsValid(validationResults)) {
       return new ValidationResultsAndSaveResult(validationResults);
     }
+
     updateModel(kurstypFields);
+
     SaveKurstypResult saveKurstypResult = saveKurstyp();
     return new ValidationResultsAndSaveResult(validationResults, saveKurstypResult);
   }
@@ -84,8 +81,7 @@ public class CreateOrUpdateKurstypModelImpl implements CreateOrUpdateKurstypMode
   }
 
   void updateModel(KurstypFields kurstypFields) {
-    kurstyp.setBezeichnung(kurstypFields.bezeichnung());
-    kurstyp.setSelektierbar(kurstypFields.selektierbar());
+    kurstypFields.mergeIntoEntity(kurstyp);
   }
 
   private SaveKurstypResult saveKurstyp() {

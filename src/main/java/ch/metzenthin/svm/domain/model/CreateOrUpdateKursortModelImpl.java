@@ -1,10 +1,10 @@
 package ch.metzenthin.svm.domain.model;
 
-import static ch.metzenthin.svm.domain.model.formatting.FormattingUtils.formatString;
 import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotEmptyAndLength;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
+import ch.metzenthin.svm.domain.model.entityfields.KursortFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.persistence.entities.Kursort;
@@ -43,12 +43,7 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
 
   @Override
   public KursortFields getKursortFields() {
-    return new KursortFields(kursort.getBezeichnung(), kursort.isSelektierbar());
-  }
-
-  @Override
-  public String formatBezeichnung(String bezeichnung) {
-    return formatString(bezeichnung);
+    return KursortFields.of(kursort);
   }
 
   @Override
@@ -74,7 +69,9 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
     if (!ValidationResult.allValidationResultsValid(validationResults)) {
       return new ValidationResultsAndSaveResult(validationResults);
     }
+
     updateModel(kursortFields);
+
     SaveKursortResult saveKursortResult = saveKursort();
     return new ValidationResultsAndSaveResult(validationResults, saveKursortResult);
   }
@@ -84,8 +81,7 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
   }
 
   void updateModel(KursortFields kursortFields) {
-    kursort.setBezeichnung(kursortFields.bezeichnung());
-    kursort.setSelektierbar(kursortFields.selektierbar());
+    kursortFields.mergeIntoEntity(kursort);
   }
 
   private SaveKursortResult saveKursort() {

@@ -2,7 +2,7 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateKursortModel;
-import ch.metzenthin.svm.domain.model.KursortFields;
+import ch.metzenthin.svm.domain.model.entityfields.KursortFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateKursortView;
@@ -48,14 +48,12 @@ public class CreateOrUpdateKursortController
 
   private void onBezeichnungEvent() {
     LOGGER.trace("CreateOrUpdateKursortController Event Bezeichnung");
-    String formattedBezeichnung = model.formatBezeichnung(view.getTxtBezeichnungText());
-    view.setTxtBezeichnungText(formattedBezeichnung);
-    ValidationResult validationResult = model.validateBezeichnung(formattedBezeichnung);
-    if (validationResult.isValid()) {
-      view.setErrorLabelBezeichnungInvisible();
-    } else {
-      view.setErrorLabelBezeichnungVisible(validationResult.errorMessage());
-    }
+    formatAndValidateString(
+        view.getTxtBezeichnungText(),
+        model::validateBezeichnung,
+        view::setTxtBezeichnungText,
+        view::setErrorLabelBezeichnungVisible,
+        view::setErrorLabelBezeichnungInvisible);
   }
 
   private void initialiseViewFields() {

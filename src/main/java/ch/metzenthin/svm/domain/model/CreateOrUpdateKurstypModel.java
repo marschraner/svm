@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.domain.model.entityfields.KurstypFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 
@@ -11,8 +12,6 @@ public interface CreateOrUpdateKurstypModel {
   boolean isNeu();
 
   KurstypFields getKurstypFields();
-
-  String formatBezeichnung(String bezeichnung);
 
   ValidationResult validateBezeichnung(String bezeichnung);
 
