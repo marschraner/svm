@@ -106,7 +106,7 @@ class SaveOrUpdateMaerchenCommandTest {
     for (Maerchen maerchen : maerchensAll) {
       if (maerchen.getSchuljahr().equals(schuljahr)
           && maerchen.getBezeichnung().equals(bezeichnung)
-          && maerchen.getAnzahlVorstellungen().equals(anzahlVorstellungen)) {
+          && maerchen.getAnzahlVorstellungen() == anzahlVorstellungen) {
         return true;
       }
     }

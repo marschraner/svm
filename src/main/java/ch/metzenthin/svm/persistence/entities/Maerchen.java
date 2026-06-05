@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.persistence.entities;
 
+import ch.metzenthin.svm.domain.model.conversion.IntegerConverter;
 import jakarta.persistence.*;
 import java.util.*;
 import lombok.Getter;
@@ -26,14 +27,16 @@ public class Maerchen extends AbstractEntity implements Comparable<Maerchen> {
   private String bezeichnung;
 
   @Column(name = "anzahl_vorstellungen", nullable = false)
-  private Integer anzahlVorstellungen;
+  private int anzahlVorstellungen;
 
   @OneToMany(mappedBy = "maerchen")
   private final List<Maercheneinteilung> maercheneinteilungen = new ArrayList<>();
 
-  public Maerchen() {}
+  public Maerchen() {
+    this.anzahlVorstellungen = IntegerConverter.VALUE_NOT_SET;
+  }
 
-  public Maerchen(String schuljahr, String bezeichnung, Integer anzahlVorstellungen) {
+  public Maerchen(String schuljahr, String bezeichnung, int anzahlVorstellungen) {
     this.schuljahr = schuljahr;
     this.bezeichnung = bezeichnung;
     this.anzahlVorstellungen = anzahlVorstellungen;
@@ -45,9 +48,7 @@ public class Maerchen extends AbstractEntity implements Comparable<Maerchen> {
             || (schuljahr != null && schuljahr.equals(otherMaerchen.getSchuljahr())))
         && ((bezeichnung == null && otherMaerchen.getBezeichnung() == null)
             || (bezeichnung != null && bezeichnung.equals(otherMaerchen.getBezeichnung())))
-        && ((anzahlVorstellungen == null && otherMaerchen.anzahlVorstellungen == null)
-            || (anzahlVorstellungen != null
-                && anzahlVorstellungen.equals(otherMaerchen.anzahlVorstellungen)));
+        && (anzahlVorstellungen == otherMaerchen.anzahlVorstellungen);
   }
 
   public void copyAttributesFrom(Maerchen otherMaerchen) {

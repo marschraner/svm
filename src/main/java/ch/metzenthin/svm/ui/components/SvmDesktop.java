@@ -5,6 +5,7 @@ import ch.metzenthin.svm.domain.model.ElternmithilfeCodeListModel;
 import ch.metzenthin.svm.domain.model.KursortListModel;
 import ch.metzenthin.svm.domain.model.KurstypListModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenListModel;
+import ch.metzenthin.svm.domain.model.MaerchenListModel;
 import ch.metzenthin.svm.domain.model.MitarbeiterCodeListModel;
 import ch.metzenthin.svm.domain.model.SchuelerCodeListModel;
 import ch.metzenthin.svm.domain.model.SemesterListModel;
@@ -15,6 +16,7 @@ import ch.metzenthin.svm.ui.control.ElternmithilfeCodeListController;
 import ch.metzenthin.svm.ui.control.KursortListController;
 import ch.metzenthin.svm.ui.control.KurstypListController;
 import ch.metzenthin.svm.ui.control.LektionsgebuehrenListController;
+import ch.metzenthin.svm.ui.control.MaerchenListController;
 import ch.metzenthin.svm.ui.control.MitarbeiterCodeListController;
 import ch.metzenthin.svm.ui.control.SchuelerCodeListController;
 import ch.metzenthin.svm.ui.control.SemesterListController;
@@ -331,9 +333,11 @@ public class SvmDesktop extends JFrame implements ActionListener {
       setAndShowActivePanel(elternmithilfeCodeListController.getView().getRootComponent(), title);
 
     } else if ("maerchenVerwalten".equals(e.getActionCommand())) {
-      MaerchensPanel maerchensPanel = new MaerchensPanel(svmContext);
-      maerchensPanel.addCloseListener(e12 -> onFrameAbbrechen());
-      setAndShowActivePanel(maerchensPanel.$$$getRootComponent$$$(), "Märchen verwalten");
+      MaerchenListModel maerchenListModel = svmContext.getModelFactory().createMaerchenListModel();
+      MaerchenListController maerchenListController =
+          new MaerchenListController(svmContext, maerchenListModel, e12 -> onFrameAbbrechen());
+      setAndShowActivePanel(
+          maerchenListController.getView().getRootComponent(), "Märchen verwalten");
 
     } else if ("semesterrechnungenSuchen".equals(e.getActionCommand())) {
       SemesterrechnungenSuchenPanel semesterrechnungenSuchenPanel =

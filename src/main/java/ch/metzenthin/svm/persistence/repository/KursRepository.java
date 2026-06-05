@@ -25,10 +25,8 @@ public interface KursRepository extends JpaRepository<Kurs, Integer> {
 
   @Query(
       "SELECT new ch.metzenthin.svm.domain.model.IdAndCount("
-          + "k.semester.semesterId, COUNT(k.kursId)) "
-          + "FROM Kurs k "
-          + "WHERE k.semester.semesterId IN (:semesterIds)"
+          + "k.semester.semesterId, COUNT(k.kursId)) FROM Kurs k "
           + "GROUP BY k.semester.semesterId "
           + "ORDER BY k.semester.semesterId ASC")
-  List<IdAndCount> countKurseGroupBySemesterId(@Param("semesterIds") List<Integer> semesterIds);
+  List<IdAndCount> countKurseGroupBySemesterId();
 }

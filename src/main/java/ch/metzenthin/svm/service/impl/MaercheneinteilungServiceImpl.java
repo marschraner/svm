@@ -16,6 +16,12 @@ public class MaercheneinteilungServiceImpl implements MaercheneinteilungService 
 
   @Override
   @Transactional(readOnly = true)
+  public boolean existsReferencedMaerchenByMaercheinteilung(int maerchenId) {
+    return maercheneinteilungRepository.countByMaerchenId(maerchenId) > 0;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public boolean existsReferencedCodeByCodeId(int codeId) {
     return maercheneinteilungRepository.countByElternmithilfeCodeId(codeId) > 0;
   }

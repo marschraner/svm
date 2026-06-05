@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.MaerchensPanel">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ch.metzenthin.svm.ui.components.MaerchenListPanel">
   <grid id="27dc6" binding="panel1" default-binding="true" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
       <xy x="20" y="20" width="1134" height="415"/>
@@ -56,7 +56,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="1f27d" class="javax.swing.JTable" binding="maerchensTable" custom-create="true">
+                  <component id="1f27d" class="javax.swing.JTable" binding="maerchenListTable" custom-create="true">
                     <constraints/>
                     <properties>
                       <preferredScrollableViewportSize width="750" height="400"/>

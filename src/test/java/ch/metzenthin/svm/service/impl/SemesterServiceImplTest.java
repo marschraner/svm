@@ -82,9 +82,9 @@ class SemesterServiceImplTest {
   }
 
   @Test
-  void findAllSemestersAndNumberOfKurse() {
+  void findAllSemesterAndNumberOfKurse() {
     List<SemesterAndNumberOfKurse> semestersAndNumberOfKurse =
-        semesterService.findAllSemestersAndNumberOfKurse();
+        semesterService.findAllSemesterAndNumberOfKurse();
     assertEquals(2, semestersAndNumberOfKurse.size());
     for (SemesterAndNumberOfKurse semesterAndNumberOfKurse : semestersAndNumberOfKurse) {
       if (semesterAndNumberOfKurse.semester().getSemesterId() == 101) {

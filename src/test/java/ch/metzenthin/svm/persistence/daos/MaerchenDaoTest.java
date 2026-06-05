@@ -49,7 +49,7 @@ class MaerchenDaoTest {
 
       assertEquals("2011/2012", maerchenFound.getSchuljahr());
       assertEquals("Schneewittchen", maerchenFound.getBezeichnung());
-      assertEquals(7, maerchen.getAnzahlVorstellungen().intValue());
+      assertEquals(7, maerchen.getAnzahlVorstellungen());
 
     } finally {
       if (tx != null) {
@@ -78,7 +78,7 @@ class MaerchenDaoTest {
 
       assertEquals("2011/2012", maerchenFound.getSchuljahr());
       assertEquals("Schneewittchen", maerchenFound.getBezeichnung());
-      assertEquals(7, maerchen.getAnzahlVorstellungen().intValue());
+      assertEquals(7, maerchen.getAnzahlVorstellungen());
 
     } finally {
       if (tx != null) {

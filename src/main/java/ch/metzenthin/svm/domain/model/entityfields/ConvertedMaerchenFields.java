@@ -8,7 +8,7 @@ import ch.metzenthin.svm.persistence.entities.Maerchen;
  */
 @SuppressWarnings({"unused", "DuplicatedCode"})
 public record ConvertedMaerchenFields(
-    String schuljahr, String bezeichnung, Integer anzahlVorstellungen) {
+    String schuljahr, String bezeichnung, int anzahlVorstellungen) {
 
   public static ConvertedMaerchenFields of(Maerchen entity) {
     if (entity == null) return null;

@@ -4,6 +4,7 @@ import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
+import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -89,9 +90,10 @@ public interface ModelFactory {
 
   ListenExportModel createListenExportModel();
 
-  MaerchensModel createMaerchensModel();
+  MaerchenListModel createMaerchenListModel();
 
-  MaerchenErfassenModel createMaerchenErfassenModel();
+  CreateOrUpdateMaerchenModel createCreateOrUpdateMaerchenModel(
+      Optional<Maerchen> maerchenToBeModifiedOptional);
 
   MaercheneinteilungenModel createMaercheneinteilungenModel();
 

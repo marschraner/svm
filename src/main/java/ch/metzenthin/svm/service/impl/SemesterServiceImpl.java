@@ -83,6 +83,7 @@ public class SemesterServiceImpl implements SemesterService {
   @Override
   @Transactional(readOnly = true)
   public Semester determineNaechstesNochNichtErfasstesSemester() {
+    List<Semester> erfassteSemester = doFindAllSemester();
     Calendar today = new GregorianCalendar();
     int schuljahr1;
     if (today.get(Calendar.MONTH) <= Calendar.MAY) {
@@ -99,7 +100,8 @@ public class SemesterServiceImpl implements SemesterService {
     } else {
       naechsteSemesterbezeichnung = Semesterbezeichnung.ERSTES_SEMESTER;
     }
-    while (isSemesterBereitsErfasst(naechstesSchuljahr, naechsteSemesterbezeichnung)
+    while (isSemesterBereitsErfasst(
+            naechstesSchuljahr, naechsteSemesterbezeichnung, erfassteSemester)
         && schuljahr1 < Schuljahre.SCHULJAHR_VALID_MAX) {
       if (naechsteSemesterbezeichnung == Semesterbezeichnung.ERSTES_SEMESTER) {
         naechsteSemesterbezeichnung = Semesterbezeichnung.ZWEITES_SEMESTER;
@@ -115,42 +117,44 @@ public class SemesterServiceImpl implements SemesterService {
   }
 
   private boolean isSemesterBereitsErfasst(
-      String naechstesSchuljahr, Semesterbezeichnung naechsteSemesterbezeichnung) {
-    return semesterRepository.countBySchuljahrAndSemesterbezeichnung(
-            naechstesSchuljahr, naechsteSemesterbezeichnung)
-        > 0;
+      String naechstesSchuljahr,
+      Semesterbezeichnung naechsteSemesterbezeichnung,
+      List<Semester> erfassteSemester) {
+    return erfassteSemester.stream()
+        .anyMatch(
+            semester ->
+                semester.getSchuljahr().equals(naechstesSchuljahr)
+                    && semester.getSemesterbezeichnung() == naechsteSemesterbezeichnung);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public List<Semester> findAllSemesters() {
-    return doFindAllSemesters();
+  public List<Semester> findAllSemester() {
+    return doFindAllSemester();
   }
 
-  private List<Semester> doFindAllSemesters() {
+  private List<Semester> doFindAllSemester() {
     return semesterRepository.findAllOrderBySemesterbeginnAndSemesterendeDesc();
   }
 
   @Override
   @Transactional(readOnly = true)
-  public List<SemesterAndNumberOfKurse> findAllSemestersAndNumberOfKurse() {
-    List<Semester> semesters = doFindAllSemesters();
-    List<Integer> semesterIds = semesters.stream().map(Semester::getSemesterId).toList();
-    List<IdAndCount> semesterIdAndNumberOfKurseList =
-        kursRepository.countKurseGroupBySemesterId(semesterIds);
+  public List<SemesterAndNumberOfKurse> findAllSemesterAndNumberOfKurse() {
+    List<IdAndCount> semesterIdAndNumberOfKurseList = kursRepository.countKurseGroupBySemesterId();
     Map<Integer, Long> semesterIdsAndNumberOfKurseAsMap =
         semesterIdAndNumberOfKurseList.stream()
             .collect(Collectors.toMap(IdAndCount::id, IdAndCount::count));
 
-    List<SemesterAndNumberOfKurse> semesterAndNumberOfKurses = new ArrayList<>();
+    List<Semester> semesters = doFindAllSemester();
+    List<SemesterAndNumberOfKurse> semesterAndNumberOfKurseList = new ArrayList<>();
     for (Semester semester : semesters) {
       long numberOfKurse =
           semesterIdsAndNumberOfKurseAsMap.getOrDefault(semester.getSemesterId(), 0L);
       SemesterAndNumberOfKurse semesterAndNumberOfKurse =
           new SemesterAndNumberOfKurse(semester, numberOfKurse);
-      semesterAndNumberOfKurses.add(semesterAndNumberOfKurse);
+      semesterAndNumberOfKurseList.add(semesterAndNumberOfKurse);
     }
-    return semesterAndNumberOfKurses;
+    return semesterAndNumberOfKurseList;
   }
 
   @Override
@@ -190,7 +194,7 @@ public class SemesterServiceImpl implements SemesterService {
   }
 
   private boolean hasOverlappingPeriods(Semester semester) {
-    return doFindAllSemesters().stream()
+    return doFindAllSemester().stream()
         .filter(s -> !s.getSemesterId().equals(semester.getSemesterId()))
         .anyMatch(
             s ->

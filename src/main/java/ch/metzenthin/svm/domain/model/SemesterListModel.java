@@ -39,8 +39,7 @@ public class SemesterListModel
 
   private static TableModel<SemesterTableData, SemesterAndNumberOfKurse> createTableModel(
       SemesterService semesterService) {
-    List<SemesterAndNumberOfKurse> semesterList =
-        semesterService.findAllSemestersAndNumberOfKurse();
+    List<SemesterAndNumberOfKurse> semesterList = semesterService.findAllSemesterAndNumberOfKurse();
     SemesterTableData semesterTableData = new SemesterTableData(semesterList);
     return new TableModel<>(semesterTableData);
   }
@@ -87,8 +86,7 @@ public class SemesterListModel
 
   @Override
   public void reloadData() {
-    List<SemesterAndNumberOfKurse> semesterList =
-        semesterService.findAllSemestersAndNumberOfKurse();
+    List<SemesterAndNumberOfKurse> semesterList = semesterService.findAllSemesterAndNumberOfKurse();
     tableModel.setData(semesterList);
   }
 

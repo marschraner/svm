@@ -52,17 +52,7 @@ class KursRepositoryTest {
 
   @Test
   void testCountKurseGroupBySemesterId() {
-    List<IdAndCount> idAndCounts = kursRepository.countKurseGroupBySemesterId(List.of(101));
-    assertEquals(1, idAndCounts.size());
-    assertEquals(101, idAndCounts.get(0).id());
-    assertEquals(1, idAndCounts.get(0).count());
-
-    idAndCounts = kursRepository.countKurseGroupBySemesterId(List.of(102));
-    assertEquals(1, idAndCounts.size());
-    assertEquals(102, idAndCounts.get(0).id());
-    assertEquals(2, idAndCounts.get(0).count());
-
-    idAndCounts = kursRepository.countKurseGroupBySemesterId(List.of(102, 101));
+    List<IdAndCount> idAndCounts = kursRepository.countKurseGroupBySemesterId();
     assertEquals(2, idAndCounts.size());
     assertEquals(101, idAndCounts.get(0).id());
     assertEquals(1, idAndCounts.get(0).count());

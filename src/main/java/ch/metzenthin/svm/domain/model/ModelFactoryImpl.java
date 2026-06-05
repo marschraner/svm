@@ -4,6 +4,7 @@ import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
+import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -13,6 +14,7 @@ import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.KurstypService;
 import ch.metzenthin.svm.service.LektionsgebuehrenService;
+import ch.metzenthin.svm.service.MaerchenService;
 import ch.metzenthin.svm.service.MitarbeiterCodeService;
 import ch.metzenthin.svm.service.SchuelerCodeService;
 import ch.metzenthin.svm.service.SemesterService;
@@ -31,6 +33,7 @@ public class ModelFactoryImpl implements ModelFactory {
   private final KursService kursService;
   private final KursortService kursortService;
   private final KurstypService kurstypService;
+  private final MaerchenService maerchenService;
   private final SchuelerCodeService schuelerCodeService;
   private final MitarbeiterCodeService mitarbeiterCodeService;
   private final ElternmithilfeCodeService elternmithilfeCodeService;
@@ -43,6 +46,7 @@ public class ModelFactoryImpl implements ModelFactory {
       KursService kursService,
       KursortService kursortService,
       KurstypService kurstypService,
+      MaerchenService maerchenService,
       SchuelerCodeService schuelerCodeService,
       MitarbeiterCodeService mitarbeiterCodeService,
       ElternmithilfeCodeService elternmithilfeCodeService,
@@ -53,6 +57,7 @@ public class ModelFactoryImpl implements ModelFactory {
     this.kursService = kursService;
     this.kursortService = kursortService;
     this.kurstypService = kurstypService;
+    this.maerchenService = maerchenService;
     this.schuelerCodeService = schuelerCodeService;
     this.mitarbeiterCodeService = mitarbeiterCodeService;
     this.elternmithilfeCodeService = elternmithilfeCodeService;
@@ -251,13 +256,14 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
-  public MaerchensModel createMaerchensModel() {
-    return new MaerchensModelImpl();
+  public MaerchenListModel createMaerchenListModel() {
+    return new MaerchenListModel(maerchenService);
   }
 
   @Override
-  public MaerchenErfassenModel createMaerchenErfassenModel() {
-    return new MaerchenErfassenModelImpl();
+  public CreateOrUpdateMaerchenModel createCreateOrUpdateMaerchenModel(
+      Optional<Maerchen> maerchenToBeModifiedOptional) {
+    return new CreateOrUpdateMaerchenModelImpl(maerchenToBeModifiedOptional, maerchenService);
   }
 
   @Override

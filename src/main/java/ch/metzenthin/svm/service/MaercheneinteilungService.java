@@ -3,4 +3,7 @@ package ch.metzenthin.svm.service;
 /**
  * @author Hans Stamm
  */
-public interface MaercheneinteilungService extends ReferencedCodeService {}
+public interface MaercheneinteilungService extends ReferencedCodeService {
+
+  boolean existsReferencedMaerchenByMaercheinteilung(int maerchenId);
+}

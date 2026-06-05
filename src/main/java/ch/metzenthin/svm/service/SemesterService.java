@@ -24,9 +24,9 @@ public interface SemesterService {
 
   Semester determineNaechstesNochNichtErfasstesSemester();
 
-  List<Semester> findAllSemesters();
+  List<Semester> findAllSemester();
 
-  List<SemesterAndNumberOfKurse> findAllSemestersAndNumberOfKurse();
+  List<SemesterAndNumberOfKurse> findAllSemesterAndNumberOfKurse();
 
   void saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(
       Semester semester, boolean updateSemesterrechnungen)

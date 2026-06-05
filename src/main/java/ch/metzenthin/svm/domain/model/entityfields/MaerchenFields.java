@@ -28,7 +28,7 @@ public record MaerchenFields(String schuljahr, String bezeichnung, String anzahl
     List<ConversionResult<?>> conversionErrors = new ArrayList<>();
 
     ConversionResult<Integer> anzahlVorstellungen =
-        IntegerConverter.convertToInteger("anzahlVorstellungen", anzahlVorstellungen());
+        IntegerConverter.convertToInt("anzahlVorstellungen", anzahlVorstellungen());
     if (!anzahlVorstellungen.isValid()) conversionErrors.add(anzahlVorstellungen);
 
     ConvertedMaerchenFields convertedMaerchenFields =
