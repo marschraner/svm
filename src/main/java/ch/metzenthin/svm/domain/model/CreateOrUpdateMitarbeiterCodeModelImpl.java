@@ -16,6 +16,7 @@ public class CreateOrUpdateMitarbeiterCodeModelImpl
       Optional<MitarbeiterCode> mitarbeiterCodeToBeModifiedOptional,
       CodeService<MitarbeiterCode> mitarbeiterCodeService) {
     super(
+        mitarbeiterCodeToBeModifiedOptional.isEmpty(),
         mitarbeiterCodeToBeModifiedOptional.orElseGet(MitarbeiterCode::new),
         mitarbeiterCodeService);
   }

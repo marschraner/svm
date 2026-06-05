@@ -16,6 +16,7 @@ public class CreateOrUpdateElternmithilfeCodeModelImpl
       Optional<ElternmithilfeCode> elternmithilfeCodeToBeModifiedOptional,
       CodeService<ElternmithilfeCode> elternmithilfeCodeService) {
     super(
+        elternmithilfeCodeToBeModifiedOptional.isEmpty(),
         elternmithilfeCodeToBeModifiedOptional.orElseGet(ElternmithilfeCode::new),
         elternmithilfeCodeService);
   }

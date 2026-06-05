@@ -14,6 +14,9 @@ public class CreateOrUpdateSchuelerCodeModelImpl extends CreateOrUpdateCodeModel
   public CreateOrUpdateSchuelerCodeModelImpl(
       Optional<SchuelerCode> schuelerCodeToBeModifiedOptional,
       CodeService<SchuelerCode> schuelerCodeService) {
-    super(schuelerCodeToBeModifiedOptional.orElseGet(SchuelerCode::new), schuelerCodeService);
+    super(
+        schuelerCodeToBeModifiedOptional.isEmpty(),
+        schuelerCodeToBeModifiedOptional.orElseGet(SchuelerCode::new),
+        schuelerCodeService);
   }
 }

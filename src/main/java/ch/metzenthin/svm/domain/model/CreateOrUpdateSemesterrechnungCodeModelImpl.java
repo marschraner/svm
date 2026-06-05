@@ -16,6 +16,7 @@ public class CreateOrUpdateSemesterrechnungCodeModelImpl
       Optional<SemesterrechnungCode> semesterrechnungCodeToBeModifiedOptional,
       CodeService<SemesterrechnungCode> semesterrechnungCodeService) {
     super(
+        semesterrechnungCodeToBeModifiedOptional.isEmpty(),
         semesterrechnungCodeToBeModifiedOptional.orElseGet(SemesterrechnungCode::new),
         semesterrechnungCodeService);
   }

@@ -25,6 +25,19 @@ public abstract class AbstractCodeServiceImpl<T extends Code> implements CodeSer
 
   @Override
   @Transactional(readOnly = true)
+  public boolean doesKuerzelAlreadyExist(Integer codeId, String kuerzel) {
+    long numberOfAlreadyExistingKuerzel = getNumberOfAlreadyExistingKuerzel(codeId, kuerzel);
+    return numberOfAlreadyExistingKuerzel > 0;
+  }
+
+  private int getNumberOfAlreadyExistingKuerzel(Integer codeId, String kuerzel) {
+    return (codeId != null)
+        ? codeRepository.countByKuerzelAndIdNe(kuerzel, codeId)
+        : codeRepository.countByKuerzel(kuerzel);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public List<T> findAllCodes() {
     return codeRepository.findAllOrderByKuerzel();
   }
@@ -33,9 +46,7 @@ public abstract class AbstractCodeServiceImpl<T extends Code> implements CodeSer
   @Transactional
   public void saveCode(T code) throws EntityAlreadyExistsException {
     long numberOfAlreadyExistingCodes =
-        (code.getCodeId() != null)
-            ? codeRepository.countByKuerzelAndIdNe(code.getKuerzel(), code.getCodeId())
-            : codeRepository.countByKuerzel(code.getKuerzel());
+        getNumberOfAlreadyExistingKuerzel(code.getCodeId(), code.getKuerzel());
     if (numberOfAlreadyExistingCodes > 0) {
       throw new EntityAlreadyExistsException();
     }

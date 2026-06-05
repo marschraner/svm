@@ -1,138 +1,89 @@
 package ch.metzenthin.svm.domain.model;
 
+import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotEmptyAndLength;
+
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.model.entityfields.CodeFields;
+import ch.metzenthin.svm.domain.model.validation.ValidationResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.service.CodeService;
 import ch.metzenthin.svm.service.result.SaveCodeResult;
 import jakarta.persistence.OptimisticLockException;
+import java.util.List;
+import java.util.Set;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
  * @author Martin Schraner
  */
-public abstract class CreateOrUpdateCodeModelImpl<T extends Code> extends AbstractModel
+public abstract class CreateOrUpdateCodeModelImpl<T extends Code>
     implements CreateOrUpdateCodeModel {
 
+  private final boolean neu;
   private final T code;
   private final CodeService<T> codeService;
 
-  protected CreateOrUpdateCodeModelImpl(T code, CodeService<T> codeService) {
+  protected CreateOrUpdateCodeModelImpl(boolean neu, T code, CodeService<T> codeService) {
+    this.neu = neu;
     this.code = code;
     this.codeService = codeService;
   }
 
-  private final StringModelAttribute kuerzelModelAttribute =
-      new StringModelAttribute(
-          this,
-          Field.KUERZEL,
-          1,
-          3,
-          new AttributeAccessor<>() {
-            @Override
-            public String getValue() {
-              return code.getKuerzel();
-            }
-
-            @Override
-            public void setValue(String value) {
-              code.setKuerzel(value);
-            }
-          });
-
   @Override
-  public String getKuerzel() {
-    return kuerzelModelAttribute.getValue();
+  public boolean isNeu() {
+    return neu;
   }
 
   @Override
-  public void setKuerzel(String kuerzel) throws SvmValidationException {
-    setKuerzel(kuerzel, false);
-  }
-
-  private void setKuerzel(String kuerzel, boolean enforcePropertyChangeEvent)
-      throws SvmValidationException {
-    kuerzelModelAttribute.setNewValue(true, kuerzel, isBulkUpdate(), enforcePropertyChangeEvent);
-  }
-
-  private final StringModelAttribute beschreibungModelAttribute =
-      new StringModelAttribute(
-          this,
-          Field.BESCHREIBUNG,
-          2,
-          50,
-          new AttributeAccessor<>() {
-            @Override
-            public String getValue() {
-              return code.getBeschreibung();
-            }
-
-            @Override
-            public void setValue(String value) {
-              code.setBeschreibung(value);
-            }
-          });
-
-  @Override
-  public String getBeschreibung() {
-    return beschreibungModelAttribute.getValue();
+  public CodeFields getCodeFields() {
+    return CodeFields.of(code);
   }
 
   @Override
-  public void setBeschreibung(String beschreibung) throws SvmValidationException {
-    setBeschreibung(beschreibung, false);
+  public ValidationResult validateKuerzel(String kuerzel) {
+    ValidationResult validationResult = validateNotEmptyAndLength(kuerzel, 1, 3, Field.KUERZEL);
+    if (!validationResult.isValid()) {
+      return validationResult;
+    }
+    return validateKuerzelNotAlreadyExists(kuerzel);
   }
 
-  private void setBeschreibung(String bezeichnung, boolean enforcePropertyChangeEvent)
-      throws SvmValidationException {
-    beschreibungModelAttribute.setNewValue(
-        true, bezeichnung, isBulkUpdate(), enforcePropertyChangeEvent);
-  }
-
-  @Override
-  public void setSelektierbar(Boolean isSelected) {
-    setSelektierbar(isSelected, false);
-  }
-
-  private void setSelektierbar(Boolean isSelected, boolean enforcePropertyChangeEvent) {
-    Boolean oldValue = (enforcePropertyChangeEvent) ? !isSelected : code.isSelektierbar();
-    code.setSelektierbar(isSelected);
-    firePropertyChange(Field.SELEKTIERBAR, oldValue, isSelected);
+  private ValidationResult validateKuerzelNotAlreadyExists(String kuerzel) {
+    return (codeService.doesKuerzelAlreadyExist(code.getCodeId(), kuerzel))
+        ? new ValidationResult("Kuerzel bereits in Verwendung!", Set.of(Field.KUERZEL))
+        : new ValidationResult();
   }
 
   @Override
-  public Boolean isSelektierbar() {
-    return code.isSelektierbar();
+  public ValidationResult validateBeschreibung(String beschreibung) {
+    return validateNotEmptyAndLength(beschreibung, 2, 50, Field.BESCHREIBUNG);
   }
 
   @Override
-  public void initialiseModelValuesOnNeu() {
-    initialiseModelValuesOnNeu(() -> setSelektierbar(true));
+  public ValidationResultsAndSaveResult speichern(CodeFields codeFields) {
+    List<ValidationResult> validationResults = validateAll(codeFields);
+    if (!ValidationResult.allValidationResultsValid(validationResults)) {
+      return new ValidationResultsAndSaveResult(validationResults);
+    }
+
+    updateModel(codeFields);
+
+    SaveCodeResult saveCodeResult = saveCode();
+    return new ValidationResultsAndSaveResult(validationResults, saveCodeResult);
   }
 
-  @Override
-  public void initialiseModelValuesOnBearbeiten() {
-    initialiseModelValuesOnBearbeiten(
-        () -> {
-          setKuerzel(code.getKuerzel(), true);
-          setBeschreibung(code.getBeschreibung(), true);
-          setSelektierbar(code.isSelektierbar(), true);
-        });
+  private List<ValidationResult> validateAll(CodeFields codeFields) {
+    return List.of(
+        validateKuerzel(codeFields.kuerzel()), validateBeschreibung(codeFields.beschreibung()));
   }
 
-  @Override
-  public boolean isCompleted() {
-    return true;
+  void updateModel(CodeFields codeFields) {
+    codeFields.mergeIntoEntity(code);
   }
 
-  @Override
-  void doValidate() throws SvmValidationException {
-    // Keine feldübergreifende Validierung notwendig
-  }
-
-  @Override
-  public SaveCodeResult speichern() {
+  public SaveCodeResult saveCode() {
     SaveCodeResult saveCodeResult;
     try {
       codeService.saveCode(code);

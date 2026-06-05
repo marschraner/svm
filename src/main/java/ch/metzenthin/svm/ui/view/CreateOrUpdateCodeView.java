@@ -4,7 +4,6 @@ import ch.metzenthin.svm.ui.components.CreateOrUpdateCodeDialog;
 import ch.metzenthin.svm.ui.components.TextFieldWithErrorLabelComponent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
-import java.awt.event.ItemListener;
 import javax.swing.JCheckBox;
 
 /**
@@ -53,14 +52,6 @@ public class CreateOrUpdateCodeView extends SpeichernAbbrechenDialogView<CreateO
     kuerzelWithErrorLabel.setText(text);
   }
 
-  public void setTxtKuerzelToolTipText(String text) {
-    kuerzelWithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtKuerzelEnabled() {
-    return kuerzelWithErrorLabel.isEnabled();
-  }
-
   // Beschreibung
   public void setErrorLabelBeschreibungVisible(String errorMessage) {
     beschreibungWithErrorLabel.setErrorLabelVisible(true);
@@ -86,19 +77,6 @@ public class CreateOrUpdateCodeView extends SpeichernAbbrechenDialogView<CreateO
 
   public void setTxtBeschreibungText(String text) {
     beschreibungWithErrorLabel.setText(text);
-  }
-
-  public void setTxtBeschreibungToolTipText(String text) {
-    beschreibungWithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtBeschreibungEnabled() {
-    return beschreibungWithErrorLabel.isEnabled();
-  }
-
-  // Selektierbar
-  public void addCheckBoxSelektierbarItemListener(ItemListener itemListener) {
-    checkBoxSelektierbar.addItemListener(itemListener);
   }
 
   public boolean isCheckBoxSelektierbarSelected() {

@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface CodeService<T extends Code> {
 
+  boolean doesKuerzelAlreadyExist(Integer codeId, String kuerzel);
+
   List<T> findAllCodes();
 
   void saveCode(T code) throws EntityAlreadyExistsException;

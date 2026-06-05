@@ -1,13 +1,13 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.datatypes.Field;
-import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateCodeModel;
-import ch.metzenthin.svm.service.result.SaveCodeResult;
+import ch.metzenthin.svm.domain.model.entityfields.CodeFields;
+import ch.metzenthin.svm.domain.model.validation.ValidationResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateCodeView;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.util.Set;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,137 +15,110 @@ import org.slf4j.LoggerFactory;
  * @author Martin Schraner
  */
 public class CreateOrUpdateCodeController
-    extends SpeichernAbbrechenDialogController<
-        CreateOrUpdateCodeModel, CreateOrUpdateCodeView, SaveCodeResult> {
+    extends AbstractCreateOrUpdateController<CreateOrUpdateCodeView> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CreateOrUpdateCodeController.class);
 
+  private final CreateOrUpdateCodeModel model;
+
   public CreateOrUpdateCodeController(
-      CreateOrUpdateCodeModel createOrUpdateCodeModel, boolean isBearbeiten, String title) {
-    super(createOrUpdateCodeModel, new CreateOrUpdateCodeView(title), isBearbeiten);
+      CreateOrUpdateCodeModel createOrUpdateCodeModel, String title) {
+    super(createView(title));
+    model = createOrUpdateCodeModel;
     configTxtKuerzel();
     configTxtBeschreibung();
-    configCheckBoxSelektierbar();
+    initialiseViewFields();
   }
 
-  private ModelAndViewAccessor<String> kuerzelModelAndViewAccessor;
+  private static CreateOrUpdateCodeView createView(String title) {
+    return new CreateOrUpdateCodeView(title);
+  }
 
   private void configTxtKuerzel() {
-    kuerzelModelAndViewAccessor =
-        new ModelAndViewAccessor<>(
-            Field.KUERZEL,
-            model::getKuerzel,
-            model::setKuerzel,
-            view::getTxtKuerzelText,
-            view::setTxtKuerzelToolTipText);
-    view.addTxtKuerzelActionListener(e -> onKuerzelEvent(true));
+    view.addTxtKuerzelActionListener(e -> onKuerzelEvent());
     view.addTxtKuerzelFocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
-            onKuerzelEvent(false);
+            onKuerzelEvent();
           }
         });
   }
 
-  private void onKuerzelEvent(boolean showRequiredErrMsg) {
+  private void onKuerzelEvent() {
     LOGGER.trace("CreateOrUpdateCodeController Event Kuerzel");
-    setModelValueFromViewWithViewValueChangedCheck(kuerzelModelAndViewAccessor, showRequiredErrMsg);
+    formatAndValidateString(
+        view.getTxtKuerzelText(),
+        model::validateKuerzel,
+        view::setTxtKuerzelText,
+        view::setErrorLabelKuerzelVisible,
+        view::setErrorLabelKuerzelInvisible);
   }
 
-  private ModelAndViewAccessor<String> beschreibungModelAndViewAccessor;
-
   private void configTxtBeschreibung() {
-    beschreibungModelAndViewAccessor =
-        new ModelAndViewAccessor<>(
-            Field.BESCHREIBUNG,
-            model::getBeschreibung,
-            model::setBeschreibung,
-            view::getTxtBeschreibungText,
-            view::setTxtBeschreibungToolTipText);
-    view.addTxtBeschreibungActionListener(e -> onBeschreibungEvent(true));
+    view.addTxtBeschreibungActionListener(e -> onBeschreibungEvent());
     view.addTxtBeschreibungFocusListener(
         new FocusAdapter() {
           @Override
           public void focusLost(FocusEvent e) {
-            onBeschreibungEvent(false);
+            onBeschreibungEvent();
           }
         });
   }
 
-  private void onBeschreibungEvent(boolean showRequiredErrMsg) {
+  private void onBeschreibungEvent() {
     LOGGER.trace("CreateOrUpdateCodeController Event Beschreibung");
-    setModelValueFromViewWithViewValueChangedCheck(
-        beschreibungModelAndViewAccessor, showRequiredErrMsg);
+    formatAndValidateString(
+        view.getTxtBeschreibungText(),
+        model::validateBeschreibung,
+        view::setTxtBeschreibungText,
+        view::setErrorLabelBeschreibungVisible,
+        view::setErrorLabelBeschreibungInvisible);
   }
 
-  private void configCheckBoxSelektierbar() {
-    view.addCheckBoxSelektierbarItemListener(e -> onSelektierbarEvent());
-  }
-
-  private void onSelektierbarEvent() {
-    LOGGER.trace(
-        "CreateOrUpdateCodeController Event Selektierbar. Selected={}",
-        view.isCheckBoxSelektierbarSelected());
-    model.setSelektierbar(view.isCheckBoxSelektierbarSelected());
-  }
-
-  @Override
-  void doPropertyChange(PropertyChangeEvent evt) {
-    super.doPropertyChange(evt);
-    if (checkIsFieldChange(Field.KUERZEL, evt)) {
-      view.setTxtKuerzelText(model.getKuerzel());
-    } else if (checkIsFieldChange(Field.BESCHREIBUNG, evt)) {
-      view.setTxtBeschreibungText(model.getBeschreibung());
-    } else if (checkIsFieldChange(Field.SELEKTIERBAR, evt)) {
-      view.setCheckBoxSelektierbarSelected(model.isSelektierbar());
+  private void initialiseViewFields() {
+    CodeFields codeFields = model.getCodeFields();
+    view.setTxtKuerzelText(codeFields.kuerzel());
+    view.setTxtBeschreibungText(codeFields.beschreibung());
+    if (model.isNeu()) {
+      view.setCheckBoxSelektierbarSelected(true);
+    } else {
+      view.setCheckBoxSelektierbarSelected(codeFields.selektierbar());
     }
   }
 
   @Override
-  void validateFields() throws SvmValidationException {
-    if (view.isTxtKuerzelEnabled()) {
-      LOGGER.trace("Validate field Kuerzel");
-      setModelValueFromView(kuerzelModelAndViewAccessor, true);
-    }
-    if (view.isTxtBeschreibungEnabled()) {
-      LOGGER.trace("Validate field Beschreibung");
-      setModelValueFromView(beschreibungModelAndViewAccessor, true);
+  protected ValidationResultsAndSaveResult speichern() {
+    CodeFields codeFields =
+        new CodeFields(
+            view.getTxtKuerzelText(),
+            view.getTxtBeschreibungText(),
+            view.isCheckBoxSelektierbarSelected());
+    return model.speichern(codeFields);
+  }
+
+  @Override
+  public void setErrorLabelsVisible(List<ValidationResult> validationResults) {
+    for (ValidationResult validationResult : validationResults) {
+      if (!validationResult.isValid()) {
+        for (Field field : validationResult.affectedFields()) {
+          switch (field) {
+            case KUERZEL ->
+                setErrorLabelVisibleIfRequired(
+                    validationResult, field, view::setErrorLabelKuerzelVisible);
+            case BESCHREIBUNG ->
+                setErrorLabelVisibleIfRequired(
+                    validationResult, field, view::setErrorLabelBeschreibungVisible);
+            default -> throw new IllegalStateException("Unexpected value: " + field);
+          }
+        }
+      }
     }
   }
 
   @Override
-  void showErrMsg(SvmValidationException e) {
-    if (e.getAffectedFields().contains(Field.KUERZEL)) {
-      view.setErrorLabelKuerzelVisible(e.getMessage());
-    }
-    if (e.getAffectedFields().contains(Field.BESCHREIBUNG)) {
-      view.setErrorLabelBeschreibungVisible(e.getMessage());
-    }
-  }
-
-  @Override
-  void showErrMsgAsToolTip(SvmValidationException e) {
-    if (e.getAffectedFields().contains(Field.KUERZEL)) {
-      view.setTxtKuerzelToolTipText(e.getMessage());
-    }
-    if (e.getAffectedFields().contains(Field.BESCHREIBUNG)) {
-      view.setTxtBeschreibungToolTipText(e.getMessage());
-    }
-  }
-
-  @Override
-  public void makeErrorLabelsInvisible(Set<Field> fields) {
-    if (fields.contains(Field.ALLE) || fields.contains(Field.KUERZEL)) {
-      view.setErrorLabelKuerzelInvisible();
-    }
-    if (fields.contains(Field.ALLE) || fields.contains(Field.BESCHREIBUNG)) {
-      view.setErrorLabelBeschreibungInvisible();
-    }
-  }
-
-  @Override
-  public void disableFields(boolean disable, Set<Field> fields) {
-    // Keine Felder, die inaktiviert werden müssen
+  public void setAllErrorLabelsInvisible() {
+    view.setErrorLabelKuerzelInvisible();
+    view.setErrorLabelBeschreibungInvisible();
   }
 }

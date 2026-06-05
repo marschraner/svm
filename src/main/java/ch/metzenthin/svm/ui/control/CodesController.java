@@ -245,8 +245,8 @@ public class CodesController {
               codesModel.createCreateOrUpdateSemesterrechnungCodeModel(svmContext, codesTableModel);
         };
     CreateOrUpdateCodeController createOrUpdateCodeController =
-        new CreateOrUpdateCodeController(createOrUpdateCodeModel, false, title);
-    createOrUpdateCodeController.initialiseModelValuesAndViewFieldsAndShowDialog();
+        new CreateOrUpdateCodeController(createOrUpdateCodeModel, title);
+    createOrUpdateCodeController.showDialog();
     // Dialog wurde geschlossen
     reloadTableModel();
     btnNeu.setFocusPainted(false);
@@ -338,8 +338,8 @@ public class CodesController {
                   svmContext, codesTableModel, codesTable.getSelectedRow());
         };
     CreateOrUpdateCodeController createOrUpdateCodeController =
-        new CreateOrUpdateCodeController(createOrUpdateCodeModel, true, title);
-    createOrUpdateCodeController.initialiseModelValuesAndViewFieldsAndShowDialog();
+        new CreateOrUpdateCodeController(createOrUpdateCodeModel, title);
+    createOrUpdateCodeController.showDialog();
     // Dialog wurde geschlossen
     reloadTableModel();
     btnBearbeiten.setFocusPainted(false);

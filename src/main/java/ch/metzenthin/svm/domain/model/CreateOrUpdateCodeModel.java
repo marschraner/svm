@@ -1,22 +1,21 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.service.result.SaveCodeResult;
+import ch.metzenthin.svm.domain.model.entityfields.CodeFields;
+import ch.metzenthin.svm.domain.model.validation.ValidationResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 
 /**
  * @author Martin Schraner
  */
-public interface CreateOrUpdateCodeModel extends CreateOrUpdateModel<SaveCodeResult> {
+public interface CreateOrUpdateCodeModel {
 
-  String getKuerzel();
+  boolean isNeu();
 
-  String getBeschreibung();
+  CodeFields getCodeFields();
 
-  Boolean isSelektierbar();
+  ValidationResult validateKuerzel(String kuerzel);
 
-  void setKuerzel(String kuerzel) throws SvmValidationException;
+  ValidationResult validateBeschreibung(String beschreibung);
 
-  void setBeschreibung(String beschreibung) throws SvmValidationException;
-
-  void setSelektierbar(Boolean isSelected);
+  ValidationResultsAndSaveResult speichern(CodeFields codeFields);
 }
