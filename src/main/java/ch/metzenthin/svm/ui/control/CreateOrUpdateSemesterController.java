@@ -88,7 +88,7 @@ public class CreateOrUpdateSemesterController
 
   private void onSemesterbeginnEvent() {
     LOGGER.trace("CreateOrUpdateSemesterController Event Semesterbeginn");
-    formatConvertAndValidateDateAsString(
+    formatConvertAndValidateDate(
         view.getTxtSemesterbeginnText(),
         model::validateSemesterbeginn,
         view::setTxtSemesterbeginnText,
@@ -109,7 +109,7 @@ public class CreateOrUpdateSemesterController
 
   private void onSemesterendeEvent() {
     LOGGER.trace("CreateOrUpdateSemesterController Event Semesterende");
-    formatConvertAndValidateDateAsString(
+    formatConvertAndValidateDate(
         view.getTxtSemesterendeText(),
         model::validateSemesterende,
         view::setTxtSemesterendeText,
@@ -130,7 +130,7 @@ public class CreateOrUpdateSemesterController
 
   private void onFerienbeginn1Event() {
     LOGGER.trace("CreateOrUpdateSemesterController Event Ferienbeginn1");
-    formatConvertAndValidateDateAsString(
+    formatConvertAndValidateDate(
         view.getTxtFerienbeginn1Text(),
         model::validateFerienbeginn1,
         view::setTxtFerienbeginn1Text,
@@ -151,7 +151,7 @@ public class CreateOrUpdateSemesterController
 
   private void onFerienende1Event() {
     LOGGER.trace("CreateOrUpdateSemesterController Event Ferienende1");
-    formatConvertAndValidateDateAsString(
+    formatConvertAndValidateDate(
         view.getTxtFerienende1Text(),
         model::validateFerienende1,
         view::setTxtFerienende1Text,
@@ -172,7 +172,7 @@ public class CreateOrUpdateSemesterController
 
   private void onFerienbeginn2Event() {
     LOGGER.trace("CreateOrUpdateSemesterController Event Ferienbeginn2");
-    formatConvertAndValidateDateAsString(
+    formatConvertAndValidateDate(
         view.getTxtFerienbeginn2Text(),
         model::validateFerienbeginn2,
         view::setTxtFerienbeginn2Text,
@@ -193,7 +193,7 @@ public class CreateOrUpdateSemesterController
 
   private void onFerienende2Event() {
     LOGGER.trace("CreateOrUpdateSemesterController Event Ferienende2");
-    formatConvertAndValidateDateAsString(
+    formatConvertAndValidateDate(
         view.getTxtFerienende2Text(),
         model::validateFerienende2,
         view::setTxtFerienende2Text,

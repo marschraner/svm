@@ -395,7 +395,10 @@ public class RecordGenerator {
       }
       case "int", "java.lang.Integer" -> {
         addImport(IntegerConverter.class, imports);
-        convertToStatement.append("IntegerConverter.convertToInteger");
+        convertToStatement
+            .append("IntegerConverter.")
+            .append(
+                (f.getType().getTypeName().equals("int")) ? "convertToInt" : "convertToInteger");
       }
       case "java.sql.Time" -> {
         addImport(TimeConverter.class, imports);

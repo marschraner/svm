@@ -41,7 +41,7 @@ public record LektionsgebuehrenFields(
     List<ConversionResult<?>> conversionErrors = new ArrayList<>();
 
     ConversionResult<Integer> lektionslaenge =
-        IntegerConverter.convertToInteger("lektionslaenge", lektionslaenge());
+        IntegerConverter.convertToInt("lektionslaenge", lektionslaenge());
     if (!lektionslaenge.isValid()) conversionErrors.add(lektionslaenge);
     ConversionResult<BigDecimal> betrag1Kind =
         BigDecimalConverter.convertToBigDecimal("betrag1Kind", betrag1Kind());

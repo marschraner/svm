@@ -13,20 +13,35 @@ public class FormattingUtils {
         : null;
   }
 
-  public static String formatCalendar(String dateAsString) {
-    if (dateAsString == null) {
+  @SuppressWarnings("DuplicatedCode")
+  public static String formatAsDate(String value) {
+    if (value == null) {
       return null;
     }
-    int strLen = dateAsString.length();
-    if (dateAsString.trim().matches(".*\\.[4-9]\\d$")) {
-      return dateAsString.substring(0, strLen - 2)
-          + "19"
-          + dateAsString.substring(strLen - 2, strLen);
-    } else if (dateAsString.matches(".*\\.[0-3]\\d$")) {
-      return dateAsString.substring(0, strLen - 2)
-          + "20"
-          + dateAsString.substring(strLen - 2, strLen);
+    int strLen = value.length();
+    if (value.trim().matches(".*\\.[4-9]\\d$")) {
+      return value.substring(0, strLen - 2) + "19" + value.substring(strLen - 2, strLen);
+    } else if (value.matches(".*\\.[0-3]\\d$")) {
+      return value.substring(0, strLen - 2) + "20" + value.substring(strLen - 2, strLen);
     }
-    return dateAsString;
+    return value;
+  }
+
+  public static String formatAsPrice(String value) {
+    if (value == null) {
+      return null;
+    }
+    String formattedValue = formatString(value);
+    if (formattedValue.matches("^\\d+$")) {
+      // .00 anhängen, falls Ganzzahl übergeben
+      formattedValue = formattedValue + ".00";
+    } else if (formattedValue.matches("^\\d+\\.$")) {
+      // 00 anhängen, falls x. übergeben
+      formattedValue = formattedValue + "00";
+    } else if (formattedValue.matches("^\\d+\\.\\d$")) {
+      // 0 anhängen, falls x.0 übergeben
+      formattedValue = formattedValue + "0";
+    }
+    return formattedValue;
   }
 }

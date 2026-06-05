@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.persistence.entities;
 
+import ch.metzenthin.svm.domain.model.conversion.IntegerConverter;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -44,7 +45,9 @@ public class Lektionsgebuehren extends AbstractEntity implements Comparable<Lekt
   @Column(name = "betrag_6_kinder", nullable = false)
   private BigDecimal betrag6Kinder;
 
-  public Lektionsgebuehren() {}
+  public Lektionsgebuehren() {
+    this.lektionslaenge = IntegerConverter.VALUE_NOT_SET;
+  }
 
   public Lektionsgebuehren(
       int lektionslaenge,

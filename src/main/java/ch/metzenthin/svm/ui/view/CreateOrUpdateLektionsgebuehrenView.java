@@ -71,14 +71,6 @@ public class CreateOrUpdateLektionsgebuehrenView
     lektionslaengeWithErrorLabel.setText(text);
   }
 
-  public void setTxtLektionslaengeToolTipText(String text) {
-    lektionslaengeWithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtLektionslaengeEnabled() {
-    return lektionslaengeWithErrorLabel.isEnabled();
-  }
-
   // Betrag1Kind
   public void setErrorLabelBetrag1KindVisible(String errorMessage) {
     betrag1KindWithErrorLabel.setErrorLabelVisible(true);
@@ -104,14 +96,6 @@ public class CreateOrUpdateLektionsgebuehrenView
 
   public void setTxtBetrag1KindText(String text) {
     betrag1KindWithErrorLabel.setText(text);
-  }
-
-  public void setTxtBetrag1KindToolTipText(String text) {
-    betrag1KindWithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtBetrag1KindEnabled() {
-    return betrag1KindWithErrorLabel.isEnabled();
   }
 
   // Betrag2Kinder
@@ -141,14 +125,6 @@ public class CreateOrUpdateLektionsgebuehrenView
     betrag2KinderWithErrorLabel.setText(text);
   }
 
-  public void setTxtBetrag2KinderToolTipText(String text) {
-    betrag2KinderWithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtBetrag2KinderEnabled() {
-    return betrag2KinderWithErrorLabel.isEnabled();
-  }
-
   // Betrag3Kinder
   public void setErrorLabelBetrag3KinderVisible(String errorMessage) {
     betrag3KinderWithErrorLabel.setErrorLabelVisible(true);
@@ -174,14 +150,6 @@ public class CreateOrUpdateLektionsgebuehrenView
 
   public void setTxtBetrag3KinderText(String text) {
     betrag3KinderWithErrorLabel.setText(text);
-  }
-
-  public void setTxtBetrag3KinderToolTipText(String text) {
-    betrag3KinderWithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtBetrag3KinderEnabled() {
-    return betrag3KinderWithErrorLabel.isEnabled();
   }
 
   // Betrag4Kinder
@@ -211,14 +179,6 @@ public class CreateOrUpdateLektionsgebuehrenView
     betrag4KinderWithErrorLabel.setText(text);
   }
 
-  public void setTxtBetrag4KinderToolTipText(String text) {
-    betrag4KinderWithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtBetrag4KinderEnabled() {
-    return betrag4KinderWithErrorLabel.isEnabled();
-  }
-
   // Betrag5Kinder
   public void setErrorLabelBetrag5KinderVisible(String errorMessage) {
     betrag5KinderWithErrorLabel.setErrorLabelVisible(true);
@@ -246,14 +206,6 @@ public class CreateOrUpdateLektionsgebuehrenView
     betrag5KinderWithErrorLabel.setText(text);
   }
 
-  public void setTxtBetrag5KinderToolTipText(String text) {
-    betrag5KinderWithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtBetrag5KinderEnabled() {
-    return betrag5KinderWithErrorLabel.isEnabled();
-  }
-
   // Betrag6Kinder
   public void setErrorLabelBetrag6KinderVisible(String errorMessage) {
     betrag6KinderWithErrorLabel.setErrorLabelVisible(true);
@@ -279,13 +231,5 @@ public class CreateOrUpdateLektionsgebuehrenView
 
   public void setTxtBetrag6KinderText(String text) {
     betrag6KinderWithErrorLabel.setText(text);
-  }
-
-  public void setTxtBetrag6KinderToolTipText(String text) {
-    betrag6KinderWithErrorLabel.setToolTipText(text);
-  }
-
-  public boolean isTxtBetrag6KinderEnabled() {
-    return betrag6KinderWithErrorLabel.isEnabled();
   }
 }

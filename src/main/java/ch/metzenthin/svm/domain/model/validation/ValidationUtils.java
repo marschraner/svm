@@ -3,6 +3,8 @@ package ch.metzenthin.svm.domain.model.validation;
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 
 import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.domain.model.conversion.IntegerConverter;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Set;
 
@@ -12,6 +14,8 @@ import java.util.Set;
 public class ValidationUtils {
 
   private static final String EINTRAG_OBLIGATORISCH = "Eintrag ist obligatorisch!";
+  private static final String KEIN_GUELTIGER_PREIS_IM_FORMAT_FR_RP =
+      "Kein gültiger Preis im Format 'Fr.Rp'";
 
   private ValidationUtils() {}
 
@@ -50,6 +54,12 @@ public class ValidationUtils {
 
   public static ValidationResult validateNotNull(Object value, Field field) {
     return (value == null)
+        ? new ValidationResult(EINTRAG_OBLIGATORISCH, Set.of(field))
+        : new ValidationResult();
+  }
+
+  public static ValidationResult validateNotValueNotSet(int value, Field field) {
+    return (value == IntegerConverter.VALUE_NOT_SET)
         ? new ValidationResult(EINTRAG_OBLIGATORISCH, Set.of(field))
         : new ValidationResult();
   }
@@ -127,5 +137,62 @@ public class ValidationUtils {
       return validationResult;
     }
     return validateWithinPeriod(calendar, earliestValidDate, latestValidDate, field);
+  }
+
+  public static ValidationResult validateNotValueNotSetAndWithinRange(
+      int intValue, int minValue, int maxValue, Field field) {
+    ValidationResult validationResult = validateNotValueNotSet(intValue, field);
+    if (!validationResult.isValid()) {
+      return validationResult;
+    }
+    return validateWithinRange(intValue, minValue, maxValue, field);
+  }
+
+  public static ValidationResult validateWithinRange(
+      Integer integerValue, int minValue, int maxValue, Field field) {
+    if (integerValue < minValue) {
+      return new ValidationResult(
+          String.format("%s darf nicht kleiner als %s sein", field, minValue), Set.of(field));
+    }
+    if (integerValue > maxValue) {
+      return new ValidationResult(
+          String.format("%s darf nicht grösser als %s sein", field, maxValue), Set.of(field));
+    }
+    return new ValidationResult();
+  }
+
+  public static ValidationResult validateNotNullAndPriceFormatAndWithinRange(
+      BigDecimal bigDecimalValue, BigDecimal minValue, BigDecimal maxValue, Field field) {
+    ValidationResult validationResult = validateNotNull(bigDecimalValue, field);
+    if (!validationResult.isValid()) {
+      return validationResult;
+    }
+    validationResult = validatePriceFormat(bigDecimalValue, field);
+    if (!validationResult.isValid()) {
+      return validationResult;
+    }
+    return validateWithinRange(bigDecimalValue, minValue, maxValue, field);
+  }
+
+  private static ValidationResult validatePriceFormat(BigDecimal bigDecimalValue, Field field) {
+    BigDecimal multipliedBy20 = bigDecimalValue.multiply(new BigDecimal(20));
+    int multipliedBy20AsInt = multipliedBy20.intValue();
+    if (new BigDecimal(multipliedBy20AsInt).compareTo(multipliedBy20) != 0) {
+      return new ValidationResult(KEIN_GUELTIGER_PREIS_IM_FORMAT_FR_RP, Set.of(field));
+    }
+    return new ValidationResult();
+  }
+
+  public static ValidationResult validateWithinRange(
+      BigDecimal bigDecimalValue, BigDecimal minValue, BigDecimal maxValue, Field field) {
+    if (bigDecimalValue.compareTo(minValue) < 0) {
+      return new ValidationResult(
+          String.format("%s darf nicht kleiner als %s sein", field, minValue), Set.of(field));
+    }
+    if (bigDecimalValue.compareTo(maxValue) > 0) {
+      return new ValidationResult(
+          String.format("%s darf nicht grösser als %s sein", field, maxValue), Set.of(field));
+    }
+    return new ValidationResult();
   }
 }

@@ -2,12 +2,15 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.DialogClosingListener;
-import ch.metzenthin.svm.domain.model.conversion.CalendarAndConversionResult;
+import ch.metzenthin.svm.domain.model.conversion.BigDecimalConverter;
 import ch.metzenthin.svm.domain.model.conversion.CalendarConverter;
+import ch.metzenthin.svm.domain.model.conversion.ConvertedValueAndConversionResult;
+import ch.metzenthin.svm.domain.model.conversion.IntegerConverter;
 import ch.metzenthin.svm.domain.model.formatting.FormattingUtils;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateView;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 import java.util.function.Consumer;
@@ -67,27 +70,73 @@ public abstract class AbstractCreateOrUpdateController<T extends CreateOrUpdateV
     }
   }
 
-  protected static void formatConvertAndValidateDateAsString(
+  protected static void formatConvertAndValidateDate(
       String fieldValue,
       Function<Calendar, ValidationResult> validateFieldFunction,
       Consumer<String> setFieldConsumer,
       Consumer<String> setErrorLabelVisibleConsumer,
       Runnable setErrorLabelInvisibleRunnable) {
-    String formattedFieldValue = FormattingUtils.formatCalendar(fieldValue);
+    String formattedFieldValue = FormattingUtils.formatAsDate(fieldValue);
     setFieldConsumer.accept(formattedFieldValue);
-    CalendarAndConversionResult convertedFieldValueAndConversionResult =
+    ConvertedValueAndConversionResult<Calendar> convertedFieldValueAndConversionResult =
         CalendarConverter.toCalendar(formattedFieldValue);
+    validate(
+        validateFieldFunction,
+        setErrorLabelVisibleConsumer,
+        setErrorLabelInvisibleRunnable,
+        convertedFieldValueAndConversionResult);
+  }
+
+  private static <T> void validate(
+      Function<T, ValidationResult> validateFieldFunction,
+      Consumer<String> setErrorLabelVisibleConsumer,
+      Runnable setErrorLabelInvisibleRunnable,
+      ConvertedValueAndConversionResult<T> convertedFieldValueAndConversionResult) {
     if (!convertedFieldValueAndConversionResult.isValid()) {
       setErrorLabelVisibleConsumer.accept(convertedFieldValueAndConversionResult.errorMessage());
     } else {
       ValidationResult validationResult =
-          validateFieldFunction.apply(convertedFieldValueAndConversionResult.calendar());
+          validateFieldFunction.apply(convertedFieldValueAndConversionResult.convertedValue());
       if (validationResult.isValid()) {
         setErrorLabelInvisibleRunnable.run();
       } else {
         setErrorLabelVisibleConsumer.accept(validationResult.errorMessage());
       }
     }
+  }
+
+  protected static void formatConvertAndValidatePrice(
+      String fieldValue,
+      Function<BigDecimal, ValidationResult> validateFieldFunction,
+      Consumer<String> setFieldConsumer,
+      Consumer<String> setErrorLabelVisibleConsumer,
+      Runnable setErrorLabelInvisibleRunnable) {
+    String formattedFieldValue = FormattingUtils.formatAsPrice(fieldValue);
+    setFieldConsumer.accept(formattedFieldValue);
+    ConvertedValueAndConversionResult<BigDecimal> convertedFieldValueAndConversionResult =
+        BigDecimalConverter.convertToBigDecimal(formattedFieldValue);
+    validate(
+        validateFieldFunction,
+        setErrorLabelVisibleConsumer,
+        setErrorLabelInvisibleRunnable,
+        convertedFieldValueAndConversionResult);
+  }
+
+  protected static void formatConvertAndValidateInt(
+      String fieldValue,
+      Function<Integer, ValidationResult> validateFieldFunction,
+      Consumer<String> setFieldConsumer,
+      Consumer<String> setErrorLabelVisibleConsumer,
+      Runnable setErrorLabelInvisibleRunnable) {
+    String formattedFieldValue = FormattingUtils.formatString(fieldValue);
+    setFieldConsumer.accept(formattedFieldValue);
+    ConvertedValueAndConversionResult<Integer> convertedFieldValueAndConversionResult =
+        IntegerConverter.convertToInt(formattedFieldValue);
+    validate(
+        validateFieldFunction,
+        setErrorLabelVisibleConsumer,
+        setErrorLabelInvisibleRunnable,
+        convertedFieldValueAndConversionResult);
   }
 
   protected abstract void setErrorLabelsVisible(List<ValidationResult> validationResults);

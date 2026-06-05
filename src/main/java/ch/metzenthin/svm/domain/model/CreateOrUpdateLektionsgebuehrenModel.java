@@ -1,42 +1,32 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.service.result.SaveLektionsgebuehrenResult;
+import ch.metzenthin.svm.domain.model.entityfields.LektionsgebuehrenFields;
+import ch.metzenthin.svm.domain.model.validation.ValidationResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import java.math.BigDecimal;
 
 /**
  * @author Martin Schraner
  */
-public interface CreateOrUpdateLektionsgebuehrenModel
-    extends CreateOrUpdateModel<SaveLektionsgebuehrenResult> {
+public interface CreateOrUpdateLektionsgebuehrenModel {
 
-  Integer getLektionslaenge();
+  boolean isNeu();
 
-  BigDecimal getBetrag1Kind();
+  LektionsgebuehrenFields getLektionsgebuehrenFields();
 
-  BigDecimal getBetrag2Kinder();
+  ValidationResult validateLektionslaenge(int lektionslaenge);
 
-  BigDecimal getBetrag3Kinder();
+  ValidationResult validateBetrag1Kind(BigDecimal betrag1Kind);
 
-  BigDecimal getBetrag4Kinder();
+  ValidationResult validateBetrag2Kinder(BigDecimal betrag2Kinder);
 
-  BigDecimal getBetrag5Kinder();
+  ValidationResult validateBetrag3Kinder(BigDecimal betrag3Kinder);
 
-  BigDecimal getBetrag6Kinder();
+  ValidationResult validateBetrag4Kinder(BigDecimal betrag4Kinder);
 
-  void setLektionslaenge(String lektionslaenge) throws SvmValidationException;
+  ValidationResult validateBetrag5Kinder(BigDecimal betrag5Kinder);
 
-  void setBetrag1Kind(String betrag1Kind) throws SvmValidationException;
+  ValidationResult validateBetrag6Kinder(BigDecimal betrag6Kinder);
 
-  void setBetrag2Kinder(String betrag2Kinder) throws SvmValidationException;
-
-  void setBetrag3Kinder(String betrag3Kinder) throws SvmValidationException;
-
-  void setBetrag4Kinder(String betrag4Kinder) throws SvmValidationException;
-
-  void setBetrag5Kinder(String betrag5Kinder) throws SvmValidationException;
-
-  void setBetrag6Kinder(String betrag6Kinder) throws SvmValidationException;
-
-  SaveLektionsgebuehrenResult speichern();
+  ValidationResultsAndSaveResult speichern(LektionsgebuehrenFields lektionsgebuehrenFields);
 }

@@ -38,8 +38,8 @@ public class LektionsgebuehrenListController
         model.createCreateOrUpdateModel(svmContext);
     CreateOrUpdateLektionsgebuehrenController createOrUpdateLektionsgebuehrenController =
         new CreateOrUpdateLektionsgebuehrenController(
-            createOrUpdateLektionsgebuehrenModel, false, "Neue Lektionsgebühren");
-    createOrUpdateLektionsgebuehrenController.initialiseModelValuesAndViewFieldsAndShowDialog();
+            createOrUpdateLektionsgebuehrenModel, "Neue Lektionsgebühren");
+    createOrUpdateLektionsgebuehrenController.showDialog();
   }
 
   @Override
@@ -48,7 +48,7 @@ public class LektionsgebuehrenListController
         model.createCreateOrUpdateModel(svmContext, view.getSelectedRow());
     CreateOrUpdateLektionsgebuehrenController createOrUpdateLektionsgebuehrenController =
         new CreateOrUpdateLektionsgebuehrenController(
-            createOrUpdateLektionsgebuehrenModel, true, "Lektionsgebühren bearbeiten");
-    createOrUpdateLektionsgebuehrenController.initialiseModelValuesAndViewFieldsAndShowDialog();
+            createOrUpdateLektionsgebuehrenModel, "Lektionsgebühren bearbeiten");
+    createOrUpdateLektionsgebuehrenController.showDialog();
   }
 }

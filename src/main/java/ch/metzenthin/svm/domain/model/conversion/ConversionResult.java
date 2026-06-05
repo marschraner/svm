@@ -8,8 +8,8 @@ import ch.metzenthin.svm.common.datatypes.Field;
 public record ConversionResult<T>(
     String fieldName, T convertedValue, boolean isValid, String errorMessage) {
 
-  public ConversionResult(String fieldName, T convertedTypeValue) {
-    this(fieldName, convertedTypeValue, true, null);
+  public ConversionResult(String fieldName, T convertedValue) {
+    this(fieldName, convertedValue, true, null);
   }
 
   public ConversionResult(String fieldName, String errorMessage) {

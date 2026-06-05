@@ -21,19 +21,21 @@ public class CalendarConverter {
     return Converter.asString(calendar, dateFormatString);
   }
 
-  public static CalendarAndConversionResult toCalendar(String string) {
+  public static ConvertedValueAndConversionResult<Calendar> toCalendar(String string) {
     try {
-      return new CalendarAndConversionResult(Converter.toCalendar(string));
+      return new ConvertedValueAndConversionResult<>(Converter.toCalendar(string));
     } catch (ParseException e) {
-      return new CalendarAndConversionResult(e.getMessage());
+      return new ConvertedValueAndConversionResult<>(e.getMessage());
     }
   }
 
-  public static CalendarAndConversionResult toCalendar(String string, String dateFormatString) {
+  public static ConvertedValueAndConversionResult<Calendar> toCalendar(
+      String string, String dateFormatString) {
     try {
-      return new CalendarAndConversionResult(Converter.toCalendar(string, dateFormatString));
+      return new ConvertedValueAndConversionResult<>(
+          Converter.toCalendar(string, dateFormatString));
     } catch (ParseException e) {
-      return new CalendarAndConversionResult(e.getMessage());
+      return new ConvertedValueAndConversionResult<>(e.getMessage());
     }
   }
 

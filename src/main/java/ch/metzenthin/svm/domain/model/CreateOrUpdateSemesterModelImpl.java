@@ -14,9 +14,9 @@ import ch.metzenthin.svm.common.datatypes.Schuljahre;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
 import ch.metzenthin.svm.domain.EntityWithOverlappingPeriodsException;
-import ch.metzenthin.svm.domain.model.conversion.CalendarAndConversionResult;
 import ch.metzenthin.svm.domain.model.conversion.CalendarConverter;
 import ch.metzenthin.svm.domain.model.conversion.ConvertedFieldsAndConversionResults;
+import ch.metzenthin.svm.domain.model.conversion.ConvertedValueAndConversionResult;
 import ch.metzenthin.svm.domain.model.entityfields.ConvertedSemesterFields;
 import ch.metzenthin.svm.domain.model.entityfields.SemesterFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
@@ -231,17 +231,17 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
       String ferienende1AsString,
       String ferienbeginn2AsString,
       String ferienende2AsString) {
-    CalendarAndConversionResult semesterbeginnAndConversionResult =
+    ConvertedValueAndConversionResult<Calendar> semesterbeginnAndConversionResult =
         CalendarConverter.toCalendar(semesterbeginnAsString);
-    CalendarAndConversionResult semesterendeAndConversionResult =
+    ConvertedValueAndConversionResult<Calendar> semesterendeAndConversionResult =
         CalendarConverter.toCalendar(semesterendeAsString);
-    CalendarAndConversionResult ferienbeginn1AndConversionResult =
+    ConvertedValueAndConversionResult<Calendar> ferienbeginn1AndConversionResult =
         CalendarConverter.toCalendar(ferienbeginn1AsString);
-    CalendarAndConversionResult ferienende1AndConversionResult =
+    ConvertedValueAndConversionResult<Calendar> ferienende1AndConversionResult =
         CalendarConverter.toCalendar(ferienende1AsString);
-    CalendarAndConversionResult ferienbeginn2AndConversionResult =
+    ConvertedValueAndConversionResult<Calendar> ferienbeginn2AndConversionResult =
         CalendarConverter.toCalendar(ferienbeginn2AsString);
-    CalendarAndConversionResult ferienende2AndConversionResult =
+    ConvertedValueAndConversionResult<Calendar> ferienende2AndConversionResult =
         CalendarConverter.toCalendar(ferienende2AsString);
     if (!semesterbeginnAndConversionResult.isValid()
         || !semesterendeAndConversionResult.isValid()
@@ -253,12 +253,12 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
     }
     return semesterService.checkIfUpdateAffectsSemesterrechnungen(
         semester.getSemesterId(),
-        ferienende1AndConversionResult.calendar(),
-        semesterendeAndConversionResult.calendar(),
-        ferienbeginn1AndConversionResult.calendar(),
-        ferienende1AndConversionResult.calendar(),
-        ferienbeginn2AndConversionResult.calendar(),
-        ferienende2AndConversionResult.calendar());
+        ferienende1AndConversionResult.convertedValue(),
+        semesterendeAndConversionResult.convertedValue(),
+        ferienbeginn1AndConversionResult.convertedValue(),
+        ferienende1AndConversionResult.convertedValue(),
+        ferienbeginn2AndConversionResult.convertedValue(),
+        ferienende2AndConversionResult.convertedValue());
   }
 
   @Override

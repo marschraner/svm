@@ -8,6 +8,8 @@ import java.math.BigDecimal;
  */
 public class BigDecimalConverter {
 
+  public static final String ERROR_MESSAGE_NOT_NUMBER = "Eingabe muss eine Zahl sein";
+
   private BigDecimalConverter() {
     /* This utility class should not be instantiated */
   }
@@ -21,6 +23,22 @@ public class BigDecimalConverter {
       return new ConversionResult<>(fieldName, (BigDecimal) null);
     }
 
-    return new ConversionResult<>(fieldName, new BigDecimal(string));
+    try {
+      return new ConversionResult<>(fieldName, new BigDecimal(string));
+    } catch (NumberFormatException e) {
+      return new ConversionResult<>(fieldName, ERROR_MESSAGE_NOT_NUMBER);
+    }
+  }
+
+  public static ConvertedValueAndConversionResult<BigDecimal> convertToBigDecimal(String string) {
+    if (string == null || string.isEmpty()) {
+      return new ConvertedValueAndConversionResult<>((BigDecimal) null);
+    }
+
+    try {
+      return new ConvertedValueAndConversionResult<>(new BigDecimal(string));
+    } catch (NumberFormatException e) {
+      return new ConvertedValueAndConversionResult<>(ERROR_MESSAGE_NOT_NUMBER);
+    }
   }
 }
