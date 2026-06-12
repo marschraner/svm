@@ -9,7 +9,6 @@ import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateSemesterView;
 import java.awt.event.*;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 import org.slf4j.Logger;
@@ -305,33 +304,27 @@ public class CreateOrUpdateSemesterController
   }
 
   @Override
-  protected void setErrorLabelsVisible(List<ValidationResult> validationResults) {
-    for (ValidationResult validationResult : validationResults) {
-      if (!validationResult.isValid()) {
-        for (Field field : validationResult.affectedFields()) {
-          switch (field) {
-            case SEMESTERBEGINN ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelSemesterbeginnVisible);
-            case SEMESTERENDE ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelSemesterendeVisible);
-            case FERIENBEGINN1 ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelFerienbeginn1Visible);
-            case FERIENENDE1 ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelFerienende1Visible);
-            case FERIENBEGINN2 ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelFerienbeginn2Visible);
-            case FERIENENDE2 ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelFerienende2Visible);
-            default -> throw new IllegalStateException("Unexpected value: " + field);
-          }
-        }
-      }
+  protected void setErrorLabelVisible(ValidationResult validationResult, Field field) {
+    switch (field) {
+      case SEMESTERBEGINN ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelSemesterbeginnVisible);
+      case SEMESTERENDE ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelSemesterendeVisible);
+      case FERIENBEGINN1 ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelFerienbeginn1Visible);
+      case FERIENENDE1 ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelFerienende1Visible);
+      case FERIENBEGINN2 ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelFerienbeginn2Visible);
+      case FERIENENDE2 ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelFerienende2Visible);
+      default -> throw new IllegalStateException("Unexpected value: " + field);
     }
   }
 

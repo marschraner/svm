@@ -63,12 +63,12 @@ public abstract class SpeichernAbbrechenDialogView<T extends SpeichernAbbrechenD
     showErrorMessageDialog(dialog, message, title);
   }
 
-  public void showInfoMessageDialog(String message, String title) {
-    showInfoMessageDialog(dialog, message, title);
-  }
-
   public int showYesNoDialog(String message, String title) {
     return showYesNoDialog(dialog, message, title);
+  }
+
+  public int showIgnorierenAbbrechenDialog(String message, String title) {
+    return showIgnorierenAbrechenDialog(dialog, message, title);
   }
 
   public void addButtonSpeichernActionListener(ActionListener actionListener) {

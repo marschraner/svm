@@ -268,11 +268,10 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
     ConvertedFieldsAndConversionResults<ConvertedSemesterFields>
         convertedSemesterFieldsAndConversionResults = convertAll(semesterFields);
     if (!convertedSemesterFieldsAndConversionResults.isValid()) {
-      Set<Field> fieldsWithInvalidConversion =
-          convertedSemesterFieldsAndConversionResults.getFieldsWithInvalidConversion();
-      ValidationResult validationResult =
-          new ValidationResult("Ungültiges Format!", fieldsWithInvalidConversion);
-      return new ValidationResultsAndSaveResult(List.of(validationResult));
+      List<ValidationResult> invalidConversionResultsAsValidationResults =
+          convertedSemesterFieldsAndConversionResults
+              .getInvalidConversionResultsAsValidationResults();
+      return new ValidationResultsAndSaveResult(invalidConversionResultsAsValidationResults);
     }
     ConvertedSemesterFields convertedSemesterFields =
         convertedSemesterFieldsAndConversionResults.convertedFields();

@@ -35,7 +35,7 @@ class MaercheneinteilungRepositoryTest {
   @Test
   void testCountByElternmithilfeCodeId() {
     int numberOfMaercheneinteilungen = maercheneinteilungRepository.countByElternmithilfeCodeId(30);
-    assertEquals(1, numberOfMaercheneinteilungen);
+    assertEquals(2, numberOfMaercheneinteilungen);
 
     numberOfMaercheneinteilungen = maercheneinteilungRepository.countByElternmithilfeCodeId(9999);
     assertEquals(0, numberOfMaercheneinteilungen);

@@ -15,9 +15,11 @@ import ch.metzenthin.svm.service.MaerchenService;
 import ch.metzenthin.svm.service.result.SaveMaerchenResult;
 import jakarta.persistence.OptimisticLockException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.function.BooleanSupplier;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
@@ -69,15 +71,16 @@ public class CreateOrUpdateMaerchenModelImpl implements CreateOrUpdateMaerchenMo
   }
 
   @Override
-  public ValidationResultsAndSaveResult speichern(MaerchenFields maerchenFields) {
+  public ValidationResultsAndSaveResult speichern(
+      MaerchenFields maerchenFields, BooleanSupplier checkForMaerchenInPastWarningSupplier) {
+
     ConvertedFieldsAndConversionResults<ConvertedMaerchenFields>
         convertedMaerchenFieldsAndConversionResults = convertAll(maerchenFields);
     if (!convertedMaerchenFieldsAndConversionResults.isValid()) {
-      Set<Field> fieldsWithInvalidConversion =
-          convertedMaerchenFieldsAndConversionResults.getFieldsWithInvalidConversion();
-      ValidationResult validationResult =
-          new ValidationResult("Ungültiges Format!", fieldsWithInvalidConversion);
-      return new ValidationResultsAndSaveResult(List.of(validationResult));
+      List<ValidationResult> invalidConversionResultsAsValidationResults =
+          convertedMaerchenFieldsAndConversionResults
+              .getInvalidConversionResultsAsValidationResults();
+      return new ValidationResultsAndSaveResult(invalidConversionResultsAsValidationResults);
     }
     ConvertedMaerchenFields convertedMaerchenFields =
         convertedMaerchenFieldsAndConversionResults.convertedFields();
@@ -85,6 +88,13 @@ public class CreateOrUpdateMaerchenModelImpl implements CreateOrUpdateMaerchenMo
     List<ValidationResult> validationResults = validateAll(convertedMaerchenFields);
     if (!ValidationResult.allValidationResultsValid(validationResults)) {
       return new ValidationResultsAndSaveResult(validationResults);
+    }
+
+    boolean noWarningsOrWarningsIgnored =
+        checkForWarnings(checkForMaerchenInPastWarningSupplier, convertedMaerchenFields);
+    if (!noWarningsOrWarningsIgnored) {
+      return new ValidationResultsAndSaveResult(
+          validationResults, SaveMaerchenResult.SPEICHERN_ABBRECHEN_NACH_WARNUNG);
     }
 
     updateModel(convertedMaerchenFields);
@@ -102,7 +112,50 @@ public class CreateOrUpdateMaerchenModelImpl implements CreateOrUpdateMaerchenMo
     List<ValidationResult> validationResults = new ArrayList<>();
     validationResults.add(validateSchuljahr(convertedMaerchenFields.schuljahr()));
     validationResults.add(validateBezeichnung(convertedMaerchenFields.bezeichnung()));
+    validationResults.add(
+        validateAnzahlVorstellungen(convertedMaerchenFields.anzahlVorstellungen()));
+
+    boolean errorsFound =
+        validationResults.stream().anyMatch(validationResult -> !validationResult.isValid());
+    if (errorsFound) {
+      return validationResults;
+    }
+
+    // Alle Felder sind validiert, jetzt die übergreifenden Validierungen durchführen
+    validationResults.add(validateMaerchenBereitsErfasst(convertedMaerchenFields.schuljahr()));
+
     return validationResults;
+  }
+
+  private ValidationResult validateMaerchenBereitsErfasst(String schuljahr) {
+    boolean bereitsErfasst =
+        maerchenService.existsMaerchenForSchuljahr(maerchen.getMaerchenId(), schuljahr);
+    return (bereitsErfasst)
+        ? new ValidationResult(SaveMaerchenResult.MAERCHEN_BEREITS_ERFASST.getMessage(), null)
+        : new ValidationResult();
+  }
+
+  private static boolean checkForWarnings(
+      BooleanSupplier checkForMaerchenInPastWarningSupplier,
+      ConvertedMaerchenFields convertedMaerchenFields) {
+    if (checkIfMaerchenIsInPast(convertedMaerchenFields.schuljahr())) {
+      // Das zu speichernde Märchen liegt in der Vergangenheit. Zurück an den Aufrufer zum
+      // Entscheid, ob das Märchen trotzdem gespeichert werden soll.
+      return checkForMaerchenInPastWarningSupplier.getAsBoolean();
+    }
+    return true;
+  }
+
+  private static boolean checkIfMaerchenIsInPast(String schuljahr) {
+    Calendar today = new GregorianCalendar();
+    int schuljahr1;
+    if (today.get(Calendar.MONTH) <= Calendar.JUNE) {
+      schuljahr1 = today.get(Calendar.YEAR) - 1;
+    } else {
+      schuljahr1 = today.get(Calendar.YEAR);
+    }
+    int schuljahr1Maerchen = Integer.parseInt(schuljahr.substring(0, 4));
+    return schuljahr1Maerchen < schuljahr1;
   }
 
   void updateModel(ConvertedMaerchenFields maerchenFields) {

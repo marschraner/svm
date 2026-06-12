@@ -24,24 +24,20 @@ class MaerchenRepositoryTest {
   @Autowired private MaerchenRepository maerchenRepository;
 
   @Test
-  void testCountBySchuljahrAndBezeichnung() {
-    int numberOfMaercheneinteilungen =
-        maerchenRepository.countBySchuljahrAndBezeichnung("2026/2027", "Froschkönig");
+  void testCountBySchuljahr() {
+    int numberOfMaercheneinteilungen = maerchenRepository.countBySchuljahr("2026/2027");
     assertEquals(1, numberOfMaercheneinteilungen);
 
-    numberOfMaercheneinteilungen =
-        maerchenRepository.countBySchuljahrAndBezeichnung("2025/2026", "Froschkönig");
+    numberOfMaercheneinteilungen = maerchenRepository.countBySchuljahr("2024/2025");
     assertEquals(0, numberOfMaercheneinteilungen);
   }
 
   @Test
-  void testCountBySchuljahrAndBezeichnungAndIdNe() {
-    int numberOfMaercheneinteilungen =
-        maerchenRepository.countBySchuljahrAndBezeichnungAndIdNe("2026/2027", "Froschkönig", 10);
+  void testCountBySchuljahrAndIdNe() {
+    int numberOfMaercheneinteilungen = maerchenRepository.countBySchuljahrAndIdNe("2026/2027", 10);
     assertEquals(1, numberOfMaercheneinteilungen);
 
-    numberOfMaercheneinteilungen =
-        maerchenRepository.countBySchuljahrAndBezeichnungAndIdNe("2025/2026", "Froschkönig", 20);
+    numberOfMaercheneinteilungen = maerchenRepository.countBySchuljahrAndIdNe("2025/2026", 10);
     assertEquals(0, numberOfMaercheneinteilungen);
   }
 

@@ -40,6 +40,7 @@ public abstract class AbstractCreateOrUpdateController<T extends CreateOrUpdateV
     ValidationResultsAndSaveResult validationResultsAndSaveResult = speichern();
     if (!validationResultsAndSaveResult.isValidationSuccessful()) {
       setErrorLabelsVisible(validationResultsAndSaveResult.validationResults());
+      showErrorMessageDialog(validationResultsAndSaveResult.validationResults());
     } else if (!validationResultsAndSaveResult.isSaveSuccessful()) {
       view.showErrorMessageDialog(validationResultsAndSaveResult.getSaveErrorMessage(), "Fehler");
       if (validationResultsAndSaveResult.isDialogToBeClosedAfterSave()) {
@@ -48,11 +49,44 @@ public abstract class AbstractCreateOrUpdateController<T extends CreateOrUpdateV
         view.setButtonSpeichernFocusPainted(false);
       }
     } else {
-      closeDialog();
+      if (validationResultsAndSaveResult.isDialogToBeClosedAfterSave()) {
+        closeDialog();
+      }
     }
   }
 
   protected abstract ValidationResultsAndSaveResult speichern();
+
+  private void setErrorLabelsVisible(List<ValidationResult> validationResults) {
+    for (ValidationResult validationResult : validationResults) {
+      if (!validationResult.isValid() && validationResult.affectedFields() != null) {
+        for (Field field : validationResult.affectedFields()) {
+          setErrorLabelVisible(validationResult, field);
+        }
+      }
+    }
+  }
+
+  protected abstract void setErrorLabelVisible(ValidationResult validationResult, Field field);
+
+  protected abstract void setAllErrorLabelsInvisible();
+
+  protected void setErrorLabelVisibleIfRequired(
+      ValidationResult validationResult, Field field, Consumer<String> setErrorLabelVisible) {
+    if (validationResult.affectedFields().contains(field)) {
+      setErrorLabelVisible.accept(validationResult.errorMessage());
+    }
+  }
+
+  private void showErrorMessageDialog(List<ValidationResult> validationResults) {
+    for (ValidationResult validationResult : validationResults) {
+      if (!validationResult.isValid()
+          && (validationResult.affectedFields() == null
+              || validationResult.affectedFields().isEmpty())) {
+        view.showErrorMessageDialog(validationResult.errorMessage(), "Fehler");
+      }
+    }
+  }
 
   protected static void formatAndValidateString(
       String fieldValue,
@@ -137,17 +171,6 @@ public abstract class AbstractCreateOrUpdateController<T extends CreateOrUpdateV
         setErrorLabelVisibleConsumer,
         setErrorLabelInvisibleRunnable,
         convertedFieldValueAndConversionResult);
-  }
-
-  protected abstract void setErrorLabelsVisible(List<ValidationResult> validationResults);
-
-  protected abstract void setAllErrorLabelsInvisible();
-
-  protected void setErrorLabelVisibleIfRequired(
-      ValidationResult validationResult, Field field, Consumer<String> setErrorLabelVisible) {
-    if (validationResult.affectedFields().contains(field)) {
-      setErrorLabelVisible.accept(validationResult.errorMessage());
-    }
   }
 
   private void closeDialog() {

@@ -7,7 +7,6 @@ import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateLektionsgebuehrenView;
 import java.awt.event.*;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -213,36 +212,30 @@ public class CreateOrUpdateLektionsgebuehrenController
   }
 
   @Override
-  protected void setErrorLabelsVisible(List<ValidationResult> validationResults) {
-    for (ValidationResult validationResult : validationResults) {
-      if (!validationResult.isValid()) {
-        for (Field field : validationResult.affectedFields()) {
-          switch (field) {
-            case LEKTIONSLAENGE ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelLektionslaengeVisible);
-            case BETRAG_1_KIND ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelBetrag1KindVisible);
-            case BETRAG_2_KINDER ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelBetrag2KinderVisible);
-            case BETRAG_3_KINDER ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelBetrag3KinderVisible);
-            case BETRAG_4_KINDER ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelBetrag4KinderVisible);
-            case BETRAG_5_KINDER ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelBetrag5KinderVisible);
-            case BETRAG_6_KINDER ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelBetrag6KinderVisible);
-            default -> throw new IllegalStateException("Unexpected value: " + field);
-          }
-        }
-      }
+  protected void setErrorLabelVisible(ValidationResult validationResult, Field field) {
+    switch (field) {
+      case LEKTIONSLAENGE ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelLektionslaengeVisible);
+      case BETRAG_1_KIND ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelBetrag1KindVisible);
+      case BETRAG_2_KINDER ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelBetrag2KinderVisible);
+      case BETRAG_3_KINDER ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelBetrag3KinderVisible);
+      case BETRAG_4_KINDER ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelBetrag4KinderVisible);
+      case BETRAG_5_KINDER ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelBetrag5KinderVisible);
+      case BETRAG_6_KINDER ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelBetrag6KinderVisible);
+      default -> throw new IllegalStateException("Unexpected value: " + field);
     }
   }
 

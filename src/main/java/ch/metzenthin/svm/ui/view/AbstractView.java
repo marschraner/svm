@@ -15,18 +15,25 @@ public abstract class AbstractView {
     JOptionPane.showMessageDialog(parent, message, title, JOptionPane.ERROR_MESSAGE);
   }
 
-  protected void showInfoMessageDialog(Component parent, String message, String title) {
-    JOptionPane.showMessageDialog(parent, message, title, JOptionPane.INFORMATION_MESSAGE);
-  }
-
   protected int showYesNoDialog(Component parent, String message, String title) {
     Object[] options = {"Ja", "Nein"};
+    return showOptionDialog(parent, message, title, options, JOptionPane.QUESTION_MESSAGE);
+  }
+
+  protected int showIgnorierenAbrechenDialog(Component parent, String message, String title) {
+    Object[] options = {"Ignorieren", "Abbrechen"};
+    return showOptionDialog(parent, message, title, options, JOptionPane.WARNING_MESSAGE);
+  }
+
+  @SuppressWarnings("MagicConstant")
+  private int showOptionDialog(
+      Component parent, String message, String title, Object[] options, int messageType) {
     return JOptionPane.showOptionDialog(
         parent,
         message,
         title,
         JOptionPane.YES_NO_OPTION,
-        JOptionPane.QUESTION_MESSAGE,
+        messageType,
         null,
         options, // the titles of buttons
         options[1]); // default button title

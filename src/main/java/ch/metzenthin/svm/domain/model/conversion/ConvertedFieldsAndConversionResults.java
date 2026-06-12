@@ -1,9 +1,8 @@
 package ch.metzenthin.svm.domain.model.conversion;
 
-import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author Hans Stamm
@@ -15,7 +14,12 @@ public record ConvertedFieldsAndConversionResults<T>(
     return conversionErrors.isEmpty();
   }
 
-  public Set<Field> getFieldsWithInvalidConversion() {
-    return conversionErrors.stream().map(ConversionResult::getField).collect(Collectors.toSet());
+  public List<ValidationResult> getInvalidConversionResultsAsValidationResults() {
+    return conversionErrors.stream()
+        .map(
+            conversionResult ->
+                new ValidationResult(
+                    conversionResult.errorMessage(), Set.of(conversionResult.getField())))
+        .toList();
   }
 }

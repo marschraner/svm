@@ -7,7 +7,6 @@ import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateCodeView;
 import java.awt.event.*;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,21 +97,15 @@ public class CreateOrUpdateCodeController
   }
 
   @Override
-  public void setErrorLabelsVisible(List<ValidationResult> validationResults) {
-    for (ValidationResult validationResult : validationResults) {
-      if (!validationResult.isValid()) {
-        for (Field field : validationResult.affectedFields()) {
-          switch (field) {
-            case KUERZEL ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelKuerzelVisible);
-            case BESCHREIBUNG ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelBeschreibungVisible);
-            default -> throw new IllegalStateException("Unexpected value: " + field);
-          }
-        }
-      }
+  protected void setErrorLabelVisible(ValidationResult validationResult, Field field) {
+    switch (field) {
+      case KUERZEL ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelKuerzelVisible);
+      case BESCHREIBUNG ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelBeschreibungVisible);
+      default -> throw new IllegalStateException("Unexpected value: " + field);
     }
   }
 

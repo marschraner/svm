@@ -8,7 +8,6 @@ import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateKurstypView;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,12 +73,12 @@ public class CreateOrUpdateKurstypController
   }
 
   @Override
-  public void setErrorLabelsVisible(List<ValidationResult> validationResults) {
-    for (ValidationResult validationResult : validationResults) {
-      if (!validationResult.isValid()) {
-        setErrorLabelVisibleIfRequired(
-            validationResult, Field.BEZEICHNUNG, view::setErrorLabelBezeichnungVisible);
-      }
+  protected void setErrorLabelVisible(ValidationResult validationResult, Field field) {
+    if (field == Field.BEZEICHNUNG) {
+      setErrorLabelVisibleIfRequired(
+          validationResult, Field.BEZEICHNUNG, view::setErrorLabelBezeichnungVisible);
+    } else {
+      throw new IllegalStateException("Unexpected value: " + field);
     }
   }
 

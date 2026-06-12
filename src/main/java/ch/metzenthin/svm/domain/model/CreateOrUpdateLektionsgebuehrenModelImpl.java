@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
@@ -98,14 +97,14 @@ public class CreateOrUpdateLektionsgebuehrenModelImpl
 
   @Override
   public ValidationResultsAndSaveResult speichern(LektionsgebuehrenFields lektionsgebuehrenFields) {
+
     ConvertedFieldsAndConversionResults<ConvertedLektionsgebuehrenFields>
         convertedLektionsgebuehrenFieldsAndConversionResults = convertAll(lektionsgebuehrenFields);
     if (!convertedLektionsgebuehrenFieldsAndConversionResults.isValid()) {
-      Set<Field> fieldsWithInvalidConversion =
-          convertedLektionsgebuehrenFieldsAndConversionResults.getFieldsWithInvalidConversion();
-      ValidationResult validationResult =
-          new ValidationResult("Ungültiges Format!", fieldsWithInvalidConversion);
-      return new ValidationResultsAndSaveResult(List.of(validationResult));
+      List<ValidationResult> invalidConversionResultsAsValidationResults =
+          convertedLektionsgebuehrenFieldsAndConversionResults
+              .getInvalidConversionResultsAsValidationResults();
+      return new ValidationResultsAndSaveResult(invalidConversionResultsAsValidationResults);
     }
     ConvertedLektionsgebuehrenFields convertedLektionsgebuehrenFields =
         convertedLektionsgebuehrenFieldsAndConversionResults.convertedFields();

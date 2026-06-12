@@ -67,6 +67,7 @@ public class MaerchenServiceImpl implements MaerchenService {
     return maerchenRepository.findAllOrderBySchuljahrDesc();
   }
 
+  @SuppressWarnings("DuplicatedCode")
   @Override
   @Transactional(readOnly = true)
   public String findNaechstesNochErfasstesSchuljahr() {
@@ -89,7 +90,21 @@ public class MaerchenServiceImpl implements MaerchenService {
     return naechstesSchuljahr;
   }
 
-  private boolean isMaerchenBereitsErfasst(
+  @Override
+  @Transactional(readOnly = true)
+  public boolean existsMaerchenForSchuljahr(Integer maerchenId, String schuljahr) {
+    int numberOfAlreadyExistingMaerchenInSchuljahr =
+        getNumberOfAlreadyExistingMaerchenInSchuljahr(maerchenId, schuljahr);
+    return numberOfAlreadyExistingMaerchenInSchuljahr > 0;
+  }
+
+  private int getNumberOfAlreadyExistingMaerchenInSchuljahr(Integer maerchenId, String schuljahr) {
+    return (maerchenId != null)
+        ? maerchenRepository.countBySchuljahrAndIdNe(schuljahr, maerchenId)
+        : maerchenRepository.countBySchuljahr(schuljahr);
+  }
+
+  private static boolean isMaerchenBereitsErfasst(
       String naechstesSchuljahr, List<Maerchen> erfassteMaerchen) {
     return erfassteMaerchen.stream()
         .anyMatch(maerchen -> maerchen.getSchuljahr().equals(naechstesSchuljahr));
@@ -99,11 +114,8 @@ public class MaerchenServiceImpl implements MaerchenService {
   @Transactional
   public void saveMaerchen(Maerchen maerchen) throws EntityAlreadyExistsException {
     long numberOfAlreadyExistingMaerchen =
-        (maerchen.getMaerchenId() != null)
-            ? maerchenRepository.countBySchuljahrAndBezeichnungAndIdNe(
-                maerchen.getSchuljahr(), maerchen.getBezeichnung(), maerchen.getMaerchenId())
-            : maerchenRepository.countBySchuljahrAndBezeichnung(
-                maerchen.getSchuljahr(), maerchen.getBezeichnung());
+        getNumberOfAlreadyExistingMaerchenInSchuljahr(
+            maerchen.getMaerchenId(), maerchen.getSchuljahr());
     if (numberOfAlreadyExistingMaerchen > 0) {
       throw new EntityAlreadyExistsException();
     }

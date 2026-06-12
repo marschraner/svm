@@ -15,6 +15,8 @@ public interface MaerchenService {
 
   String findNaechstesNochErfasstesSchuljahr();
 
+  boolean existsMaerchenForSchuljahr(Integer maerchenId, String schuljahr);
+
   void saveMaerchen(Maerchen maerchen) throws EntityAlreadyExistsException;
 
   void deleteMaerchen(Maerchen maerchen) throws EntityStillReferencedException;

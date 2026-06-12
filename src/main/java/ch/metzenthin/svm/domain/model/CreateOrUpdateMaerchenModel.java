@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.domain.model.entityfields.MaerchenFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import java.util.function.BooleanSupplier;
 
 /**
  * @author Martin Schraner
@@ -21,5 +22,6 @@ public interface CreateOrUpdateMaerchenModel {
 
   ValidationResult validateAnzahlVorstellungen(int anzahlVorstellungen);
 
-  ValidationResultsAndSaveResult speichern(MaerchenFields maerchenFields);
+  ValidationResultsAndSaveResult speichern(
+      MaerchenFields maerchenFields, BooleanSupplier checkForMaerchenInPastWarningSupplier);
 }

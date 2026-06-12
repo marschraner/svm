@@ -13,22 +13,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MaerchenRepository extends JpaRepository<Maerchen, Integer> {
 
-  @Query(
-      "SELECT COUNT(m) FROM Maerchen m "
-          + "WHERE m.schuljahr = :schuljahr "
-          + "AND m.bezeichnung = :bezeichnung")
-  int countBySchuljahrAndBezeichnung(
-      @Param("schuljahr") String schuljahr, @Param("bezeichnung") String bezeichnung);
+  @Query("SELECT COUNT(m) FROM Maerchen m WHERE m.schuljahr = :schuljahr")
+  int countBySchuljahr(@Param("schuljahr") String schuljahr);
 
   @Query(
       "SELECT COUNT(m) FROM Maerchen m "
           + "WHERE m.schuljahr = :schuljahr "
-          + "AND m.bezeichnung = :bezeichnung "
           + "AND m.maerchenId <> :id")
-  int countBySchuljahrAndBezeichnungAndIdNe(
-      @Param("schuljahr") String schuljahr,
-      @Param("bezeichnung") String bezeichnung,
-      @Param("id") int id);
+  int countBySchuljahrAndIdNe(@Param("schuljahr") String schuljahr, @Param("id") int id);
 
   @Query("SELECT m FROM Maerchen m ORDER BY m.schuljahr DESC")
   List<Maerchen> findAllOrderBySchuljahrDesc();

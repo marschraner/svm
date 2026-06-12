@@ -7,7 +7,6 @@ import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateMaerchenView;
 import java.awt.event.*;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,26 +110,30 @@ public class CreateOrUpdateMaerchenController
             view.getSpinnerSchuljahreValue(),
             view.getTxtBezeichnungText(),
             view.getTxtAnzahlVorstellungenText());
-    return model.speichern(maerchenFields);
+
+    return model.speichern(
+        maerchenFields,
+        () -> {
+          int n =
+              view.showIgnorierenAbbrechenDialog(
+                  "Das selektierte Schuljahr liegt in der Vergangenheit. Märchen trotzdem speichern?",
+                  "Schuljahr in Vergangenheit");
+          // Button Ignorieren (n == 0): true (trotzdem speichern)
+          // Button Abbrechen (n != 0): false (speichern abbrechen)
+          return n == 0;
+        });
   }
 
-  @SuppressWarnings("DuplicatedCode")
   @Override
-  public void setErrorLabelsVisible(List<ValidationResult> validationResults) {
-    for (ValidationResult validationResult : validationResults) {
-      if (!validationResult.isValid()) {
-        for (Field field : validationResult.affectedFields()) {
-          switch (field) {
-            case BEZEICHNUNG ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelBezeichnungVisible);
-            case ANZAHL_VORSTELLUNGEN ->
-                setErrorLabelVisibleIfRequired(
-                    validationResult, field, view::setErrorLabelAnzahlVorstellungenVisible);
-            default -> throw new IllegalStateException("Unexpected value: " + field);
-          }
-        }
-      }
+  protected void setErrorLabelVisible(ValidationResult validationResult, Field field) {
+    switch (field) {
+      case BEZEICHNUNG ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelBezeichnungVisible);
+      case ANZAHL_VORSTELLUNGEN ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelAnzahlVorstellungenVisible);
+      default -> throw new IllegalStateException("Unexpected value: " + field);
     }
   }
 

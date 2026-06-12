@@ -80,6 +80,7 @@ public class SemesterServiceImpl implements SemesterService {
     return false;
   }
 
+  @SuppressWarnings("DuplicatedCode")
   @Override
   @Transactional(readOnly = true)
   public Semester determineNaechstesNochNichtErfasstesSemester() {
