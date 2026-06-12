@@ -1,0 +1,9 @@
+# noinspection SqlWithoutWhereForFile
+SET autocommit = 1;
+DELETE FROM svmtest.Kurs_Lehrkraft;
+DELETE FROM svmtest.Kurs;
+DELETE FROM svmtest.Kursort;
+DELETE FROM svmtest.Kurstyp;
+DELETE FROM svmtest.Semester;
+DELETE FROM svmtest.Mitarbeiter;
+DELETE FROM svmtest.Person;

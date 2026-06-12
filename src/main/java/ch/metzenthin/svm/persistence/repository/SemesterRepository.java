@@ -14,6 +14,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SemesterRepository extends JpaRepository<Semester, Integer> {
 
+  @Query("SELECT COUNT(s) FROM Semester s WHERE s.semesterId = :semesterId")
+  int countBySemesterId(@Param("semesterId") int semesterId);
+
   @Query(
       "SELECT COUNT(s) FROM Semester s "
           + "WHERE s.schuljahr = :schuljahr AND s.semesterbezeichnung = :semesterbezeichnung")

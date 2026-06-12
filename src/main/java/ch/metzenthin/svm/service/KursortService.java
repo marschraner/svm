@@ -14,6 +14,8 @@ public interface KursortService {
 
   List<Kursort> findAllKursorte();
 
+  List<Kursort> findSelektierbareKursorte();
+
   void saveKursort(Kursort kursort) throws EntityAlreadyExistsException;
 
   void deleteKursort(Kursort kursort) throws EntityStillReferencedException;

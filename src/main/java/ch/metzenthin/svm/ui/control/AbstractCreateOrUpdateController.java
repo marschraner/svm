@@ -6,11 +6,13 @@ import ch.metzenthin.svm.domain.model.conversion.BigDecimalConverter;
 import ch.metzenthin.svm.domain.model.conversion.CalendarConverter;
 import ch.metzenthin.svm.domain.model.conversion.ConvertedValueAndConversionResult;
 import ch.metzenthin.svm.domain.model.conversion.IntegerConverter;
+import ch.metzenthin.svm.domain.model.conversion.TimeConverter;
 import ch.metzenthin.svm.domain.model.formatting.FormattingUtils;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateView;
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.List;
 import java.util.function.Consumer;
@@ -137,6 +139,23 @@ public abstract class AbstractCreateOrUpdateController<T extends CreateOrUpdateV
         setErrorLabelVisibleConsumer.accept(validationResult.errorMessage());
       }
     }
+  }
+
+  protected static void formatConvertAndValidateTime(
+      String fieldValue,
+      Function<Time, ValidationResult> validateFieldFunction,
+      Consumer<String> setFieldConsumer,
+      Consumer<String> setErrorLabelVisibleConsumer,
+      Runnable setErrorLabelInvisibleRunnable) {
+    String formattedFieldValue = FormattingUtils.formatString(fieldValue);
+    setFieldConsumer.accept(formattedFieldValue);
+    ConvertedValueAndConversionResult<Time> convertedFieldValueAndConversionResult =
+        TimeConverter.toTime(formattedFieldValue);
+    validate(
+        validateFieldFunction,
+        setErrorLabelVisibleConsumer,
+        setErrorLabelInvisibleRunnable,
+        convertedFieldValueAndConversionResult);
   }
 
   protected static void formatConvertAndValidatePrice(

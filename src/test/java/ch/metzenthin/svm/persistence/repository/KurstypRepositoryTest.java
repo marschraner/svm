@@ -24,6 +24,15 @@ class KurstypRepositoryTest {
   @Autowired private KurstypRepository kurstypRepository;
 
   @Test
+  void testCountByKurstypId() {
+    int numberOfKurstypen = kurstypRepository.countByKurstypId(12);
+    assertEquals(1, numberOfKurstypen);
+
+    numberOfKurstypen = kurstypRepository.countByKurstypId(999);
+    assertEquals(0, numberOfKurstypen);
+  }
+
+  @Test
   void testCountByBezeichnung() {
     int numberOfKurstypen = kurstypRepository.countByBezeichnung("Tanzen Test1");
     assertEquals(1, numberOfKurstypen);
@@ -45,8 +54,20 @@ class KurstypRepositoryTest {
   void testFindAllOrderByBezeichnung() {
     List<Kurstyp> kurstypenFound = kurstypRepository.findAllOrderByBezeichnung();
 
-    assertEquals(2, kurstypenFound.size());
-    assertEquals("Tanzen Test1", kurstypenFound.get(0).getBezeichnung());
-    assertEquals("Tanzen Test2", kurstypenFound.get(1).getBezeichnung());
+    assertEquals(4, kurstypenFound.size());
+    assertEquals("Akrobatik Test", kurstypenFound.get(0).getBezeichnung());
+    assertEquals("Tango Test", kurstypenFound.get(1).getBezeichnung());
+    assertEquals("Tanzen Test1", kurstypenFound.get(2).getBezeichnung());
+    assertEquals("Tanzen Test2", kurstypenFound.get(3).getBezeichnung());
+  }
+
+  @Test
+  void testFindBySelektierbarTrueOrderByBezeichnung() {
+    List<Kurstyp> kurstypenFound = kurstypRepository.findBySelektierbarTrueOrderByBezeichnung();
+
+    assertEquals(3, kurstypenFound.size());
+    assertEquals("Akrobatik Test", kurstypenFound.get(0).getBezeichnung());
+    assertEquals("Tanzen Test1", kurstypenFound.get(1).getBezeichnung());
+    assertEquals("Tanzen Test2", kurstypenFound.get(2).getBezeichnung());
   }
 }

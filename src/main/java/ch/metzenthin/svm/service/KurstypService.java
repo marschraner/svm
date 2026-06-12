@@ -14,6 +14,8 @@ public interface KurstypService {
 
   List<Kurstyp> findAllKurstypen();
 
+  List<Kurstyp> findSelektierbareKurstypen();
+
   void saveKurstyp(Kurstyp kurstyp) throws EntityAlreadyExistsException;
 
   void deleteKurstyp(Kurstyp kurstyp) throws EntityStillReferencedException;

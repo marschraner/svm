@@ -13,6 +13,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface KursortRepository extends JpaRepository<Kursort, Integer> {
 
+  @Query("SELECT COUNT(ko) FROM Kursort ko WHERE ko.kursortId = :kursortId")
+  int countByKursortId(@Param("kursortId") int kursortId);
+
   @Query("SELECT COUNT(ko) FROM Kursort ko WHERE ko.bezeichnung = :bezeichnung")
   int countByBezeichnung(@Param("bezeichnung") String bezeichnung);
 
@@ -24,4 +27,7 @@ public interface KursortRepository extends JpaRepository<Kursort, Integer> {
 
   @Query("SELECT ko FROM Kursort ko ORDER BY ko.bezeichnung")
   List<Kursort> findAllOrderByBezeichnung();
+
+  @Query("SELECT ko FROM Kursort ko WHERE ko.selektierbar = TRUE ORDER BY ko.bezeichnung")
+  List<Kursort> findBySelektierbarTrueOrderByBezeichnung();
 }

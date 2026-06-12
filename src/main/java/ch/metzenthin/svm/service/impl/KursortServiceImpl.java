@@ -45,6 +45,12 @@ public class KursortServiceImpl implements KursortService {
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public List<Kursort> findSelektierbareKursorte() {
+    return kursortRepository.findBySelektierbarTrueOrderByBezeichnung();
+  }
+
+  @Override
   @Transactional
   public void saveKursort(Kursort kursort) throws EntityAlreadyExistsException {
     long numberOfAlreadyExistingKursorte =

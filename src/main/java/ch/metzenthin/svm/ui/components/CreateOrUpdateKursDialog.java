@@ -1,146 +1,61 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Wochentag;
-import ch.metzenthin.svm.domain.model.KursErfassenModel;
-import ch.metzenthin.svm.domain.model.KurseModel;
-import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
-import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
-import ch.metzenthin.svm.ui.control.KursErfassenController;
 import java.awt.*;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
+import lombok.Getter;
 
 @SuppressWarnings({"java:S100", "java:S1450"})
-public class KursErfassenDialog extends JDialog {
-
-  // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
-  private static final boolean DEFAULT_BUTTON_ENABLED = false;
+public class CreateOrUpdateKursDialog extends SpeichernAbbrechenDialog {
 
   private JPanel contentPane;
   private JPanel datenPanel;
   private JPanel buttonPanel;
-  private JTextField txtAltersbereich;
-  private JTextField txtStufe;
-  private JTextField txtZeitBeginn;
-  private JTextField txtZeitEnde;
-  private JTextField txtBemerkungen;
-  private JComboBox<Kurstyp> comboBoxKurstyp;
-  private JComboBox<Wochentag> comboBoxWochentag;
-  private JComboBox<Kursort> comboBoxKursort;
-  private JComboBox<Mitarbeiter> comboBoxLehrkraft1;
-  private JComboBox<Mitarbeiter> comboBoxLehrkraft2;
-  private JLabel errLblKurstyp;
-  private JLabel errLblAltersbereich;
-  private JLabel errLblStufe;
-  private JLabel errLblWochentag;
-  private JLabel errLblZeitBeginn;
-  private JLabel errLblZeitEnde;
-  private JLabel errLblKursort;
-  private JLabel errLblLehrkraft1;
-  private JLabel errLblLehrkraft2;
-  private JLabel errLblBemerkungen;
+  @Getter private JTextField txtAltersbereich;
+  @Getter private JTextField txtStufe;
+  @Getter private JTextField txtZeitBeginn;
+  @Getter private JTextField txtZeitEnde;
+  @Getter private JTextField txtBemerkungen;
+  @Getter private JComboBox<Kurstyp> comboBoxKurstyp;
+  @Getter private JComboBox<Wochentag> comboBoxWochentag;
+  @Getter private JComboBox<Kursort> comboBoxKursort;
+  @Getter private JComboBox<Mitarbeiter> comboBoxLehrkraft1;
+  @Getter private JComboBox<Mitarbeiter> comboBoxLehrkraft2;
+  @Getter private JLabel errLblKurstyp;
+  @Getter private JLabel errLblAltersbereich;
+  @Getter private JLabel errLblStufe;
+  @Getter private JLabel errLblWochentag;
+  @Getter private JLabel errLblZeitBeginn;
+  @Getter private JLabel errLblZeitEnde;
+  @Getter private JLabel errLblKursort;
+  @Getter private JLabel errLblLehrkraft1;
+  @Getter private JLabel errLblLehrkraft2;
+  @Getter private JLabel errLblBemerkungen;
   private JButton btnSpeichern;
   private JButton btnAbbrechen;
 
-  public KursErfassenDialog(
-      SvmContext svmContext,
-      KurseModel kurseModel,
-      KurseSemesterwahlModel kurseSemesterwahlModel,
-      KurseTableModel kurseTableModel,
-      int indexBearbeiten,
-      boolean isBearbeiten,
-      String title) {
+  @Override
+  public JButton getSpeichernButton() {
+    return btnSpeichern;
+  }
+
+  @Override
+  public JButton getAbbrechenButton() {
+    return btnAbbrechen;
+  }
+
+  public CreateOrUpdateKursDialog(String title) {
     $$$setupUI$$$();
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
-    if (DEFAULT_BUTTON_ENABLED) {
-      getRootPane().setDefaultButton(btnSpeichern);
-    }
-    createKursErfassenController(
-        svmContext,
-        kurseModel,
-        kurseSemesterwahlModel,
-        kurseTableModel,
-        indexBearbeiten,
-        isBearbeiten);
-    initializeErrLbls();
-  }
-
-  private void createKursErfassenController(
-      SvmContext svmContext,
-      KurseModel kurseModel,
-      KurseSemesterwahlModel kurseSemesterwahlModel,
-      KurseTableModel kurseTableModel,
-      int indexBearbeiten,
-      boolean isBearbeiten) {
-    KursErfassenModel kursErfassenModel =
-        (isBearbeiten
-            ? kurseModel.getKursErfassenModel(svmContext, kurseTableModel, indexBearbeiten)
-            : svmContext.getModelFactory().createKursErfassenModel());
-    KursErfassenController kursErfassenController =
-        new KursErfassenController(
-            svmContext,
-            kursErfassenModel,
-            kurseSemesterwahlModel,
-            kurseTableModel,
-            DEFAULT_BUTTON_ENABLED);
-    kursErfassenController.setKursErfassenDialog(this);
-    kursErfassenController.setContentPane(contentPane);
-    kursErfassenController.setComboBoxKurstyp(comboBoxKurstyp);
-    kursErfassenController.setTxtAltersbereich(txtAltersbereich);
-    kursErfassenController.setTxtStufe(txtStufe);
-    kursErfassenController.setComboBoxWochentag(comboBoxWochentag);
-    kursErfassenController.setTxtZeitBeginn(txtZeitBeginn);
-    kursErfassenController.setTxtZeitEnde(txtZeitEnde);
-    kursErfassenController.setComboBoxKursort(comboBoxKursort);
-    kursErfassenController.setComboBoxLehrkraft1(comboBoxLehrkraft1);
-    kursErfassenController.setComboBoxLehrkraft2(comboBoxLehrkraft2);
-    kursErfassenController.setTxtBemerkungen(txtBemerkungen);
-    kursErfassenController.setBtnSpeichern(btnSpeichern);
-    kursErfassenController.setBtnAbbrechen(btnAbbrechen);
-    kursErfassenController.setErrLblKurstyp(errLblKurstyp);
-    kursErfassenController.setErrLblAltersbereich(errLblAltersbereich);
-    kursErfassenController.setErrLblStufe(errLblStufe);
-    kursErfassenController.setErrLblWochentag(errLblWochentag);
-    kursErfassenController.setErrLblZeitBeginn(errLblZeitBeginn);
-    kursErfassenController.setErrLblZeitEnde(errLblZeitEnde);
-    kursErfassenController.setErrLblKursort(errLblKursort);
-    kursErfassenController.setErrLblLehrkraft1(errLblLehrkraft1);
-    kursErfassenController.setErrLblLehrkraft2(errLblLehrkraft2);
-    kursErfassenController.setErrLblBemerkungen(errLblBemerkungen);
-    kursErfassenController.constructionDone();
-  }
-
-  @SuppressWarnings("DuplicatedCode")
-  private void initializeErrLbls() {
-    errLblKurstyp.setVisible(false);
-    errLblKurstyp.setForeground(Color.RED);
-    errLblAltersbereich.setVisible(false);
-    errLblAltersbereich.setForeground(Color.RED);
-    errLblStufe.setVisible(false);
-    errLblStufe.setForeground(Color.RED);
-    errLblWochentag.setVisible(false);
-    errLblWochentag.setForeground(Color.RED);
-    errLblZeitBeginn.setVisible(false);
-    errLblZeitBeginn.setForeground(Color.RED);
-    errLblZeitEnde.setVisible(false);
-    errLblZeitEnde.setForeground(Color.RED);
-    errLblKursort.setVisible(false);
-    errLblKursort.setForeground(Color.RED);
-    errLblLehrkraft1.setVisible(false);
-    errLblLehrkraft1.setForeground(Color.RED);
-    errLblLehrkraft2.setVisible(false);
-    errLblLehrkraft2.setForeground(Color.RED);
-    errLblBemerkungen.setVisible(false);
-    errLblBemerkungen.setForeground(Color.RED);
   }
 
   private void createUIComponents() {

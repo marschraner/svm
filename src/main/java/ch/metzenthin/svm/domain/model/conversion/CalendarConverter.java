@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.model.conversion;
 
+import static ch.metzenthin.svm.common.utils.Converter.getDeutscheBezeichnungOfDateFormatString;
+
 import ch.metzenthin.svm.common.utils.Converter;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -25,7 +27,7 @@ public class CalendarConverter {
     try {
       return new ConvertedValueAndConversionResult<>(Converter.toCalendar(string));
     } catch (ParseException e) {
-      return new ConvertedValueAndConversionResult<>(e.getMessage());
+      return new ConvertedValueAndConversionResult<>(getErrorMessage(string));
     }
   }
 
@@ -35,7 +37,7 @@ public class CalendarConverter {
       return new ConvertedValueAndConversionResult<>(
           Converter.toCalendar(string, dateFormatString));
     } catch (ParseException e) {
-      return new ConvertedValueAndConversionResult<>(e.getMessage());
+      return new ConvertedValueAndConversionResult<>(getErrorMessage(string));
     }
   }
 
@@ -43,7 +45,13 @@ public class CalendarConverter {
     try {
       return new ConversionResult<>(fieldName, Converter.toCalendar(string));
     } catch (ParseException e) {
-      return new ConversionResult<>(fieldName, e.getMessage());
+      return new ConversionResult<>(fieldName, getErrorMessage(string));
     }
+  }
+
+  private static String getErrorMessage(String value) {
+    return "Kein gültiges Datum im Format '"
+        + getDeutscheBezeichnungOfDateFormatString(value)
+        + "'";
   }
 }

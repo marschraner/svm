@@ -25,6 +25,15 @@ class SemesterRepositoryTest {
   @Autowired private SemesterRepository semesterRepository;
 
   @Test
+  void testCountBySemesterId() {
+    int numberOfSemesters = semesterRepository.countBySemesterId(101);
+    assertEquals(1, numberOfSemesters);
+
+    numberOfSemesters = semesterRepository.countBySemesterId(999);
+    assertEquals(0, numberOfSemesters);
+  }
+
+  @Test
   void testCountBySchuljahrAndSemesterbezeichnung() {
     int numberOfSemesters =
         semesterRepository.countBySchuljahrAndSemesterbezeichnung(

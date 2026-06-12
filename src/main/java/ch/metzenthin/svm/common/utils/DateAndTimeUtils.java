@@ -1,7 +1,10 @@
 package ch.metzenthin.svm.common.utils;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -68,5 +71,11 @@ public class DateAndTimeUtils {
   public static String getCalendarAsDDMMYYYY(Calendar calendar) {
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     return sdf.format(calendar.getTime());
+  }
+
+  public static Date getLocalDateTimeAsDate(LocalDateTime localDateTime) {
+    return (localDateTime == null)
+        ? null
+        : Date.from((localDateTime.atZone(ZoneId.systemDefault())).toInstant());
   }
 }

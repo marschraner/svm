@@ -45,6 +45,12 @@ public class KurstypServiceImpl implements KurstypService {
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public List<Kurstyp> findSelektierbareKurstypen() {
+    return kurstypRepository.findBySelektierbarTrueOrderByBezeichnung();
+  }
+
+  @Override
   @Transactional
   public void saveKurstyp(Kurstyp kurstyp) throws EntityAlreadyExistsException {
     long numberOfAlreadyExistingKurstypen =

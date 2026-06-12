@@ -8,6 +8,8 @@
     <file url="file://$PROJECT_DIR$/src/test/resources/AnmeldungRepositoryTest_Delete.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/ElternmithilfeCodeRepositoryTest_Create.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/ElternmithilfeCodeRepositoryTest_Delete.sql" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/src/test/resources/KursLehrkraftRepositoryTest_Create.sql" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/src/test/resources/KursLehrkraftRepositoryTest_Delete.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/KursanmeldungRepositoryTest_Create.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/KursanmeldungRepositoryTest_Delete.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/KursortRepositoryTest_Create.sql" dialect="MariaDB" />
@@ -24,6 +26,8 @@
     <file url="file://$PROJECT_DIR$/src/test/resources/MitarbeiterCodeRepositoryTest_Delete.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/MitarbeiterMitarbeiterCodeRepositoryTest_Create.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/MitarbeiterMitarbeiterCodeRepositoryTest_Delete.sql" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/src/test/resources/MitarbeiterRepositoryTest_Create.sql" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/src/test/resources/MitarbeiterRepositoryTest_Delete.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/RechnungsempfaengerServiceImplTest_Create.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/RechnungsempfaengerServiceImplTest_Delete.sql" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/src/test/resources/SchuelerCodeRepositoryTest_Create.sql" dialect="MariaDB" />

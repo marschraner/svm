@@ -24,8 +24,17 @@ class KursortRepositoryTest {
   @Autowired private KursortRepository kursortRepository;
 
   @Test
+  void testCountByKursortId() {
+    int numberOfKursorts = kursortRepository.countByKursortId(2);
+    assertEquals(1, numberOfKursorts);
+
+    numberOfKursorts = kursortRepository.countByKursortId(999);
+    assertEquals(0, numberOfKursorts);
+  }
+
+  @Test
   void testCountByBezeichnung() {
-    int numberOfKursorte = kursortRepository.countByBezeichnung("Saal Test1");
+    int numberOfKursorte = kursortRepository.countByBezeichnung("Saal A Test");
     assertEquals(1, numberOfKursorte);
 
     numberOfKursorte = kursortRepository.countByBezeichnung("Saal Test99");
@@ -34,19 +43,31 @@ class KursortRepositoryTest {
 
   @Test
   void testCountByBezeichnungAndIdNe() {
-    int numberOfKursorte = kursortRepository.countByBezeichnungAndIdNe("Saal Test1", 1);
+    int numberOfKursorte = kursortRepository.countByBezeichnungAndIdNe("Saal A Test", 1);
     assertEquals(1, numberOfKursorte);
 
-    numberOfKursorte = kursortRepository.countByBezeichnungAndIdNe("Saal Test1", 2);
+    numberOfKursorte = kursortRepository.countByBezeichnungAndIdNe("Saal A Test", 2);
     assertEquals(0, numberOfKursorte);
   }
 
   @Test
   void testFindAllOrderByBezeichnung() {
-    List<Kursort> kursortsFound = kursortRepository.findAllOrderByBezeichnung();
+    List<Kursort> kursorteFound = kursortRepository.findAllOrderByBezeichnung();
 
-    assertEquals(2, kursortsFound.size());
-    assertEquals("Saal Test1", kursortsFound.get(0).getBezeichnung());
-    assertEquals("Saal Test2", kursortsFound.get(1).getBezeichnung());
+    assertEquals(4, kursorteFound.size());
+    assertEquals("Saal A Test", kursorteFound.get(0).getBezeichnung());
+    assertEquals("Saal B Test", kursorteFound.get(1).getBezeichnung());
+    assertEquals("Saal C Test", kursorteFound.get(2).getBezeichnung());
+    assertEquals("Studio S Test", kursorteFound.get(3).getBezeichnung());
+  }
+
+  @Test
+  void testFindBySelektierbarTrueOrderByBezeichnung() {
+    List<Kursort> kursorteFound = kursortRepository.findBySelektierbarTrueOrderByBezeichnung();
+
+    assertEquals(3, kursorteFound.size());
+    assertEquals("Saal A Test", kursorteFound.get(0).getBezeichnung());
+    assertEquals("Saal B Test", kursorteFound.get(1).getBezeichnung());
+    assertEquals("Studio S Test", kursorteFound.get(2).getBezeichnung());
   }
 }

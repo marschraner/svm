@@ -5,12 +5,14 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.conversion.IntegerConverter;
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.Set;
 
 /**
  * @author Martin Schraner
  */
+@SuppressWarnings("java:S1192")
 public class ValidationUtils {
 
   private static final String EINTRAG_OBLIGATORISCH = "Eintrag ist obligatorisch!";
@@ -92,6 +94,7 @@ public class ValidationUtils {
         : new ValidationResult();
   }
 
+  @SuppressWarnings("DuplicatedCode")
   public static ValidationResult validatePeriod(
       Calendar beginn, Calendar ende, Field beginnField, Field endeField) {
     ValidationResult validationResult = validatePeriodNotWithoutBeginn(beginn, ende, endeField);
@@ -137,6 +140,59 @@ public class ValidationUtils {
       return validationResult;
     }
     return validateWithinPeriod(calendar, earliestValidDate, latestValidDate, field);
+  }
+
+  public static ValidationResult validateNotBefore(Time time, Time earliestValidTime, Field field) {
+    return (time != null && earliestValidTime != null && time.before(earliestValidTime))
+        ? new ValidationResult(
+            field + " darf nicht vor " + asString(earliestValidTime) + " liegen!", Set.of(field))
+        : new ValidationResult();
+  }
+
+  public static ValidationResult validateNotAfter(Time time, Time latestValidTime, Field field) {
+    return (time != null && latestValidTime != null && time.after(latestValidTime))
+        ? new ValidationResult(
+            field + " darf nicht nach " + asString(latestValidTime) + " liegen!", Set.of(field))
+        : new ValidationResult();
+  }
+
+  @SuppressWarnings("DuplicatedCode")
+  public static ValidationResult validatePeriod(
+      Time beginn, Time ende, Field beginnField, Field endeField) {
+    ValidationResult validationResult = validatePeriodNotWithoutBeginn(beginn, ende, endeField);
+    if (!validationResult.isValid()) {
+      return validationResult;
+    }
+
+    validationResult = validatePeriodNotWithoutEnde(beginn, ende, beginnField);
+    if (!validationResult.isValid()) {
+      return validationResult;
+    }
+
+    return validateNotAfter(beginn, ende, beginnField);
+  }
+
+  public static ValidationResult validatePeriodNotWithoutBeginn(
+      Time beginn, Time ende, Field field) {
+    return (beginn == null && ende != null)
+        ? new ValidationResult(field + " ohne Beginn-Datum", Set.of(field))
+        : new ValidationResult();
+  }
+
+  public static ValidationResult validatePeriodNotWithoutEnde(Time beginn, Time ende, Field field) {
+    return (beginn != null && ende == null)
+        ? new ValidationResult(field + " ohne Ende-Datum", Set.of(field))
+        : new ValidationResult();
+  }
+
+  public static ValidationResult validateWithinPeriod(
+      Time time, Time earliestValidTime, Time latestValidTime, Field field) {
+
+    ValidationResult validationResult = validateNotBefore(time, earliestValidTime, field);
+    if (!validationResult.isValid()) {
+      return validationResult;
+    }
+    return validateNotAfter(time, latestValidTime, field);
   }
 
   public static ValidationResult validateNotValueNotSetAndWithinRange(
