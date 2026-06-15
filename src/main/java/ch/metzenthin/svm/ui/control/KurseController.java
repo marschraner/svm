@@ -10,7 +10,7 @@ import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.model.KurseModel;
 import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
-import ch.metzenthin.svm.ui.components.CreateOrUpdateKursDialog;
+import ch.metzenthin.svm.ui.components.KursErfassenDialog;
 import ch.metzenthin.svm.ui.components.ListenExportDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -106,9 +106,17 @@ public class KurseController {
       }
     }
     btnNeu.setFocusPainted(true);
-    CreateOrUpdateKursDialog createOrUpdateKursDialog = new CreateOrUpdateKursDialog("Neuer Kurs");
-    createOrUpdateKursDialog.pack();
-    createOrUpdateKursDialog.setVisible(true);
+    KursErfassenDialog kursErfassenDialog =
+        new KursErfassenDialog(
+            svmContext,
+            kurseModel,
+            kurseSemesterwahlModel,
+            kurseTableModel,
+            0,
+            false,
+            "Neuer Kurs");
+    kursErfassenDialog.pack();
+    kursErfassenDialog.setVisible(true);
     kurseTableModel.fireTableDataChanged();
     lblTotal.setText(kurseModel.getTotal(kurseTableModel));
     btnNeu.setFocusPainted(false);
@@ -126,10 +134,17 @@ public class KurseController {
 
   private void onBearbeiten() {
     btnBearbeiten.setFocusPainted(true);
-    CreateOrUpdateKursDialog createOrUpdateKursDialog =
-        new CreateOrUpdateKursDialog("Kurs bearbeiten");
-    createOrUpdateKursDialog.pack();
-    createOrUpdateKursDialog.setVisible(true);
+    KursErfassenDialog kursErfassenDialog =
+        new KursErfassenDialog(
+            svmContext,
+            kurseModel,
+            kurseSemesterwahlModel,
+            kurseTableModel,
+            kurseTable.convertRowIndexToModel(kurseTable.getSelectedRow()),
+            true,
+            "Kurs bearbeiten");
+    kursErfassenDialog.pack();
+    kursErfassenDialog.setVisible(true);
     kurseTableModel.fireTableDataChanged();
     btnBearbeiten.setFocusPainted(false);
     btnExportieren.setEnabled(kurseTableModel.getRowCount() > 0);

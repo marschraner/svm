@@ -36,6 +36,7 @@ public class CreateOrUpdateKursController
     configComboBoxKursort();
     configComboBoxLehrkraft1();
     configComboBoxLehrkraft2();
+    // Keine Konfiguration für Field Bemerkungen
     initialiseViewFields();
   }
 
@@ -195,6 +196,10 @@ public class CreateOrUpdateKursController
     view.setComboBoxLehrkraft2Values(model.getSelectableLehrkraefte2());
   }
 
+  // Kein Event für Benutzereingaben für Field Lehrkraft2
+
+  // Keine Konfiguration und kein Event für Benutzereingaben für Field Bemerkungen
+
   private void initialiseViewFields() {
     KursFields kursFields = model.getKursFields();
     view.setComboBoxKurstypSelectedItem(model.getKurstyp());
@@ -231,26 +236,48 @@ public class CreateOrUpdateKursController
   @Override
   protected void setErrorLabelVisible(ValidationResult validationResult, Field field) {
     switch (field) {
+      case KURSTYP ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelKurstypVisible);
       case ALTERSBEREICH ->
           setErrorLabelVisibleIfRequired(
               validationResult, field, view::setErrorLabelAltersbereichVisible);
       case STUFE ->
           setErrorLabelVisibleIfRequired(validationResult, field, view::setErrorLabelStufeVisible);
+      case WOCHENTAG ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelWochentagVisible);
       case ZEIT_BEGINN ->
           setErrorLabelVisibleIfRequired(
               validationResult, field, view::setErrorLabelZeitBeginnVisible);
       case ZEIT_ENDE ->
           setErrorLabelVisibleIfRequired(
               validationResult, field, view::setErrorLabelZeitEndeVisible);
+      case KURSORT ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelKursortVisible);
+      case LEHRKRAFT1 ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelLehrkraft1Visible);
+      case LEHRKRAFT2 ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelLehrkraft2Visible);
+      // Keine Validierung für Field Bemerkungen
       default -> throw new IllegalStateException("Unexpected value: " + field);
     }
   }
 
   @Override
   public void setAllErrorLabelsInvisible() {
+    view.setErrorLabelKurstypInvisible();
     view.setErrorLabelAltersbereichInvisible();
     view.setErrorLabelStufeInvisible();
+    view.setErrorLabelWochentagInvisible();
     view.setErrorLabelZeitBeginnInvisible();
     view.setErrorLabelZeitEndeInvisible();
+    view.setErrorLabelKursortInvisible();
+    view.setErrorLabelLehrkraft1Invisible();
+    view.setErrorLabelLehrkraft2Invisible();
+    // Keine Validierung für Field Bemerkungen
   }
 }

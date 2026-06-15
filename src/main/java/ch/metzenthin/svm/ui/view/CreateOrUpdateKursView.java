@@ -4,66 +4,84 @@ import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
+import ch.metzenthin.svm.ui.components.ComboBoxWithErrorLabelComponent;
 import ch.metzenthin.svm.ui.components.CreateOrUpdateKursDialog;
 import ch.metzenthin.svm.ui.components.TextFieldWithErrorLabelComponent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 
 /**
  * @author Hans Stamm
  */
 public class CreateOrUpdateKursView extends SpeichernAbbrechenDialogView<CreateOrUpdateKursDialog> {
 
-  private final JComboBox<Kurstyp> comboBoxKurstyp;
+  private final ComboBoxWithErrorLabelComponent<Kurstyp> kurstypComboBoxWithErrorLabel;
   private final TextFieldWithErrorLabelComponent altersbereichWithErrorLabel;
   private final TextFieldWithErrorLabelComponent stufeWithErrorLabel;
-  private final JComboBox<Wochentag> comboBoxWochentag;
+  private final ComboBoxWithErrorLabelComponent<Wochentag> wochentagComboBoxWithErrorLabel;
   private final TextFieldWithErrorLabelComponent zeitBeginnWithErrorLabel;
   private final TextFieldWithErrorLabelComponent zeitEndeWithErrorLabel;
-  private final JComboBox<Kursort> comboBoxKursort;
-  private final JComboBox<Mitarbeiter> comboBoxLehrkraft1;
-  private final JComboBox<Mitarbeiter> comboBoxLehrkraft2;
+  private final ComboBoxWithErrorLabelComponent<Kursort> kursortComboBoxWithErrorLabel;
+  private final ComboBoxWithErrorLabelComponent<Mitarbeiter> lehrkraft1ComboBoxWithErrorLabel;
+  private final ComboBoxWithErrorLabelComponent<Mitarbeiter> lehrkraft2ComboBoxWithErrorLabel;
   private final TextFieldWithErrorLabelComponent bemerkungenWithErrorLabel;
 
   public CreateOrUpdateKursView(String title) {
     super(new CreateOrUpdateKursDialog(title));
-    this.comboBoxKurstyp = dialog.getComboBoxKurstyp();
+    this.kurstypComboBoxWithErrorLabel =
+        new ComboBoxWithErrorLabelComponent<>(
+            dialog.getComboBoxKurstyp(), dialog.getErrLblKurstyp());
     this.altersbereichWithErrorLabel =
         new TextFieldWithErrorLabelComponent(
             dialog.getTxtAltersbereich(), dialog.getErrLblAltersbereich());
     this.stufeWithErrorLabel =
         new TextFieldWithErrorLabelComponent(dialog.getTxtStufe(), dialog.getErrLblStufe());
-    this.comboBoxWochentag = dialog.getComboBoxWochentag();
+    this.wochentagComboBoxWithErrorLabel =
+        new ComboBoxWithErrorLabelComponent<>(
+            dialog.getComboBoxWochentag(), dialog.getErrLblWochentag());
     this.zeitBeginnWithErrorLabel =
         new TextFieldWithErrorLabelComponent(
             dialog.getTxtZeitBeginn(), dialog.getErrLblZeitBeginn());
     this.zeitEndeWithErrorLabel =
         new TextFieldWithErrorLabelComponent(dialog.getTxtZeitEnde(), dialog.getErrLblZeitEnde());
-    this.comboBoxKursort = dialog.getComboBoxKursort();
-    this.comboBoxLehrkraft1 = dialog.getComboBoxLehrkraft1();
-    this.comboBoxLehrkraft2 = dialog.getComboBoxLehrkraft2();
+    this.kursortComboBoxWithErrorLabel =
+        new ComboBoxWithErrorLabelComponent<>(
+            dialog.getComboBoxKursort(), dialog.getErrLblKursort());
+    this.lehrkraft1ComboBoxWithErrorLabel =
+        new ComboBoxWithErrorLabelComponent<>(
+            dialog.getComboBoxLehrkraft1(), dialog.getErrLblLehrkraft1());
+    this.lehrkraft2ComboBoxWithErrorLabel =
+        new ComboBoxWithErrorLabelComponent<>(
+            dialog.getComboBoxLehrkraft2(), dialog.getErrLblLehrkraft2());
     this.bemerkungenWithErrorLabel =
         new TextFieldWithErrorLabelComponent(
             dialog.getTxtBemerkungen(), dialog.getErrLblBemerkungen());
   }
 
   // Kurstyp
+  public void setErrorLabelKurstypVisible(String errorMessage) {
+    kurstypComboBoxWithErrorLabel.setErrorLabelVisible(true);
+    kurstypComboBoxWithErrorLabel.setErrorLabelText(errorMessage);
+  }
+
+  public void setErrorLabelKurstypInvisible() {
+    kurstypComboBoxWithErrorLabel.setErrorLabelVisible(false);
+  }
+
   public void addComboBoxKurstypActionListener(ActionListener actionListener) {
-    comboBoxKurstyp.addActionListener(actionListener);
+    kurstypComboBoxWithErrorLabel.addActionListener(actionListener);
   }
 
   public void setComboBoxKurstypValues(Kurstyp[] kurstypen) {
-    comboBoxKurstyp.setModel(new DefaultComboBoxModel<>(kurstypen));
+    kurstypComboBoxWithErrorLabel.setValues(kurstypen);
   }
 
   public Kurstyp getComboBoxKurstypSelectedItem() {
-    return (Kurstyp) comboBoxKurstyp.getSelectedItem();
+    return kurstypComboBoxWithErrorLabel.getSelectedItem();
   }
 
   public void setComboBoxKurstypSelectedItem(Kurstyp kurstyp) {
-    comboBoxKurstyp.setSelectedItem(kurstyp);
+    kurstypComboBoxWithErrorLabel.setSelectedItem(kurstyp);
   }
 
   // Altersbereich
@@ -121,20 +139,29 @@ public class CreateOrUpdateKursView extends SpeichernAbbrechenDialogView<CreateO
   }
 
   // Wochentag
+  public void setErrorLabelWochentagVisible(String errorMessage) {
+    wochentagComboBoxWithErrorLabel.setErrorLabelVisible(true);
+    wochentagComboBoxWithErrorLabel.setErrorLabelText(errorMessage);
+  }
+
+  public void setErrorLabelWochentagInvisible() {
+    wochentagComboBoxWithErrorLabel.setErrorLabelVisible(false);
+  }
+
   public void addComboBoxWochentagActionListener(ActionListener actionListener) {
-    comboBoxWochentag.addActionListener(actionListener);
+    wochentagComboBoxWithErrorLabel.addActionListener(actionListener);
   }
 
   public void setComboBoxWochentagValues(Wochentag[] wochentage) {
-    comboBoxWochentag.setModel(new DefaultComboBoxModel<>(wochentage));
+    wochentagComboBoxWithErrorLabel.setValues(wochentage);
   }
 
   public Wochentag getComboBoxWochentagSelectedItem() {
-    return (Wochentag) comboBoxWochentag.getSelectedItem();
+    return wochentagComboBoxWithErrorLabel.getSelectedItem();
   }
 
   public void setComboBoxWochentagSelectedItem(Wochentag wochentag) {
-    comboBoxWochentag.setSelectedItem(wochentag);
+    wochentagComboBoxWithErrorLabel.setSelectedItem(wochentag);
   }
 
   // ZeitBeginn
@@ -192,50 +219,77 @@ public class CreateOrUpdateKursView extends SpeichernAbbrechenDialogView<CreateO
   }
 
   // Kursort
+  public void setErrorLabelKursortVisible(String errorMessage) {
+    kursortComboBoxWithErrorLabel.setErrorLabelVisible(true);
+    kursortComboBoxWithErrorLabel.setErrorLabelText(errorMessage);
+  }
+
+  public void setErrorLabelKursortInvisible() {
+    kursortComboBoxWithErrorLabel.setErrorLabelVisible(false);
+  }
+
   public void addComboBoxKursortActionListener(ActionListener actionListener) {
-    comboBoxKursort.addActionListener(actionListener);
+    kursortComboBoxWithErrorLabel.addActionListener(actionListener);
   }
 
   public void setComboBoxKursortValues(Kursort[] kursorte) {
-    comboBoxKursort.setModel(new DefaultComboBoxModel<>(kursorte));
+    kursortComboBoxWithErrorLabel.setValues(kursorte);
   }
 
   public Kursort getComboBoxKursortSelectedItem() {
-    return (Kursort) comboBoxKursort.getSelectedItem();
+    return kursortComboBoxWithErrorLabel.getSelectedItem();
   }
 
   public void setComboBoxKursortSelectedItem(Kursort kursort) {
-    comboBoxKursort.setSelectedItem(kursort);
+    kursortComboBoxWithErrorLabel.setSelectedItem(kursort);
   }
 
   // Lehrkraft1
+  public void setErrorLabelLehrkraft1Visible(String errorMessage) {
+    lehrkraft1ComboBoxWithErrorLabel.setErrorLabelVisible(true);
+    lehrkraft1ComboBoxWithErrorLabel.setErrorLabelText(errorMessage);
+  }
+
+  public void setErrorLabelLehrkraft1Invisible() {
+    lehrkraft1ComboBoxWithErrorLabel.setErrorLabelVisible(false);
+  }
+
   public void addComboBoxLehrkraft1ActionListener(ActionListener actionListener) {
-    comboBoxLehrkraft1.addActionListener(actionListener);
+    lehrkraft1ComboBoxWithErrorLabel.addActionListener(actionListener);
   }
 
   public void setComboBoxLehrkraft1Values(Mitarbeiter[] lehrkraefte1) {
-    comboBoxLehrkraft1.setModel(new DefaultComboBoxModel<>(lehrkraefte1));
+    lehrkraft1ComboBoxWithErrorLabel.setValues(lehrkraefte1);
   }
 
   public Mitarbeiter getComboBoxLehrkraft1SelectedItem() {
-    return (Mitarbeiter) comboBoxLehrkraft1.getSelectedItem();
+    return lehrkraft1ComboBoxWithErrorLabel.getSelectedItem();
   }
 
   public void setComboBoxLehrkraft1SelectedItem(Mitarbeiter lehrkraft1) {
-    comboBoxLehrkraft1.setSelectedItem(lehrkraft1);
+    lehrkraft1ComboBoxWithErrorLabel.setSelectedItem(lehrkraft1);
   }
 
   // Lehrkraft2
+  public void setErrorLabelLehrkraft2Visible(String errorMessage) {
+    lehrkraft2ComboBoxWithErrorLabel.setErrorLabelVisible(true);
+    lehrkraft2ComboBoxWithErrorLabel.setErrorLabelText(errorMessage);
+  }
+
+  public void setErrorLabelLehrkraft2Invisible() {
+    lehrkraft2ComboBoxWithErrorLabel.setErrorLabelVisible(false);
+  }
+
   public void setComboBoxLehrkraft2Values(Mitarbeiter[] lehrkraefte2) {
-    comboBoxLehrkraft2.setModel(new DefaultComboBoxModel<>(lehrkraefte2));
+    lehrkraft2ComboBoxWithErrorLabel.setValues(lehrkraefte2);
   }
 
   public Mitarbeiter getComboBoxLehrkraft2SelectedItem() {
-    return (Mitarbeiter) comboBoxLehrkraft2.getSelectedItem();
+    return lehrkraft2ComboBoxWithErrorLabel.getSelectedItem();
   }
 
   public void setComboBoxLehrkraft2SelectedItem(Mitarbeiter lehrkraft2) {
-    comboBoxLehrkraft2.setSelectedItem(lehrkraft2);
+    lehrkraft2ComboBoxWithErrorLabel.setSelectedItem(lehrkraft2);
   }
 
   // Bemerkungen
