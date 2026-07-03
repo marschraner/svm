@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import java.util.Calendar;
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class SemesterTableData extends AbstractTableData<SemesterAndNumberOfKurs
       case SEMESTERBEGINN, SEMESTERENDE, FERIENBEGINN1, FERIENENDE1, FERIENBEGINN2, FERIENENDE2 ->
           Calendar.class;
       case ANZAHL_SCHULWOCHEN, ANZAHL_KURSE -> Integer.class;
+      case SEMESTERBEZEICHNUNG -> Semesterbezeichnung.class;
       default -> String.class;
     };
   }

@@ -43,7 +43,7 @@ public class SemesterListController
   @Override
   protected void showOnBearbeitenDialog() {
     CreateOrUpdateSemesterModel createOrUpdateSemesterModel =
-        model.createCreateOrUpdateModel(svmContext, view.getSelectedRow());
+        model.createCreateOrUpdateModel(svmContext, view.convertRowIndexToModel());
     CreateOrUpdateSemesterController createOrUpdateSemesterController =
         new CreateOrUpdateSemesterController(createOrUpdateSemesterModel, "Semester bearbeiten");
     createOrUpdateSemesterController.showDialog();
@@ -57,8 +57,8 @@ public class SemesterListController
     if (n == 0) {
       // Löschen durchführen
       int numberOfReferencedSemesterrechnungen =
-          model.getNumberOfReferencedSemesterrechnungen(view.getSelectedRow());
-      boolean existsKurs = model.existsKurs(view.getSelectedRow());
+          model.getNumberOfReferencedSemesterrechnungen(view.convertRowIndexToModel());
+      boolean existsKurs = model.existsKurs(view.convertRowIndexToModel());
       int n1 = 0;
       if (!existsKurs && numberOfReferencedSemesterrechnungen > 0) {
         n1 =
@@ -72,7 +72,8 @@ public class SemesterListController
                 "Semester von Semesterrechnungen referenziert");
       }
       if (n1 == 0) {
-        DeleteSemesterResult deleteSemesterResult = model.eintragLoeschen(view.getSelectedRow());
+        DeleteSemesterResult deleteSemesterResult =
+            model.eintragLoeschen(view.convertRowIndexToModel());
         switch (deleteSemesterResult) {
           case SEMESTER_VON_KURS_REFERENZIERT -> showErrorMessageDialog(deleteSemesterResult);
           case SEMESTER_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
