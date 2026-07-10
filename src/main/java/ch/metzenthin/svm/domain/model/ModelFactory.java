@@ -81,11 +81,7 @@ public interface ModelFactory {
 
   KurseSemesterwahlModel createKurseSemesterwahlModel();
 
-  KurseModel createKurseModel();
-
   KursListModel createKursListModel(Semester semester);
-
-  KursErfassenModel createKursErfassenModel();
 
   CreateOrUpdateKursModel createCreateOrUpdateKursModel(
       Optional<Kurs> kursToBeModifiedOptional, Semester semester);

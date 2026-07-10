@@ -240,18 +240,8 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
-  public KurseModel createKurseModel() {
-    return new KurseModelImpl();
-  }
-
-  @Override
   public KursListModel createKursListModel(Semester semester) {
     return new KursListModel(kursService, semester);
-  }
-
-  @Override
-  public KursErfassenModel createKursErfassenModel() {
-    return new KursErfassenModelImpl();
   }
 
   @Override
