@@ -316,6 +316,7 @@ class SaveOrUpdateKursCommandTest {
     commandInvoker.executeCommand(kurseSemesterCommand);
     List<Kurs> kurseAll = kurseSemesterCommand.getKurseFound();
     for (Kurs kurs : kurseAll) {
+      List<Mitarbeiter> lehrkraefte = kursDao.findLehrkraefteByKursId(kurs.getKursId());
       if (kurs.getSemester().equals(semester)
           && kurs.getKurstyp().equals(kurstyp)
           && kurs.getAltersbereich().equals(altersbereich)
@@ -324,13 +325,13 @@ class SaveOrUpdateKursCommandTest {
           && kurs.getZeitBeginn().equals(zeitBeginn)
           && kurs.getZeitEnde().equals(zeitEnde)
           && kurs.getKursort().equals(kursort)
-          && kurs.getLehrkraefte().get(0).equals(mitarbeiter1)) {
-        if (kurs.getLehrkraefte().size() == 1) {
+          && lehrkraefte.get(0).equals(mitarbeiter1)) {
+        if (lehrkraefte.size() == 1) {
           if (mitarbeiter2 == null) {
             return true;
           }
         } else {
-          if (kurs.getLehrkraefte().get(1).equals(mitarbeiter2)) {
+          if (lehrkraefte.get(1).equals(mitarbeiter2)) {
             return true;
           }
         }

@@ -5,6 +5,7 @@ import ch.metzenthin.svm.common.datatypes.Gruppe;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.common.utils.StringNumber;
+import ch.metzenthin.svm.persistence.daos.KursDao;
 import ch.metzenthin.svm.persistence.entities.*;
 import java.sql.Time;
 import java.util.*;
@@ -13,6 +14,8 @@ import java.util.*;
  * @author Hans Stamm
  */
 public class SchuelerSuchenTableData {
+
+  private final KursDao kursDao = new KursDao();
 
   private final List<Schueler> schuelerList;
   private Map<Schueler, List<Kurs>> kurse;
@@ -146,7 +149,9 @@ public class SchuelerSuchenTableData {
       }
       case KURS1 -> {
         if (kurseOfSchueler != null && !kurseOfSchueler.isEmpty()) {
-          value = kurseOfSchueler.get(0).toStringShort();
+          List<Mitarbeiter> lehrkraefte =
+              kursDao.findLehrkraefteByKursId(kurseOfSchueler.get(0).getKursId());
+          value = kurseOfSchueler.get(0).toStringShort(lehrkraefte);
         }
       }
       case ANZAHL_KURSE -> value = (kurseOfSchueler == null ? 0 : kurseOfSchueler.size());

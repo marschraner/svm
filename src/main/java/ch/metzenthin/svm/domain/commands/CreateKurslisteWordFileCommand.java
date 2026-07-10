@@ -2,7 +2,9 @@ package ch.metzenthin.svm.domain.commands;
 
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 
+import ch.metzenthin.svm.persistence.daos.KursDao;
 import ch.metzenthin.svm.persistence.entities.Kurs;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import java.io.File;
@@ -13,6 +15,8 @@ import java.util.List;
  * @author Martin Schraner
  */
 public class CreateKurslisteWordFileCommand extends CreateListeCommand {
+
+  private final KursDao kursDao = new KursDao();
 
   // input
   private final KurseTableModel kurseTableModel;
@@ -146,7 +150,8 @@ public class CreateKurslisteWordFileCommand extends CreateListeCommand {
       cellsRow1.add(kurstypLines.get(0));
       cellsRow1.add(kurs.getAltersbereich());
       cellsRow1.add(kurs.getWochentag().toString());
-      cellsRow1.add(kurs.getLehrkraefteShortAsStr());
+      List<Mitarbeiter> lehrkraefte = kursDao.findLehrkraefteByKursId(kurs.getKursId());
+      cellsRow1.add(Mitarbeiter.getMitarbeiterShortAsStr(lehrkraefte));
       if (!bemerkungenLines.isEmpty()) {
         cellsRow1.add(bemerkungenLines.get(0));
       } else {

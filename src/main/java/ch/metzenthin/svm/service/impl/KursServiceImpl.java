@@ -18,6 +18,7 @@ import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.result.DeleteKursResult;
 import ch.metzenthin.svm.service.result.SaveKursResult;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -118,6 +119,7 @@ public class KursServiceImpl implements KursService {
                     Collectors.mapping(KursIdAndLehrkraft::lehrkraft, Collectors.toList())));
 
     List<Kurs> kursList = kursRepository.findAllBySemesterId(semesterId);
+    Collections.sort(kursList);
 
     List<KursAndLehrkraefteAndNumberOfKursanmeldungen>
         kursAndLehrkraefteAndNumberOfKursanmeldungenList = new ArrayList<>();

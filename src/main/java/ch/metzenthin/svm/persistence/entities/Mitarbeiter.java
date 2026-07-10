@@ -45,9 +45,6 @@ public class Mitarbeiter extends Person {
       inverseJoinColumns = {@JoinColumn(name = "code_id")})
   private final List<MitarbeiterCode> mitarbeiterCodes = new ArrayList<>();
 
-  @ManyToMany(mappedBy = "lehrkraefte")
-  private final List<Kurs> kurse = new ArrayList<>();
-
   public Mitarbeiter() {}
 
   @SuppressWarnings("java:S107")
@@ -108,6 +105,22 @@ public class Mitarbeiter extends Person {
     } else {
       return "";
     }
+  }
+
+  public static String getMitarbeiterAsStr(List<Mitarbeiter> mitarbeiterList) {
+    StringBuilder mitarebeiterAsStr = new StringBuilder(mitarbeiterList.get(0).toString());
+    for (int i = 1; i < mitarbeiterList.size(); i++) {
+      mitarebeiterAsStr.append(" / ").append(mitarbeiterList.get(i).toString());
+    }
+    return mitarebeiterAsStr.toString();
+  }
+
+  public static String getMitarbeiterShortAsStr(List<Mitarbeiter> mitarbeiterList) {
+    StringBuilder mitarbeiterAsStr = new StringBuilder(mitarbeiterList.get(0).toStringShort());
+    for (int i = 1; i < mitarbeiterList.size(); i++) {
+      mitarbeiterAsStr.append(" / ").append(mitarbeiterList.get(i).toStringShort());
+    }
+    return mitarbeiterAsStr.toString();
   }
 
   @Transient

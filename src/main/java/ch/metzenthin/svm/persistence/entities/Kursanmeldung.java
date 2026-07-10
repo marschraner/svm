@@ -58,7 +58,7 @@ public class Kursanmeldung extends AbstractEntity implements Comparable<Kursanme
   public boolean isIdenticalWith(Kursanmeldung otherKursanmeldung) {
     return otherKursanmeldung != null
         && schueler.isIdenticalWith(otherKursanmeldung.getSchueler())
-        && kurs.isIdenticalWith(otherKursanmeldung.getKurs());
+        && kurs.getKursId().equals(otherKursanmeldung.getKurs().getKursId());
   }
 
   public void copyAttributesFrom(Kursanmeldung otherKursanmeldung) {

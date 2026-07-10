@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.persistence.daos;
 
+import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import jakarta.persistence.EntityManager;
@@ -11,6 +12,18 @@ import java.util.List;
  * @author Martin Schraner
  */
 public class MitarbeiterDao extends GenericDao<Mitarbeiter, Integer> {
+
+  public List<Kurs> findKurseByMitarbeiterId(int mitarbeiterId) {
+    TypedQuery<Kurs> typedQuery =
+        db.getCurrentEntityManager()
+            .createQuery(
+                "SELECT kl.kurs FROM KursLehrkraft kl "
+                    + "WHERE kl.lehrkraft.personId = :personId "
+                    + "ORDER BY kl.lehrkraefteOrder",
+                Kurs.class);
+    typedQuery.setParameter("personId", mitarbeiterId);
+    return typedQuery.getResultList();
+  }
 
   @Override
   public Mitarbeiter save(Mitarbeiter mitarbeiter) {

@@ -46,7 +46,7 @@ public interface KursLehrkraftRepository extends JpaRepository<KursLehrkraft, In
   @Query(
       "SELECT kl FROM KursLehrkraft kl "
           + "WHERE kl.kurs.kursId = :kursId "
-          + "ORDER BY kl.kurs.kursId, kl.lehrkraefteOrder")
+          + "ORDER BY kl.lehrkraefteOrder")
   List<KursLehrkraft> findByKursIdOrderByLehrkraefteOrder(@Param("kursId") int kursId);
 
   @Query(

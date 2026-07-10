@@ -4,9 +4,11 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 
 import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.domain.model.NachnameGratiskindFormatter;
+import ch.metzenthin.svm.persistence.daos.KursDao;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Maercheneinteilung;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import java.io.*;
@@ -17,6 +19,8 @@ import java.util.List;
  * @author Martin Schraner
  */
 public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
+
+  private final KursDao kursDao = new KursDao();
 
   // input
   private final SchuelerSuchenTableModel schuelerSuchenTableModel;
@@ -161,9 +165,11 @@ public class CreateSchuelerlisteCsvFileCommand extends CreateListeCommand {
     if (kurse == null || kurse.isEmpty()) {
       return "";
     }
-    StringBuilder kurseAsStr = new StringBuilder(kurse.get(0).toStringShort());
+    List<Mitarbeiter> lehrkraefte = kursDao.findLehrkraefteByKursId(kurse.get(0).getKursId());
+    StringBuilder kurseAsStr = new StringBuilder(kurse.get(0).toStringShort(lehrkraefte));
     for (int i = 1; i < kurse.size(); i++) {
-      kurseAsStr.append(", ").append(kurse.get(i).toStringShort());
+      lehrkraefte = kursDao.findLehrkraefteByKursId(kurse.get(i).getKursId());
+      kurseAsStr.append(", ").append(kurse.get(i).toStringShort(lehrkraefte));
     }
     return kurseAsStr.toString();
   }

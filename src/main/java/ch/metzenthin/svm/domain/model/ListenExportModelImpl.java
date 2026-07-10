@@ -10,6 +10,7 @@ import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
+import ch.metzenthin.svm.persistence.daos.KursDao;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
@@ -25,6 +26,8 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
 
   private static final String RECHNUNGSDATUM_NICHT_UEBERALL_GESETZT =
       "Rechnungsdatum nicht überall gesetzt";
+
+  private final KursDao kursDao = new KursDao();
 
   private Listentyp listentyp;
   private String titel;
@@ -465,7 +468,8 @@ class ListenExportModelImpl extends AbstractModel implements ListenExportModel {
         return "";
       }
       Kurs kursFound = findKursCommand.getKursFound();
-      return kursFound.getLehrkraefteAsStr()
+      List<Mitarbeiter> lehrkraefte = kursDao.findLehrkraefteByKursId(kursFound.getKursId());
+      return Mitarbeiter.getMitarbeiterAsStr(lehrkraefte)
           + " ("
           + kursFound.getWochentag()
           + " "

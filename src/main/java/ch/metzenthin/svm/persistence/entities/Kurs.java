@@ -53,14 +53,6 @@ public class Kurs extends AbstractEntity implements Comparable<Kurs> {
   @JoinColumn(name = "kursort_id", nullable = false)
   private Kursort kursort;
 
-  @ManyToMany(cascade = CascadeType.PERSIST)
-  @OrderColumn
-  @JoinTable(
-      name = "Kurs_Lehrkraft",
-      joinColumns = {@JoinColumn(name = "kurs_id")},
-      inverseJoinColumns = {@JoinColumn(name = "person_id")})
-  private final List<Mitarbeiter> lehrkraefte = new ArrayList<>();
-
   @Column(name = "bemerkungen")
   private String bemerkungen;
 
@@ -92,28 +84,18 @@ public class Kurs extends AbstractEntity implements Comparable<Kurs> {
 
   @Override
   public String toString() {
-    String lehrkraft1 = (lehrkraefte.isEmpty() ? "-" : lehrkraefte.get(0).toString());
-    StringBuilder kursAsStr =
-        new StringBuilder(
-            kurstyp
-                + " "
-                + stufe
-                + ", "
-                + wochentag
-                + " "
-                + asString(zeitBeginn)
-                + "-"
-                + asString(zeitEnde)
-                + " ("
-                + lehrkraft1);
-    for (int i = 1; i < lehrkraefte.size(); i++) {
-      kursAsStr.append(" / ").append(lehrkraefte.get(i));
-    }
-    kursAsStr.append(")");
-    return kursAsStr.toString();
+    return kurstyp
+        + " "
+        + stufe
+        + ", "
+        + wochentag
+        + " "
+        + asString(zeitBeginn)
+        + "-"
+        + asString(zeitEnde);
   }
 
-  public String toStringShort() {
+  public String toStringShort(List<Mitarbeiter> lehrkraefte) {
     StringBuilder kursAsStr =
         new StringBuilder(
             wochentag
@@ -130,29 +112,14 @@ public class Kurs extends AbstractEntity implements Comparable<Kurs> {
     return kursAsStr.toString();
   }
 
-  public String getLehrkraefteAsStr() {
-    StringBuilder lehrkraefteAsStr = new StringBuilder(lehrkraefte.get(0).toString());
-    for (int i = 1; i < lehrkraefte.size(); i++) {
-      lehrkraefteAsStr.append(" / ").append(lehrkraefte.get(i).toString());
-    }
-    return lehrkraefteAsStr.toString();
-  }
-
-  public String getLehrkraefteShortAsStr() {
-    StringBuilder lehrkraefteAsStr = new StringBuilder(lehrkraefte.get(0).toStringShort());
-    for (int i = 1; i < lehrkraefte.size(); i++) {
-      lehrkraefteAsStr.append(" / ").append(lehrkraefte.get(i).toStringShort());
-    }
-    return lehrkraefteAsStr.toString();
-  }
-
-  public boolean isIdenticalWith(Kurs otherKurs) {
+  public boolean isIdenticalWith(
+      Kurs otherKurs, List<Mitarbeiter> lehrkraefteKurs, List<Mitarbeiter> lehrkraefteOtherKurs) {
     // Kurse identisch, falls Semester, Wochentag, Zeit und Mitarbeiter identisch
-    List<Mitarbeiter> commonLehrkraefte = new ArrayList<>(lehrkraefte);
+    List<Mitarbeiter> commonLehrkraefte = new ArrayList<>(lehrkraefteKurs);
     // RetainAll: nur diejenigen Lehrkraefte in commonLehrkraefte behalten, die auch in otherKurs
     // enthalten sind
     if (otherKurs != null) {
-      commonLehrkraefte.retainAll(otherKurs.getLehrkraefte());
+      commonLehrkraefte.retainAll(lehrkraefteOtherKurs);
     }
     return otherKurs != null
         && semester.equals(otherKurs.semester)
@@ -219,65 +186,6 @@ public class Kurs extends AbstractEntity implements Comparable<Kurs> {
       }
     }
     return result;
-  }
-
-  public void setSemester(Semester semester) {
-    //    if (this.semester != null) {
-    //      deleteSemester(this.semester);
-    //    }
-    //    if (semester != null && !semester.getKurse().contains(this)) {
-    //      semester.getKurse().add(this);
-    //    }
-    this.semester = semester;
-  }
-
-  public void deleteSemester(Semester semester) {
-    semester.getKurse().remove(this);
-    this.semester = null;
-  }
-
-  public void setKurstyp(Kurstyp kurstyp) {
-    //    if (this.kurstyp != null) {
-    //      deleteKurstyp(this.kurstyp);
-    //    }
-    //    if (kurstyp != null && !kurstyp.getKurse().contains(this)) {
-    //      kurstyp.getKurse().add(this);
-    //    }
-    this.kurstyp = kurstyp;
-  }
-
-  public void deleteKurstyp(Kurstyp kurstyp) {
-    kurstyp.getKurse().remove(this);
-    this.kurstyp = null;
-  }
-
-  public void setKursort(Kursort kursort) {
-    //    if (this.kursort != null) {
-    //      deleteKursort(this.kursort);
-    //    }
-    //    if (kursort != null && !kursort.getKurse().contains(this)) {
-    //      kursort.getKurse().add(this);
-    //    }
-    this.kursort = kursort;
-  }
-
-  public void deleteKursort(Kursort kursort) {
-    kursort.getKurse().remove(this);
-    this.kursort = null;
-  }
-
-  public void addLehrkraft(Mitarbeiter mitarbeiter) {
-    if (!mitarbeiter.getKurse().contains(this)) {
-      mitarbeiter.getKurse().add(this);
-    }
-    if (!lehrkraefte.contains(mitarbeiter)) {
-      lehrkraefte.add(mitarbeiter);
-    }
-  }
-
-  public void deleteLehrkraft(Mitarbeiter mitarbeiter) {
-    mitarbeiter.getKurse().remove(this);
-    lehrkraefte.remove(mitarbeiter);
   }
 
   @Transient

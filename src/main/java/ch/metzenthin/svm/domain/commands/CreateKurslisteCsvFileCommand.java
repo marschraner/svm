@@ -3,7 +3,9 @@ package ch.metzenthin.svm.domain.commands;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 import ch.metzenthin.svm.common.SvmRuntimeException;
+import ch.metzenthin.svm.persistence.daos.KursDao;
 import ch.metzenthin.svm.persistence.entities.Kurs;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
  * @author Martin Schraner
  */
 public class CreateKurslisteCsvFileCommand extends CreateListeCommand {
+
+  private final KursDao kursDao = new KursDao();
 
   // input
   private final List<? extends Kurs> kursList;
@@ -69,7 +73,8 @@ public class CreateKurslisteCsvFileCommand extends CreateListeCommand {
         out.write(separator);
         out.write(kurs.getKursort().getBezeichnung());
         out.write(separator);
-        out.write(kurs.getLehrkraefteShortAsStr());
+        List<Mitarbeiter> lehrkraefte = kursDao.findLehrkraefteByKursId(kurs.getKursId());
+        out.write(Mitarbeiter.getMitarbeiterShortAsStr(lehrkraefte));
         out.write(separator);
         if (checkNotEmpty(kurs.getBemerkungen())) {
           out.write(kurs.getBemerkungen().replace(";", ","));

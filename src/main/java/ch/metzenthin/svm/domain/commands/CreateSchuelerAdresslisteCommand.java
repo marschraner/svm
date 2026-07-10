@@ -4,7 +4,9 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 import static ch.metzenthin.svm.common.utils.Converter.nullAsEmptyString;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
+import ch.metzenthin.svm.persistence.daos.KursDao;
 import ch.metzenthin.svm.persistence.entities.Kurs;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
@@ -17,6 +19,8 @@ import java.util.Map;
  * @author Martin Schraner
  */
 public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
+
+  private final KursDao kursDao = new KursDao();
 
   // input
   private final SchuelerSuchenTableModel schuelerSuchenTableModel;
@@ -198,10 +202,11 @@ public class CreateSchuelerAdresslisteCommand extends CreateListeCommand {
         String lehrkraft2 = "";
         if (schuelerKurse != null && !schuelerKurse.isEmpty()) {
           Kurs kurs = schuelerKurse.get(j);
-          String lehrkraft1 = kurs.getLehrkraefte().get(0).toStringShort();
-          if (kurs.getLehrkraefte().size() == 2) {
+          List<Mitarbeiter> lehrkraefte = kursDao.findLehrkraefteByKursId(kurs.getKursId());
+          String lehrkraft1 = lehrkraefte.get(0).toStringShort();
+          if (lehrkraefte.size() == 2) {
             lehrkraft1 = lehrkraft1 + " /";
-            lehrkraft2 = kurs.getLehrkraefte().get(1).toStringShort();
+            lehrkraft2 = lehrkraefte.get(1).toStringShort();
           }
           cellsRow1.add(lehrkraft1);
         } else {

@@ -5,6 +5,7 @@ import static ch.metzenthin.svm.common.utils.Converter.asString;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.common.utils.StringNumber;
+import ch.metzenthin.svm.persistence.daos.KursDao;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import java.util.List;
  * @author Martin Schraner
  */
 public class KurseTableData {
+
+  private final KursDao kursDao = new KursDao();
 
   private List<Kurs> kurse;
   private final List<Field> columns = new ArrayList<>();
@@ -59,7 +62,8 @@ public class KurseTableData {
       case ORT -> value = kurs.getKursort().getBezeichnung();
       case LEITUNG -> {
         StringBuilder leitung = new StringBuilder();
-        for (Mitarbeiter mitarbeiter : kurs.getLehrkraefte()) {
+        List<Mitarbeiter> lehrkraefte = kursDao.findLehrkraefteByKursId(kurs.getKursId());
+        for (Mitarbeiter mitarbeiter : lehrkraefte) {
           if (!leitung.isEmpty()) {
             leitung.append(" / ");
           }

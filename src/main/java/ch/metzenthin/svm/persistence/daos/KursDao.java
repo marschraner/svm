@@ -16,6 +16,8 @@ public class KursDao extends GenericDao<Kurs, Integer> {
 
   private static final String SEMESTER_ID = "semesterId";
 
+  private final KursLehrkraftDao kursLehrkraftDao = new KursLehrkraftDao();
+
   @Override
   public void remove(Kurs kurs) {
 
@@ -29,13 +31,27 @@ public class KursDao extends GenericDao<Kurs, Integer> {
     Kursort kursort = kurs.getKursort();
     kursort.getKurse().remove(kurs);
 
-    // Entferne zugewiesene Lehrkräfte
-    for (Mitarbeiter mitarbeiter : new ArrayList<>(kurs.getLehrkraefte())) {
-      kurs.deleteLehrkraft(mitarbeiter);
+    // Lösche zugewiesene Lehrkräfte aus DB
+    List<KursLehrkraft> kursLehrkraefte =
+        kursLehrkraftDao.findKursLehrkraefteByKursId(kurs.getKursId());
+    for (KursLehrkraft kursLehrkraft : new ArrayList<>(kursLehrkraefte)) {
+      db.getCurrentEntityManager().remove(kursLehrkraft);
     }
 
     // Lösche Kurs aus DB
     db.getCurrentEntityManager().remove(kurs);
+  }
+
+  public List<Mitarbeiter> findLehrkraefteByKursId(int kursId) {
+    TypedQuery<Mitarbeiter> typedQuery =
+        db.getCurrentEntityManager()
+            .createQuery(
+                "SELECT kl.lehrkraft FROM KursLehrkraft kl "
+                    + "WHERE kl.kurs.kursId = :kursId "
+                    + "ORDER BY kl.lehrkraefteOrder",
+                Mitarbeiter.class);
+    typedQuery.setParameter("kursId", kursId);
+    return typedQuery.getResultList();
   }
 
   public List<Kurs> findKurseSemester(Semester semester) {
@@ -106,7 +122,9 @@ public class KursDao extends GenericDao<Kurs, Integer> {
       TypedQuery<Kurs> typedQuery =
           db.getCurrentEntityManager()
               .createQuery(
-                  "select k from Kurs k join k.lehrkraefte lk "
+                  "select k from Kurs k "
+                      + " join KursLehrkraft kl on kl.kurs.kursId = k.kursId "
+                      + " join Mitarbeiter lk on lk.personId = kl.lehrkraft.personId "
                       + " where k.semester.semesterId = :semesterId and k.wochentag = :wochentag and k.zeitBeginn = :zeitBeginn "
                       + " and lk.personId = :lehrkraftPersonId",
                   Kurs.class);

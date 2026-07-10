@@ -9,6 +9,7 @@ import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.SvmRequiredException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
+import ch.metzenthin.svm.persistence.daos.KursDao;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.KursanmeldungenTableModel;
 import java.sql.Time;
@@ -26,6 +27,8 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel
 
   private static final Logger LOGGER =
       LoggerFactory.getLogger(KursanmeldungErfassenModelImpl.class);
+
+  private final KursDao kursDao = new KursDao();
 
   private Semester semester;
   private Wochentag wochentag;
@@ -277,7 +280,9 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel
 
   @Override
   public Mitarbeiter[] getSelectableLehrkraftKursanmeldungOrigin() {
-    return new Mitarbeiter[] {kursanmeldungOrigin.getKurs().getLehrkraefte().get(0)};
+    List<Mitarbeiter> lehrkraefteOrigin =
+        kursDao.findLehrkraefteByKursId(kursanmeldungOrigin.getKurs().getKursId());
+    return new Mitarbeiter[] {lehrkraefteOrigin.get(0)};
   }
 
   @Override
@@ -352,7 +357,7 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel
   public boolean checkIfKursBereitsErfasst(SchuelerDatenblattModel schuelerDatenblattModel) {
     Schueler schueler = schuelerDatenblattModel.getSchueler();
     for (Kursanmeldung kursanmeldung1 : schueler.getKursanmeldungen()) {
-      if (kursanmeldung1.getKurs().isIdenticalWith(kurs)) {
+      if (kursanmeldung1.getKurs().getKursId().equals(kurs.getKursId())) {
         return true;
       }
     }
@@ -396,7 +401,9 @@ public class KursanmeldungErfassenModelImpl extends AbstractModel
         setSemester(kursanmeldungOrigin.getKurs().getSemester());
         setWochentag(kursanmeldungOrigin.getKurs().getWochentag());
         setZeitBeginn(asString(kursanmeldungOrigin.getKurs().getZeitBeginn()));
-        setMitarbeiter(kursanmeldungOrigin.getKurs().getLehrkraefte().get(0));
+        List<Mitarbeiter> lehrkraefteOrigin =
+            kursDao.findLehrkraefteByKursId(kursanmeldungOrigin.getKurs().getKursId());
+        setMitarbeiter(lehrkraefteOrigin.get(0));
         kurs = kursanmeldungOrigin.getKurs();
         setAnmeldedatum(asString(kursanmeldungOrigin.getAnmeldedatum()));
         setAbmeldedatum(asString(kursanmeldungOrigin.getAbmeldedatum()));

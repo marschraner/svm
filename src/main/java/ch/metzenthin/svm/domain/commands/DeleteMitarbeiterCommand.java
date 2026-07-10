@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.MitarbeiterDao;
+import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import java.util.List;
 
@@ -31,7 +32,9 @@ public class DeleteMitarbeiterCommand implements Command {
   @Override
   public void execute() {
     Mitarbeiter mitarbeiterToBeDeleted = mitarbeiters.get(indexMitarbeiterToBeDeleted);
-    if (!mitarbeiterToBeDeleted.getKurse().isEmpty()) {
+    List<Kurs> kurse =
+        mitarbeiterDao.findKurseByMitarbeiterId(mitarbeiterToBeDeleted.getPersonId());
+    if (!kurse.isEmpty()) {
       result = Result.MITARBEITER_VON_KURS_REFERENZIERT;
       return;
     }

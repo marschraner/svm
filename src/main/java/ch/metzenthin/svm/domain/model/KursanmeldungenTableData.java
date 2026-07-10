@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import static ch.metzenthin.svm.common.utils.Converter.asString;
 
 import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.persistence.daos.KursDao;
 import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import java.util.List;
@@ -27,6 +28,8 @@ public class KursanmeldungenTableData {
     Field.ABMELDEDATUM,
     Field.BEMERKUNGEN
   };
+
+  private final KursDao kursDao = new KursDao();
 
   private List<Kursanmeldung> kursanmeldungen;
 
@@ -57,7 +60,9 @@ public class KursanmeldungenTableData {
       case ORT -> value = kursanmeldung.getKurs().getKursort().getBezeichnung();
       case LEITUNG -> {
         StringBuilder leitung = new StringBuilder();
-        for (Mitarbeiter mitarbeiter : kursanmeldung.getKurs().getLehrkraefte()) {
+        List<Mitarbeiter> lehrkraefte =
+            kursDao.findLehrkraefteByKursId(kursanmeldung.getKurs().getKursId());
+        for (Mitarbeiter mitarbeiter : lehrkraefte) {
           if (!leitung.isEmpty()) {
             leitung.append(" / ");
           }

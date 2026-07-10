@@ -99,7 +99,6 @@ class KursanmeldungDaoTest {
       kurs.setSemester(semester);
       kurs.setKurstyp(kurstyp);
       kurs.setKursort(kursort);
-      kurs.addLehrkraft(mitarbeiter1);
       kursDao.save(kurs);
 
       // Schüler
@@ -203,7 +202,6 @@ class KursanmeldungDaoTest {
       kurs.setSemester(semester);
       kurs.setKurstyp(kurstyp);
       kurs.setKursort(kursort);
-      kurs.addLehrkraft(mitarbeiter1);
       kursDao.save(kurs);
 
       // Schüler
@@ -306,7 +304,6 @@ class KursanmeldungDaoTest {
       kurs.setSemester(semester);
       kurs.setKurstyp(kurstyp);
       kurs.setKursort(kursort);
-      kurs.addLehrkraft(mitarbeiter1);
       kursDao.save(kurs);
 
       // Schüler
@@ -471,7 +468,6 @@ class KursanmeldungDaoTest {
       kurs1.setSemester(semester);
       kurs1.setKurstyp(kurstyp);
       kurs1.setKursort(kursort);
-      kurs1.addLehrkraft(mitarbeiter1);
       kursDao.save(kurs1);
       Kurs kurs2 =
           new Kurs(
@@ -484,7 +480,6 @@ class KursanmeldungDaoTest {
       kurs2.setSemester(semester);
       kurs2.setKurstyp(kurstyp);
       kurs2.setKursort(kursort);
-      kurs2.addLehrkraft(mitarbeiter1);
       kursDao.save(kurs2);
 
       // Kurseinteilungen

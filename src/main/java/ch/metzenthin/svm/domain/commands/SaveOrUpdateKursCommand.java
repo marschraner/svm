@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.persistence.daos.KursDao;
+import ch.metzenthin.svm.persistence.daos.KursLehrkraftDao;
 import ch.metzenthin.svm.persistence.entities.*;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,6 +12,7 @@ import java.util.List;
 public class SaveOrUpdateKursCommand implements Command {
 
   private final KursDao kursDao = new KursDao();
+  private final KursLehrkraftDao kursLehrkraftDao = new KursLehrkraftDao();
 
   // input
   private final Kurs kurs;
@@ -52,15 +53,19 @@ public class SaveOrUpdateKursCommand implements Command {
       kursOrigin.setSemester(semester);
       kursOrigin.setKurstyp(kurstyp);
       kursOrigin.setKursort(kursort);
-      for (Mitarbeiter mitarbeiter : new ArrayList<>(kursOrigin.getLehrkraefte())) {
-        kursOrigin.deleteLehrkraft(mitarbeiter);
+      List<KursLehrkraft> kursLehrkraefteOrigin =
+          kursLehrkraftDao.findKursLehrkraefteByKursId(kursOrigin.getKursId());
+      for (KursLehrkraft kursLehrkraft : kursLehrkraefteOrigin) {
+        kursLehrkraftDao.remove(kursLehrkraft);
       }
       // bereits nach Löschen (ein erstes Mal) speichern, weil sonst Exception, falls Reihenfolge
       // der Lehrkräfte vertauscht werden
       kursDao.save(kursOrigin);
-      kursOrigin.addLehrkraft(mitarbeiter1);
+      KursLehrkraft kursLehrkraft1Origin = new KursLehrkraft(kursOrigin, mitarbeiter1, 0);
+      kursLehrkraftDao.save(kursLehrkraft1Origin);
       if (mitarbeiter2 != null) {
-        kursOrigin.addLehrkraft(mitarbeiter2);
+        KursLehrkraft kursLehrkraft2Origin = new KursLehrkraft(kursOrigin, mitarbeiter2, 1);
+        kursLehrkraftDao.save(kursLehrkraft2Origin);
       }
       kursDao.save(kursOrigin);
       // Semesterrechnungen aktualisieren, falls Kurslänge geändert hat
@@ -76,9 +81,11 @@ public class SaveOrUpdateKursCommand implements Command {
       kurs.setSemester(semester);
       kurs.setKurstyp(kurstyp);
       kurs.setKursort(kursort);
-      kurs.addLehrkraft(mitarbeiter1);
+      KursLehrkraft kursLehrkraft1 = new KursLehrkraft(kurs, mitarbeiter1, 0);
+      kursLehrkraftDao.save(kursLehrkraft1);
       if (mitarbeiter2 != null) {
-        kurs.addLehrkraft(mitarbeiter2);
+        KursLehrkraft kursLehrkraft2 = new KursLehrkraft(kurs, mitarbeiter2, 1);
+        kursLehrkraftDao.save(kursLehrkraft2);
       }
       Kurs kursSaved = kursDao.save(kurs);
       bereitsErfassteKurse.add(kursSaved);

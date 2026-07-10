@@ -29,6 +29,7 @@ class KursDaoTest {
   private final KurstypDao kurstypDao = new KurstypDao();
   private final KursortDao kursortDao = new KursortDao();
   private final MitarbeiterDao mitarbeiterDao = new MitarbeiterDao();
+  private final KursLehrkraftDao kursLehrkraftDao = new KursLehrkraftDao();
 
   private DB db;
 
@@ -98,7 +99,6 @@ class KursDaoTest {
       kurs.setSemester(semester);
       kurs.setKurstyp(kurstyp);
       kurs.setKursort(kursort);
-      kurs.addLehrkraft(mitarbeiter);
 
       entityManager.persist(kurs);
 
@@ -113,7 +113,6 @@ class KursDaoTest {
       assertEquals("2011/2012", kursFound.getSemester().getSchuljahr());
       assertEquals("Testkurs", kursFound.getKurstyp().getBezeichnung());
       assertEquals("Testsaal", kursFound.getKursort().getBezeichnung());
-      assertEquals("Roos", kursFound.getLehrkraefte().get(0).getNachname());
 
     } finally {
       if (tx != null) tx.rollback();
@@ -193,8 +192,6 @@ class KursDaoTest {
       kurs.setSemester(semester);
       kurs.setKurstyp(kurstyp);
       kurs.setKursort(kursort);
-      kurs.addLehrkraft(mitarbeiter1);
-      kurs.addLehrkraft(mitarbeiter2);
 
       Kurs kursSaved = kursDao.save(kurs);
 
@@ -221,18 +218,6 @@ class KursDaoTest {
       assertEquals("Testsaal", kursFound.getKursort().getBezeichnung());
       assertEquals(1, kursFound.getKursort().getKurse().size());
       assertTrue(kursFound.getKursort().getKurse().contains(kursFound));
-
-      // Lehrkräfte in Reihenfolge der Erfassung geordnet?
-      assertEquals(2, kursFound.getLehrkraefte().size());
-      assertEquals("Roos", kursFound.getLehrkraefte().get(0).getNachname());
-      assertEquals("Delley", kursFound.getLehrkraefte().get(1).getNachname());
-      assertEquals(1, kursFound.getLehrkraefte().get(0).getKurse().size());
-      assertTrue(kursFound.getLehrkraefte().get(0).getKurse().contains(kursFound));
-
-      // 1. Lehrkraft löschen
-      kurs.deleteLehrkraft(kursFound.getLehrkraefte().get(0));
-      assertEquals(1, kursFound.getLehrkraefte().size());
-      assertEquals("Delley", kursFound.getLehrkraefte().get(0).getNachname());
 
     } finally {
       if (tx != null) tx.rollback();
@@ -312,8 +297,6 @@ class KursDaoTest {
       kurs.setSemester(semester);
       kurs.setKurstyp(kurstyp);
       kurs.setKursort(kursort);
-      kurs.addLehrkraft(mitarbeiter1);
-      kurs.addLehrkraft(mitarbeiter2);
 
       Kurs kursSaved = kursDao.save(kurs);
 
@@ -323,30 +306,22 @@ class KursDaoTest {
       int semesterId = kursSaved.getSemester().getSemesterId();
       int kurstypId = kursSaved.getKurstyp().getKurstypId();
       int kursortId = kursSaved.getKursort().getKursortId();
-      int lehrkraft1Id = kursSaved.getLehrkraefte().get(0).getPersonId();
-      int lehrkraft2Id = kursSaved.getLehrkraefte().get(1).getPersonId();
 
       Kurs kursFound = kursDao.findById(kursId);
       Semester semesterFound = semesterDao.findById(semesterId);
       Kurstyp kurstypFound = kurstypDao.findById(kurstypId);
       Kursort kursortFound = kursortDao.findById(kursortId);
-      Mitarbeiter mitarbeiter1Found = mitarbeiterDao.findById(lehrkraft1Id);
-      Mitarbeiter mitarbeiter2Found = mitarbeiterDao.findById(lehrkraft2Id);
 
       // Erzwingen, dass von DB gelesen wird
       entityManager.refresh(kursFound);
       entityManager.refresh(semesterFound);
       entityManager.refresh(kurstypFound);
       entityManager.refresh(kursortFound);
-      entityManager.refresh(mitarbeiter1Found);
-      entityManager.refresh(mitarbeiter2Found);
 
       assertEquals("Vorkindergarten", kursFound.getStufe());
       assertEquals(1, semesterFound.getKurse().size());
       assertEquals(1, kurstypFound.getKurse().size());
       assertEquals(1, kursortFound.getKurse().size());
-      assertEquals(1, mitarbeiter1Found.getKurse().size());
-      assertEquals(1, mitarbeiter2Found.getKurse().size());
 
       // Kurs löschen
       kursDao.remove(kursSaved);
@@ -356,8 +331,6 @@ class KursDaoTest {
       assertEquals(0, semesterFound.getKurse().size());
       assertEquals(0, kurstypFound.getKurse().size());
       assertEquals(0, kursortFound.getKurse().size());
-      assertEquals(0, mitarbeiter1Found.getKurse().size());
-      assertEquals(0, mitarbeiter2Found.getKurse().size());
 
     } finally {
       if (tx != null) {
@@ -492,8 +465,10 @@ class KursDaoTest {
       kurs1.setSemester(semester1);
       kurs1.setKurstyp(kurstyp1);
       kurs1.setKursort(kursort1);
-      kurs1.addLehrkraft(mitarbeiter1);
       kursDao.save(kurs1);
+
+      KursLehrkraft kursLehrkraft1 = new KursLehrkraft(kurs1, mitarbeiter1, 0);
+      kursLehrkraftDao.save(kursLehrkraft1);
 
       // Kurs2
       Kurs kurs2 =
@@ -507,8 +482,10 @@ class KursDaoTest {
       kurs2.setSemester(semester1);
       kurs2.setKurstyp(kurstyp2);
       kurs2.setKursort(kursort2);
-      kurs2.addLehrkraft(mitarbeiter2);
       kursDao.save(kurs2);
+
+      KursLehrkraft kursLehrkraft2 = new KursLehrkraft(kurs2, mitarbeiter2, 0);
+      kursLehrkraftDao.save(kursLehrkraft2);
 
       // 1 Kurs für Semester 2
       Kurs kurs3 =
@@ -522,8 +499,10 @@ class KursDaoTest {
       kurs3.setSemester(semester2);
       kurs3.setKurstyp(kurstyp3);
       kurs3.setKursort(kursort3);
-      kurs3.addLehrkraft(mitarbeiter1);
       kursDao.save(kurs3);
+
+      KursLehrkraft kursLehrkraft3 = new KursLehrkraft(kurs3, mitarbeiter1, 0);
+      kursLehrkraftDao.save(kursLehrkraft3);
 
       // 0 Kuse für Semester 3
 
@@ -539,8 +518,10 @@ class KursDaoTest {
       kurs4.setSemester(semester4);
       kurs4.setKurstyp(kurstyp4);
       kurs4.setKursort(kursort4);
-      kurs4.addLehrkraft(mitarbeiter1);
       kursDao.save(kurs4);
+
+      KursLehrkraft kursLehrkraft4 = new KursLehrkraft(kurs4, mitarbeiter1, 0);
+      kursLehrkraftDao.save(kursLehrkraft4);
 
       entityManager.flush();
 
@@ -568,7 +549,7 @@ class KursDaoTest {
       Kurs kursFound =
           kursDao.findKurs(semester1, Wochentag.DONNERSTAG, Time.valueOf("10:00:00"), mitarbeiter1);
       assertNotNull(kursFound);
-      assertTrue(kursFound.isIdenticalWith(kurs1));
+      assertEquals(kursFound.getKursId(), kurs1.getKursId());
 
       // Nach nicht vorhandenem Kurs suchen
       assertNull(

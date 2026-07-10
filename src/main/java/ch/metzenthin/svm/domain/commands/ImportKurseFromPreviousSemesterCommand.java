@@ -2,6 +2,7 @@ package ch.metzenthin.svm.domain.commands;
 
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.daos.KursDao;
+import ch.metzenthin.svm.persistence.daos.KursLehrkraftDao;
 import ch.metzenthin.svm.persistence.daos.KursanmeldungDao;
 import ch.metzenthin.svm.persistence.entities.*;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 public class ImportKurseFromPreviousSemesterCommand implements Command {
 
   private final KursDao kursDao = new KursDao();
+  private final KursLehrkraftDao kursLehrkraftDao = new KursLehrkraftDao();
   private final KursanmeldungDao kursanmeldungDao = new KursanmeldungDao();
 
   // input / output
@@ -64,14 +66,25 @@ public class ImportKurseFromPreviousSemesterCommand implements Command {
       kurs.copyAttributesFrom(kursPreviousSemester);
       kurs.setKurstyp(kursPreviousSemester.getKurstyp());
       kurs.setKursort(kursPreviousSemester.getKursort());
-      for (Mitarbeiter mitarbeiter : kursPreviousSemester.getLehrkraefte()) {
-        kurs.addLehrkraft(mitarbeiter);
-      }
       kurs.setSemester(currentSemester);
+      List<KursLehrkraft> kursLehrkraeftePreviousSemester =
+          kursLehrkraftDao.findKursLehrkraefteByKursId(kursPreviousSemester.getKursId());
+      for (KursLehrkraft kursLehrkraftPreviousSemester : kursLehrkraeftePreviousSemester) {
+        KursLehrkraft kursLehrkraft =
+            new KursLehrkraft(
+                kurs,
+                kursLehrkraftPreviousSemester.getLehrkraft(),
+                kursLehrkraftPreviousSemester.getLehrkraefteOrder());
+        kursLehrkraftDao.save(kursLehrkraft);
+      }
 
       // Existiert der Kurs im jetzigen Semester bereits? Wenn ja, unverändert lassen.
+      List<Mitarbeiter> lehrkraefteKurs = kursDao.findLehrkraefteByKursId(kurs.getKursId());
       for (Kurs kursCurrentSemester : kurseCurrentSemester) {
-        if (kurs.isIdenticalWith(kursCurrentSemester)) {
+        List<Mitarbeiter> lehrkraefteKursCurrentSemester =
+            kursDao.findLehrkraefteByKursId(kursCurrentSemester.getKursId());
+        if (kurs.isIdenticalWith(
+            kursCurrentSemester, lehrkraefteKurs, lehrkraefteKursCurrentSemester)) {
           continue KursePreviousSemester;
         }
       }
