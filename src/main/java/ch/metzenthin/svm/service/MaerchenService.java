@@ -1,9 +1,9 @@
 package ch.metzenthin.svm.service;
 
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.domain.model.MaerchenAndNumberOfMaercheneinteilungen;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
+import ch.metzenthin.svm.service.result.DeleteMaerchenResult;
+import ch.metzenthin.svm.service.result.SaveMaerchenResult;
 import java.util.List;
 
 /**
@@ -17,7 +17,7 @@ public interface MaerchenService {
 
   boolean existsMaerchenForSchuljahr(Integer maerchenId, String schuljahr);
 
-  void saveMaerchen(Maerchen maerchen) throws EntityAlreadyExistsException;
+  SaveMaerchenResult saveMaerchen(Maerchen maerchen);
 
-  void deleteMaerchen(Maerchen maerchen) throws EntityStillReferencedException;
+  DeleteMaerchenResult deleteMaerchen(Maerchen maerchen);
 }

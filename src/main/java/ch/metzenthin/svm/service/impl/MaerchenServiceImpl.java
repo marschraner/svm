@@ -1,8 +1,6 @@
 package ch.metzenthin.svm.service.impl;
 
 import ch.metzenthin.svm.common.datatypes.Schuljahre;
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.domain.model.IdAndCount;
 import ch.metzenthin.svm.domain.model.MaerchenAndNumberOfMaercheneinteilungen;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
@@ -10,6 +8,8 @@ import ch.metzenthin.svm.persistence.repository.MaerchenRepository;
 import ch.metzenthin.svm.persistence.repository.MaercheneinteilungRepository;
 import ch.metzenthin.svm.service.MaerchenService;
 import ch.metzenthin.svm.service.MaercheneinteilungService;
+import ch.metzenthin.svm.service.result.DeleteMaerchenResult;
+import ch.metzenthin.svm.service.result.SaveMaerchenResult;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -112,24 +112,27 @@ public class MaerchenServiceImpl implements MaerchenService {
 
   @Override
   @Transactional
-  public void saveMaerchen(Maerchen maerchen) throws EntityAlreadyExistsException {
+  public SaveMaerchenResult saveMaerchen(Maerchen maerchen) {
     long numberOfAlreadyExistingMaerchen =
         getNumberOfAlreadyExistingMaerchenInSchuljahr(
             maerchen.getMaerchenId(), maerchen.getSchuljahr());
     if (numberOfAlreadyExistingMaerchen > 0) {
-      throw new EntityAlreadyExistsException();
+      return SaveMaerchenResult.MAERCHEN_BEREITS_ERFASST;
     }
+
     maerchenRepository.save(maerchen);
+    return SaveMaerchenResult.SPEICHERN_ERFOLGREICH;
   }
 
   @Override
   @Transactional
-  public void deleteMaerchen(Maerchen maerchen) throws EntityStillReferencedException {
+  public DeleteMaerchenResult deleteMaerchen(Maerchen maerchen) {
     if (maercheneinteilungService.existsReferencedMaerchenByMaercheinteilung(
         maerchen.getMaerchenId())) {
-      throw new EntityStillReferencedException();
+      return DeleteMaerchenResult.MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT;
     }
 
     maerchenRepository.delete(maerchen);
+    return DeleteMaerchenResult.LOESCHEN_ERFOLGREICH;
   }
 }

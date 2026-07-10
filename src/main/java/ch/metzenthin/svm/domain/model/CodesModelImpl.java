@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
@@ -46,10 +45,7 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
         getSelectedSchuelerCode(codesTableModel, indexCodeToBeRemoved);
     DeleteCodeResult deleteCodeResult;
     try {
-      schuelerCodeService.deleteCode(schuelerCodeToBeDeleted);
-      deleteCodeResult = DeleteCodeResult.LOESCHEN_ERFOLGREICH;
-    } catch (EntityStillReferencedException e) {
-      deleteCodeResult = DeleteCodeResult.CODE_REFERENZIERT;
+      deleteCodeResult = schuelerCodeService.deleteCode(schuelerCodeToBeDeleted);
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       deleteCodeResult = DeleteCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }
@@ -64,10 +60,7 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
         getSelectedMitarbeiterCode(codesTableModel, indexCodeToBeRemoved);
     DeleteCodeResult deleteCodeResult;
     try {
-      mitarbeiterCodeService.deleteCode(mitarbeiterCodeToBeDeleted);
-      deleteCodeResult = DeleteCodeResult.LOESCHEN_ERFOLGREICH;
-    } catch (EntityStillReferencedException e) {
-      deleteCodeResult = DeleteCodeResult.CODE_REFERENZIERT;
+      deleteCodeResult = mitarbeiterCodeService.deleteCode(mitarbeiterCodeToBeDeleted);
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       deleteCodeResult = DeleteCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }
@@ -82,10 +75,7 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
         getSelectedElternmithilfeCode(codesTableModel, indexCodeToBeRemoved);
     DeleteCodeResult deleteCodeResult;
     try {
-      elternmithilfeCodeService.deleteCode(elternmithilfeCodeToBeDeleted);
-      deleteCodeResult = DeleteCodeResult.LOESCHEN_ERFOLGREICH;
-    } catch (EntityStillReferencedException e) {
-      deleteCodeResult = DeleteCodeResult.CODE_REFERENZIERT;
+      deleteCodeResult = elternmithilfeCodeService.deleteCode(elternmithilfeCodeToBeDeleted);
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       deleteCodeResult = DeleteCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }
@@ -100,10 +90,7 @@ public class CodesModelImpl extends AbstractModel implements CodesModel {
         getSelectedSemesterrechnungCode(codesTableModel, indexCodeToBeRemoved);
     DeleteCodeResult deleteCodeResult;
     try {
-      semesterrechnungCodeService.deleteCode(semesterrechnungCodeToBeDeleted);
-      deleteCodeResult = DeleteCodeResult.LOESCHEN_ERFOLGREICH;
-    } catch (EntityStillReferencedException e) {
-      deleteCodeResult = DeleteCodeResult.CODE_REFERENZIERT;
+      deleteCodeResult = semesterrechnungCodeService.deleteCode(semesterrechnungCodeToBeDeleted);
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       deleteCodeResult = DeleteCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

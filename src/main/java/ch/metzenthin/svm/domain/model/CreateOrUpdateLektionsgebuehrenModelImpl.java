@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.model;
 import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotNullAndPriceFormatAndWithinRange;
 
 import ch.metzenthin.svm.common.datatypes.Field;
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
 import ch.metzenthin.svm.domain.model.conversion.ConvertedFieldsAndConversionResults;
 import ch.metzenthin.svm.domain.model.entityfields.ConvertedLektionsgebuehrenFields;
 import ch.metzenthin.svm.domain.model.entityfields.LektionsgebuehrenFields;
@@ -150,10 +149,8 @@ public class CreateOrUpdateLektionsgebuehrenModelImpl
   private SaveLektionsgebuehrenResult saveLektionsgebuehren() {
     SaveLektionsgebuehrenResult saveLektionsgebuehrenResult;
     try {
-      lektionsgebuehrenService.saveLektionsgebuehren(lektionsgebuehren);
-      saveLektionsgebuehrenResult = SaveLektionsgebuehrenResult.SPEICHERN_ERFOLGREICH;
-    } catch (EntityAlreadyExistsException e) {
-      saveLektionsgebuehrenResult = SaveLektionsgebuehrenResult.LEKTIONSGEBUEHREN_BEREITS_ERFASST;
+      saveLektionsgebuehrenResult =
+          lektionsgebuehrenService.saveLektionsgebuehren(lektionsgebuehren);
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveLektionsgebuehrenResult =
           SaveLektionsgebuehrenResult.LEKTIONSGEBUEHREN_DURCH_ANDEREN_BENUTZER_VERAENDERT;

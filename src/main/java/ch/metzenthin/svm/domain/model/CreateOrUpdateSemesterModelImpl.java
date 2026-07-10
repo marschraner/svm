@@ -12,8 +12,6 @@ import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validate
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.datatypes.Schuljahre;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.EntityWithOverlappingPeriodsException;
 import ch.metzenthin.svm.domain.model.conversion.CalendarConverter;
 import ch.metzenthin.svm.domain.model.conversion.ConvertedFieldsAndConversionResults;
 import ch.metzenthin.svm.domain.model.conversion.ConvertedValueAndConversionResult;
@@ -353,13 +351,9 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
   private SaveSemesterResult saveSemester(boolean updateSemesterrechnungen) {
     SaveSemesterResult saveSemesterResult;
     try {
-      semesterService.saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(
-          semester, updateSemesterrechnungen);
-      saveSemesterResult = SaveSemesterResult.SPEICHERN_ERFOLGREICH;
-    } catch (EntityAlreadyExistsException e) {
-      saveSemesterResult = SaveSemesterResult.SEMESTER_BEREITS_ERFASST;
-    } catch (EntityWithOverlappingPeriodsException e) {
-      saveSemesterResult = SaveSemesterResult.SEMESTER_UEBERLAPPT_MIT_ANDEREM_SEMESTER;
+      saveSemesterResult =
+          semesterService.saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(
+              semester, updateSemesterrechnungen);
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveSemesterResult = SaveSemesterResult.SEMESTER_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

@@ -4,9 +4,6 @@ import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.checkIfTwoPeriodsO
 
 import ch.metzenthin.svm.common.datatypes.Schuljahre;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
-import ch.metzenthin.svm.domain.EntityWithOverlappingPeriodsException;
 import ch.metzenthin.svm.domain.model.IdAndCount;
 import ch.metzenthin.svm.domain.model.SemesterAndNumberOfKurse;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -15,6 +12,8 @@ import ch.metzenthin.svm.persistence.repository.SemesterRepository;
 import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.SemesterService;
 import ch.metzenthin.svm.service.SemesterrechnungService;
+import ch.metzenthin.svm.service.result.DeleteSemesterResult;
+import ch.metzenthin.svm.service.result.SaveSemesterResult;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -160,18 +159,17 @@ public class SemesterServiceImpl implements SemesterService {
 
   @Override
   @Transactional
-  public void saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(
-      Semester semester, boolean updateSemesterrechnungen)
-      throws EntityAlreadyExistsException, EntityWithOverlappingPeriodsException {
+  public SaveSemesterResult saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(
+      Semester semester, boolean updateSemesterrechnungen) {
 
     if (existsAlready(semester)) {
       LOGGER.debug("Speichern wird abgebrochen: Semester existiert bereits: {}", semester);
-      throw new EntityAlreadyExistsException();
+      return SaveSemesterResult.SEMESTER_BEREITS_ERFASST;
     }
 
     if (hasOverlappingPeriods(semester)) {
       LOGGER.debug("Speichern wird abgebrochen: Semester hat überlappende Perioden: {}", semester);
-      throw new EntityWithOverlappingPeriodsException("Semester");
+      return SaveSemesterResult.SEMESTER_UEBERLAPPT_MIT_ANDEREM_SEMESTER;
     }
     LOGGER.debug("Anzahl Semester-Schulwochen: {}", semester.getAnzahlSchulwochen());
 
@@ -180,6 +178,7 @@ public class SemesterServiceImpl implements SemesterService {
     if (updateSemesterrechnungen) {
       semesterrechnungService.calculateAndUpdateAnzahlWochen(semester);
     }
+    return SaveSemesterResult.SPEICHERN_ERFOLGREICH;
   }
 
   private boolean existsAlready(Semester semester) {
@@ -208,13 +207,13 @@ public class SemesterServiceImpl implements SemesterService {
 
   @Override
   @Transactional
-  public void deleteSemesterrechnungenAndSemester(Semester semester)
-      throws EntityStillReferencedException {
+  public DeleteSemesterResult deleteSemesterrechnungenAndSemester(Semester semester) {
     if (kursService.existsKursBySemesterId(semester.getSemesterId())) {
-      throw new EntityStillReferencedException();
+      return DeleteSemesterResult.SEMESTER_VON_KURS_REFERENZIERT;
     }
 
     semesterrechnungService.deleteSemesterrechnungenBySemesterId(semester.getSemesterId());
     semesterRepository.delete(semester);
+    return DeleteSemesterResult.LOESCHEN_ERFOLGREICH;
   }
 }

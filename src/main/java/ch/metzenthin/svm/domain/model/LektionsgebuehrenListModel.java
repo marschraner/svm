@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import ch.metzenthin.svm.service.LektionsgebuehrenService;
 import ch.metzenthin.svm.service.result.DeleteLektionsgebuehrenResult;
@@ -43,11 +42,8 @@ public class LektionsgebuehrenListModel
         getSelectedRow(indexOfLektionsgebuehrenToBeDeleted);
     DeleteLektionsgebuehrenResult deleteLektionsgebuehrenResult;
     try {
-      lektionsgebuehrenService.deleteLektionsgebuehren(lektionsgebuehrenToBeDeleted);
-      deleteLektionsgebuehrenResult = DeleteLektionsgebuehrenResult.LOESCHEN_ERFOLGREICH;
-    } catch (EntityStillReferencedException e) {
       deleteLektionsgebuehrenResult =
-          DeleteLektionsgebuehrenResult.LEKTIONSGEBUEHREN_VON_KURS_REFERENZIERT;
+          lektionsgebuehrenService.deleteLektionsgebuehren(lektionsgebuehrenToBeDeleted);
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       deleteLektionsgebuehrenResult =
           DeleteLektionsgebuehrenResult.LEKTIONSGEBUEHREN_DURCH_ANDEREN_BENUTZER_VERAENDERT;

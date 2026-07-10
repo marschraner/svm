@@ -1,11 +1,11 @@
 package ch.metzenthin.svm.service.impl;
 
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import ch.metzenthin.svm.persistence.repository.LektionsgebuehrenRepository;
 import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.LektionsgebuehrenService;
+import ch.metzenthin.svm.service.result.DeleteLektionsgebuehrenResult;
+import ch.metzenthin.svm.service.result.SaveLektionsgebuehrenResult;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +33,7 @@ public class LektionsgebuehrenServiceImpl implements LektionsgebuehrenService {
 
   @Override
   @Transactional
-  public void saveLektionsgebuehren(Lektionsgebuehren lektionsgebuehren)
-      throws EntityAlreadyExistsException {
+  public SaveLektionsgebuehrenResult saveLektionsgebuehren(Lektionsgebuehren lektionsgebuehren) {
     long numberOfAlreadyExistingLektionsgebuehren =
         (lektionsgebuehren.getId() != null)
             ? lektionsgebuehrenRepository.countByLektionslaengeAndIdNe(
@@ -42,19 +41,22 @@ public class LektionsgebuehrenServiceImpl implements LektionsgebuehrenService {
             : lektionsgebuehrenRepository.countByLektionslaenge(
                 lektionsgebuehren.getLektionslaenge());
     if (numberOfAlreadyExistingLektionsgebuehren > 0) {
-      throw new EntityAlreadyExistsException();
+      return SaveLektionsgebuehrenResult.LEKTIONSGEBUEHREN_BEREITS_ERFASST;
     }
+
     lektionsgebuehrenRepository.save(lektionsgebuehren);
+    return SaveLektionsgebuehrenResult.SPEICHERN_ERFOLGREICH;
   }
 
   @Override
   @Transactional
-  public void deleteLektionsgebuehren(Lektionsgebuehren lektionsgebuehren)
-      throws EntityStillReferencedException {
+  public DeleteLektionsgebuehrenResult deleteLektionsgebuehren(
+      Lektionsgebuehren lektionsgebuehren) {
     if (kursService.existsKursByLektionslaenge(lektionsgebuehren.getLektionslaenge())) {
-      throw new EntityStillReferencedException();
+      return DeleteLektionsgebuehrenResult.LEKTIONSGEBUEHREN_VON_KURS_REFERENZIERT;
     }
 
     lektionsgebuehrenRepository.delete(lektionsgebuehren);
+    return DeleteLektionsgebuehrenResult.LOESCHEN_ERFOLGREICH;
   }
 }

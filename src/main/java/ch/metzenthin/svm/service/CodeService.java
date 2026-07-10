@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.service;
 
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.persistence.entities.Code;
+import ch.metzenthin.svm.service.result.DeleteCodeResult;
+import ch.metzenthin.svm.service.result.SaveCodeResult;
 import java.util.List;
 
 /**
@@ -14,7 +14,7 @@ public interface CodeService<T extends Code> {
 
   List<T> findAllCodes();
 
-  void saveCode(T code) throws EntityAlreadyExistsException;
+  SaveCodeResult saveCode(T code);
 
-  void deleteCode(T code) throws EntityStillReferencedException;
+  DeleteCodeResult deleteCode(T code);
 }

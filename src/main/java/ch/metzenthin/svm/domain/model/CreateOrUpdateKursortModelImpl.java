@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.model;
 import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotEmptyAndLength;
 
 import ch.metzenthin.svm.common.datatypes.Field;
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
 import ch.metzenthin.svm.domain.model.entityfields.KursortFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
@@ -87,10 +86,7 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
   private SaveKursortResult saveKursort() {
     SaveKursortResult saveKursortResult;
     try {
-      kursortService.saveKursort(kursort);
-      saveKursortResult = SaveKursortResult.SPEICHERN_ERFOLGREICH;
-    } catch (EntityAlreadyExistsException e) {
-      saveKursortResult = SaveKursortResult.KURSORT_BEREITS_ERFASST;
+      saveKursortResult = kursortService.saveKursort(kursort);
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveKursortResult = SaveKursortResult.KURSORT_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

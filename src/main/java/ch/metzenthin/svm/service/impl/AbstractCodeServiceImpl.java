@@ -1,11 +1,11 @@
 package ch.metzenthin.svm.service.impl;
 
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.persistence.repository.CodeRepository;
 import ch.metzenthin.svm.service.CodeService;
 import ch.metzenthin.svm.service.ReferencedCodeService;
+import ch.metzenthin.svm.service.result.DeleteCodeResult;
+import ch.metzenthin.svm.service.result.SaveCodeResult;
 import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,22 +44,25 @@ public abstract class AbstractCodeServiceImpl<T extends Code> implements CodeSer
 
   @Override
   @Transactional
-  public void saveCode(T code) throws EntityAlreadyExistsException {
+  public SaveCodeResult saveCode(T code) {
     long numberOfAlreadyExistingCodes =
         getNumberOfAlreadyExistingKuerzel(code.getCodeId(), code.getKuerzel());
     if (numberOfAlreadyExistingCodes > 0) {
-      throw new EntityAlreadyExistsException();
+      return SaveCodeResult.CODE_BEREITS_ERFASST;
     }
+
     codeRepository.save(code);
+    return SaveCodeResult.SPEICHERN_ERFOLGREICH;
   }
 
   @Override
   @Transactional
-  public void deleteCode(T code) throws EntityStillReferencedException {
+  public DeleteCodeResult deleteCode(T code) {
     if (referencedCodeService.existsReferencedCodeByCodeId(code.getCodeId())) {
-      throw new EntityStillReferencedException();
+      return DeleteCodeResult.CODE_REFERENZIERT;
     }
 
     codeRepository.delete(code);
+    return DeleteCodeResult.LOESCHEN_ERFOLGREICH;
   }
 }

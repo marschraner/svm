@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.service.impl;
 
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.domain.model.IdAndCount;
 import ch.metzenthin.svm.domain.model.KursAndLehrkraefteAndNumberOfKursanmeldungen;
 import ch.metzenthin.svm.domain.model.KursIdAndLehrkraft;
@@ -16,6 +15,7 @@ import ch.metzenthin.svm.persistence.repository.LektionsgebuehrenRepository;
 import ch.metzenthin.svm.persistence.repository.MitarbeiterRepository;
 import ch.metzenthin.svm.persistence.repository.SemesterRepository;
 import ch.metzenthin.svm.service.KursService;
+import ch.metzenthin.svm.service.result.DeleteKursResult;
 import ch.metzenthin.svm.service.result.SaveKursResult;
 import java.util.ArrayList;
 import java.util.List;
@@ -252,10 +252,11 @@ public class KursServiceImpl implements KursService {
   }
 
   @Override
-  public void deleteKurs(Kurs kurs) throws EntityStillReferencedException {
+  public DeleteKursResult deleteKurs(Kurs kurs) {
     // TODO Kursanmeldungen-Releations löschen (keine EntityStillReferencedException, da im UI
     // bereits
     // gefragt wird, ob diese gelöscht werden sollen)
     // TODO Semesterrechnungen aktualisieren
+    return DeleteKursResult.LOESCHEN_ERFOLGREICH;
   }
 }

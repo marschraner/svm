@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.service;
 
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.persistence.entities.Kursort;
+import ch.metzenthin.svm.service.result.DeleteKursortResult;
+import ch.metzenthin.svm.service.result.SaveKursortResult;
 import java.util.List;
 
 /**
@@ -16,7 +16,7 @@ public interface KursortService {
 
   List<Kursort> findSelektierbareKursorte();
 
-  void saveKursort(Kursort kursort) throws EntityAlreadyExistsException;
+  SaveKursortResult saveKursort(Kursort kursort);
 
-  void deleteKursort(Kursort kursort) throws EntityStillReferencedException;
+  DeleteKursortResult deleteKursort(Kursort kursort);
 }

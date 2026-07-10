@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.model;
 import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotEmptyAndLength;
 
 import ch.metzenthin.svm.common.datatypes.Field;
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
 import ch.metzenthin.svm.domain.model.entityfields.KurstypFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
@@ -87,10 +86,7 @@ public class CreateOrUpdateKurstypModelImpl implements CreateOrUpdateKurstypMode
   private SaveKurstypResult saveKurstyp() {
     SaveKurstypResult saveKurstypResult;
     try {
-      kurstypService.saveKurstyp(kurstyp);
-      saveKurstypResult = SaveKurstypResult.SPEICHERN_ERFOLGREICH;
-    } catch (EntityAlreadyExistsException e) {
-      saveKurstypResult = SaveKurstypResult.KURSTYP_BEREITS_ERFASST;
+      saveKurstypResult = kurstypService.saveKurstyp(kurstyp);
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveKurstypResult = SaveKurstypResult.KURSTYP_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

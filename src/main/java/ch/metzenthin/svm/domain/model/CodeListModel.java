@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.service.CodeService;
 import ch.metzenthin.svm.service.result.DeleteCodeResult;
@@ -28,10 +27,7 @@ public abstract class CodeListModel<T extends Code>
     T codeToBeDeleted = getSelectedRow(indexOfCodeToBeDeleted);
     DeleteCodeResult deleteCodeResult;
     try {
-      service.deleteCode(codeToBeDeleted);
-      deleteCodeResult = DeleteCodeResult.LOESCHEN_ERFOLGREICH;
-    } catch (EntityStillReferencedException e) {
-      deleteCodeResult = DeleteCodeResult.CODE_REFERENZIERT;
+      deleteCodeResult = service.deleteCode(codeToBeDeleted);
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       deleteCodeResult = DeleteCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

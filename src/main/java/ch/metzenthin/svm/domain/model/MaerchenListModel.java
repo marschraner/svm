@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.service.MaerchenService;
 import ch.metzenthin.svm.service.result.DeleteMaerchenResult;
@@ -42,10 +41,7 @@ public class MaerchenListModel
     Maerchen maerchenToBeDeleted = getSelectedRow(indexOfMaerchenToBeDeleted).maerchen();
     DeleteMaerchenResult deleteMaerchenResult;
     try {
-      maerchenService.deleteMaerchen(maerchenToBeDeleted);
-      deleteMaerchenResult = DeleteMaerchenResult.LOESCHEN_ERFOLGREICH;
-    } catch (EntityStillReferencedException e) {
-      deleteMaerchenResult = DeleteMaerchenResult.MAERCHEN_VON_MAERCHENEINTEILUNGEN_REFERENZIERT;
+      deleteMaerchenResult = maerchenService.deleteMaerchen(maerchenToBeDeleted);
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       deleteMaerchenResult = DeleteMaerchenResult.MAERCHEN_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

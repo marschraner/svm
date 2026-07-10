@@ -1,11 +1,11 @@
 package ch.metzenthin.svm.service.impl;
 
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.persistence.repository.KurstypRepository;
 import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.KurstypService;
+import ch.metzenthin.svm.service.result.DeleteKurstypResult;
+import ch.metzenthin.svm.service.result.SaveKurstypResult;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,22 +52,25 @@ public class KurstypServiceImpl implements KurstypService {
 
   @Override
   @Transactional
-  public void saveKurstyp(Kurstyp kurstyp) throws EntityAlreadyExistsException {
+  public SaveKurstypResult saveKurstyp(Kurstyp kurstyp) {
     long numberOfAlreadyExistingKurstypen =
         getNumberOfAlreadyExistingKurstypen(kurstyp.getKurstypId(), kurstyp.getBezeichnung());
     if (numberOfAlreadyExistingKurstypen > 0) {
-      throw new EntityAlreadyExistsException();
+      return SaveKurstypResult.KURSTYP_BEREITS_ERFASST;
     }
+
     kurstypRepository.save(kurstyp);
+    return SaveKurstypResult.SPEICHERN_ERFOLGREICH;
   }
 
   @Override
   @Transactional
-  public void deleteKurstyp(Kurstyp kurstyp) throws EntityStillReferencedException {
+  public DeleteKurstypResult deleteKurstyp(Kurstyp kurstyp) {
     if (kursService.existsKursByKurstypId(kurstyp.getKurstypId())) {
-      throw new EntityStillReferencedException();
+      return DeleteKurstypResult.KURSTYP_VON_KURS_REFERENZIERT;
     }
 
     kurstypRepository.delete(kurstyp);
+    return DeleteKurstypResult.LOESCHEN_ERFOLGREICH;
   }
 }

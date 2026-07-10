@@ -1,11 +1,11 @@
 package ch.metzenthin.svm.service.impl;
 
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.repository.KursortRepository;
 import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.KursortService;
+import ch.metzenthin.svm.service.result.DeleteKursortResult;
+import ch.metzenthin.svm.service.result.SaveKursortResult;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,22 +52,25 @@ public class KursortServiceImpl implements KursortService {
 
   @Override
   @Transactional
-  public void saveKursort(Kursort kursort) throws EntityAlreadyExistsException {
+  public SaveKursortResult saveKursort(Kursort kursort) {
     long numberOfAlreadyExistingKursorte =
         getNumberOfAlreadyExistingKursorte(kursort.getKursortId(), kursort.getBezeichnung());
     if (numberOfAlreadyExistingKursorte > 0) {
-      throw new EntityAlreadyExistsException();
+      return SaveKursortResult.KURSORT_BEREITS_ERFASST;
     }
+
     kursortRepository.save(kursort);
+    return SaveKursortResult.SPEICHERN_ERFOLGREICH;
   }
 
   @Override
   @Transactional
-  public void deleteKursort(Kursort kursort) throws EntityStillReferencedException {
+  public DeleteKursortResult deleteKursort(Kursort kursort) {
     if (kursService.existsKursByKursortId(kursort.getKursortId())) {
-      throw new EntityStillReferencedException();
+      return DeleteKursortResult.KURSORT_VON_KURS_REFERENZIERT;
     }
 
     kursortRepository.delete(kursort);
+    return DeleteKursortResult.LOESCHEN_ERFOLGREICH;
   }
 }

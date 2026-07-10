@@ -1,8 +1,8 @@
 package ch.metzenthin.svm.service;
 
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
+import ch.metzenthin.svm.service.result.DeleteLektionsgebuehrenResult;
+import ch.metzenthin.svm.service.result.SaveLektionsgebuehrenResult;
 import java.util.List;
 
 /**
@@ -12,9 +12,7 @@ public interface LektionsgebuehrenService {
 
   List<Lektionsgebuehren> findAllLektionsgebuehren();
 
-  void saveLektionsgebuehren(Lektionsgebuehren lektionsgebuehren)
-      throws EntityAlreadyExistsException;
+  SaveLektionsgebuehrenResult saveLektionsgebuehren(Lektionsgebuehren lektionsgebuehren);
 
-  void deleteLektionsgebuehren(Lektionsgebuehren lektionsgebuehren)
-      throws EntityStillReferencedException;
+  DeleteLektionsgebuehrenResult deleteLektionsgebuehren(Lektionsgebuehren lektionsgebuehren);
 }

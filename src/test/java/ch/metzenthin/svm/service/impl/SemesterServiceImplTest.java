@@ -3,9 +3,6 @@ package ch.metzenthin.svm.service.impl;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.common.utils.Converter;
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
-import ch.metzenthin.svm.domain.EntityWithOverlappingPeriodsException;
 import ch.metzenthin.svm.domain.model.SemesterAndNumberOfKurse;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
@@ -105,11 +102,8 @@ class SemesterServiceImplTest {
     assertEquals(27, semester.getAnzahlSchulwochen());
     // Mutation, die keine Änderung an den Schulwochen auslöst
     semester.setSchuljahr("2025-2026");
-    try {
-      semesterService.saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(semester, true);
-    } catch (EntityAlreadyExistsException | EntityWithOverlappingPeriodsException e) {
-      fail("Exception not expected: " + e.getMessage());
-    }
+
+    semesterService.saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(semester, true);
     assertEquals("2025-2026", semester.getSchuljahr());
     List<Semesterrechnung> semesterrechnungenBySemesterId =
         semesterrechnungRepository.findSemesterrechnungenBySemesterId(semester.getSemesterId());
@@ -129,14 +123,10 @@ class SemesterServiceImplTest {
     // Semesterende eine Woche früher. Anzahl Wochen neu: 26
     semester.setSemesterende(Converter.toCalendar("08.02.2026"));
 
-    try {
-      semesterService.saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(semester, true);
-      Semesterrechnung semesterrechnung = semesterrechnungRepository.findAll().get(0);
-      assertEquals(26, semesterrechnung.getAnzahlWochenVorrechnung());
-      assertEquals(26, semesterrechnung.getAnzahlWochenNachrechnung());
-    } catch (EntityAlreadyExistsException | EntityWithOverlappingPeriodsException e) {
-      fail("Exception not expected: " + e.getMessage());
-    }
+    semesterService.saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(semester, true);
+    Semesterrechnung semesterrechnung = semesterrechnungRepository.findAll().get(0);
+    assertEquals(26, semesterrechnung.getAnzahlWochenVorrechnung());
+    assertEquals(26, semesterrechnung.getAnzahlWochenNachrechnung());
   }
 
   @Test
@@ -148,14 +138,10 @@ class SemesterServiceImplTest {
     // Semesterende eine Woche früher. Anzahl Wochen neu: 26
     semester.setSemesterende(Converter.toCalendar("08.02.2026"));
 
-    try {
-      semesterService.saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(semester, false);
-      Semesterrechnung semesterrechnung = semesterrechnungRepository.findAll().get(0);
-      assertEquals(27, semesterrechnung.getAnzahlWochenVorrechnung());
-      assertEquals(27, semesterrechnung.getAnzahlWochenNachrechnung());
-    } catch (EntityAlreadyExistsException | EntityWithOverlappingPeriodsException e) {
-      fail("Exception not expected: " + e.getMessage());
-    }
+    semesterService.saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(semester, false);
+    Semesterrechnung semesterrechnung = semesterrechnungRepository.findAll().get(0);
+    assertEquals(27, semesterrechnung.getAnzahlWochenVorrechnung());
+    assertEquals(27, semesterrechnung.getAnzahlWochenNachrechnung());
   }
 
   @Test
@@ -163,13 +149,9 @@ class SemesterServiceImplTest {
     Optional<Semester> semesterOptional = semesterRepository.findById(101);
     assertTrue(semesterOptional.isPresent());
     Semester semester = semesterOptional.get();
-    try {
-      semesterService.deleteSemesterrechnungenAndSemester(semester);
-      assertTrue(semesterrechnungRepository.findAll().isEmpty());
-      Optional<Semester> semesterOptionalAfter = semesterRepository.findById(101);
-      assertFalse(semesterOptionalAfter.isPresent());
-    } catch (EntityStillReferencedException e) {
-      fail("Exception not expected: " + e.getMessage());
-    }
+    semesterService.deleteSemesterrechnungenAndSemester(semester);
+    assertTrue(semesterrechnungRepository.findAll().isEmpty());
+    Optional<Semester> semesterOptionalAfter = semesterRepository.findById(101);
+    assertFalse(semesterOptionalAfter.isPresent());
   }
 }

@@ -4,7 +4,6 @@ import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validate
 import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotValueNotSetAndWithinRange;
 
 import ch.metzenthin.svm.common.datatypes.Field;
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
 import ch.metzenthin.svm.domain.model.conversion.ConvertedFieldsAndConversionResults;
 import ch.metzenthin.svm.domain.model.entityfields.ConvertedMaerchenFields;
 import ch.metzenthin.svm.domain.model.entityfields.MaerchenFields;
@@ -165,10 +164,7 @@ public class CreateOrUpdateMaerchenModelImpl implements CreateOrUpdateMaerchenMo
   private SaveMaerchenResult saveMaerchen() {
     SaveMaerchenResult saveMaerchenResult;
     try {
-      maerchenService.saveMaerchen(maerchen);
-      saveMaerchenResult = SaveMaerchenResult.SPEICHERN_ERFOLGREICH;
-    } catch (EntityAlreadyExistsException e) {
-      saveMaerchenResult = SaveMaerchenResult.MAERCHEN_BEREITS_ERFASST;
+      saveMaerchenResult = maerchenService.saveMaerchen(maerchen);
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveMaerchenResult = SaveMaerchenResult.MAERCHEN_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

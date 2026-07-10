@@ -3,7 +3,6 @@ package ch.metzenthin.svm.domain.model;
 import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validateNotEmptyAndLength;
 
 import ch.metzenthin.svm.common.datatypes.Field;
-import ch.metzenthin.svm.domain.EntityAlreadyExistsException;
 import ch.metzenthin.svm.domain.model.entityfields.CodeFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
@@ -86,10 +85,7 @@ public abstract class CreateOrUpdateCodeModelImpl<T extends Code>
   public SaveCodeResult saveCode() {
     SaveCodeResult saveCodeResult;
     try {
-      codeService.saveCode(code);
-      saveCodeResult = SaveCodeResult.SPEICHERN_ERFOLGREICH;
-    } catch (EntityAlreadyExistsException e) {
-      saveCodeResult = SaveCodeResult.CODE_BEREITS_ERFASST;
+      saveCodeResult = codeService.saveCode(code);
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveCodeResult = SaveCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

@@ -1,7 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.domain.EntityStillReferencedException;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.result.DeleteKursortResult;
@@ -37,10 +36,7 @@ public class KursortListModel
     Kursort kursortToBeDeleted = getSelectedRow(indexKursortToBeDeleted);
     DeleteKursortResult deleteKursortResult;
     try {
-      kursortService.deleteKursort(kursortToBeDeleted);
-      deleteKursortResult = DeleteKursortResult.LOESCHEN_ERFOLGREICH;
-    } catch (EntityStillReferencedException e) {
-      deleteKursortResult = DeleteKursortResult.KURSORT_VON_KURS_REFERENZIERT;
+      deleteKursortResult = kursortService.deleteKursort(kursortToBeDeleted);
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       deleteKursortResult = DeleteKursortResult.KURSORT_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }
