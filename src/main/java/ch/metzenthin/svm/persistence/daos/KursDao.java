@@ -21,16 +21,6 @@ public class KursDao extends GenericDao<Kurs, Integer> {
   @Override
   public void remove(Kurs kurs) {
 
-    // Entferne Kurs von Semester, Kurstyp und Kursort
-    Semester semester = kurs.getSemester();
-    semester.getKurse().remove(kurs);
-
-    Kurstyp kurstyp = kurs.getKurstyp();
-    kurstyp.getKurse().remove(kurs);
-
-    Kursort kursort = kurs.getKursort();
-    kursort.getKurse().remove(kurs);
-
     // Lösche zugewiesene Lehrkräfte aus DB
     List<KursLehrkraft> kursLehrkraefte =
         kursLehrkraftDao.findKursLehrkraefteByKursId(kurs.getKursId());

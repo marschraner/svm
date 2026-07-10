@@ -26,9 +26,6 @@ public class Kurstyp extends AbstractEntity implements Comparable<Kurstyp> {
   @Column(name = "selektierbar", nullable = false)
   private boolean selektierbar;
 
-  @OneToMany(mappedBy = "kurstyp")
-  private final List<Kurs> kurse = new ArrayList<>();
-
   public Kurstyp() {}
 
   public Kurstyp(String bezeichnung, boolean selektierbar) {

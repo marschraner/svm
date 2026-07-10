@@ -206,18 +206,12 @@ class KursDaoTest {
 
       // Semester
       assertEquals("2011/2012", kursFound.getSemester().getSchuljahr());
-      assertEquals(1, kursFound.getSemester().getKurse().size());
-      assertTrue(kursFound.getSemester().getKurse().contains(kursFound));
 
       // Kurstyp
       assertEquals("Testkurs", kursFound.getKurstyp().getBezeichnung());
-      assertEquals(1, kursFound.getKurstyp().getKurse().size());
-      assertTrue(kursFound.getKurstyp().getKurse().contains(kursFound));
 
       // Kursort
       assertEquals("Testsaal", kursFound.getKursort().getBezeichnung());
-      assertEquals(1, kursFound.getKursort().getKurse().size());
-      assertTrue(kursFound.getKursort().getKurse().contains(kursFound));
 
     } finally {
       if (tx != null) tx.rollback();
@@ -319,18 +313,12 @@ class KursDaoTest {
       entityManager.refresh(kursortFound);
 
       assertEquals("Vorkindergarten", kursFound.getStufe());
-      assertEquals(1, semesterFound.getKurse().size());
-      assertEquals(1, kurstypFound.getKurse().size());
-      assertEquals(1, kursortFound.getKurse().size());
 
       // Kurs löschen
       kursDao.remove(kursSaved);
       entityManager.flush();
 
       assertNull(kursDao.findById(kursId));
-      assertEquals(0, semesterFound.getKurse().size());
-      assertEquals(0, kurstypFound.getKurse().size());
-      assertEquals(0, kursortFound.getKurse().size());
 
     } finally {
       if (tx != null) {

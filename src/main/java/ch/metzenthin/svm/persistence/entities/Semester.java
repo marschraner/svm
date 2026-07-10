@@ -53,9 +53,6 @@ public class Semester extends AbstractEntity implements Comparable<Semester> {
   @Column(name = "ferienende2")
   private Calendar ferienende2;
 
-  @OneToMany(mappedBy = "semester")
-  private final List<Kurs> kurse = new ArrayList<>();
-
   @OneToMany(mappedBy = "semester", cascade = CascadeType.REMOVE)
   private final List<Semesterrechnung> semesterrechnungen = new ArrayList<>();
 
