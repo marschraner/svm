@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.common.datatypes;
 
 import java.util.Calendar;
+import lombok.Getter;
 
 /**
  * @author Martin Schraner
@@ -16,15 +17,15 @@ public enum Wochentag {
   SONNTAG("Sonntag", Calendar.SUNDAY);
 
   private final String name;
-  private final int dayOfWeekCalendar;
+  @Getter private final int dayOfWeekCalendar;
 
   Wochentag(String name, int dayOfWeekCalendar) {
     this.name = name;
     this.dayOfWeekCalendar = dayOfWeekCalendar;
   }
 
-  public int getDayOfWeekCalendar() {
-    return dayOfWeekCalendar;
+  public static Wochentag[] getAllowedWochentageForKurs() {
+    return new Wochentag[] {MONTAG, DIENSTAG, MITTWOCH, DONNERSTAG, FREITAG, SAMSTAG};
   }
 
   @Override

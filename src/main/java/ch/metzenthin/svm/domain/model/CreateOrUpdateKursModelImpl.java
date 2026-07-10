@@ -4,9 +4,6 @@ import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validate
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.datatypes.Wochentag;
-import ch.metzenthin.svm.domain.KursortDeletedException;
-import ch.metzenthin.svm.domain.KurstypDeletedException;
-import ch.metzenthin.svm.domain.SemesterDeletedException;
 import ch.metzenthin.svm.domain.model.conversion.ConvertedFieldsAndConversionResults;
 import ch.metzenthin.svm.domain.model.entityfields.ConvertedKursFields;
 import ch.metzenthin.svm.domain.model.entityfields.KursFields;
@@ -39,7 +36,7 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
 
   private final boolean neu;
   private final Kurs kurs;
-  private final int semesterId;
+  private final Semester semester;
   private Mitarbeiter lehrkraft1;
   private Mitarbeiter lehrkraft2;
   private final KursService kursService;
@@ -51,7 +48,7 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
   @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
   public CreateOrUpdateKursModelImpl(
       Optional<Kurs> kursToBeModifiedOptional,
-      int semesterId,
+      Semester semester,
       KursService kursService,
       KurstypService kurstypService,
       KursortService kursortService,
@@ -59,12 +56,11 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
       KursLehrkraftService kursLehrkraftService) {
     this.neu = kursToBeModifiedOptional.isEmpty();
     this.kurs = kursToBeModifiedOptional.orElseGet(Kurs::new);
+    this.semester = semester;
     this.kurstypService = kurstypService;
     this.kursortService = kursortService;
     this.mitarbeiterService = mitarbeiterService;
     this.kursLehrkraftService = kursLehrkraftService;
-    this.semesterId =
-        kursToBeModifiedOptional.isPresent() ? kurs.getSemester().getSemesterId() : semesterId;
     if (kursToBeModifiedOptional.isPresent()) {
       List<Mitarbeiter> lehrkraefte =
           kursLehrkraftService.findSortedLehrkraefteByKursId(kurs.getKursId());
@@ -142,6 +138,10 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
 
   @Override
   public Mitarbeiter[] getSelectableLehrkraefte1() {
+    return getSelectableLehrkraefte().toArray(new Mitarbeiter[0]);
+  }
+
+  private List<Mitarbeiter> getSelectableLehrkraefte() {
     List<Mitarbeiter> lehrkraefte = mitarbeiterService.findAktiveLehrkraefte();
     if (!neu) {
       List<Mitarbeiter> lehrkraefteOfKursToBeModified =
@@ -165,12 +165,16 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
         lehrkraefte.add(lehrkraefteOfKursToBeModified.get(1));
       }
     }
-    return lehrkraefte.toArray(new Mitarbeiter[0]);
+    return lehrkraefte;
   }
 
   @Override
   public Mitarbeiter[] getSelectableLehrkraefte2() {
-    return new Mitarbeiter[0];
+    List<Mitarbeiter> selectableLehrkraefte = getSelectableLehrkraefte();
+    // Lehrkraft2 ist optional, deshalb als erstes Item ein leeres Objekt, damit die Auswahl
+    // gelöscht werden kann.
+    selectableLehrkraefte.add(0, null);
+    return selectableLehrkraefte.toArray(new Mitarbeiter[0]);
   }
 
   @Override
@@ -211,6 +215,11 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
   @Override
   public ValidationResult validateLehrkraft1(Mitarbeiter lehrkraft1) {
     return ValidationUtils.validateNotNull(lehrkraft1, Field.LEHRKRAFT1);
+  }
+
+  @Override
+  public ValidationResult validateBemerkungen(String bemerkungen) {
+    return ValidationUtils.validateLengthWhenNotEmpty(bemerkungen, 2, 100, Field.BEMERKUNGEN);
   }
 
   // Übergreifende Validierungen
@@ -282,6 +291,7 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
     validationResults.add(validateZeitEnde(convertedKursFields.zeitEnde()));
     validationResults.add(validateKursort(kursort));
     validationResults.add(validateLehrkraft1(lehrkraft1));
+    validationResults.add(validateBemerkungen(convertedKursFields.bemerkungen()));
 
     boolean errorsFound =
         validationResults.stream().anyMatch(validationResult -> !validationResult.isValid());
@@ -305,8 +315,6 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
       Mitarbeiter lehrkraft1,
       Mitarbeiter lehrkraft2) {
     kursFields.mergeIntoEntity(kurs);
-    Semester semester = new Semester();
-    semester.setSemesterId(semesterId);
     kurs.setSemester(semester);
     kurs.setKurstyp(kurstyp);
     kurs.setKursort(kursort);
@@ -318,12 +326,6 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
     SaveKursResult saveKursResult;
     try {
       saveKursResult = kursService.saveKurs(kurs, lehrkraft1, lehrkraft2);
-    } catch (SemesterDeletedException e) {
-      saveKursResult = SaveKursResult.SEMESTER_DURCH_ANDEREN_BENUTZER_GELOESCHT;
-    } catch (KurstypDeletedException e) {
-      saveKursResult = SaveKursResult.KURSTYP_DURCH_ANDEREN_BENUTZER_GELOESCHT;
-    } catch (KursortDeletedException e) {
-      saveKursResult = SaveKursResult.KURSORT_DURCH_ANDEREN_BENUTZER_GELOESCHT;
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveKursResult = SaveKursResult.KURS_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

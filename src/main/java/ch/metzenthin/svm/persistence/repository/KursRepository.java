@@ -29,4 +29,10 @@ public interface KursRepository extends JpaRepository<Kurs, Integer> {
           + "GROUP BY k.semester.semesterId "
           + "ORDER BY k.semester.semesterId ASC")
   List<IdAndCount> countKurseGroupBySemesterId();
+
+  @Query(
+      "SELECT k FROM Kurs k where k.semester.semesterId = :semesterId "
+          + "ORDER BY k.kurstyp.bezeichnung ASC, k.altersbereich ASC, k.stufe ASC, "
+          + "k.wochentag ASC, k.zeitBeginn ASC")
+  List<Kurs> findAllBySemesterId(@Param("semesterId") int semesterId);
 }

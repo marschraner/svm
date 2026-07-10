@@ -50,6 +50,8 @@ public interface CreateOrUpdateKursModel {
 
   ValidationResult validateLehrkraft1(Mitarbeiter lehrkraft1);
 
+  ValidationResult validateBemerkungen(String bemerkungen);
+
   ValidationResultsAndSaveResult speichern(
       KursFields kursFields,
       Kurstyp kurstyp,

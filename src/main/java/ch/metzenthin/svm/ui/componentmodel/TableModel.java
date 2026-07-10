@@ -3,6 +3,7 @@ package ch.metzenthin.svm.ui.componentmodel;
 import ch.metzenthin.svm.domain.model.AbstractTableData;
 import java.io.Serial;
 import java.util.List;
+import java.util.function.Consumer;
 import javax.swing.table.AbstractTableModel;
 import lombok.Getter;
 
@@ -55,5 +56,13 @@ public class TableModel<T extends AbstractTableData<U>, U> extends AbstractTable
 
   public void setData(List<U> data) {
     tableData.setData(data);
+  }
+
+  public String getTotalText() {
+    return "Total: " + getRowCount();
+  }
+
+  public void forEachRow(Consumer<U> action) {
+    tableData.forEachRow(action);
   }
 }

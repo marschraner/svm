@@ -58,17 +58,6 @@ public class SemesterListModel
         .createCreateOrUpdateSemesterModel(Optional.of(semesterToBeUpdated));
   }
 
-  public boolean existsKurs(int selectedSemesterIndex) {
-    Semester selectedSemester = getSelectedRow(selectedSemesterIndex).semester();
-    return kursService.existsKursBySemesterId(selectedSemester.getSemesterId());
-  }
-
-  public int getNumberOfReferencedSemesterrechnungen(int selectedSemesterIndex) {
-    Semester selectedSemester = getSelectedRow(selectedSemesterIndex).semester();
-    return semesterrechnungService.countSemesterrechnungenBySemesterId(
-        selectedSemester.getSemesterId());
-  }
-
   @Override
   public DeleteSemesterResult eintragLoeschen(int indexSemesterToBeDeleted) {
     Semester semesterToBeDeleted = getSelectedRow(indexSemesterToBeDeleted).semester();
@@ -93,5 +82,16 @@ public class SemesterListModel
   @Override
   public String getListItemName() {
     return "Semesterliste mit Anzahl Kurse";
+  }
+
+  public boolean existsKurs(int selectedSemesterIndex) {
+    Semester selectedSemester = getSelectedRow(selectedSemesterIndex).semester();
+    return kursService.existsKursBySemesterId(selectedSemester.getSemesterId());
+  }
+
+  public int getNumberOfReferencedSemesterrechnungen(int selectedSemesterIndex) {
+    Semester selectedSemester = getSelectedRow(selectedSemesterIndex).semester();
+    return semesterrechnungService.countSemesterrechnungenBySemesterId(
+        selectedSemester.getSemesterId());
   }
 }

@@ -2,8 +2,10 @@ package ch.metzenthin.svm.service.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import ch.metzenthin.svm.domain.model.KursAndLehrkraefteAndNumberOfKursanmeldungen;
 import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.ServiceTestConfiguration;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -27,5 +29,35 @@ class KursServiceImplTest {
   void existsKursByLektionslaenge() {
     assertFalse(kursService.existsKursByLektionslaenge(1));
     assertTrue(kursService.existsKursByLektionslaenge(60));
+  }
+
+  @Test
+  void findAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester() {
+    List<KursAndLehrkraefteAndNumberOfKursanmeldungen>
+        kurseAndLehrkraefteAndNumberOfSchuelerForSemester101 =
+            kursService.findAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester(101);
+    assertEquals(1, kurseAndLehrkraefteAndNumberOfSchuelerForSemester101.size());
+    assertEquals(
+        1, kurseAndLehrkraefteAndNumberOfSchuelerForSemester101.get(0).numberOfKursanmeldungen());
+    assertTrue(kurseAndLehrkraefteAndNumberOfSchuelerForSemester101.get(0).lehrkraefte().isEmpty());
+
+    List<KursAndLehrkraefteAndNumberOfKursanmeldungen>
+        kurseAndLehrkraefteAndNumberOfSchuelerForSemester102 =
+            kursService.findAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester(102);
+    assertEquals(2, kurseAndLehrkraefteAndNumberOfSchuelerForSemester102.size());
+    KursAndLehrkraefteAndNumberOfKursanmeldungen kursAndLehrkraefteAndNumberOfKursanmeldungen402 =
+        kurseAndLehrkraefteAndNumberOfSchuelerForSemester102.get(0);
+    assertEquals(0, kursAndLehrkraefteAndNumberOfKursanmeldungen402.numberOfKursanmeldungen());
+    assertEquals(1, kursAndLehrkraefteAndNumberOfKursanmeldungen402.lehrkraefte().size());
+    assertEquals(
+        507, kursAndLehrkraefteAndNumberOfKursanmeldungen402.lehrkraefte().get(0).getPersonId());
+    KursAndLehrkraefteAndNumberOfKursanmeldungen kursAndLehrkraefteAndNumberOfKursanmeldungen403 =
+        kurseAndLehrkraefteAndNumberOfSchuelerForSemester102.get(1);
+    assertEquals(2, kursAndLehrkraefteAndNumberOfKursanmeldungen403.numberOfKursanmeldungen());
+    assertEquals(2, kursAndLehrkraefteAndNumberOfKursanmeldungen403.lehrkraefte().size());
+    assertEquals(
+        508, kursAndLehrkraefteAndNumberOfKursanmeldungen403.lehrkraefte().get(0).getPersonId());
+    assertEquals(
+        509, kursAndLehrkraefteAndNumberOfKursanmeldungen403.lehrkraefte().get(1).getPersonId());
   }
 }

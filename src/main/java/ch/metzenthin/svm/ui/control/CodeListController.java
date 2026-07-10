@@ -15,7 +15,7 @@ import java.awt.event.*;
  * @author Hans Stamm
  */
 public abstract class CodeListController<T extends Code>
-    extends AbstractListController<CodeListModel<T>, DeleteCodeResult> {
+    extends AbstractListController<CodeListModel<T>, DeleteCodeResult, CodeListView> {
 
   protected CodeListController(
       SvmContext svmContext,

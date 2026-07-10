@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
+import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
@@ -10,12 +11,14 @@ import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 import ch.metzenthin.svm.service.ElternmithilfeCodeService;
+import ch.metzenthin.svm.service.KursLehrkraftService;
 import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.KurstypService;
 import ch.metzenthin.svm.service.LektionsgebuehrenService;
 import ch.metzenthin.svm.service.MaerchenService;
 import ch.metzenthin.svm.service.MitarbeiterCodeService;
+import ch.metzenthin.svm.service.MitarbeiterService;
 import ch.metzenthin.svm.service.SchuelerCodeService;
 import ch.metzenthin.svm.service.SemesterService;
 import ch.metzenthin.svm.service.SemesterrechnungCodeService;
@@ -41,6 +44,8 @@ public class ModelFactoryImpl implements ModelFactory {
   private final LektionsgebuehrenService lektionsgebuehrenService;
   private final SemesterService semesterService;
   private final SemesterrechnungService semesterrechnungService;
+  private final MitarbeiterService mitarbeiterService;
+  private final KursLehrkraftService kursLehrkraftService;
 
   public ModelFactoryImpl(
       KursService kursService,
@@ -53,7 +58,9 @@ public class ModelFactoryImpl implements ModelFactory {
       SemesterrechnungCodeService semesterrechnungCodeService,
       LektionsgebuehrenService lektionsgebuehrenService,
       SemesterService semesterService,
-      SemesterrechnungService semesterrechnungService) {
+      SemesterrechnungService semesterrechnungService,
+      MitarbeiterService mitarbeiterService,
+      KursLehrkraftService kursLehrkraftService) {
     this.kursService = kursService;
     this.kursortService = kursortService;
     this.kurstypService = kurstypService;
@@ -65,6 +72,8 @@ public class ModelFactoryImpl implements ModelFactory {
     this.lektionsgebuehrenService = lektionsgebuehrenService;
     this.semesterService = semesterService;
     this.semesterrechnungService = semesterrechnungService;
+    this.mitarbeiterService = mitarbeiterService;
+    this.kursLehrkraftService = kursLehrkraftService;
   }
 
   @Override
@@ -236,8 +245,26 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
+  public KursListModel createKursListModel(Semester semester) {
+    return new KursListModel(kursService, semester);
+  }
+
+  @Override
   public KursErfassenModel createKursErfassenModel() {
     return new KursErfassenModelImpl();
+  }
+
+  @Override
+  public CreateOrUpdateKursModel createCreateOrUpdateKursModel(
+      Optional<Kurs> kursToBeModifiedOptional, Semester semester) {
+    return new CreateOrUpdateKursModelImpl(
+        kursToBeModifiedOptional,
+        semester,
+        kursService,
+        kurstypService,
+        kursortService,
+        mitarbeiterService,
+        kursLehrkraftService);
   }
 
   @Override

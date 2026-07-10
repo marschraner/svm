@@ -56,12 +56,12 @@ public class CreateOrUpdateKurstypController
   }
 
   private void initialiseViewFields() {
-    KurstypFields kurstypFields = model.getKurstypFields();
-    view.setTxtBezeichnungText(kurstypFields.bezeichnung());
-    if (model.isNeu()) {
-      view.setCheckBoxSelektierbarSelected(true);
-    } else {
+    if (!model.isNeu()) {
+      KurstypFields kurstypFields = model.getKurstypFields();
+      view.setTxtBezeichnungText(kurstypFields.bezeichnung());
       view.setCheckBoxSelektierbarSelected(kurstypFields.selektierbar());
+    } else {
+      view.setCheckBoxSelektierbarSelected(true);
     }
   }
 

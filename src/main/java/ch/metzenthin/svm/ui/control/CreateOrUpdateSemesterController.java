@@ -201,21 +201,21 @@ public class CreateOrUpdateSemesterController
   }
 
   private void initialiseViewFields() {
-    SemesterFields semesterFields = model.getSemesterFields();
-    if (model.isNeu()) {
+    if (!model.isNeu()) {
+      SemesterFields semesterFields = model.getSemesterFields();
+      view.setSpinnerSchuljahreValue(semesterFields.schuljahr());
+      view.setComboBoxSemesterbezeichnungSelectedItem(semesterFields.semesterbezeichnung());
+      view.setTxtSemesterbeginnText(semesterFields.semesterbeginn());
+      view.setTxtSemesterendeText(semesterFields.semesterende());
+      view.setTxtFerienbeginn1Text(semesterFields.ferienbeginn1());
+      view.setTxtFerienende1Text(semesterFields.ferienende1());
+      view.setTxtFerienbeginn2Text(semesterFields.ferienbeginn2());
+      view.setTxtFerienende2Text(semesterFields.ferienende2());
+    } else {
       SemesterFields naechstesSemester = model.getNaechstesNochNichtErfasstesSemester();
       view.setSpinnerSchuljahreValue(naechstesSemester.schuljahr());
       view.setComboBoxSemesterbezeichnungSelectedItem(naechstesSemester.semesterbezeichnung());
-    } else {
-      view.setSpinnerSchuljahreValue(semesterFields.schuljahr());
-      view.setComboBoxSemesterbezeichnungSelectedItem(semesterFields.semesterbezeichnung());
     }
-    view.setTxtSemesterbeginnText(semesterFields.semesterbeginn());
-    view.setTxtSemesterendeText(semesterFields.semesterende());
-    view.setTxtFerienbeginn1Text(semesterFields.ferienbeginn1());
-    view.setTxtFerienende1Text(semesterFields.ferienende1());
-    view.setTxtFerienbeginn2Text(semesterFields.ferienbeginn2());
-    view.setTxtFerienende2Text(semesterFields.ferienende2());
   }
 
   @Override

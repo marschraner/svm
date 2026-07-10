@@ -92,15 +92,15 @@ public class CreateOrUpdateMaerchenController
   }
 
   private void initialiseViewFields() {
-    MaerchenFields maerchenFields = model.getMaerchenFields();
-    if (model.isNeu()) {
+    if (!model.isNeu()) {
+      MaerchenFields maerchenFields = model.getMaerchenFields();
+      view.setSpinnerSchuljahreValue(maerchenFields.schuljahr());
+      view.setTxtBezeichnungText(maerchenFields.bezeichnung());
+      view.setTxtAnzahlVorstellungenText(maerchenFields.anzahlVorstellungen());
+    } else {
       String naechstesNochNichtErfasstesSchuljahr = model.getNaechstesNochNichtErfasstesSchuljahr();
       view.setSpinnerSchuljahreValue(naechstesNochNichtErfasstesSchuljahr);
-    } else {
-      view.setSpinnerSchuljahreValue(maerchenFields.schuljahr());
     }
-    view.setTxtBezeichnungText(maerchenFields.bezeichnung());
-    view.setTxtAnzahlVorstellungenText(maerchenFields.anzahlVorstellungen());
   }
 
   @Override

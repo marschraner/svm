@@ -1,8 +1,10 @@
 package ch.metzenthin.svm.persistence.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.domain.model.IdAndCount;
+import ch.metzenthin.svm.persistence.entities.Kurs;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +60,14 @@ class KursRepositoryTest {
     assertEquals(1, idAndCounts.get(0).count());
     assertEquals(102, idAndCounts.get(1).id());
     assertEquals(2, idAndCounts.get(1).count());
+  }
+
+  @Test
+  void testFindAllBySemesterId() {
+    List<Kurs> kursList = kursRepository.findAllBySemesterId(102);
+    assertEquals(2, kursList.size());
+    List<Integer> kursIds = kursList.stream().map(Kurs::getKursId).toList();
+    assertTrue(kursIds.contains(402));
+    assertTrue(kursIds.contains(403));
   }
 }

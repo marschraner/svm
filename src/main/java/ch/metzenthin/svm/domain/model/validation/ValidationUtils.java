@@ -46,12 +46,26 @@ public class ValidationUtils {
       return validationResult;
     }
 
-    validationResult = validateNotTooShort(value, minLength, field);
+    return validateLength(value, minLength, maxLength, field);
+  }
+
+  private static ValidationResult validateLength(
+      String value, int minLength, int maxLength, Field field) {
+    ValidationResult validationResult = validateNotTooShort(value, minLength, field);
     if (!validationResult.isValid()) {
       return validationResult;
     }
 
     return validateNotTooLong(value, maxLength, field);
+  }
+
+  public static ValidationResult validateLengthWhenNotEmpty(
+      String value, int minLength, int maxLength, Field field) {
+    if (value == null || value.isBlank()) {
+      return new ValidationResult();
+    }
+
+    return validateLength(value, minLength, maxLength, field);
   }
 
   public static ValidationResult validateNotNull(Object value, Field field) {

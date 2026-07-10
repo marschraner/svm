@@ -36,6 +36,7 @@ public class CreateOrUpdateKursController
     configComboBoxKursort();
     configComboBoxLehrkraft1();
     configComboBoxLehrkraft2();
+    configTxtBemerkungen();
     // Keine Konfiguration für Field Bemerkungen
     initialiseViewFields();
   }
@@ -46,6 +47,8 @@ public class CreateOrUpdateKursController
 
   private void configComboBoxKurstyp() {
     view.setComboBoxKurstypValues(model.getSelectableKurstypen());
+    // ComboBox auf leeren Wert setzen
+    view.setComboBoxKurstypSelectedItem(null);
     view.addComboBoxKurstypActionListener(e -> onKurstypSelected());
   }
 
@@ -103,7 +106,9 @@ public class CreateOrUpdateKursController
   }
 
   private void configComboBoxWochentag() {
-    view.setComboBoxWochentagValues(Wochentag.values());
+    view.setComboBoxWochentagValues(Wochentag.getAllowedWochentageForKurs());
+    // ComboBox auf leeren Wert setzen
+    view.setComboBoxWochentagSelectedItem(null);
     view.addComboBoxWochentagActionListener(e -> onWochentagSelected());
   }
 
@@ -162,6 +167,8 @@ public class CreateOrUpdateKursController
 
   private void configComboBoxKursort() {
     view.setComboBoxKursortValues(model.getSelectableKursorte());
+    // ComboBox auf leeren Wert setzen
+    view.setComboBoxKursortSelectedItem(null);
     view.addComboBoxKursortActionListener(e -> onKursortSelected());
   }
 
@@ -178,6 +185,8 @@ public class CreateOrUpdateKursController
 
   private void configComboBoxLehrkraft1() {
     view.setComboBoxLehrkraft1Values(model.getSelectableLehrkraefte1());
+    // ComboBox auf leeren Wert setzen
+    view.setComboBoxLehrkraft1SelectedItem(null);
     view.addComboBoxLehrkraft1ActionListener(e -> onLehrkraft1Selected());
   }
 
@@ -198,20 +207,41 @@ public class CreateOrUpdateKursController
 
   // Kein Event für Benutzereingaben für Field Lehrkraft2
 
-  // Keine Konfiguration und kein Event für Benutzereingaben für Field Bemerkungen
+  private void configTxtBemerkungen() {
+    view.addTxtBemerkungenActionListener(e -> onBemerkungenEvent());
+    view.addTxtBemerkungenFocusListener(
+        new FocusAdapter() {
+          @Override
+          public void focusLost(FocusEvent e) {
+            onBemerkungenEvent();
+          }
+        });
+  }
+
+  private void onBemerkungenEvent() {
+    LOGGER.trace("CreateOrUpdateKursController Event Bemerkungen");
+    formatAndValidateString(
+        view.getTxtBemerkungenText(),
+        model::validateBemerkungen,
+        view::setTxtBemerkungenText,
+        view::setErrorLabelBemerkungenVisible,
+        view::setErrorLabelBemerkungenInvisible);
+  }
 
   private void initialiseViewFields() {
-    KursFields kursFields = model.getKursFields();
-    view.setComboBoxKurstypSelectedItem(model.getKurstyp());
-    view.setTxtAltersbereichText(kursFields.altersbereich());
-    view.setTxtStufeText(kursFields.stufe());
-    view.setComboBoxWochentagSelectedItem(kursFields.wochentag());
-    view.setTxtZeitBeginnText(kursFields.zeitBeginn());
-    view.setTxtZeitEndeText(kursFields.zeitEnde());
-    view.setComboBoxKursortSelectedItem(model.getKursort());
-    view.setComboBoxLehrkraft1SelectedItem(model.getLehrkraft1());
-    view.setComboBoxLehrkraft2SelectedItem(model.getLehrkraft2());
-    view.setTxtBemerkungenText(kursFields.bemerkungen());
+    if (!model.isNeu()) {
+      KursFields kursFields = model.getKursFields();
+      view.setComboBoxKurstypSelectedItem(model.getKurstyp());
+      view.setTxtAltersbereichText(kursFields.altersbereich());
+      view.setTxtStufeText(kursFields.stufe());
+      view.setComboBoxWochentagSelectedItem(kursFields.wochentag());
+      view.setTxtZeitBeginnText(kursFields.zeitBeginn());
+      view.setTxtZeitEndeText(kursFields.zeitEnde());
+      view.setComboBoxKursortSelectedItem(model.getKursort());
+      view.setComboBoxLehrkraft1SelectedItem(model.getLehrkraft1());
+      view.setComboBoxLehrkraft2SelectedItem(model.getLehrkraft2());
+      view.setTxtBemerkungenText(kursFields.bemerkungen());
+    }
   }
 
   @Override
@@ -262,7 +292,9 @@ public class CreateOrUpdateKursController
       case LEHRKRAFT2 ->
           setErrorLabelVisibleIfRequired(
               validationResult, field, view::setErrorLabelLehrkraft2Visible);
-      // Keine Validierung für Field Bemerkungen
+      case BEMERKUNGEN ->
+          setErrorLabelVisibleIfRequired(
+              validationResult, field, view::setErrorLabelBemerkungenVisible);
       default -> throw new IllegalStateException("Unexpected value: " + field);
     }
   }

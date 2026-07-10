@@ -1,22 +1,28 @@
 package ch.metzenthin.svm.service.impl;
 
 import ch.metzenthin.svm.domain.EntityStillReferencedException;
-import ch.metzenthin.svm.domain.KursortDeletedException;
-import ch.metzenthin.svm.domain.KurstypDeletedException;
-import ch.metzenthin.svm.domain.SemesterDeletedException;
+import ch.metzenthin.svm.domain.model.IdAndCount;
+import ch.metzenthin.svm.domain.model.KursAndLehrkraefteAndNumberOfKursanmeldungen;
+import ch.metzenthin.svm.domain.model.KursIdAndLehrkraft;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.KursLehrkraft;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.repository.KursLehrkraftRepository;
 import ch.metzenthin.svm.persistence.repository.KursRepository;
+import ch.metzenthin.svm.persistence.repository.KursanmeldungRepository;
 import ch.metzenthin.svm.persistence.repository.KursortRepository;
 import ch.metzenthin.svm.persistence.repository.KurstypRepository;
 import ch.metzenthin.svm.persistence.repository.LektionsgebuehrenRepository;
+import ch.metzenthin.svm.persistence.repository.MitarbeiterRepository;
 import ch.metzenthin.svm.persistence.repository.SemesterRepository;
 import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.result.SaveKursResult;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +38,8 @@ public class KursServiceImpl implements KursService {
   private final SemesterRepository semesterRepository;
   private final KurstypRepository kurstypRepository;
   private final KursortRepository kursortRepository;
+  private final KursanmeldungRepository kursanmeldungRepository;
+  private final MitarbeiterRepository mitarbeiterRepository;
 
   public KursServiceImpl(
       KursRepository kursRepository,
@@ -39,13 +47,17 @@ public class KursServiceImpl implements KursService {
       LektionsgebuehrenRepository lektionsgebuehrenRepository,
       SemesterRepository semesterRepository,
       KurstypRepository kurstypRepository,
-      KursortRepository kursortRepository) {
+      KursortRepository kursortRepository,
+      KursanmeldungRepository kursanmeldungRepository,
+      MitarbeiterRepository mitarbeiterRepository) {
     this.kursRepository = kursRepository;
     this.kursLehrkraftRepository = kursLehrkraftRepository;
     this.lektionsgebuehrenRepository = lektionsgebuehrenRepository;
     this.semesterRepository = semesterRepository;
     this.kurstypRepository = kurstypRepository;
     this.kursortRepository = kursortRepository;
+    this.kursanmeldungRepository = kursanmeldungRepository;
+    this.mitarbeiterRepository = mitarbeiterRepository;
   }
 
   @Override
@@ -79,9 +91,53 @@ public class KursServiceImpl implements KursService {
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public int countKursanmeldungenByKursId(int kursId) {
+    return kursanmeldungRepository.countByKursId(kursId);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<KursAndLehrkraefteAndNumberOfKursanmeldungen>
+      findAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester(int semesterId) {
+
+    List<IdAndCount> kursIdAndNumberOfKursanmeldungen =
+        kursanmeldungRepository.countKursanmeldungenBySemesterIdGroupByKursId(semesterId);
+    Map<Integer, Long> kursIdAndNumberOfKursanmeldungenAsMap =
+        kursIdAndNumberOfKursanmeldungen.stream()
+            .collect(Collectors.toMap(IdAndCount::id, IdAndCount::count));
+
+    List<KursIdAndLehrkraft> kursIdAndLehrkraftList =
+        kursLehrkraftRepository
+            .findKursIdAndLehrkraefteBySemesterIdOrderByKursIdAndLehrkraefteOrder(semesterId);
+    Map<Integer, List<Mitarbeiter>> kursIdAndLehrkraefteAsMap =
+        kursIdAndLehrkraftList.stream()
+            .collect(
+                Collectors.groupingBy(
+                    KursIdAndLehrkraft::kursId,
+                    Collectors.mapping(KursIdAndLehrkraft::lehrkraft, Collectors.toList())));
+
+    List<Kurs> kursList = kursRepository.findAllBySemesterId(semesterId);
+
+    List<KursAndLehrkraefteAndNumberOfKursanmeldungen>
+        kursAndLehrkraefteAndNumberOfKursanmeldungenList = new ArrayList<>();
+    for (Kurs kurs : kursList) {
+      long numberOfKursanmeldungen =
+          kursIdAndNumberOfKursanmeldungenAsMap.getOrDefault(kurs.getKursId(), 0L);
+      List<Mitarbeiter> lehrkreafte =
+          kursIdAndLehrkraefteAsMap.getOrDefault(kurs.getKursId(), List.of());
+      KursAndLehrkraefteAndNumberOfKursanmeldungen kursAndLehrkraefteAndNumberOfKursanmeldungen =
+          new KursAndLehrkraefteAndNumberOfKursanmeldungen(
+              kurs, lehrkreafte, numberOfKursanmeldungen);
+      kursAndLehrkraefteAndNumberOfKursanmeldungenList.add(
+          kursAndLehrkraefteAndNumberOfKursanmeldungen);
+    }
+    return kursAndLehrkraefteAndNumberOfKursanmeldungenList;
+  }
+
+  @Override
   @Transactional
-  public SaveKursResult saveKurs(Kurs kurs, Mitarbeiter lehrkraft1, Mitarbeiter lehrkraft2)
-      throws SemesterDeletedException, KurstypDeletedException, KursortDeletedException {
+  public SaveKursResult saveKurs(Kurs kurs, Mitarbeiter lehrkraft1, Mitarbeiter lehrkraft2) {
 
     if (lehrkraft1 == null) {
       return SaveKursResult.KEINE_LEHRKRAEFTE_ERFASST;
@@ -114,34 +170,92 @@ public class KursServiceImpl implements KursService {
 
     int numberOfLektionsgebuehren =
         lektionsgebuehrenRepository.countByLektionslaenge(kurs.getKurslaenge());
-    if (numberOfLektionsgebuehren > 0) {
+    if (numberOfLektionsgebuehren == 0) {
       return SaveKursResult.LEKTIONSGEBUEHREN_NICHT_ERFASST;
     }
 
-    if (semesterRepository.countBySemesterId(kurs.getSemester().getSemesterId()) > 0) {
-      throw new SemesterDeletedException();
+    if (semesterRepository.countBySemesterId(kurs.getSemester().getSemesterId()) == 0) {
+      return SaveKursResult.SEMESTER_DURCH_ANDEREN_BENUTZER_GELOESCHT;
     }
 
-    if (kurstypRepository.countByKurstypId(kurs.getKurstyp().getKurstypId()) > 0) {
-      throw new KurstypDeletedException();
+    if (kurstypRepository.countByKurstypId(kurs.getKurstyp().getKurstypId()) == 0) {
+      return SaveKursResult.KURSTYP_DURCH_ANDEREN_BENUTZER_GELOESCHT;
     }
 
-    if (kursortRepository.countByKursortId(kurs.getKursort().getKursortId()) > 0) {
-      throw new KursortDeletedException();
+    if (kursortRepository.countByKursortId(kurs.getKursort().getKursortId()) == 0) {
+      return SaveKursResult.KURSORT_DURCH_ANDEREN_BENUTZER_GELOESCHT;
+    }
+
+    Optional<Mitarbeiter> lehrkraft1Optional =
+        mitarbeiterRepository.findById(lehrkraft1.getPersonId());
+    if (lehrkraft1Optional.isEmpty()) {
+      return SaveKursResult.LEHRKRAFT_DURCH_ANDEREN_BENUTZER_GELOESCHT;
+    }
+    lehrkraft1 = lehrkraft1Optional.get();
+
+    if (lehrkraft2 != null) {
+      Optional<Mitarbeiter> lehrkraft2Optional =
+          mitarbeiterRepository.findById(lehrkraft2.getPersonId());
+      if (lehrkraft2Optional.isEmpty()) {
+        return SaveKursResult.LEHRKRAFT_DURCH_ANDEREN_BENUTZER_GELOESCHT;
+      }
+      lehrkraft2 = lehrkraft2Optional.get();
     }
 
     kurs = kursRepository.save(kurs);
 
-    KursLehrkraft kursLehrkraft1 = new KursLehrkraft(kurs, lehrkraft1, 0);
-    kursLehrkraftRepository.save(kursLehrkraft1);
-    if (lehrkraft2 != null) {
-      KursLehrkraft kursLehrkraft2 = new KursLehrkraft(kurs, lehrkraft2, 1);
-      kursLehrkraftRepository.save(kursLehrkraft2);
-    }
+    createOrUpdateKursLehrkraefte(kurs, lehrkraft1, lehrkraft2);
 
     return SaveKursResult.SPEICHERN_ERFOLGREICH;
   }
 
+  private void createOrUpdateKursLehrkraefte(
+      Kurs kurs, Mitarbeiter lehrkraft1, Mitarbeiter lehrkraft2) {
+
+    List<KursLehrkraft> kursLehrkraefteFound =
+        kursLehrkraftRepository.findByKursIdOrderByLehrkraefteOrder(kurs.getKursId());
+
+    if (kursLehrkraefteFound.isEmpty()) {
+      createAndSaveKursLehrkraft(kurs, lehrkraft1, 0);
+      createAndSaveKursLehrkraft(kurs, lehrkraft2, 1);
+    } else {
+      // Lehrkraft1
+      KursLehrkraft kursLehrkraft1Found = kursLehrkraefteFound.get(0);
+      updateKursLehrkraft(lehrkraft1, kursLehrkraft1Found);
+      // Lehrkraft2
+      if (kursLehrkraefteFound.size() > 1) {
+        KursLehrkraft kursLehrkraft2Found = kursLehrkraefteFound.get(1);
+        if (lehrkraft2 != null) {
+          updateKursLehrkraft(lehrkraft2, kursLehrkraft2Found);
+        } else {
+          kursLehrkraftRepository.delete(kursLehrkraft2Found);
+        }
+      } else {
+        createAndSaveKursLehrkraft(kurs, lehrkraft2, 1);
+      }
+    }
+  }
+
+  private void createAndSaveKursLehrkraft(Kurs kurs, Mitarbeiter lehrkraft, int lehrkraefteOrder) {
+    if (lehrkraft != null) {
+      KursLehrkraft kursLehrkraft = new KursLehrkraft(kurs, lehrkraft, lehrkraefteOrder);
+      kursLehrkraftRepository.save(kursLehrkraft);
+    }
+  }
+
+  private void updateKursLehrkraft(Mitarbeiter lehrkraft, KursLehrkraft kursLehrkraft) {
+    if (!Objects.equals(lehrkraft.getPersonId(), kursLehrkraft.getLehrkraft().getPersonId())) {
+      kursLehrkraftRepository.delete(kursLehrkraft);
+      createAndSaveKursLehrkraft(
+          kursLehrkraft.getKurs(), lehrkraft, kursLehrkraft.getLehrkraefteOrder());
+    }
+  }
+
   @Override
-  public void deleteKurs(Kurs kurs) throws EntityStillReferencedException {}
+  public void deleteKurs(Kurs kurs) throws EntityStillReferencedException {
+    // TODO Kursanmeldungen-Releations löschen (keine EntityStillReferencedException, da im UI
+    // bereits
+    // gefragt wird, ob diese gelöscht werden sollen)
+    // TODO Semesterrechnungen aktualisieren
+  }
 }

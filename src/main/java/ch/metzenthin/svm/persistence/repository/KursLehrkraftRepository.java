@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.persistence.repository;
 
 import ch.metzenthin.svm.common.datatypes.Wochentag;
+import ch.metzenthin.svm.domain.model.KursIdAndLehrkraft;
 import ch.metzenthin.svm.persistence.entities.KursLehrkraft;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import java.sql.Time;
@@ -43,8 +44,22 @@ public interface KursLehrkraftRepository extends JpaRepository<KursLehrkraft, In
       @Param("kursId") int kursId);
 
   @Query(
+      "SELECT kl FROM KursLehrkraft kl "
+          + "WHERE kl.kurs.kursId = :kursId "
+          + "ORDER BY kl.kurs.kursId, kl.lehrkraefteOrder")
+  List<KursLehrkraft> findByKursIdOrderByLehrkraefteOrder(@Param("kursId") int kursId);
+
+  @Query(
       "SELECT kl.lehrkraft FROM KursLehrkraft kl "
           + "WHERE kl.kurs.kursId = :kursId "
           + "ORDER BY kl.lehrkraefteOrder")
   List<Mitarbeiter> findLehrkraefteByKursIdOrderByLehrkraefteOrder(@Param("kursId") int kursId);
+
+  @Query(
+      "SELECT new ch.metzenthin.svm.domain.model.KursIdAndLehrkraft(kl.kurs.kursId, kl.lehrkraft) "
+          + "FROM KursLehrkraft kl "
+          + "WHERE kl.kurs.semester.semesterId = :semesterId "
+          + "ORDER BY kl.kurs.kursId, kl.lehrkraefteOrder")
+  List<KursIdAndLehrkraft> findKursIdAndLehrkraefteBySemesterIdOrderByKursIdAndLehrkraefteOrder(
+      @Param("semesterId") int semesterId);
 }

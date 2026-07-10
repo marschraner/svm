@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class MaerchenListController
-    extends AbstractListController<MaerchenListModel, DeleteMaerchenResult> {
+    extends AbstractListController<MaerchenListModel, DeleteMaerchenResult, MaerchenListView> {
 
   public MaerchenListController(
       SvmContext svmContext, MaerchenListModel maerchenListModel, ActionListener closeListener) {

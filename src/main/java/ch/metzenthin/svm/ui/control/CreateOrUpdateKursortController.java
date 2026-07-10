@@ -56,12 +56,12 @@ public class CreateOrUpdateKursortController
   }
 
   private void initialiseViewFields() {
-    KursortFields kursortFields = model.getKursortFields();
-    view.setTxtBezeichnungText(kursortFields.bezeichnung());
-    if (model.isNeu()) {
-      view.setCheckBoxSelektierbarSelected(true);
-    } else {
+    if (!model.isNeu()) {
+      KursortFields kursortFields = model.getKursortFields();
+      view.setTxtBezeichnungText(kursortFields.bezeichnung());
       view.setCheckBoxSelektierbarSelected(kursortFields.selektierbar());
+    } else {
+      view.setCheckBoxSelektierbarSelected(true);
     }
   }
 

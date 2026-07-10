@@ -88,6 +88,10 @@ public abstract class AbstractListPanelView extends AbstractView {
     return table.getSelectedRow();
   }
 
+  public int convertRowIndexToModel() {
+    return table.convertRowIndexToModel(table.getSelectedRow());
+  }
+
   public void clearSelection() {
     table.clearSelection();
   }

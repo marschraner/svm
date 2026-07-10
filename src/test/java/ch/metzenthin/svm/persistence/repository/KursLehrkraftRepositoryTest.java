@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.common.utils.DateAndTimeUtils;
+import ch.metzenthin.svm.domain.model.KursIdAndLehrkraft;
+import ch.metzenthin.svm.persistence.entities.KursLehrkraft;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import java.sql.Time;
 import java.time.LocalDateTime;
@@ -59,11 +61,32 @@ class KursLehrkraftRepositoryTest {
   }
 
   @Test
+  void testFindByKursIdOrderByLehrkraefteOrder() {
+    List<KursLehrkraft> kursLehrkraftList =
+        kursLehrkraftRepository.findByKursIdOrderByLehrkraefteOrder(402);
+    assertEquals(2, kursLehrkraftList.size());
+    assertEquals(21, kursLehrkraftList.get(0).getLehrkraft().getPersonId());
+    assertEquals(22, kursLehrkraftList.get(1).getLehrkraft().getPersonId());
+  }
+
+  @Test
   void testFindLehrkraefteByKursIdOrderByLehrkraefteOrder() {
     List<Mitarbeiter> lehrkraefte =
         kursLehrkraftRepository.findLehrkraefteByKursIdOrderByLehrkraefteOrder(402);
     assertEquals(2, lehrkraefte.size());
     assertEquals("Kuster", lehrkraefte.get(0).getNachname());
     assertEquals("Meier", lehrkraefte.get(1).getNachname());
+  }
+
+  @Test
+  void testFindKursIdAndLehrkraefteBySemesterIdOrderByKursIdAndLehrkraefteOrder() {
+    List<KursIdAndLehrkraft> kursLehrkraftList =
+        kursLehrkraftRepository
+            .findKursIdAndLehrkraefteBySemesterIdOrderByKursIdAndLehrkraefteOrder(102);
+    assertEquals(2, kursLehrkraftList.size());
+    assertEquals(402, kursLehrkraftList.get(0).kursId());
+    assertEquals(21, kursLehrkraftList.get(0).lehrkraft().getPersonId());
+    assertEquals(402, kursLehrkraftList.get(1).kursId());
+    assertEquals(22, kursLehrkraftList.get(1).lehrkraft().getPersonId());
   }
 }

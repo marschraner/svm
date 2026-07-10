@@ -222,12 +222,12 @@ public class Kurs extends AbstractEntity implements Comparable<Kurs> {
   }
 
   public void setSemester(Semester semester) {
-    if (this.semester != null) {
-      deleteSemester(this.semester);
-    }
-    if (semester != null && !semester.getKurse().contains(this)) {
-      semester.getKurse().add(this);
-    }
+    //    if (this.semester != null) {
+    //      deleteSemester(this.semester);
+    //    }
+    //    if (semester != null && !semester.getKurse().contains(this)) {
+    //      semester.getKurse().add(this);
+    //    }
     this.semester = semester;
   }
 
@@ -237,12 +237,12 @@ public class Kurs extends AbstractEntity implements Comparable<Kurs> {
   }
 
   public void setKurstyp(Kurstyp kurstyp) {
-    if (this.kurstyp != null) {
-      deleteKurstyp(this.kurstyp);
-    }
-    if (kurstyp != null && !kurstyp.getKurse().contains(this)) {
-      kurstyp.getKurse().add(this);
-    }
+    //    if (this.kurstyp != null) {
+    //      deleteKurstyp(this.kurstyp);
+    //    }
+    //    if (kurstyp != null && !kurstyp.getKurse().contains(this)) {
+    //      kurstyp.getKurse().add(this);
+    //    }
     this.kurstyp = kurstyp;
   }
 
@@ -252,12 +252,12 @@ public class Kurs extends AbstractEntity implements Comparable<Kurs> {
   }
 
   public void setKursort(Kursort kursort) {
-    if (this.kursort != null) {
-      deleteKursort(this.kursort);
-    }
-    if (kursort != null && !kursort.getKurse().contains(this)) {
-      kursort.getKurse().add(this);
-    }
+    //    if (this.kursort != null) {
+    //      deleteKursort(this.kursort);
+    //    }
+    //    if (kursort != null && !kursort.getKurse().contains(this)) {
+    //      kursort.getKurse().add(this);
+    //    }
     this.kursort = kursort;
   }
 

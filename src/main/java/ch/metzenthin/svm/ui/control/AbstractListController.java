@@ -10,17 +10,19 @@ import lombok.Getter;
 /**
  * @param <T> List-Model-Typ, z.B. KursortListModel
  * @param <U> Delete-Result-Typ, z.B. DeleteKursortResult
+ * @param <V> List-Panel-View-Typ, z.B. KursortListView
  * @author Hans Stamm
  */
 public abstract class AbstractListController<
     T extends AbstractListModel<? extends AbstractTableData<?>, ?, ?, U>,
-    U extends SaveDialogResult> {
+    U extends SaveDialogResult,
+    V extends AbstractListPanelView> {
 
   protected final SvmContext svmContext;
   protected final T model;
-  @Getter public final AbstractListPanelView view;
+  @Getter public final V view;
 
-  protected AbstractListController(SvmContext svmContext, T model, AbstractListPanelView view) {
+  protected AbstractListController(SvmContext svmContext, T model, V view) {
     this.svmContext = svmContext;
     this.model = model;
     this.view = view;
@@ -92,7 +94,7 @@ public abstract class AbstractListController<
             "Soll der Eintrag aus der Datenbank gelöscht werden?",
             model.getListItemName() + " löschen");
     if (n == 0) {
-      U saveDialogResult = model.eintragLoeschen(view.getSelectedRow());
+      U saveDialogResult = model.eintragLoeschen(view.convertRowIndexToModel());
       if (!saveDialogResult.isSaveSuccessful()) {
         showErrorMessageDialog(saveDialogResult.getMessage());
         if (saveDialogResult.isDialogToBeClosed()) {
@@ -116,5 +118,8 @@ public abstract class AbstractListController<
     // TableData mit von der Datenbank upgedateten Objekten updaten
     model.reloadData();
     view.fireTableDataChanged();
+    setOrUpdateTotalAndListButtons();
   }
+
+  protected void setOrUpdateTotalAndListButtons() {}
 }

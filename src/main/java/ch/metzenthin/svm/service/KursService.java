@@ -1,12 +1,11 @@
 package ch.metzenthin.svm.service;
 
 import ch.metzenthin.svm.domain.EntityStillReferencedException;
-import ch.metzenthin.svm.domain.KursortDeletedException;
-import ch.metzenthin.svm.domain.KurstypDeletedException;
-import ch.metzenthin.svm.domain.SemesterDeletedException;
+import ch.metzenthin.svm.domain.model.KursAndLehrkraefteAndNumberOfKursanmeldungen;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.service.result.SaveKursResult;
+import java.util.List;
 
 /**
  * @author Martin Schraner
@@ -21,8 +20,12 @@ public interface KursService {
 
   boolean existsKursBySemesterId(int semesterId);
 
-  SaveKursResult saveKurs(Kurs kurs, Mitarbeiter lehrkraft1, Mitarbeiter lehrkraft2)
-      throws SemesterDeletedException, KurstypDeletedException, KursortDeletedException;
+  int countKursanmeldungenByKursId(int kursId);
+
+  List<KursAndLehrkraefteAndNumberOfKursanmeldungen>
+      findAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester(int semesterId);
+
+  SaveKursResult saveKurs(Kurs kurs, Mitarbeiter lehrkraft1, Mitarbeiter lehrkraft2);
 
   void deleteKurs(Kurs kurs) throws EntityStillReferencedException;
 }

@@ -28,7 +28,7 @@ public class KursanmeldungServiceImpl implements KursanmeldungService {
   public int calculateHoechsteAnzahlWochen(Schueler schueler, Semester semester) {
 
     List<Kursanmeldung> kursanmeldungen =
-        kursanmeldungRepository.findKursanmeldungenBySchuelerIdAndSemesterId(
+        kursanmeldungRepository.findBySchuelerIdAndSemesterId(
             schueler.getPersonId(), semester.getSemesterId());
     Optional<Integer> maxAnzahlWochenOptional =
         kursanmeldungen.stream()

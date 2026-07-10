@@ -293,6 +293,24 @@ public class CreateOrUpdateKursView extends SpeichernAbbrechenDialogView<CreateO
   }
 
   // Bemerkungen
+  public void setErrorLabelBemerkungenVisible(String errorMessage) {
+    bemerkungenWithErrorLabel.setErrorLabelVisible(true);
+    bemerkungenWithErrorLabel.setErrorLabelText(errorMessage);
+  }
+
+  public void setErrorLabelBemerkungenInvisible() {
+    bemerkungenWithErrorLabel.setErrorLabelVisible(false);
+    bemerkungenWithErrorLabel.setToolTipText(null);
+  }
+
+  public void addTxtBemerkungenActionListener(ActionListener actionListener) {
+    bemerkungenWithErrorLabel.addActionListener(actionListener);
+  }
+
+  public void addTxtBemerkungenFocusListener(FocusListener focusListener) {
+    bemerkungenWithErrorLabel.addFocusListener(focusListener);
+  }
+
   public String getTxtBemerkungenText() {
     return bemerkungenWithErrorLabel.getText();
   }

@@ -76,13 +76,13 @@ public class CreateOrUpdateCodeController
   }
 
   private void initialiseViewFields() {
-    CodeFields codeFields = model.getCodeFields();
-    view.setTxtKuerzelText(codeFields.kuerzel());
-    view.setTxtBeschreibungText(codeFields.beschreibung());
-    if (model.isNeu()) {
-      view.setCheckBoxSelektierbarSelected(true);
-    } else {
+    if (!model.isNeu()) {
+      CodeFields codeFields = model.getCodeFields();
+      view.setTxtKuerzelText(codeFields.kuerzel());
+      view.setTxtBeschreibungText(codeFields.beschreibung());
       view.setCheckBoxSelektierbarSelected(codeFields.selektierbar());
+    } else {
+      view.setCheckBoxSelektierbarSelected(true);
     }
   }
 

@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
  */
 @SuppressWarnings("DuplicatedCode")
 public class SemesterListController
-    extends AbstractListController<SemesterListModel, DeleteSemesterResult> {
+    extends AbstractListController<SemesterListModel, DeleteSemesterResult, SemesterListView> {
 
   public SemesterListController(
       SvmContext svmContext, SemesterListModel semesterListModel, ActionListener closeListener) {

@@ -35,6 +35,11 @@ public enum SaveKursResult implements SaveDialogResult {
           + "unterdessen durch einen anderen Benutzer gelöscht wurde.",
       false,
       true),
+  LEHRKRAFT_DURCH_ANDEREN_BENUTZER_GELOESCHT(
+      "Der Kurs konnte nicht gespeichert werden, da die selektierte Lehrkraft \n"
+          + "unterdessen durch einen anderen Benutzer gelöscht wurde.",
+      false,
+      true),
   KURS_DURCH_ANDEREN_BENUTZER_VERAENDERT(
       "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
           + "einen anderen Benutzer verändert oder gelöscht wurde.",

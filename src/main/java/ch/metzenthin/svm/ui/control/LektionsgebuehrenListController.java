@@ -14,7 +14,8 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class LektionsgebuehrenListController
-    extends AbstractListController<LektionsgebuehrenListModel, DeleteLektionsgebuehrenResult> {
+    extends AbstractListController<
+        LektionsgebuehrenListModel, DeleteLektionsgebuehrenResult, LektionsgebuehrenListView> {
 
   public LektionsgebuehrenListController(
       SvmContext svmContext,

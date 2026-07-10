@@ -187,14 +187,16 @@ public class CreateOrUpdateLektionsgebuehrenController
   }
 
   private void initialiseViewFields() {
-    LektionsgebuehrenFields lektionsgebuehrenFields = model.getLektionsgebuehrenFields();
-    view.setTxtLektionslaengeText(lektionsgebuehrenFields.lektionslaenge());
-    view.setTxtBetrag1KindText(lektionsgebuehrenFields.betrag1Kind());
-    view.setTxtBetrag2KinderText(lektionsgebuehrenFields.betrag2Kinder());
-    view.setTxtBetrag3KinderText(lektionsgebuehrenFields.betrag3Kinder());
-    view.setTxtBetrag4KinderText(lektionsgebuehrenFields.betrag4Kinder());
-    view.setTxtBetrag5KinderText(lektionsgebuehrenFields.betrag5Kinder());
-    view.setTxtBetrag6KinderText(lektionsgebuehrenFields.betrag6Kinder());
+    if (!model.isNeu()) {
+      LektionsgebuehrenFields lektionsgebuehrenFields = model.getLektionsgebuehrenFields();
+      view.setTxtLektionslaengeText(lektionsgebuehrenFields.lektionslaenge());
+      view.setTxtBetrag1KindText(lektionsgebuehrenFields.betrag1Kind());
+      view.setTxtBetrag2KinderText(lektionsgebuehrenFields.betrag2Kinder());
+      view.setTxtBetrag3KinderText(lektionsgebuehrenFields.betrag3Kinder());
+      view.setTxtBetrag4KinderText(lektionsgebuehrenFields.betrag4Kinder());
+      view.setTxtBetrag5KinderText(lektionsgebuehrenFields.betrag5Kinder());
+      view.setTxtBetrag6KinderText(lektionsgebuehrenFields.betrag6Kinder());
+    }
   }
 
   @Override

@@ -5,11 +5,9 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.SvmValidationException;
+import ch.metzenthin.svm.domain.model.KursListModel;
 import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
-import ch.metzenthin.svm.domain.model.KurseTableData;
 import ch.metzenthin.svm.persistence.entities.Semester;
-import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
-import ch.metzenthin.svm.ui.components.KursePanel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -111,20 +109,28 @@ public class KurseSemesterwahlController extends AbstractController {
       return;
     }
     setWaitCursorAllComponents();
-    KurseTableData kurseTableData = kurseSemesterwahlModel.suchen();
-    KurseTableModel kurseTableModel = new KurseTableModel(kurseTableData);
-    String titel =
-        "Kurse "
-            + kurseSemesterwahlModel.getSemester().getSemesterbezeichnung()
-            + " "
-            + kurseSemesterwahlModel.getSemester().getSchuljahr();
-    KursePanel kursePanel =
-        new KursePanel(svmContext, kurseSemesterwahlModel, kurseTableModel, titel);
-    kursePanel.addCloseListener(closeListener);
+    //        KurseTableData kurseTableData = kurseSemesterwahlModel.suchen();
+    //        KurseTableModel kurseTableModel = new KurseTableModel(kurseTableData);
+    //        String titel =
+    //            "Kurse "
+    //                + kurseSemesterwahlModel.getSemester().getSemesterbezeichnung()
+    //                + " "
+    //                + kurseSemesterwahlModel.getSemester().getSchuljahr();
+    //        KursePanel kursePanel =
+    //            new KursePanel(svmContext, kurseSemesterwahlModel, kurseTableModel, titel);
+    //        kursePanel.addCloseListener(closeListener);
+    KursListModel kursListModel =
+        svmContext.getModelFactory().createKursListModel(kurseSemesterwahlModel.getSemester());
+    KursListController kursListController =
+        new KursListController(svmContext, kursListModel, closeListener);
     resetCursorAllComponents();
     nextPanelListener.actionPerformed(
         new ActionEvent(
-            new Object[] {kursePanel.$$$getRootComponent$$$(), titel},
+            //             new Object[] {kursePanel.$$$getRootComponent$$$(), titel},
+            new Object[] {
+              kursListController.getView().getRootComponent(),
+              kursListModel.getSemesterDisplayName()
+            },
             ActionEvent.ACTION_PERFORMED,
             "Suchresultat verfügbar"));
   }

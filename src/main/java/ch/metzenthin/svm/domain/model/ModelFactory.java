@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
+import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
@@ -82,7 +83,12 @@ public interface ModelFactory {
 
   KurseModel createKurseModel();
 
+  KursListModel createKursListModel(Semester semester);
+
   KursErfassenModel createKursErfassenModel();
+
+  CreateOrUpdateKursModel createCreateOrUpdateKursModel(
+      Optional<Kurs> kursToBeModifiedOptional, Semester semester);
 
   KursanmeldungenModel createKursanmeldungenModel();
 

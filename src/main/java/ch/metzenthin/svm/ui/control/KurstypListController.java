@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class KurstypListController
-    extends AbstractListController<KurstypListModel, DeleteKurstypResult> {
+    extends AbstractListController<KurstypListModel, DeleteKurstypResult, KurstypListView> {
 
   public KurstypListController(
       SvmContext svmContext, KurstypListModel kurstypListModel, ActionListener closeListener) {
