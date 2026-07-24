@@ -2,6 +2,7 @@ package ch.metzenthin.svm.ui.view;
 
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
+import ch.metzenthin.svm.ui.components.SwingWorkerWithBusyDialog;
 import java.awt.Component;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -39,7 +40,11 @@ public abstract class AbstractView {
         options[1]); // default button title
   }
 
-  public JDialog createBusyDialog(String message) {
+  public <T> SwingWorkerWithBusyDialog<T> createSwingWorkerWithBusyDialog(String message) {
+    return new SwingWorkerWithBusyDialog<>(createBusyDialog(message));
+  }
+
+  private JDialog createBusyDialog(String message) {
     final JOptionPane optionPane =
         new JOptionPane(
             message,

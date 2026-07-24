@@ -1,16 +1,14 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.common.SvmRuntimeException;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModel;
 import ch.metzenthin.svm.domain.model.entityfields.SemesterFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.ui.components.SwingWorkerWithBusyDialog;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateSemesterView;
 import java.awt.event.*;
-import java.util.concurrent.ExecutionException;
-import javax.swing.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -236,16 +234,12 @@ public class CreateOrUpdateSemesterController
                   + "(Semesterrechnungen mit gesetztem Rechnungsdatum werden nicht verändert.)",
               "Anzahl Semesterwochen auch bei Semesterrechnungen ändern?");
       if (n == 0) {
-        JDialog semesterSpeichernBusyDialog =
-            view.createBusyDialog(
+        SwingWorkerWithBusyDialog<ValidationResultsAndSaveResult> swingWorker =
+            view.createSwingWorkerWithBusyDialog(
                 "Das Semester und die betroffenen Semesterrechnungen werden gespeichert.");
-        SwingWorker<ValidationResultsAndSaveResult, Void> semesterSpeichernSwingWorker =
-            executeSpeichernOnSwingWorker(semesterSpeichernBusyDialog);
-        semesterSpeichernBusyDialog.setVisible(true);
-        // Der nachfolgende Code ist blockiert, bis der Worker beendet ist und den BusyDialog
-        // schliesst
         validationResultsAndSaveResult =
-            getValidationResultAndSaveResult(semesterSpeichernSwingWorker);
+            swingWorker.executeAndGetResult(
+                () -> model.speichern(createSemesterFieldsFromView(), true));
       } else {
         validationResultsAndSaveResult = model.speichern(createSemesterFieldsFromView(), false);
       }
@@ -266,41 +260,6 @@ public class CreateOrUpdateSemesterController
         view.getTxtFerienende1Text(),
         view.getTxtFerienbeginn2Text(),
         view.getTxtFerienende2Text());
-  }
-
-  private SwingWorker<ValidationResultsAndSaveResult, Void> executeSpeichernOnSwingWorker(
-      JDialog busyDialog) {
-    SwingWorker<ValidationResultsAndSaveResult, Void> worker =
-        new SwingWorker<>() {
-          @Override
-          protected ValidationResultsAndSaveResult doInBackground() {
-            return model.speichern(createSemesterFieldsFromView(), true);
-          }
-
-          @Override
-          protected void done() {
-            busyDialog.dispose();
-          }
-        };
-
-    // Worker muss ausgeführt werden bevor der Dialog visible wird, da mit setVisible der
-    // nachfolgende Code blockiert ist
-    worker.execute();
-    return worker;
-  }
-
-  private static ValidationResultsAndSaveResult getValidationResultAndSaveResult(
-      SwingWorker<ValidationResultsAndSaveResult, Void> semesterSpeichernSwingWorker) {
-    ValidationResultsAndSaveResult validationResultsAndSaveResult;
-    try {
-      validationResultsAndSaveResult = semesterSpeichernSwingWorker.get();
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new SvmRuntimeException(e.getMessage(), e);
-    } catch (ExecutionException e) {
-      throw new SvmRuntimeException(e.getMessage(), e);
-    }
-    return validationResultsAndSaveResult;
   }
 
   @Override
