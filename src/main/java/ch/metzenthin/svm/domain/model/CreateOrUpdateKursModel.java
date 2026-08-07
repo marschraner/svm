@@ -3,7 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.model.entityfields.KursFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
@@ -52,7 +52,7 @@ public interface CreateOrUpdateKursModel {
 
   ValidationResult validateBemerkungen(String bemerkungen);
 
-  ValidationResultsAndSaveResult speichern(
+  ValidationResultsAndSubmitResult speichern(
       KursFields kursFields,
       Kurstyp kurstyp,
       Kursort kursort,

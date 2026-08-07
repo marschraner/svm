@@ -6,8 +6,8 @@ import javax.swing.JDialog;
 /**
  * @author Hans Stamm
  */
-public abstract class SpeichernAbbrechenDialog extends JDialog {
+public abstract class AbstractSubmitDialog extends JDialog {
 
-  public abstract JButton getSpeichernButton();
+  public abstract JButton getSubmitButton();
   public abstract JButton getAbbrechenButton();
 }

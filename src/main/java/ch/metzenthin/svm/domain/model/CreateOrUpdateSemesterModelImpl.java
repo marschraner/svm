@@ -18,7 +18,7 @@ import ch.metzenthin.svm.domain.model.conversion.ConvertedValueAndConversionResu
 import ch.metzenthin.svm.domain.model.entityfields.ConvertedSemesterFields;
 import ch.metzenthin.svm.domain.model.entityfields.SemesterFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.service.SemesterService;
 import ch.metzenthin.svm.service.result.SaveSemesterResult;
@@ -260,7 +260,7 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
   }
 
   @Override
-  public ValidationResultsAndSaveResult speichern(
+  public ValidationResultsAndSubmitResult speichern(
       SemesterFields semesterFields, boolean updateSemesterrechnungen) {
 
     ConvertedFieldsAndConversionResults<ConvertedSemesterFields>
@@ -269,20 +269,20 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
       List<ValidationResult> invalidConversionResultsAsValidationResults =
           convertedSemesterFieldsAndConversionResults
               .getInvalidConversionResultsAsValidationResults();
-      return new ValidationResultsAndSaveResult(invalidConversionResultsAsValidationResults);
+      return new ValidationResultsAndSubmitResult(invalidConversionResultsAsValidationResults);
     }
     ConvertedSemesterFields convertedSemesterFields =
         convertedSemesterFieldsAndConversionResults.convertedFields();
 
     List<ValidationResult> validationResults = validateAll(convertedSemesterFields);
     if (!ValidationResult.allValidationResultsValid(validationResults)) {
-      return new ValidationResultsAndSaveResult(validationResults);
+      return new ValidationResultsAndSubmitResult(validationResults);
     }
 
     updateModel(convertedSemesterFields);
 
     SaveSemesterResult saveSemesterResult = saveSemester(updateSemesterrechnungen);
-    return new ValidationResultsAndSaveResult(validationResults, saveSemesterResult);
+    return new ValidationResultsAndSubmitResult(validationResults, saveSemesterResult);
   }
 
   private static ConvertedFieldsAndConversionResults<ConvertedSemesterFields> convertAll(

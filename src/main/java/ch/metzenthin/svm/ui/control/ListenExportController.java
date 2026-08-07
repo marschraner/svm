@@ -6,7 +6,7 @@ import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.datatypes.Listentyp;
 import ch.metzenthin.svm.domain.model.ListenExportModel;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.ui.view.ListenExportView;
 import java.awt.event.*;
 import java.io.File;
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Hans Stamm
  */
-public class ListenExportController extends AbstractCreateOrUpdateController<ListenExportView> {
+public class ListenExportController extends AbstractSubmitDialogController<ListenExportView> {
 
   private static final String FEHLER = "Fehler";
 
@@ -97,14 +97,14 @@ public class ListenExportController extends AbstractCreateOrUpdateController<Lis
   }
 
   @Override
-  protected ValidationResultsAndSaveResult speichern() {
-    ValidationResultsAndSaveResult validationResultsAndSaveResult =
+  protected ValidationResultsAndSubmitResult submit() {
+    ValidationResultsAndSubmitResult validationResultsAndSaveResult =
         model.submit(view.getComboBoxListentypSelectedItem(), view.getTxtTitelText());
     if (validationResultsAndSaveResult.isValidationSuccessful()) {
       File selectedFile = view.showFileChooserAndGetSelectedFile();
       model.setExportFile(selectedFile);
       if (selectedFile == null) {
-        return new ValidationResultsAndSaveResult(
+        return new ValidationResultsAndSubmitResult(
             validationResultsAndSaveResult.validationResults(), FILE_AUSWAHL_ABGEBROCHEN);
       }
     }

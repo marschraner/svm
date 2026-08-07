@@ -3,7 +3,7 @@ package ch.metzenthin.svm.service.result;
 /**
  * @author Hans Stamm
  */
-public enum SaveCodeResult implements SaveDialogResult {
+public enum SaveCodeResult implements SubmitDialogResult {
   CODE_BEREITS_ERFASST("Kürzel bereits in Verwendung.", false, false),
   CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT(
       "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
@@ -29,7 +29,7 @@ public enum SaveCodeResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isSaveSuccessful() {
+  public boolean isSubmitSuccessful() {
     return saveSuccessful;
   }
 

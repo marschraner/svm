@@ -3,7 +3,7 @@ package ch.metzenthin.svm.service.result;
 /**
  * @author Martin Schraner
  */
-public enum DeleteLektionsgebuehrenResult implements SaveDialogResult {
+public enum DeleteLektionsgebuehrenResult implements SubmitDialogResult {
   LEKTIONSGEBUEHREN_VON_KURS_REFERENZIERT(
       "Die Lektionsgebühren können nicht gelöscht werden,\n"
           + "weil Kurse mit dieser Lektionslänge existieren.",
@@ -18,12 +18,13 @@ public enum DeleteLektionsgebuehrenResult implements SaveDialogResult {
   LOESCHEN_ERFOLGREICH("Löschen erfolgreich", true, true);
 
   private final String message;
-  private final boolean saveSuccessful;
+  private final boolean deleteSuccessful;
   private final boolean dialogToBeClosed;
 
-  DeleteLektionsgebuehrenResult(String message, boolean saveSuccessful, boolean dialogToBeClosed) {
+  DeleteLektionsgebuehrenResult(
+      String message, boolean deleteSuccessful, boolean dialogToBeClosed) {
     this.message = message;
-    this.saveSuccessful = saveSuccessful;
+    this.deleteSuccessful = deleteSuccessful;
     this.dialogToBeClosed = dialogToBeClosed;
   }
 
@@ -33,8 +34,8 @@ public enum DeleteLektionsgebuehrenResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isSaveSuccessful() {
-    return saveSuccessful;
+  public boolean isSubmitSuccessful() {
+    return deleteSuccessful;
   }
 
   @Override

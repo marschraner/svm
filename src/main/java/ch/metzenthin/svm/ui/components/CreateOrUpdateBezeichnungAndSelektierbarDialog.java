@@ -5,7 +5,7 @@ import javax.swing.*;
 /**
  * @author Hans Stamm
  */
-public abstract class CreateOrUpdateBezeichnungAndSelektierbarDialog extends SpeichernAbbrechenDialog {
+public abstract class CreateOrUpdateBezeichnungAndSelektierbarDialog extends AbstractSubmitDialog {
 
   public abstract JTextField getTxtBezeichnung();
 

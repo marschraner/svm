@@ -2,7 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.model.entityfields.LektionsgebuehrenFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import java.math.BigDecimal;
 
 /**
@@ -28,5 +28,5 @@ public interface CreateOrUpdateLektionsgebuehrenModel {
 
   ValidationResult validateBetrag6Kinder(BigDecimal betrag6Kinder);
 
-  ValidationResultsAndSaveResult speichern(LektionsgebuehrenFields lektionsgebuehrenFields);
+  ValidationResultsAndSubmitResult speichern(LektionsgebuehrenFields lektionsgebuehrenFields);
 }

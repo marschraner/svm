@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.service.result;
 
-public enum DeleteCodeResult implements SaveDialogResult {
+public enum DeleteCodeResult implements SubmitDialogResult {
   CODE_REFERENZIERT(
       "Der Code wird durch mindestens ein Objekt referenziert und kann nicht gelöscht werden.",
       false,
@@ -13,12 +13,12 @@ public enum DeleteCodeResult implements SaveDialogResult {
   LOESCHEN_ERFOLGREICH("Löschen erfolgreich", true, true);
 
   private final String message;
-  private final boolean saveSuccessful;
+  private final boolean deleteSuccessful;
   private final boolean dialogToBeClosed;
 
-  DeleteCodeResult(String message, boolean saveSuccessful, boolean dialogToBeClosed) {
+  DeleteCodeResult(String message, boolean deleteSuccessful, boolean dialogToBeClosed) {
     this.message = message;
-    this.saveSuccessful = saveSuccessful;
+    this.deleteSuccessful = deleteSuccessful;
     this.dialogToBeClosed = dialogToBeClosed;
   }
 
@@ -28,8 +28,8 @@ public enum DeleteCodeResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isSaveSuccessful() {
-    return saveSuccessful;
+  public boolean isSubmitSuccessful() {
+    return deleteSuccessful;
   }
 
   @Override

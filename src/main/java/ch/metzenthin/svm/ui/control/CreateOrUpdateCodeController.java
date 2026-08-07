@@ -4,7 +4,7 @@ import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateCodeModel;
 import ch.metzenthin.svm.domain.model.entityfields.CodeFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateCodeView;
 import java.awt.event.*;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * @author Martin Schraner
  */
 public class CreateOrUpdateCodeController
-    extends AbstractCreateOrUpdateController<CreateOrUpdateCodeView> {
+    extends AbstractSubmitDialogController<CreateOrUpdateCodeView> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CreateOrUpdateCodeController.class);
 
@@ -87,7 +87,7 @@ public class CreateOrUpdateCodeController
   }
 
   @Override
-  protected ValidationResultsAndSaveResult speichern() {
+  protected ValidationResultsAndSubmitResult submit() {
     CodeFields codeFields =
         new CodeFields(
             view.getTxtKuerzelText(),

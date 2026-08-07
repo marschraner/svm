@@ -8,7 +8,7 @@ import ch.metzenthin.svm.domain.model.conversion.ConvertedFieldsAndConversionRes
 import ch.metzenthin.svm.domain.model.entityfields.ConvertedKursFields;
 import ch.metzenthin.svm.domain.model.entityfields.KursFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationUtils;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Kursort;
@@ -240,7 +240,7 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
   }
 
   @Override
-  public ValidationResultsAndSaveResult speichern(
+  public ValidationResultsAndSubmitResult speichern(
       KursFields kursFields,
       Kurstyp kurstyp,
       Kursort kursort,
@@ -252,7 +252,7 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
     if (!convertedKursFieldsAndConversionResults.isValid()) {
       List<ValidationResult> invalidConversionResultsAsValidationResults =
           convertedKursFieldsAndConversionResults.getInvalidConversionResultsAsValidationResults();
-      return new ValidationResultsAndSaveResult(invalidConversionResultsAsValidationResults);
+      return new ValidationResultsAndSubmitResult(invalidConversionResultsAsValidationResults);
     }
     ConvertedKursFields convertedKursFields =
         convertedKursFieldsAndConversionResults.convertedFields();
@@ -260,13 +260,13 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
     List<ValidationResult> validationResults =
         validateAll(convertedKursFields, kurstyp, kursort, lehrkraft1, lehrkraft2);
     if (!ValidationResult.allValidationResultsValid(validationResults)) {
-      return new ValidationResultsAndSaveResult(validationResults);
+      return new ValidationResultsAndSubmitResult(validationResults);
     }
 
     updateModel(convertedKursFields, kurstyp, kursort, lehrkraft1, lehrkraft2);
 
     SaveKursResult saveKursResult = saveKurs();
-    return new ValidationResultsAndSaveResult(validationResults, saveKursResult);
+    return new ValidationResultsAndSubmitResult(validationResults, saveKursResult);
   }
 
   private static ConvertedFieldsAndConversionResults<ConvertedKursFields> convertAll(

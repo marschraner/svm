@@ -7,7 +7,7 @@ import ch.metzenthin.svm.domain.model.conversion.ConvertedFieldsAndConversionRes
 import ch.metzenthin.svm.domain.model.entityfields.ConvertedLektionsgebuehrenFields;
 import ch.metzenthin.svm.domain.model.entityfields.LektionsgebuehrenFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationUtils;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import ch.metzenthin.svm.service.LektionsgebuehrenService;
@@ -95,7 +95,8 @@ public class CreateOrUpdateLektionsgebuehrenModelImpl
   }
 
   @Override
-  public ValidationResultsAndSaveResult speichern(LektionsgebuehrenFields lektionsgebuehrenFields) {
+  public ValidationResultsAndSubmitResult speichern(
+      LektionsgebuehrenFields lektionsgebuehrenFields) {
 
     ConvertedFieldsAndConversionResults<ConvertedLektionsgebuehrenFields>
         convertedLektionsgebuehrenFieldsAndConversionResults = convertAll(lektionsgebuehrenFields);
@@ -103,20 +104,20 @@ public class CreateOrUpdateLektionsgebuehrenModelImpl
       List<ValidationResult> invalidConversionResultsAsValidationResults =
           convertedLektionsgebuehrenFieldsAndConversionResults
               .getInvalidConversionResultsAsValidationResults();
-      return new ValidationResultsAndSaveResult(invalidConversionResultsAsValidationResults);
+      return new ValidationResultsAndSubmitResult(invalidConversionResultsAsValidationResults);
     }
     ConvertedLektionsgebuehrenFields convertedLektionsgebuehrenFields =
         convertedLektionsgebuehrenFieldsAndConversionResults.convertedFields();
 
     List<ValidationResult> validationResults = validateAll(convertedLektionsgebuehrenFields);
     if (!ValidationResult.allValidationResultsValid(validationResults)) {
-      return new ValidationResultsAndSaveResult(validationResults);
+      return new ValidationResultsAndSubmitResult(validationResults);
     }
 
     updateModel(convertedLektionsgebuehrenFields);
 
     SaveLektionsgebuehrenResult saveLektionsgebuehrenResult = saveLektionsgebuehren();
-    return new ValidationResultsAndSaveResult(validationResults, saveLektionsgebuehrenResult);
+    return new ValidationResultsAndSubmitResult(validationResults, saveLektionsgebuehrenResult);
   }
 
   private ConvertedFieldsAndConversionResults<ConvertedLektionsgebuehrenFields> convertAll(

@@ -3,7 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.model.entityfields.SemesterFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import java.util.Calendar;
 
 /**
@@ -41,6 +41,6 @@ public interface CreateOrUpdateSemesterModel {
       String ferienbeginn2AsString,
       String ferienende2AsString);
 
-  ValidationResultsAndSaveResult speichern(
+  ValidationResultsAndSubmitResult speichern(
       SemesterFields semesterFields, boolean updateSemesterrechnungen);
 }

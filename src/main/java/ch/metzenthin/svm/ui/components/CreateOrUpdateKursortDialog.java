@@ -27,7 +27,7 @@ public class CreateOrUpdateKursortDialog extends CreateOrUpdateBezeichnungAndSel
   }
 
   @Override
-  public JButton getSpeichernButton() {
+  public JButton getSubmitButton() {
     return btnSpeichern;
   }
 

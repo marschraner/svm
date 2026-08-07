@@ -12,7 +12,7 @@ import javax.swing.JCheckBox;
  */
 public abstract class CreateOrUpdateBezeichnungAndSelektierbarDialogView<
         T extends CreateOrUpdateBezeichnungAndSelektierbarDialog>
-    extends SpeichernAbbrechenDialogView<T> {
+    extends AbstractSubmitDialogView<T> {
 
   private final TextFieldWithErrorLabelComponent bezeichnungWithErrorLabel;
   private final JCheckBox checkBoxSelektierbar;

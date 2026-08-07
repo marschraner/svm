@@ -2,7 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.domain.model.entityfields.KurstypFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 
 /**
  * @author Martin Schraner
@@ -15,5 +15,5 @@ public interface CreateOrUpdateKurstypModel {
 
   ValidationResult validateBezeichnung(String bezeichnung);
 
-  ValidationResultsAndSaveResult speichern(KurstypFields kurstypFields);
+  ValidationResultsAndSubmitResult speichern(KurstypFields kurstypFields);
 }

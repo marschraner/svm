@@ -4,7 +4,7 @@ import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateLektionsgebuehrenModel;
 import ch.metzenthin.svm.domain.model.entityfields.LektionsgebuehrenFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateLektionsgebuehrenView;
 import java.awt.event.*;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * @author Martin Schraner
  */
 public class CreateOrUpdateLektionsgebuehrenController
-    extends AbstractCreateOrUpdateController<CreateOrUpdateLektionsgebuehrenView> {
+    extends AbstractSubmitDialogController<CreateOrUpdateLektionsgebuehrenView> {
 
   private static final Logger LOGGER =
       LoggerFactory.getLogger(CreateOrUpdateLektionsgebuehrenController.class);
@@ -200,7 +200,7 @@ public class CreateOrUpdateLektionsgebuehrenController
   }
 
   @Override
-  protected ValidationResultsAndSaveResult speichern() {
+  protected ValidationResultsAndSubmitResult submit() {
     LektionsgebuehrenFields lektionsgebuehrenFields =
         new LektionsgebuehrenFields(
             view.getTxtLektionslaengeText(),

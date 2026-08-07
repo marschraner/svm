@@ -8,7 +8,7 @@ import ch.metzenthin.svm.domain.model.conversion.ConvertedFieldsAndConversionRes
 import ch.metzenthin.svm.domain.model.entityfields.ConvertedMaerchenFields;
 import ch.metzenthin.svm.domain.model.entityfields.MaerchenFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.service.MaerchenService;
 import ch.metzenthin.svm.service.result.SaveMaerchenResult;
@@ -70,7 +70,7 @@ public class CreateOrUpdateMaerchenModelImpl implements CreateOrUpdateMaerchenMo
   }
 
   @Override
-  public ValidationResultsAndSaveResult speichern(
+  public ValidationResultsAndSubmitResult speichern(
       MaerchenFields maerchenFields, BooleanSupplier checkForMaerchenInPastWarningSupplier) {
 
     ConvertedFieldsAndConversionResults<ConvertedMaerchenFields>
@@ -79,27 +79,27 @@ public class CreateOrUpdateMaerchenModelImpl implements CreateOrUpdateMaerchenMo
       List<ValidationResult> invalidConversionResultsAsValidationResults =
           convertedMaerchenFieldsAndConversionResults
               .getInvalidConversionResultsAsValidationResults();
-      return new ValidationResultsAndSaveResult(invalidConversionResultsAsValidationResults);
+      return new ValidationResultsAndSubmitResult(invalidConversionResultsAsValidationResults);
     }
     ConvertedMaerchenFields convertedMaerchenFields =
         convertedMaerchenFieldsAndConversionResults.convertedFields();
 
     List<ValidationResult> validationResults = validateAll(convertedMaerchenFields);
     if (!ValidationResult.allValidationResultsValid(validationResults)) {
-      return new ValidationResultsAndSaveResult(validationResults);
+      return new ValidationResultsAndSubmitResult(validationResults);
     }
 
     boolean noWarningsOrWarningsIgnored =
         checkForWarnings(checkForMaerchenInPastWarningSupplier, convertedMaerchenFields);
     if (!noWarningsOrWarningsIgnored) {
-      return new ValidationResultsAndSaveResult(
+      return new ValidationResultsAndSubmitResult(
           validationResults, SaveMaerchenResult.SPEICHERN_ABBRECHEN_NACH_WARNUNG);
     }
 
     updateModel(convertedMaerchenFields);
 
     SaveMaerchenResult saveMaerchenResult = saveMaerchen();
-    return new ValidationResultsAndSaveResult(validationResults, saveMaerchenResult);
+    return new ValidationResultsAndSubmitResult(validationResults, saveMaerchenResult);
   }
 
   private static ConvertedFieldsAndConversionResults<ConvertedMaerchenFields> convertAll(

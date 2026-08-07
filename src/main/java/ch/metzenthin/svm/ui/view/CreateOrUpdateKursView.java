@@ -13,7 +13,7 @@ import java.awt.event.FocusListener;
 /**
  * @author Hans Stamm
  */
-public class CreateOrUpdateKursView extends SpeichernAbbrechenDialogView<CreateOrUpdateKursDialog> {
+public class CreateOrUpdateKursView extends AbstractSubmitDialogView<CreateOrUpdateKursDialog> {
 
   private final ComboBoxWithErrorLabelComponent<Kurstyp> kurstypComboBoxWithErrorLabel;
   private final TextFieldWithErrorLabelComponent altersbereichWithErrorLabel;

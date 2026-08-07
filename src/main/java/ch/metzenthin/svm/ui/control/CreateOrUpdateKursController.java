@@ -5,7 +5,7 @@ import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateKursModel;
 import ch.metzenthin.svm.domain.model.entityfields.KursFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateKursView;
 import java.awt.event.*;
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * @author Martin Schraner
  */
 public class CreateOrUpdateKursController
-    extends AbstractCreateOrUpdateController<CreateOrUpdateKursView> {
+    extends AbstractSubmitDialogController<CreateOrUpdateKursView> {
 
   private static final String FEHLER = "Fehler";
 
@@ -245,7 +245,7 @@ public class CreateOrUpdateKursController
   }
 
   @Override
-  protected ValidationResultsAndSaveResult speichern() {
+  protected ValidationResultsAndSubmitResult submit() {
     KursFields kursFields =
         new KursFields(
             view.getTxtAltersbereichText(),

@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.view;
 
-import ch.metzenthin.svm.ui.components.SpeichernAbbrechenDialog;
+import ch.metzenthin.svm.ui.components.AbstractSubmitDialog;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -15,16 +15,16 @@ import javax.swing.WindowConstants;
  * @param <T> Dialog-Typ, z.B. CreateOrUpdateKursortDialog
  * @author Hans Stamm
  */
-public abstract class SpeichernAbbrechenDialogView<T extends SpeichernAbbrechenDialog>
-    extends AbstractView implements CreateOrUpdateView {
+public abstract class AbstractSubmitDialogView<T extends AbstractSubmitDialog> extends AbstractView
+    implements SubmitDialogView {
 
   protected final T dialog;
-  private final JButton buttonSpeichern;
+  private final JButton buttonSubmit;
   private final JButton buttonAbbrechen;
 
-  protected SpeichernAbbrechenDialogView(T dialog) {
+  protected AbstractSubmitDialogView(T dialog) {
     this.dialog = dialog;
-    this.buttonSpeichern = dialog.getSpeichernButton();
+    this.buttonSubmit = dialog.getSubmitButton();
     this.buttonAbbrechen = dialog.getAbbrechenButton();
   }
 
@@ -71,26 +71,12 @@ public abstract class SpeichernAbbrechenDialogView<T extends SpeichernAbbrechenD
     return showIgnorierenAbrechenDialog(dialog, message, title);
   }
 
-  public void addButtonSpeichernActionListener(ActionListener actionListener) {
-    buttonSpeichern.addActionListener(actionListener);
+  public void addButtonSubmitActionListener(ActionListener actionListener) {
+    buttonSubmit.addActionListener(actionListener);
   }
 
-  public void setButtonSpeichernEnabled() {
-    buttonSpeichern.setEnabled(true);
-    buttonSpeichern.setToolTipText(null);
-  }
-
-  public void setButtonSpeichernDisabled() {
-    setButtonSpeichernDisabled(null);
-  }
-
-  public void setButtonSpeichernDisabled(String toolTipText) {
-    buttonSpeichern.setEnabled(false);
-    buttonSpeichern.setToolTipText(toolTipText);
-  }
-
-  public void setButtonSpeichernFocusPainted(boolean focusPainted) {
-    buttonSpeichern.setFocusPainted(focusPainted);
+  public void setButtonSubmitFocusPainted(boolean focusPainted) {
+    buttonSubmit.setFocusPainted(focusPainted);
   }
 
   public void addButtonAbbrechenActionListener(ActionListener actionListener) {

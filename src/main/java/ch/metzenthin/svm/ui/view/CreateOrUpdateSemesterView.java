@@ -14,7 +14,7 @@ import javax.swing.event.ChangeListener;
  * @author Hans Stamm
  */
 public class CreateOrUpdateSemesterView
-    extends SpeichernAbbrechenDialogView<CreateOrUpdateSemesterDialog> {
+    extends AbstractSubmitDialogView<CreateOrUpdateSemesterDialog> {
 
   private final JSpinner spinnerSchuljahre;
   private final JComboBox<Semesterbezeichnung> comboBoxSemesterbezeichnung;

@@ -2,7 +2,7 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Listentyp;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import java.io.File;
 
 /**
@@ -16,7 +16,7 @@ public interface ListenExportModel {
 
   void setExportFile(File exportFile);
 
-  ValidationResultsAndSaveResult submit(Listentyp listentyp, String titel);
+  ValidationResultsAndSubmitResult submit(Listentyp listentyp, String titel);
 
   Listentyp getListentyp();
 

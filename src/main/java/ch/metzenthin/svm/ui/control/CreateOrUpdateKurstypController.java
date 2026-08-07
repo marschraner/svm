@@ -4,7 +4,7 @@ import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateKurstypModel;
 import ch.metzenthin.svm.domain.model.entityfields.KurstypFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateKurstypView;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * @author Martin Schraner
  */
 public class CreateOrUpdateKurstypController
-    extends AbstractCreateOrUpdateController<CreateOrUpdateKurstypView> {
+    extends AbstractSubmitDialogController<CreateOrUpdateKurstypView> {
 
   private static final Logger LOGGER =
       LoggerFactory.getLogger(CreateOrUpdateKurstypController.class);
@@ -66,7 +66,7 @@ public class CreateOrUpdateKurstypController
   }
 
   @Override
-  protected ValidationResultsAndSaveResult speichern() {
+  protected ValidationResultsAndSubmitResult submit() {
     KurstypFields kurstypFields =
         new KurstypFields(view.getTxtBezeichnungText(), view.isCheckBoxSelektierbarSelected());
     return model.speichern(kurstypFields);

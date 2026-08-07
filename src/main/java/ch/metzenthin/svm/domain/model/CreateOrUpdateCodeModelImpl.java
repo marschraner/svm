@@ -5,7 +5,7 @@ import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validate
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.entityfields.CodeFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.service.CodeService;
 import ch.metzenthin.svm.service.result.SaveCodeResult;
@@ -61,16 +61,16 @@ public abstract class CreateOrUpdateCodeModelImpl<T extends Code>
   }
 
   @Override
-  public ValidationResultsAndSaveResult speichern(CodeFields codeFields) {
+  public ValidationResultsAndSubmitResult speichern(CodeFields codeFields) {
     List<ValidationResult> validationResults = validateAll(codeFields);
     if (!ValidationResult.allValidationResultsValid(validationResults)) {
-      return new ValidationResultsAndSaveResult(validationResults);
+      return new ValidationResultsAndSubmitResult(validationResults);
     }
 
     updateModel(codeFields);
 
     SaveCodeResult saveCodeResult = saveCode();
-    return new ValidationResultsAndSaveResult(validationResults, saveCodeResult);
+    return new ValidationResultsAndSubmitResult(validationResults, saveCodeResult);
   }
 
   private List<ValidationResult> validateAll(CodeFields codeFields) {

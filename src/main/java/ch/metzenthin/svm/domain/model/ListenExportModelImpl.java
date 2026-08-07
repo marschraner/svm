@@ -3,7 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.datatypes.Listentyp;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationUtils;
 import ch.metzenthin.svm.service.result.ListenExportSubmitResult;
 import java.io.File;
@@ -43,16 +43,16 @@ public class ListenExportModelImpl implements ListenExportModel {
   }
 
   @Override
-  public ValidationResultsAndSaveResult submit(Listentyp listentyp, String titel) {
+  public ValidationResultsAndSubmitResult submit(Listentyp listentyp, String titel) {
     List<ValidationResult> validationResults = validateAll(listentyp, titel);
     if (!ValidationResult.allValidationResultsValid(validationResults)) {
-      return new ValidationResultsAndSaveResult(validationResults);
+      return new ValidationResultsAndSubmitResult(validationResults);
     }
 
     this.listentyp = listentyp;
     this.titel = titel;
 
-    return new ValidationResultsAndSaveResult(
+    return new ValidationResultsAndSubmitResult(
         validationResults, ListenExportSubmitResult.KONFIGURATION_ERFOLGREICH);
   }
 

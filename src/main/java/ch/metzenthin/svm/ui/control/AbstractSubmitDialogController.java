@@ -9,8 +9,8 @@ import ch.metzenthin.svm.domain.model.conversion.IntegerConverter;
 import ch.metzenthin.svm.domain.model.conversion.TimeConverter;
 import ch.metzenthin.svm.domain.model.formatting.FormattingUtils;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
-import ch.metzenthin.svm.ui.view.CreateOrUpdateView;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
+import ch.metzenthin.svm.ui.view.SubmitDialogView;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Calendar;
@@ -21,43 +21,43 @@ import java.util.function.Function;
 /**
  * @author Martin Schraner
  */
-public abstract class AbstractCreateOrUpdateController<T extends CreateOrUpdateView>
+public abstract class AbstractSubmitDialogController<T extends SubmitDialogView>
     implements DialogClosingListener {
 
   protected final T view;
 
-  protected AbstractCreateOrUpdateController(T view) {
+  protected AbstractSubmitDialogController(T view) {
     this.view = view;
     view.configDialogClosing(this);
-    configBtnSpeichern();
+    configBtnSubmit();
     configBtnAbbrechen();
   }
 
-  protected void configBtnSpeichern() {
-    view.addButtonSpeichernActionListener(e -> onSpeichern());
+  protected void configBtnSubmit() {
+    view.addButtonSubmitActionListener(e -> onSubmit());
   }
 
-  private void onSpeichern() {
+  private void onSubmit() {
     setAllErrorLabelsInvisible();
-    ValidationResultsAndSaveResult validationResultsAndSaveResult = speichern();
-    if (!validationResultsAndSaveResult.isValidationSuccessful()) {
-      setErrorLabelsVisible(validationResultsAndSaveResult.validationResults());
-      showErrorMessageDialog(validationResultsAndSaveResult.validationResults());
-    } else if (!validationResultsAndSaveResult.isSaveSuccessful()) {
-      view.showErrorMessageDialog(validationResultsAndSaveResult.getSaveErrorMessage(), "Fehler");
-      if (validationResultsAndSaveResult.isDialogToBeClosedAfterSave()) {
+    ValidationResultsAndSubmitResult validationResultsAndSubmitResult = submit();
+    if (!validationResultsAndSubmitResult.isValidationSuccessful()) {
+      setErrorLabelsVisible(validationResultsAndSubmitResult.validationResults());
+      showErrorMessageDialog(validationResultsAndSubmitResult.validationResults());
+    } else if (!validationResultsAndSubmitResult.isSubmitSuccessful()) {
+      view.showErrorMessageDialog(validationResultsAndSubmitResult.getErrorMessage(), "Fehler");
+      if (validationResultsAndSubmitResult.isDialogToBeClosedAfterSubmit()) {
         closeDialog();
       } else {
-        view.setButtonSpeichernFocusPainted(false);
+        view.setButtonSubmitFocusPainted(false);
       }
     } else {
-      if (validationResultsAndSaveResult.isDialogToBeClosedAfterSave()) {
+      if (validationResultsAndSubmitResult.isDialogToBeClosedAfterSubmit()) {
         closeDialog();
       }
     }
   }
 
-  protected abstract ValidationResultsAndSaveResult speichern();
+  protected abstract ValidationResultsAndSubmitResult submit();
 
   private void setErrorLabelsVisible(List<ValidationResult> validationResults) {
     for (ValidationResult validationResult : validationResults) {

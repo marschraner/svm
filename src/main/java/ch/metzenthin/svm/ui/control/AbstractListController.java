@@ -3,7 +3,7 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.AbstractListModel;
 import ch.metzenthin.svm.domain.model.AbstractTableData;
-import ch.metzenthin.svm.service.result.SaveDialogResult;
+import ch.metzenthin.svm.service.result.SubmitDialogResult;
 import ch.metzenthin.svm.ui.view.AbstractListPanelView;
 import lombok.Getter;
 
@@ -15,7 +15,7 @@ import lombok.Getter;
  */
 public abstract class AbstractListController<
     T extends AbstractListModel<? extends AbstractTableData<?>, ?, ?, U>,
-    U extends SaveDialogResult,
+    U extends SubmitDialogResult,
     V extends AbstractListPanelView> {
 
   protected final SvmContext svmContext;
@@ -95,7 +95,7 @@ public abstract class AbstractListController<
             model.getListItemName() + " löschen");
     if (n == 0) {
       U saveDialogResult = model.eintragLoeschen(view.convertRowIndexToModel());
-      if (!saveDialogResult.isSaveSuccessful()) {
+      if (!saveDialogResult.isSubmitSuccessful()) {
         showErrorMessageDialog(saveDialogResult.getMessage());
         if (saveDialogResult.isDialogToBeClosed()) {
           reloadTableData();

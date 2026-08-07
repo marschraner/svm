@@ -5,7 +5,7 @@ import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModel;
 import ch.metzenthin.svm.domain.model.entityfields.SemesterFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.ui.components.SwingWorkerWithBusyDialog;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateSemesterView;
 import java.awt.event.*;
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * @author Martin Schraner
  */
 public class CreateOrUpdateSemesterController
-    extends AbstractCreateOrUpdateController<CreateOrUpdateSemesterView> {
+    extends AbstractSubmitDialogController<CreateOrUpdateSemesterView> {
 
   private static final Logger LOGGER =
       LoggerFactory.getLogger(CreateOrUpdateSemesterController.class);
@@ -217,7 +217,7 @@ public class CreateOrUpdateSemesterController
   }
 
   @Override
-  protected ValidationResultsAndSaveResult speichern() {
+  protected ValidationResultsAndSubmitResult submit() {
     boolean affectsSemesterrechnungen =
         model.checkIfUpdateAffectsSemesterrechnungen(
             view.getTxtSemesterbeginnText(),
@@ -226,7 +226,7 @@ public class CreateOrUpdateSemesterController
             view.getTxtFerienende1Text(),
             view.getTxtFerienbeginn2Text(),
             view.getTxtFerienende2Text());
-    ValidationResultsAndSaveResult validationResultsAndSaveResult;
+    ValidationResultsAndSubmitResult validationResultsAndSubmitResult;
     if (affectsSemesterrechnungen) {
       int n =
           view.showYesNoDialog(
@@ -234,20 +234,20 @@ public class CreateOrUpdateSemesterController
                   + "(Semesterrechnungen mit gesetztem Rechnungsdatum werden nicht verändert.)",
               "Anzahl Semesterwochen auch bei Semesterrechnungen ändern?");
       if (n == 0) {
-        SwingWorkerWithBusyDialog<ValidationResultsAndSaveResult> swingWorker =
+        SwingWorkerWithBusyDialog<ValidationResultsAndSubmitResult> swingWorker =
             view.createSwingWorkerWithBusyDialog(
                 "Das Semester und die betroffenen Semesterrechnungen werden gespeichert.");
-        validationResultsAndSaveResult =
+        validationResultsAndSubmitResult =
             swingWorker.executeAndGetResult(
                 () -> model.speichern(createSemesterFieldsFromView(), true));
       } else {
-        validationResultsAndSaveResult = model.speichern(createSemesterFieldsFromView(), false);
+        validationResultsAndSubmitResult = model.speichern(createSemesterFieldsFromView(), false);
       }
     } else {
-      validationResultsAndSaveResult = model.speichern(createSemesterFieldsFromView(), false);
+      validationResultsAndSubmitResult = model.speichern(createSemesterFieldsFromView(), false);
     }
 
-    return validationResultsAndSaveResult;
+    return validationResultsAndSubmitResult;
   }
 
   private SemesterFields createSemesterFieldsFromView() {

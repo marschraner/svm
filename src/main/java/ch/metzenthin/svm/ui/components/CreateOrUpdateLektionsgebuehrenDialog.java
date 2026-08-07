@@ -9,7 +9,7 @@ import javax.swing.text.StyleContext;
 import lombok.Getter;
 
 @SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
-public class CreateOrUpdateLektionsgebuehrenDialog extends SpeichernAbbrechenDialog {
+public class CreateOrUpdateLektionsgebuehrenDialog extends AbstractSubmitDialog {
 
   private JPanel contentPane;
   private JPanel datenPanel;
@@ -32,7 +32,7 @@ public class CreateOrUpdateLektionsgebuehrenDialog extends SpeichernAbbrechenDia
   private JButton btnAbbrechen;
 
   @Override
-  public JButton getSpeichernButton() {
+  public JButton getSubmitButton() {
     return btnSpeichern;
   }
 

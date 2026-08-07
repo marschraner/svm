@@ -4,7 +4,7 @@ import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateMaerchenModel;
 import ch.metzenthin.svm.domain.model.entityfields.MaerchenFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateMaerchenView;
 import java.awt.event.*;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * @author Martin Schraner
  */
 public class CreateOrUpdateMaerchenController
-    extends AbstractCreateOrUpdateController<CreateOrUpdateMaerchenView> {
+    extends AbstractSubmitDialogController<CreateOrUpdateMaerchenView> {
 
   private static final Logger LOGGER =
       LoggerFactory.getLogger(CreateOrUpdateMaerchenController.class);
@@ -104,7 +104,7 @@ public class CreateOrUpdateMaerchenController
   }
 
   @Override
-  protected ValidationResultsAndSaveResult speichern() {
+  protected ValidationResultsAndSubmitResult submit() {
     MaerchenFields maerchenFields =
         new MaerchenFields(
             view.getSpinnerSchuljahreValue(),

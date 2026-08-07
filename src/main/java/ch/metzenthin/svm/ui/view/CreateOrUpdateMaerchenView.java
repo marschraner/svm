@@ -11,7 +11,7 @@ import javax.swing.event.ChangeListener;
  * @author Hans Stamm
  */
 public class CreateOrUpdateMaerchenView
-    extends SpeichernAbbrechenDialogView<CreateOrUpdateMaerchenDialog> {
+    extends AbstractSubmitDialogView<CreateOrUpdateMaerchenDialog> {
 
   private final JSpinner spinnerSchuljahre;
   private final TextFieldWithErrorLabelComponent bezeichnungWithErrorLabel;

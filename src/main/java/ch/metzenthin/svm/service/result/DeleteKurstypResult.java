@@ -3,7 +3,7 @@ package ch.metzenthin.svm.service.result;
 /**
  * @author Hans Stamm
  */
-public enum DeleteKurstypResult implements SaveDialogResult {
+public enum DeleteKurstypResult implements SubmitDialogResult {
   KURSTYP_VON_KURS_REFERENZIERT(
       "Der Kurstyp wird durch mindestens einen Kurs referenziert und "
           + "kann nicht gelöscht werden.",
@@ -17,12 +17,12 @@ public enum DeleteKurstypResult implements SaveDialogResult {
   LOESCHEN_ERFOLGREICH("Löschen erfolgreich", true, true);
 
   private final String message;
-  private final boolean saveSuccessful;
+  private final boolean deleteSuccessful;
   private final boolean dialogToBeClosed;
 
-  DeleteKurstypResult(String message, boolean saveSuccessful, boolean dialogToBeClosed) {
+  DeleteKurstypResult(String message, boolean deleteSuccessful, boolean dialogToBeClosed) {
     this.message = message;
-    this.saveSuccessful = saveSuccessful;
+    this.deleteSuccessful = deleteSuccessful;
     this.dialogToBeClosed = dialogToBeClosed;
   }
 
@@ -32,8 +32,8 @@ public enum DeleteKurstypResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isSaveSuccessful() {
-    return saveSuccessful;
+  public boolean isSubmitSuccessful() {
+    return deleteSuccessful;
   }
 
   @Override

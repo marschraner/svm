@@ -12,7 +12,7 @@ import java.io.File;
 /**
  * @author Hans Stamm
  */
-public class ListenExportView extends SpeichernAbbrechenDialogView<ListenExportDialog> {
+public class ListenExportView extends AbstractSubmitDialogView<ListenExportDialog> {
 
   private final ComboBoxWithErrorLabelComponent<Listentyp> listentypComboBoxWithErrorLabel;
   private final TextFieldWithErrorLabelComponent titelWithErrorLabel;

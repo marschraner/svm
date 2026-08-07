@@ -4,7 +4,7 @@ package ch.metzenthin.svm.service.result;
  * @author Martin Schraner
  */
 @SuppressWarnings("java:S1192")
-public enum SaveKursResult implements SaveDialogResult {
+public enum SaveKursResult implements SubmitDialogResult {
   KEINE_LEHRKRAEFTE_ERFASST(
       "Der Kurs kann nicht gespeichert werden, weil für \n "
           + "den Kurs keine Lehkräfte erfasst wurden.",
@@ -58,7 +58,7 @@ public enum SaveKursResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isSaveSuccessful() {
+  public boolean isSubmitSuccessful() {
     return saveSuccessful;
   }
 

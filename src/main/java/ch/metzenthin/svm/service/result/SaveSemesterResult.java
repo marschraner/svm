@@ -3,7 +3,7 @@ package ch.metzenthin.svm.service.result;
 /**
  * @author Hans Stamm
  */
-public enum SaveSemesterResult implements SaveDialogResult {
+public enum SaveSemesterResult implements SubmitDialogResult {
   SEMESTER_BEREITS_ERFASST("Semester bereits erfasst.", false, false),
   SEMESTER_UEBERLAPPT_MIT_ANDEREM_SEMESTER("Semester dürfen sich nicht überlappen.", false, false),
   SEMESTER_DURCH_ANDEREN_BENUTZER_VERAENDERT(
@@ -29,7 +29,7 @@ public enum SaveSemesterResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isSaveSuccessful() {
+  public boolean isSubmitSuccessful() {
     return saveSuccessful;
   }
 

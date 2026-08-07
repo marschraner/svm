@@ -5,11 +5,11 @@ import java.awt.event.ActionListener;
 /**
  * @author Martin Schraner
  */
-public interface CreateOrUpdateView {
+public interface SubmitDialogView {
 
-  void addButtonSpeichernActionListener(ActionListener actionListener);
+  void addButtonSubmitActionListener(ActionListener actionListener);
 
-  void setButtonSpeichernFocusPainted(boolean focusPainted);
+  void setButtonSubmitFocusPainted(boolean focusPainted);
 
   void addButtonAbbrechenActionListener(ActionListener actionListener);
 

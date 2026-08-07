@@ -3,22 +3,22 @@ package ch.metzenthin.svm.service.result;
 /**
  * @author Hans Stamm
  */
-public enum ExportListResult implements SaveDialogResult {
+public enum ExportListResult implements SubmitDialogResult {
   LISTE_ERFOLGREICH_ERSTELLT("Liste erfolgreich erstellt", true, true);
 
   private final String message;
-  private final boolean saveSuccessful;
+  private final boolean exportSuccessful;
   private final boolean dialogToBeClosed;
 
-  ExportListResult(String message, boolean saveSuccessful, boolean dialogToBeClosed) {
+  ExportListResult(String message, boolean exportSuccessful, boolean dialogToBeClosed) {
     this.message = message;
-    this.saveSuccessful = saveSuccessful;
+    this.exportSuccessful = exportSuccessful;
     this.dialogToBeClosed = dialogToBeClosed;
   }
 
   @Override
-  public boolean isSaveSuccessful() {
-    return saveSuccessful;
+  public boolean isSubmitSuccessful() {
+    return exportSuccessful;
   }
 
   @Override

@@ -3,7 +3,7 @@ package ch.metzenthin.svm.service.result;
 /**
  * @author Martin Schraner
  */
-public enum SaveLektionsgebuehrenResult implements SaveDialogResult {
+public enum SaveLektionsgebuehrenResult implements SubmitDialogResult {
   LEKTIONSGEBUEHREN_BEREITS_ERFASST("Lektionslänge bereits erfasst.", false, false),
   LEKTIONSGEBUEHREN_DURCH_ANDEREN_BENUTZER_VERAENDERT(
       "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
@@ -28,7 +28,7 @@ public enum SaveLektionsgebuehrenResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isSaveSuccessful() {
+  public boolean isSubmitSuccessful() {
     return saveSuccessful;
   }
 

@@ -9,7 +9,7 @@ import javax.swing.JCheckBox;
 /**
  * @author Hans Stamm
  */
-public class CreateOrUpdateCodeView extends SpeichernAbbrechenDialogView<CreateOrUpdateCodeDialog> {
+public class CreateOrUpdateCodeView extends AbstractSubmitDialogView<CreateOrUpdateCodeDialog> {
 
   private final TextFieldWithErrorLabelComponent kuerzelWithErrorLabel;
   private final TextFieldWithErrorLabelComponent beschreibungWithErrorLabel;

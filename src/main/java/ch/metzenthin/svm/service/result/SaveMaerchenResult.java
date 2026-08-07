@@ -3,7 +3,7 @@ package ch.metzenthin.svm.service.result;
 /**
  * @author Martin Schraner
  */
-public enum SaveMaerchenResult implements SaveDialogResult {
+public enum SaveMaerchenResult implements SubmitDialogResult {
   MAERCHEN_BEREITS_ERFASST("Märchen für selektiertes Schuljahr bereits erfasst.", false, false),
   SPEICHERN_ABBRECHEN_NACH_WARNUNG(
       "Speichern des Märchens wurde nach Warnung abgebrochen.", true, false),
@@ -25,7 +25,7 @@ public enum SaveMaerchenResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isSaveSuccessful() {
+  public boolean isSubmitSuccessful() {
     return saveSuccessful;
   }
 

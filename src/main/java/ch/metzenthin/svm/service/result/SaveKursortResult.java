@@ -3,7 +3,7 @@ package ch.metzenthin.svm.service.result;
 /**
  * @author Martin Schraner
  */
-public enum SaveKursortResult implements SaveDialogResult {
+public enum SaveKursortResult implements SubmitDialogResult {
   KURSORT_BEREITS_ERFASST("Bezeichnung bereits in Verwendung.", false, false),
   KURSORT_DURCH_ANDEREN_BENUTZER_VERAENDERT(
       "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
@@ -23,7 +23,7 @@ public enum SaveKursortResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isSaveSuccessful() {
+  public boolean isSubmitSuccessful() {
     return saveSuccessful;
   }
 

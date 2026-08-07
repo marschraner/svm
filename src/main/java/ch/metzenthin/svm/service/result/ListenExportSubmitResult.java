@@ -3,23 +3,23 @@ package ch.metzenthin.svm.service.result;
 /**
  * @author Hans Stamm
  */
-public enum ListenExportSubmitResult implements SaveDialogResult {
+public enum ListenExportSubmitResult implements SubmitDialogResult {
   KONFIGURATION_ERFOLGREICH("Listenkonfiguration erfolgreich", true, true),
   FILE_AUSWAHL_ABGEBROCHEN("Auswahl des Exportfiles abgebrochen", true, false);
 
   private final String message;
-  private final boolean saveSuccessful;
+  private final boolean submitSuccessful;
   private final boolean dialogToBeClosed;
 
-  ListenExportSubmitResult(String message, boolean saveSuccessful, boolean dialogToBeClosed) {
+  ListenExportSubmitResult(String message, boolean submitSuccessful, boolean dialogToBeClosed) {
     this.message = message;
-    this.saveSuccessful = saveSuccessful;
+    this.submitSuccessful = submitSuccessful;
     this.dialogToBeClosed = dialogToBeClosed;
   }
 
   @Override
-  public boolean isSaveSuccessful() {
-    return saveSuccessful;
+  public boolean isSubmitSuccessful() {
+    return submitSuccessful;
   }
 
   @Override

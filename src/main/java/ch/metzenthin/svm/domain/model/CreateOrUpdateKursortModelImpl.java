@@ -5,7 +5,7 @@ import static ch.metzenthin.svm.domain.model.validation.ValidationUtils.validate
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.entityfields.KursortFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
-import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSaveResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.result.SaveKursortResult;
@@ -63,16 +63,16 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
   }
 
   @Override
-  public ValidationResultsAndSaveResult speichern(KursortFields kursortFields) {
+  public ValidationResultsAndSubmitResult speichern(KursortFields kursortFields) {
     List<ValidationResult> validationResults = validateAll(kursortFields);
     if (!ValidationResult.allValidationResultsValid(validationResults)) {
-      return new ValidationResultsAndSaveResult(validationResults);
+      return new ValidationResultsAndSubmitResult(validationResults);
     }
 
     updateModel(kursortFields);
 
     SaveKursortResult saveKursortResult = saveKursort();
-    return new ValidationResultsAndSaveResult(validationResults, saveKursortResult);
+    return new ValidationResultsAndSubmitResult(validationResults, saveKursortResult);
   }
 
   private List<ValidationResult> validateAll(KursortFields kursortFields) {

@@ -3,7 +3,7 @@ package ch.metzenthin.svm.service.result;
 /**
  * @author Hans Stamm
  */
-public enum SaveKurstypResult implements SaveDialogResult {
+public enum SaveKurstypResult implements SubmitDialogResult {
   KURSTYP_BEREITS_ERFASST("Bezeichnung bereits in Verwendung.", false, false),
   KURSTYP_DURCH_ANDEREN_BENUTZER_VERAENDERT(
       "Der Wert konnte nicht gespeichert werden, da der Eintrag unterdessen durch \n"
@@ -28,7 +28,7 @@ public enum SaveKurstypResult implements SaveDialogResult {
   }
 
   @Override
-  public boolean isSaveSuccessful() {
+  public boolean isSubmitSuccessful() {
     return saveSuccessful;
   }
 

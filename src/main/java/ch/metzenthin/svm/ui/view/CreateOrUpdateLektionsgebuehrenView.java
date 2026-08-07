@@ -9,7 +9,7 @@ import java.awt.event.FocusListener;
  * @author Hans Stamm
  */
 public class CreateOrUpdateLektionsgebuehrenView
-    extends SpeichernAbbrechenDialogView<CreateOrUpdateLektionsgebuehrenDialog> {
+    extends AbstractSubmitDialogView<CreateOrUpdateLektionsgebuehrenDialog> {
 
   private final TextFieldWithErrorLabelComponent lektionslaengeWithErrorLabel;
   private final TextFieldWithErrorLabelComponent betrag1KindWithErrorLabel;
