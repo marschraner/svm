@@ -2,11 +2,13 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Listentyp;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.result.DeleteKursResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
+import ch.metzenthin.svm.service.result.ImportKurseResult;
 import ch.metzenthin.svm.ui.componentmodel.KursTableModel;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import jakarta.persistence.OptimisticLockException;
@@ -61,6 +63,10 @@ public class KursListModel
         .createCreateOrUpdateKursModel(Optional.of(kursToBeUpdated), semester);
   }
 
+  public boolean isSemesterErstesSemester() {
+    return semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER;
+  }
+
   @Override
   public DeleteKursResult eintragLoeschen(int indexOfKursToBeDeleted) {
     Kurs kursToBeDeleted = getSelectedRow(indexOfKursToBeDeleted).kurs();
@@ -99,6 +105,10 @@ public class KursListModel
 
   public String getSemesterDisplayName() {
     return semester.getSemesterbezeichnung() + " " + semester.getSchuljahr();
+  }
+
+  public ImportKurseResult importKurseFromPreviousSemester() {
+    return kursService.importKurseFromPreviousSemester(semester);
   }
 
   public ExportListResult exportList(Listentyp listentyp, String listenTitel, File outputFile) {

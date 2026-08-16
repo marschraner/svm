@@ -22,7 +22,11 @@ public interface SemesterService {
       Calendar ferienbeginn2,
       Calendar ferienende2);
 
-  Optional<Semester> findNaechstesSemester(Semester semester);
+  Optional<Semester> findNextSemester(Semester semester);
+
+  Optional<Semester> findSemesterOneYearBefore(Semester semester);
+
+  Optional<Semester> findPreviousSemester(Semester semester);
 
   Semester determineNaechstesNochNichtErfasstesSemester();
 

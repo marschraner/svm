@@ -3,9 +3,12 @@ package ch.metzenthin.svm.service.impl;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
+import ch.metzenthin.svm.common.datatypes.Listentyp;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.datatypes.Wochentag;
+import ch.metzenthin.svm.domain.model.IdAndCount;
 import ch.metzenthin.svm.domain.model.KursAndLehrkraefteAndNumberOfKursanmeldungen;
+import ch.metzenthin.svm.domain.model.KursIdAndLehrkraft;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.KursLehrkraft;
 import ch.metzenthin.svm.persistence.entities.Kursort;
@@ -20,18 +23,26 @@ import ch.metzenthin.svm.persistence.repository.KurstypRepository;
 import ch.metzenthin.svm.persistence.repository.MitarbeiterRepository;
 import ch.metzenthin.svm.persistence.repository.SemesterRepository;
 import ch.metzenthin.svm.service.ServiceTestConfiguration;
+import ch.metzenthin.svm.service.result.ImportKurseResult;
 import ch.metzenthin.svm.service.result.SaveKursResult;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -58,6 +69,8 @@ class KursServiceImplTest {
   @Autowired private MitarbeiterRepository mitarbeiterRepository;
   @PersistenceContext private EntityManager entityManager;
 
+  @TempDir Path tempDir;
+
   @Test
   void testExistsKursByLektionslaenge() {
     assertFalse(kursService.existsKursByLektionslaenge(1));
@@ -72,7 +85,8 @@ class KursServiceImplTest {
     assertEquals(1, kurseAndLehrkraefteAndNumberOfSchuelerForSemester101.size());
     assertEquals(
         1, kurseAndLehrkraefteAndNumberOfSchuelerForSemester101.get(0).numberOfKursanmeldungen());
-    assertTrue(kurseAndLehrkraefteAndNumberOfSchuelerForSemester101.get(0).lehrkraefte().isEmpty());
+    assertEquals(
+        1, kurseAndLehrkraefteAndNumberOfSchuelerForSemester101.get(0).lehrkraefte().size());
 
     List<KursAndLehrkraefteAndNumberOfKursanmeldungen>
         kurseAndLehrkraefteAndNumberOfSchuelerForSemester102 =
@@ -320,6 +334,166 @@ class KursServiceImplTest {
     List<KursLehrkraft> lehrkraefteLinksAfter =
         kursLehrkraftRepository.findByKursIdOrderByLehrkraefteOrder(kurs.getKursId());
     assertTrue(lehrkraefteLinksAfter.isEmpty());
+  }
+
+  @Test
+  void testImportKurseFromPreviousSemester() {
+
+    ImportKurseResult importKurseResult;
+    Semester erstesSemesterNoPreviousSemesterTarget =
+        new Semester(
+            "2024/2025",
+            Semesterbezeichnung.ERSTES_SEMESTER,
+            createCalendar("2024-08-19"),
+            createCalendar("2025-02-01"),
+            createCalendar("2024-10-07"),
+            createCalendar("2024-10-19"),
+            createCalendar("2024-12-23"),
+            createCalendar("2025-01-04"));
+    // Kein vorheriges Semester: Verarbeitung wird abgebrochen
+    importKurseResult =
+        kursService.importKurseFromPreviousSemester(erstesSemesterNoPreviousSemesterTarget);
+    assertEquals(
+        ImportKurseResult.IMPORT_ABGEBROCHEN_KEIN_VORHERGEHENDES_SEMESTER, importKurseResult);
+
+    List<KursIdAndLehrkraft> kursIdAndLehrkraefteBefore =
+        kursLehrkraftRepository
+            .findKursIdAndLehrkraefteBySemesterIdOrderByKursIdAndLehrkraefteOrder(101);
+    assertEquals(1, kursIdAndLehrkraefteBefore.size());
+
+    Semester erstesSemesterTarget =
+        new Semester(
+            "2026/2027",
+            Semesterbezeichnung.ERSTES_SEMESTER,
+            createCalendar("2026-08-17"),
+            createCalendar("2027-02-13"),
+            createCalendar("2026-10-05"),
+            createCalendar("2026-10-17"),
+            createCalendar("2026-12-21"),
+            createCalendar("2027-01-02"));
+    semesterRepository.save(erstesSemesterTarget);
+
+    importKurseResult = kursService.importKurseFromPreviousSemester(erstesSemesterTarget);
+
+    assertEquals(ImportKurseResult.IMPORT_ERFOLGREICH, importKurseResult);
+    List<Kurs> importedKursList;
+    importedKursList = kursRepository.findAllBySemesterId(erstesSemesterTarget.getSemesterId());
+    assertEquals(1, importedKursList.size());
+    List<KursIdAndLehrkraft> kursIdAndLehrkraefteAfter;
+    kursIdAndLehrkraefteAfter =
+        kursLehrkraftRepository
+            .findKursIdAndLehrkraefteBySemesterIdOrderByKursIdAndLehrkraefteOrder(
+                erstesSemesterTarget.getSemesterId());
+    assertEquals(kursIdAndLehrkraefteBefore.size(), kursIdAndLehrkraefteAfter.size());
+    List<IdAndCount> kursanmeldungenByKursIdTarget;
+    kursanmeldungenByKursIdTarget =
+        kursanmeldungRepository.countKursanmeldungenBySemesterIdGroupByKursId(
+            erstesSemesterTarget.getSemesterId());
+    assertTrue(kursanmeldungenByKursIdTarget.isEmpty());
+
+    List<IdAndCount> kursanmeldungenByKursIdSource =
+        kursanmeldungRepository.countKursanmeldungenBySemesterIdGroupByKursId(
+            erstesSemesterTarget.getSemesterId());
+    Semester zweitesSemesterTarget =
+        new Semester(
+            "2026/2027",
+            Semesterbezeichnung.ZWEITES_SEMESTER,
+            createCalendar("2027-02-15"),
+            createCalendar("2027-07-17"),
+            createCalendar("2027-04-26"),
+            createCalendar("2027-05-08"),
+            null,
+            null);
+    semesterRepository.save(zweitesSemesterTarget);
+
+    importKurseResult = kursService.importKurseFromPreviousSemester(zweitesSemesterTarget);
+
+    assertEquals(ImportKurseResult.IMPORT_ERFOLGREICH, importKurseResult);
+    importedKursList = kursRepository.findAllBySemesterId(zweitesSemesterTarget.getSemesterId());
+    assertEquals(1, importedKursList.size());
+    kursIdAndLehrkraefteAfter =
+        kursLehrkraftRepository
+            .findKursIdAndLehrkraefteBySemesterIdOrderByKursIdAndLehrkraefteOrder(
+                zweitesSemesterTarget.getSemesterId());
+    assertEquals(kursIdAndLehrkraefteBefore.size(), kursIdAndLehrkraefteAfter.size());
+    kursanmeldungenByKursIdTarget =
+        kursanmeldungRepository.countKursanmeldungenBySemesterIdGroupByKursId(
+            zweitesSemesterTarget.getSemesterId());
+    assertEquals(kursanmeldungenByKursIdSource.size(), kursanmeldungenByKursIdTarget.size());
+  }
+
+  @Test
+  void testImportKurseFromPreviousSemester_ZielKurseVorhanden() {
+    Semester sourceSemester = semesterRepository.findById(103).orElse(null);
+    assertNotNull(sourceSemester);
+    Semester targetSemester = semesterRepository.findById(104).orElse(null);
+    assertNotNull(targetSemester);
+    int numberOfSourceKurseBefore =
+        kursRepository.countBySemesterId(sourceSemester.getSemesterId());
+    int numberOfTargetKurseBefore =
+        kursRepository.countBySemesterId(targetSemester.getSemesterId());
+
+    kursService.importKurseFromPreviousSemester(targetSemester);
+
+    int numberOfSourceKurseAfter = kursRepository.countBySemesterId(sourceSemester.getSemesterId());
+    assertEquals(numberOfSourceKurseBefore, numberOfSourceKurseAfter);
+    int numberOfTargetKurseAfter = kursRepository.countBySemesterId(targetSemester.getSemesterId());
+    assertEquals(numberOfTargetKurseBefore + 1, numberOfTargetKurseAfter);
+    List<IdAndCount> kursanmeldungenByKursIdTarget;
+    kursanmeldungenByKursIdTarget =
+        kursanmeldungRepository.countKursanmeldungenBySemesterIdGroupByKursId(
+            targetSemester.getSemesterId());
+    assertEquals(1, kursanmeldungenByKursIdTarget.size());
+    assertEquals(2, kursanmeldungenByKursIdTarget.get(0).count());
+  }
+
+  @Test
+  void testExport_CSV() throws IOException {
+    Path file = tempDir.resolve("output.txt");
+    Semester semester = semesterRepository.findById(102).orElse(null);
+    assertNotNull(semester);
+    List<KursAndLehrkraefteAndNumberOfKursanmeldungen> kursListe =
+        kursService.findAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester(
+            semester.getSemesterId());
+
+    File outputFile = file.toFile();
+    Iterator<KursAndLehrkraefteAndNumberOfKursanmeldungen> iterator = kursListe.iterator();
+    assertThrows(
+        IllegalStateException.class,
+        () ->
+            kursService.exportList(
+                Listentyp.MITARBEITER_ADRESSLISTE_MIT_GEBURTSDATUM,
+                "Test Export Kursliste (CSV)",
+                outputFile,
+                iterator,
+                semester));
+
+    kursService.exportList(
+        Listentyp.KURSLISTE_CSV, "Test Export Kursliste (CSV)", outputFile, iterator, semester);
+
+    String fileContent = Files.readString(file, StandardCharsets.ISO_8859_1);
+    assertFalse(fileContent.isEmpty());
+    assertTrue(fileContent.startsWith("Kurstyp;Alter;Stufe;Tag;Von;Bis;Ort;Leitung;Bemerkungen"));
+    // Strichpunkte in Kommas umwandeln
+    assertTrue(fileContent.contains("Bemerkung mit,Strichpunkt"));
+  }
+
+  @Test
+  void testExport_Word() throws IOException {
+    Path file = tempDir.resolve("output.txt");
+    Semester semester = semesterRepository.findById(102).orElse(null);
+    assertNotNull(semester);
+    List<KursAndLehrkraefteAndNumberOfKursanmeldungen> kursListe =
+        kursService.findAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester(
+            semester.getSemesterId());
+    kursService.exportList(
+        Listentyp.KURSLISTE_WORD,
+        "Test Export Kursliste (Word)",
+        file.toFile(),
+        kursListe.iterator(),
+        semester);
+    String fileContent = Files.readString(file, StandardCharsets.ISO_8859_1);
+    assertFalse(fileContent.isEmpty());
   }
 
   private static Kurs createKurs(Kurstyp kurstyp, Kursort kursort, Semester semester) {

@@ -1,8 +1,10 @@
 package ch.metzenthin.svm.persistence.repository;
 
+import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.model.IdAndCount;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Semester;
+import java.sql.Time;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,8 +35,19 @@ public interface KursRepository extends JpaRepository<Kurs, Integer> {
           + "ORDER BY k.semester.semesterId ASC")
   List<IdAndCount> countKurseGroupBySemesterId();
 
-  @Query("SELECT k FROM Kurs k where k.semester.semesterId = :semesterId ORDER BY k.kursId ASC")
+  @Query("SELECT k FROM Kurs k WHERE k.semester.semesterId = :semesterId ORDER BY k.kursId ASC")
   List<Kurs> findAllBySemesterId(@Param("semesterId") int semesterId);
+
+  @Query(
+      "SELECT k FROM Kurs k WHERE "
+          + "k.semester.semesterId = :semesterId "
+          + "AND k.wochentag = :wochentag "
+          + "AND k.zeitBeginn = :zeitBeginn "
+          + "ORDER BY k.kursId ASC")
+  Optional<Kurs> findBySemesterIdAndWochentagAndZeitBeginn(
+      @Param("semesterId") int semesterId,
+      @Param("wochentag") Wochentag wochentag,
+      @Param("zeitBeginn") Time zeitBeginn);
 
   @Query("SELECT k.semester FROM Kurs k where k.kursId = :kursId")
   Optional<Semester> findSemesterByKursId(@Param("kursId") int kursId);

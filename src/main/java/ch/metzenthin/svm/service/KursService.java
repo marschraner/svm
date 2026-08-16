@@ -7,6 +7,7 @@ import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.service.result.DeleteKursResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
+import ch.metzenthin.svm.service.result.ImportKurseResult;
 import ch.metzenthin.svm.service.result.SaveKursResult;
 import java.io.File;
 import java.util.Iterator;
@@ -33,6 +34,8 @@ public interface KursService {
   SaveKursResult saveKurs(Kurs kurs, Mitarbeiter lehrkraft1, Mitarbeiter lehrkraft2);
 
   DeleteKursResult deleteKurs(int kursId);
+
+  ImportKurseResult importKurseFromPreviousSemester(Semester currentSemester);
 
   ExportListResult exportList(
       Listentyp listentyp,

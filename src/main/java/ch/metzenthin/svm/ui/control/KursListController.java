@@ -10,6 +10,7 @@ import ch.metzenthin.svm.domain.model.ListenExportModel;
 import ch.metzenthin.svm.domain.model.ListenExportModelImpl;
 import ch.metzenthin.svm.service.result.DeleteKursResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
+import ch.metzenthin.svm.service.result.ImportKurseResult;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import ch.metzenthin.svm.ui.components.KursListPanel;
 import ch.metzenthin.svm.ui.components.SwingWorkerWithBusyDialog;
@@ -117,7 +118,26 @@ public class KursListController
   }
 
   private void showOnImportDialog() {
-    // TODO Importieren
+    String msg;
+    if (model.isSemesterErstesSemester()) {
+      msg =
+          "Sollen die Kurse vom 1. Semester des vorherigen Schuljahrs (ohne Schüler) importiert werden?";
+    } else {
+      msg = "Sollen die Kurse vom 1. Semester (inklusive Schüler) importiert werden?";
+    }
+    msg = msg + "\n(Bereits vorhandene Kurse werden nicht überschrieben.)";
+    int n = view.showYesNoDialog(msg, "Kurse von früherem Semester importieren?");
+    if (n == 0) {
+      SwingWorkerWithBusyDialog<ImportKurseResult> swingWorker =
+          view.createSwingWorkerWithBusyDialog("Die Kurse werden importiert. Bitte warten ...");
+      try {
+        ImportKurseResult importKurseResult =
+            swingWorker.executeAndGetResult(model::importKurseFromPreviousSemester);
+        view.showInfoMessageDialog(importKurseResult.getMessage(), "Import erfolgreich");
+      } catch (Exception e) {
+        view.showErrorMessageDialog("Fehler beim Importieren der Kurse!", "Import fehlgeschlagen");
+      }
+    }
   }
 
   private void configBtnExport() {
@@ -157,7 +177,8 @@ public class KursListController
         }
       } catch (Exception e) {
         view.showErrorMessageDialog(
-            "Die Liste konnte nicht erstellt werden.", "Liste nicht erfolgreich erstellt");
+            "Die Liste konnte nicht erstellt werden:\n" + e.getCause().getMessage(),
+            "Liste nicht erfolgreich erstellt");
       }
     }
   }

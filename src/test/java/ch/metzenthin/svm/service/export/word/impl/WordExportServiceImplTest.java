@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.service.export.word.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
@@ -15,8 +15,10 @@ import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.service.export.word.CellLayout;
 import ch.metzenthin.svm.service.export.word.WordExportService;
 import ch.metzenthin.svm.service.export.word.WordTableLayout;
-import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -26,6 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * @author Hans Stamm
@@ -34,17 +37,11 @@ class WordExportServiceImplTest {
 
   WordExportService wordExportService = new WordExportServiceImpl();
 
+  @TempDir Path tempDir;
+
   @Test
   void testExportList() throws IOException {
-    File outputFile = new File("target/Test.docx");
-    boolean success;
-    success = outputFile.createNewFile();
-    if (!success) {
-      boolean delete = outputFile.delete();
-      assertTrue(delete);
-      success = outputFile.createNewFile();
-    }
-    assertTrue(success);
+    Path filePath = tempDir.resolve("output.txt");
 
     WordTableLayout wordTableLayout = createWordTableLayout();
 
@@ -84,7 +81,9 @@ class WordExportServiceImplTest {
                     k.kurs().getZeitBeginn() + " - " + k.kurs().getZeitEnde(),
                     k.kurs().getKursort().getBezeichnung(),
                     "")),
-        outputFile);
+        filePath.toFile());
+    String fileContent = Files.readString(filePath, StandardCharsets.ISO_8859_1);
+    assertFalse(fileContent.isEmpty());
   }
 
   @Test

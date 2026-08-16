@@ -77,7 +77,7 @@ public class SemesterServiceImpl implements SemesterService {
 
   @Override
   @Transactional(readOnly = true)
-  public Optional<Semester> findNaechstesSemester(Semester semester) {
+  public Optional<Semester> findNextSemester(Semester semester) {
     String schuljahrNextSemester;
     Semesterbezeichnung semesterbezeichnungPreviousSemester;
     if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
@@ -89,6 +89,40 @@ public class SemesterServiceImpl implements SemesterService {
     }
     return semesterRepository.findBySchuljahrAndSemesterbezeichnung(
         schuljahrNextSemester, semesterbezeichnungPreviousSemester);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Optional<Semester> findSemesterOneYearBefore(Semester semester) {
+    if (semester == null) {
+      return Optional.empty();
+    }
+
+    String schuljahrOneYearBefore = Schuljahre.getPreviousSchuljahr(semester.getSchuljahr());
+
+    return semesterRepository.findBySchuljahrAndSemesterbezeichnung(
+        schuljahrOneYearBefore, semester.getSemesterbezeichnung());
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Optional<Semester> findPreviousSemester(Semester semester) {
+    if (semester == null) {
+      return Optional.empty();
+    }
+
+    String schuljahrPreviousSemester;
+    Semesterbezeichnung semesterbezeichnungPreviousSemester;
+    if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+      schuljahrPreviousSemester = Schuljahre.getPreviousSchuljahr(semester.getSchuljahr());
+      semesterbezeichnungPreviousSemester = Semesterbezeichnung.ZWEITES_SEMESTER;
+    } else {
+      schuljahrPreviousSemester = semester.getSchuljahr();
+      semesterbezeichnungPreviousSemester = Semesterbezeichnung.ERSTES_SEMESTER;
+    }
+
+    return semesterRepository.findBySchuljahrAndSemesterbezeichnung(
+        schuljahrPreviousSemester, semesterbezeichnungPreviousSemester);
   }
 
   @SuppressWarnings("DuplicatedCode")

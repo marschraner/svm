@@ -74,30 +74,89 @@ class SemesterServiceImplTest {
   }
 
   @Test
-  void testFindNaechstesSemester() {
+  void testFindNextSemester() {
     Semester semester = new Semester();
 
     semester.setSchuljahr("2024/2025");
     semester.setSemesterbezeichnung(Semesterbezeichnung.ZWEITES_SEMESTER);
-    Optional<Semester> naechstesSemesterOptional = semesterService.findNaechstesSemester(semester);
-    assertTrue(naechstesSemesterOptional.isPresent());
-    assertEquals("2025/2026", naechstesSemesterOptional.get().getSchuljahr());
+    Optional<Semester> nextSemesterOptional = semesterService.findNextSemester(semester);
+    assertTrue(nextSemesterOptional.isPresent());
+    assertEquals("2025/2026", nextSemesterOptional.get().getSchuljahr());
     assertEquals(
-        Semesterbezeichnung.ERSTES_SEMESTER,
-        naechstesSemesterOptional.get().getSemesterbezeichnung());
+        Semesterbezeichnung.ERSTES_SEMESTER, nextSemesterOptional.get().getSemesterbezeichnung());
 
     semester.setSchuljahr("2025/2026");
     semester.setSemesterbezeichnung(Semesterbezeichnung.ERSTES_SEMESTER);
-    naechstesSemesterOptional = semesterService.findNaechstesSemester(semester);
-    assertTrue(naechstesSemesterOptional.isPresent());
-    assertEquals("2025/2026", naechstesSemesterOptional.get().getSchuljahr());
+    nextSemesterOptional = semesterService.findNextSemester(semester);
+    assertTrue(nextSemesterOptional.isPresent());
+    assertEquals("2025/2026", nextSemesterOptional.get().getSchuljahr());
     assertEquals(
-        Semesterbezeichnung.ZWEITES_SEMESTER,
-        naechstesSemesterOptional.get().getSemesterbezeichnung());
+        Semesterbezeichnung.ZWEITES_SEMESTER, nextSemesterOptional.get().getSemesterbezeichnung());
 
     semester.setSemesterbezeichnung(Semesterbezeichnung.ZWEITES_SEMESTER);
-    naechstesSemesterOptional = semesterService.findNaechstesSemester(semester);
-    assertTrue(naechstesSemesterOptional.isEmpty());
+    nextSemesterOptional = semesterService.findNextSemester(semester);
+    assertTrue(nextSemesterOptional.isEmpty());
+  }
+
+  @Test
+  void testFindSemesterOneYearBefore() {
+    assertTrue(semesterService.findSemesterOneYearBefore(null).isEmpty());
+
+    Semester semester = new Semester();
+
+    semester.setSchuljahr("2026/2027");
+    semester.setSemesterbezeichnung(Semesterbezeichnung.ZWEITES_SEMESTER);
+    Optional<Semester> semesterOneYearBeforeOptional =
+        semesterService.findSemesterOneYearBefore(semester);
+    assertTrue(semesterOneYearBeforeOptional.isPresent());
+    assertEquals("2025/2026", semesterOneYearBeforeOptional.get().getSchuljahr());
+    assertEquals(
+        Semesterbezeichnung.ZWEITES_SEMESTER,
+        semesterOneYearBeforeOptional.get().getSemesterbezeichnung());
+
+    semester.setSchuljahr("2026/2027");
+    semester.setSemesterbezeichnung(Semesterbezeichnung.ERSTES_SEMESTER);
+    semesterOneYearBeforeOptional = semesterService.findSemesterOneYearBefore(semester);
+    assertTrue(semesterOneYearBeforeOptional.isPresent());
+    assertEquals("2025/2026", semesterOneYearBeforeOptional.get().getSchuljahr());
+    assertEquals(
+        Semesterbezeichnung.ERSTES_SEMESTER,
+        semesterOneYearBeforeOptional.get().getSemesterbezeichnung());
+
+    semester.setSchuljahr("2027/2028");
+    semester.setSemesterbezeichnung(Semesterbezeichnung.ERSTES_SEMESTER);
+    semesterOneYearBeforeOptional = semesterService.findSemesterOneYearBefore(semester);
+    assertTrue(semesterOneYearBeforeOptional.isEmpty());
+  }
+
+  @Test
+  void testFindPreviousSemester() {
+    assertTrue(semesterService.findPreviousSemester(null).isEmpty());
+
+    Semester semester = new Semester();
+
+    semester.setSchuljahr("2025/2026");
+    semester.setSemesterbezeichnung(Semesterbezeichnung.ZWEITES_SEMESTER);
+    Optional<Semester> previousSemesterOptional = semesterService.findPreviousSemester(semester);
+    assertTrue(previousSemesterOptional.isPresent());
+    assertEquals("2025/2026", previousSemesterOptional.get().getSchuljahr());
+    assertEquals(
+        Semesterbezeichnung.ERSTES_SEMESTER,
+        previousSemesterOptional.get().getSemesterbezeichnung());
+
+    semester.setSchuljahr("2026/2027");
+    semester.setSemesterbezeichnung(Semesterbezeichnung.ERSTES_SEMESTER);
+    previousSemesterOptional = semesterService.findPreviousSemester(semester);
+    assertTrue(previousSemesterOptional.isPresent());
+    assertEquals("2025/2026", previousSemesterOptional.get().getSchuljahr());
+    assertEquals(
+        Semesterbezeichnung.ZWEITES_SEMESTER,
+        previousSemesterOptional.get().getSemesterbezeichnung());
+
+    semester.setSchuljahr("2024/2025");
+    semester.setSemesterbezeichnung(Semesterbezeichnung.ERSTES_SEMESTER);
+    previousSemesterOptional = semesterService.findPreviousSemester(semester);
+    assertTrue(previousSemesterOptional.isEmpty());
   }
 
   @Test

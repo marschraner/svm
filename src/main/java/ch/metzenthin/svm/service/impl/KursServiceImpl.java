@@ -5,16 +5,20 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 import static ch.metzenthin.svm.common.utils.SvmStringUtils.splitStringIntoMultipleLines;
 
 import ch.metzenthin.svm.common.datatypes.Listentyp;
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.config.SvmProperties2;
 import ch.metzenthin.svm.domain.model.IdAndCount;
 import ch.metzenthin.svm.domain.model.KursAndLehrkraefteAndNumberOfKursanmeldungen;
 import ch.metzenthin.svm.domain.model.KursIdAndLehrkraft;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
+import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.KursLehrkraft;
 import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
+import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.persistence.repository.AnmeldungRepository;
 import ch.metzenthin.svm.persistence.repository.KursLehrkraftRepository;
 import ch.metzenthin.svm.persistence.repository.KursRepository;
 import ch.metzenthin.svm.persistence.repository.KursanmeldungRepository;
@@ -32,6 +36,7 @@ import ch.metzenthin.svm.service.export.word.WordExportService;
 import ch.metzenthin.svm.service.export.word.WordTableLayout;
 import ch.metzenthin.svm.service.result.DeleteKursResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
+import ch.metzenthin.svm.service.result.ImportKurseResult;
 import ch.metzenthin.svm.service.result.SaveKursResult;
 import java.io.File;
 import java.util.ArrayList;
@@ -64,6 +69,7 @@ public class KursServiceImpl implements KursService {
   private final KursortRepository kursortRepository;
   private final KursanmeldungRepository kursanmeldungRepository;
   private final MitarbeiterRepository mitarbeiterRepository;
+  private final AnmeldungRepository anmeldungRepository;
   private final SvmProperties2 svmProperties2;
 
   public KursServiceImpl(
@@ -79,6 +85,7 @@ public class KursServiceImpl implements KursService {
       KursortRepository kursortRepository,
       KursanmeldungRepository kursanmeldungRepository,
       MitarbeiterRepository mitarbeiterRepository,
+      AnmeldungRepository anmeldungRepository,
       SvmProperties2 svmProperties2) {
     this.semesterService = semesterService;
     this.semesterrechnungService = semesterrechnungService;
@@ -92,6 +99,7 @@ public class KursServiceImpl implements KursService {
     this.kursortRepository = kursortRepository;
     this.kursanmeldungRepository = kursanmeldungRepository;
     this.mitarbeiterRepository = mitarbeiterRepository;
+    this.anmeldungRepository = anmeldungRepository;
     this.svmProperties2 = svmProperties2;
   }
 
@@ -296,8 +304,7 @@ public class KursServiceImpl implements KursService {
     }
 
     Semester currentSemester = currentSemesterOptional.get();
-    Optional<Semester> nextSemesterOptional =
-        semesterService.findNaechstesSemester(currentSemester);
+    Optional<Semester> nextSemesterOptional = semesterService.findNextSemester(currentSemester);
 
     List<Kursanmeldung> kursanmeldungen = kursanmeldungRepository.findByKursId(kursId);
     List<Angehoeriger> rechnungsempfaengerList =
@@ -315,6 +322,128 @@ public class KursServiceImpl implements KursService {
     }
 
     return DeleteKursResult.LOESCHEN_ERFOLGREICH;
+  }
+
+  @Override
+  @Transactional
+  public ImportKurseResult importKurseFromPreviousSemester(Semester targetSemester) {
+    Optional<Semester> sourceSemesterOptional = getSourceSemester(targetSemester);
+
+    if (sourceSemesterOptional.isEmpty()) {
+      return ImportKurseResult.IMPORT_ABGEBROCHEN_KEIN_VORHERGEHENDES_SEMESTER;
+    }
+
+    List<Kurs> sourceKursList =
+        kursRepository.findAllBySemesterId(sourceSemesterOptional.get().getSemesterId());
+
+    for (Kurs sourceKurs : sourceKursList) {
+
+      // Kurs kopieren
+      Kurs targetKurs = new Kurs();
+      targetKurs.copyAttributesFrom(sourceKurs);
+      targetKurs.setKurstyp(sourceKurs.getKurstyp());
+      targetKurs.setKursort(sourceKurs.getKursort());
+      targetKurs.setSemester(targetSemester);
+      List<KursLehrkraft> lehrkraefteOfSourceKurs =
+          kursLehrkraftRepository.findByKursIdOrderByLehrkraefteOrder(sourceKurs.getKursId());
+      List<KursLehrkraft> kursLehrkraefteOfTargetKurs = new ArrayList<>();
+      List<Mitarbeiter> lehrkraefteOfTargetKurs = new ArrayList<>();
+      for (KursLehrkraft lehrkraftOfSourceKurs : lehrkraefteOfSourceKurs) {
+        KursLehrkraft targetKursLehrkraft =
+            new KursLehrkraft(
+                targetKurs,
+                lehrkraftOfSourceKurs.getLehrkraft(),
+                lehrkraftOfSourceKurs.getLehrkraefteOrder());
+        kursLehrkraefteOfTargetKurs.add(targetKursLehrkraft);
+        lehrkraefteOfTargetKurs.add(lehrkraftOfSourceKurs.getLehrkraft());
+      }
+
+      // Existiert der Kurs im jetzigen Semester bereits? Wenn ja, unverändert lassen.
+      Optional<Kurs> existingTargetKursOptional =
+          kursRepository.findBySemesterIdAndWochentagAndZeitBeginn(
+              targetSemester.getSemesterId(),
+              targetKurs.getWochentag(),
+              targetKurs.getZeitBeginn());
+
+      boolean targetKursAlreadyExists = false;
+      if (existingTargetKursOptional.isPresent()) {
+        List<Mitarbeiter> lehrkraefteOfExistingTargetKurs =
+            kursLehrkraftRepository.findLehrkraefteByKursIdOrderByLehrkraefteOrder(
+                existingTargetKursOptional.get().getKursId());
+        targetKursAlreadyExists =
+            existingTargetKursOptional
+                .get()
+                .isIdenticalWith(
+                    targetKurs, lehrkraefteOfTargetKurs, lehrkraefteOfExistingTargetKurs);
+      }
+
+      if (!targetKursAlreadyExists) {
+        // Kurs speichern
+        kursRepository.save(targetKurs);
+        kursLehrkraftRepository.saveAll(kursLehrkraefteOfTargetKurs);
+
+        // Falls 2. Semester, auch Schüler bzw. Kurseinteilungen importieren
+        if (targetSemester.getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER) {
+          importKursanmeldungen(targetSemester, sourceKurs, targetKurs);
+        }
+      }
+    }
+
+    return ImportKurseResult.IMPORT_ERFOLGREICH;
+  }
+
+  private Optional<Semester> getSourceSemester(Semester targetSemester) {
+    Optional<Semester> sourceSemesterOptional = Optional.empty();
+
+    // 1. Semester -> Kurse vom 1. Semester vor einem Jahr importieren
+    if (targetSemester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+      sourceSemesterOptional = semesterService.findSemesterOneYearBefore(targetSemester);
+    }
+
+    // 2. Semester (oder Kurse vom 1. Semester vor einem Jahr nicht vorhanden) -> Kurse und Schüler
+    // vom 1. Semester importieren
+    if (targetSemester.getSemesterbezeichnung() == Semesterbezeichnung.ZWEITES_SEMESTER
+        || sourceSemesterOptional.isEmpty()) {
+      sourceSemesterOptional = semesterService.findPreviousSemester(targetSemester);
+    }
+
+    return sourceSemesterOptional;
+  }
+
+  private void importKursanmeldungen(Semester targetSemester, Kurs sourceKurs, Kurs targetKurs) {
+    List<Kursanmeldung> kursanmeldungenOfSourceKurs =
+        kursanmeldungRepository.findByKursId(sourceKurs.getKursId());
+
+    for (Kursanmeldung kursanmeldungOfSourceKurs : kursanmeldungenOfSourceKurs) {
+
+      // Nur Kurse ohne Kursabmeldungen und nur für nicht abgemeldete Schüler importieren
+      if (isAngemeldetForSemesterAndKurs(targetSemester, kursanmeldungOfSourceKurs)) {
+        Kursanmeldung targetKursanmeldung =
+            new Kursanmeldung(
+                kursanmeldungOfSourceKurs.getSchueler(),
+                targetKurs,
+                targetSemester.getSemesterbeginn(),
+                null,
+                null);
+        kursanmeldungRepository.save(targetKursanmeldung);
+
+        // Semesterrechnungen updaten
+        Schueler schueler = kursanmeldungOfSourceKurs.getSchueler();
+        Angehoeriger rechnungsempfaenger = schueler.getRechnungsempfaenger();
+        semesterrechnungService.calculateAndUpdateAnzahlWochenAndWochenbetrag(
+            targetSemester, Optional.empty(), rechnungsempfaenger);
+      }
+    }
+  }
+
+  boolean isAngemeldetForSemesterAndKurs(Semester targetSemester, Kursanmeldung kursanmeldung) {
+    Anmeldung anmeldung =
+        anmeldungRepository
+            .findBySchuelerIdOrderByAnmeldedatumDesc(kursanmeldung.getSchueler().getPersonId())
+            .get(0);
+    return kursanmeldung.getAbmeldedatum() == null
+        && (anmeldung.getAbmeldedatum() == null
+            || anmeldung.getAbmeldedatum().after(targetSemester.getSemesterbeginn()));
   }
 
   @SuppressWarnings("ExtractMethodRecommender")
@@ -359,7 +488,7 @@ public class KursServiceImpl implements KursService {
         String title1 =
             svmProperties2.getTheaterName()
                 + "                              "
-                + getSemesterTitel(semester);
+                + getSemesterTitle(semester);
         List<List<String>> headerColumnsRows =
             List.of(
                 List.of("", "Kurstyp", "Alter", "Tag", "Leitung", "Bemerkungen"),
@@ -413,7 +542,7 @@ public class KursServiceImpl implements KursService {
         kursAndLehrkraefteAndNumberOfKursanmeldungen.lehrkraefte());
   }
 
-  private static String getSemesterTitel(Semester semester) {
+  static String getSemesterTitle(Semester semester) {
     return (semester == null)
         ? ""
         : "Schuljahr " + semester.getSchuljahr() + ", " + semester.getSemesterbezeichnung();
