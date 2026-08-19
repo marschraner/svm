@@ -109,16 +109,6 @@ public class KurseSemesterwahlController extends AbstractController {
       return;
     }
     setWaitCursorAllComponents();
-    //        KurseTableData kurseTableData = kurseSemesterwahlModel.suchen();
-    //        KurseTableModel kurseTableModel = new KurseTableModel(kurseTableData);
-    //        String titel =
-    //            "Kurse "
-    //                + kurseSemesterwahlModel.getSemester().getSemesterbezeichnung()
-    //                + " "
-    //                + kurseSemesterwahlModel.getSemester().getSchuljahr();
-    //        KursePanel kursePanel =
-    //            new KursePanel(svmContext, kurseSemesterwahlModel, kurseTableModel, titel);
-    //        kursePanel.addCloseListener(closeListener);
     KursListModel kursListModel =
         svmContext.getModelFactory().createKursListModel(kurseSemesterwahlModel.getSemester());
     KursListController kursListController =
@@ -126,7 +116,6 @@ public class KurseSemesterwahlController extends AbstractController {
     resetCursorAllComponents();
     nextPanelListener.actionPerformed(
         new ActionEvent(
-            //             new Object[] {kursePanel.$$$getRootComponent$$$(), titel},
             new Object[] {
               kursListController.getView().getRootComponent(),
               kursListModel.getSemesterDisplayName()

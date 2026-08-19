@@ -10,24 +10,30 @@ import javax.swing.JOptionPane;
 /**
  * @author Hans Stamm
  */
-public abstract class AbstractView {
+public abstract class AbstractView<T extends Component> {
 
-  protected void showInfoMessageDialog(Component parent, String message, String title) {
-    JOptionPane.showMessageDialog(parent, message, title, JOptionPane.INFORMATION_MESSAGE);
+  protected final T component;
+
+  protected AbstractView(T component) {
+    this.component = component;
   }
 
-  protected void showErrorMessageDialog(Component parent, String message, String title) {
-    JOptionPane.showMessageDialog(parent, message, title, JOptionPane.ERROR_MESSAGE);
+  public void showInfoMessageDialog(String message, String title) {
+    JOptionPane.showMessageDialog(component, message, title, JOptionPane.INFORMATION_MESSAGE);
   }
 
-  protected int showYesNoDialog(Component parent, String message, String title) {
+  public void showErrorMessageDialog(String message, String title) {
+    JOptionPane.showMessageDialog(component, message, title, JOptionPane.ERROR_MESSAGE);
+  }
+
+  public int showYesNoDialog(String message, String title) {
     Object[] options = {"Ja", "Nein"};
-    return showOptionDialog(parent, message, title, options, JOptionPane.QUESTION_MESSAGE);
+    return showOptionDialog(component, message, title, options, JOptionPane.QUESTION_MESSAGE);
   }
 
-  protected int showIgnorierenAbrechenDialog(Component parent, String message, String title) {
+  public int showIgnorierenAbbrechenDialog(String message, String title) {
     Object[] options = {"Ignorieren", "Abbrechen"};
-    return showOptionDialog(parent, message, title, options, JOptionPane.WARNING_MESSAGE);
+    return showOptionDialog(component, message, title, options, JOptionPane.WARNING_MESSAGE);
   }
 
   @SuppressWarnings("MagicConstant")
@@ -44,7 +50,7 @@ public abstract class AbstractView {
         options[1]); // default button title
   }
 
-  public <T> SwingWorkerWithBusyDialog<T> createSwingWorkerWithBusyDialog(String message) {
+  public <U> SwingWorkerWithBusyDialog<U> createSwingWorkerWithBusyDialog(String message) {
     return new SwingWorkerWithBusyDialog<>(createBusyDialog(message));
   }
 
@@ -62,7 +68,7 @@ public abstract class AbstractView {
     dialog.setTitle("Verarbeitung läuft ...");
     dialog.setModal(true);
     dialog.setContentPane(optionPane);
-    dialog.setLocationRelativeTo(null);
+    dialog.setLocationRelativeTo(component);
     dialog.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     dialog.pack();
 

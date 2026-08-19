@@ -19,25 +19,26 @@ import lombok.Getter;
 /**
  * @author Hans Stamm
  */
-public abstract class AbstractListPanelView extends AbstractView {
+public abstract class AbstractListPanelView extends AbstractView<JComponent> {
 
+  @Getter private final JComponent rootComponent;
   private final AbstractTableModel tableModel;
   private final JTable table;
   private final JButton buttonNeu;
   private final JButton buttonBearbeiten;
   private final JButton buttonLoeschen;
   private final JButton buttonAbbrechen;
-  @Getter private final JComponent rootComponent;
 
   protected AbstractListPanelView(
       TableModel<?, ?> tableModel, AbstractListPanel listPanel, ActionListener closeListener) {
+    super(listPanel.getRootComponent());
+    this.rootComponent = listPanel.getRootComponent();
     this.tableModel = tableModel;
     this.table = listPanel.getTable();
     this.buttonNeu = listPanel.getBtnNeu();
     this.buttonBearbeiten = listPanel.getBtnBearbeiten();
     this.buttonLoeschen = listPanel.getBtnLoeschen();
     this.buttonAbbrechen = listPanel.getBtnAbbrechen();
-    this.rootComponent = listPanel.getRootComponent();
     configTable(this.table, tableModel);
     addButtonAbbrechenActionListener(closeListener);
   }
@@ -135,17 +136,5 @@ public abstract class AbstractListPanelView extends AbstractView {
 
   public void setButtonLoeschenFocusPainted(boolean focusPainted) {
     buttonLoeschen.setFocusPainted(focusPainted);
-  }
-
-  public void showErrorMessageDialog(String message, String title) {
-    showErrorMessageDialog(rootComponent, message, title);
-  }
-
-  public void showInfoMessageDialog(String message, String title) {
-    showInfoMessageDialog(rootComponent, message, title);
-  }
-
-  public int showYesNoDialog(String message, String title) {
-    return showYesNoDialog(rootComponent, message, title);
   }
 }

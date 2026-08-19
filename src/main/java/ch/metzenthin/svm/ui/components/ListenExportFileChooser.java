@@ -13,13 +13,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 /**
  * @author Hans Stamm
  */
-public class ListenExportFileChooser extends AbstractView {
+public class ListenExportFileChooser extends AbstractView<Component> {
 
   private final JFileChooser fileChooser = new JFileChooser();
-  private final Component parent;
 
   public ListenExportFileChooser(Listentyp listentyp, Component parent) {
-    this.parent = parent;
+    super(parent);
     File exportFileInit = getSaveFileInit(listentyp);
     if (exportFileInit != null) {
       fileChooser.setSelectedFile(exportFileInit);
@@ -33,7 +32,7 @@ public class ListenExportFileChooser extends AbstractView {
   }
 
   public File getSelectedFile() {
-    int returnVal = fileChooser.showSaveDialog(parent);
+    int returnVal = fileChooser.showSaveDialog(component);
     if (returnVal != JFileChooser.APPROVE_OPTION) {
       return null;
     }
@@ -41,7 +40,6 @@ public class ListenExportFileChooser extends AbstractView {
     if (outputFile.exists()) {
       int n =
           showYesNoDialog(
-              parent,
               "Die Datei '"
                   + outputFile.getName()
                   + "' existiert bereits. Soll sie überschrieben werden?",

@@ -15,14 +15,15 @@ import javax.swing.WindowConstants;
  * @param <T> Dialog-Typ, z.B. CreateOrUpdateKursortDialog
  * @author Hans Stamm
  */
-public abstract class AbstractSubmitDialogView<T extends AbstractSubmitDialog> extends AbstractView
-    implements SubmitDialogView {
+public abstract class AbstractSubmitDialogView<T extends AbstractSubmitDialog>
+    extends AbstractView<T> implements SubmitDialogView {
 
   protected final T dialog;
   private final JButton buttonSubmit;
   private final JButton buttonAbbrechen;
 
   protected AbstractSubmitDialogView(T dialog) {
+    super(dialog);
     this.dialog = dialog;
     this.buttonSubmit = dialog.getSubmitButton();
     this.buttonAbbrechen = dialog.getAbbrechenButton();
@@ -57,18 +58,6 @@ public abstract class AbstractSubmitDialogView<T extends AbstractSubmitDialog> e
 
   public void closeDialog() {
     dialog.dispose();
-  }
-
-  public void showErrorMessageDialog(String message, String title) {
-    showErrorMessageDialog(dialog, message, title);
-  }
-
-  public int showYesNoDialog(String message, String title) {
-    return showYesNoDialog(dialog, message, title);
-  }
-
-  public int showIgnorierenAbbrechenDialog(String message, String title) {
-    return showIgnorierenAbrechenDialog(dialog, message, title);
   }
 
   public void addButtonSubmitActionListener(ActionListener actionListener) {
