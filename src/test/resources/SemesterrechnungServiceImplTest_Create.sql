@@ -2,8 +2,8 @@
 INSERT INTO svmtest.Semester(semester_id, version, schuljahr, semesterbezeichnung, semesterbeginn,
                              semesterende, ferienbeginn1, ferienende1, ferienbeginn2, ferienende2,
                              creation_date, last_modified)
-    VALUES (101, 0, '2025/2026', 'ERSTES_SEMESTER', '2025-08-18',
-            '2026-02-07', '2025-10-06', '2025-10-18', '2025-12-22', '2026-01-03',
+    VALUES (101, 0, '2024/2025', 'ZWEITES_SEMESTER', '2025-02-24',
+            '2025-07-12', '2025-04-21', '2025-05-03', null, null,
             '2025-10-01', '2025-10-01');
 INSERT INTO svmtest.Semester(semester_id, version, schuljahr, semesterbezeichnung, semesterbeginn,
                              semesterende, ferienbeginn1, ferienende1, ferienbeginn2, ferienende2,
@@ -14,8 +14,14 @@ INSERT INTO svmtest.Semester(semester_id, version, schuljahr, semesterbezeichnun
 INSERT INTO svmtest.Semester(semester_id, version, schuljahr, semesterbezeichnung, semesterbeginn,
                              semesterende, ferienbeginn1, ferienende1, ferienbeginn2, ferienende2,
                              creation_date, last_modified)
-    VALUES (103, 0, '2025/2026', 'ERSTES_SEMESTER', '2025-08-18',
-            '2026-02-07', '2025-10-06', '2025-10-18', '2025-12-22', '2026-01-03',
+    VALUES (103, 0, '2025/2026', 'ZWEITES_SEMESTER', '2026-02-23',
+            '2026-07-11', '2026-04-20', '2026-05-02', null, null,
+            '2026-02-01', '2026-02-01');
+INSERT INTO svmtest.Semester(semester_id, version, schuljahr, semesterbezeichnung, semesterbeginn,
+                             semesterende, ferienbeginn1, ferienende1, ferienbeginn2, ferienende2,
+                             creation_date, last_modified)
+    VALUES (104, 0, '2026/2027', 'ERSTES_SEMESTER', '2026-08-17',
+            '2027-02-13', '2026-10-05', '2026-10-17', '2026-12-21', '2027-01-02',
             '2025-10-01', '2025-10-01');
 
 -- Kurse mit Kurstyp und Kursort
@@ -136,7 +142,7 @@ INSERT INTO svmtest.Anmeldung(anmeldung_id, version, anmeldedatum, abmeldedatum,
 
 INSERT INTO svmtest.Kursanmeldung(person_id, kurs_id, version, anmeldedatum, abmeldedatum,
                                   bemerkungen, creation_date, last_modified)
-VALUES (506, 403, 0, '2025-01-01', '2026-01-31', null,
+VALUES (506, 403, 0, '2026-02-01', '2026-07-04', null,
         '2025-10-01','2025-10-01');
 
 INSERT INTO svmtest.Person(person_id, version, discriminator, anrede, vorname, nachname,
@@ -155,7 +161,12 @@ INSERT INTO svmtest.Anmeldung(anmeldung_id, version, anmeldedatum, abmeldedatum,
 
 INSERT INTO svmtest.Kursanmeldung(person_id, kurs_id, version, anmeldedatum, abmeldedatum,
                                   bemerkungen, creation_date, last_modified)
-    VALUES (507, 404, 0, '2025-01-01', '2025-12-31', null,
+    VALUES (507, 404, 0, '2026-02-01', '2026-06-20', null,
+            '2025-10-01','2025-10-01');
+
+INSERT INTO svmtest.Kursanmeldung(person_id, kurs_id, version, anmeldedatum, abmeldedatum,
+                                  bemerkungen, creation_date, last_modified)
+    VALUES (507, 402, 0, '2025-01-01', null, null,
             '2025-10-01','2025-10-01');
 
 
@@ -180,7 +191,7 @@ INSERT INTO svmtest.Semesterrechnung(semester_id, person_id, version, stipendium
                                      datum_zahlung_3_nachrechnung, betrag_zahlung_3_nachrechnung,
                                      code_id, bemerkungen, deleted, creation_date, last_modified)
     VALUES (101, 501, 0, null, 0, null, 0.00, null, 0.00, null,
-            1, 0.00, null, null, null, null, null, null,
+            1, 1.00, null, null, null, null, null, null,
             null, 0.00, null, 0.00, null, 0, 0.00,
             null, null, null, null, null, null, 701,
             null, 0, '2025-10-01', '2025-10-01');
@@ -201,8 +212,8 @@ INSERT INTO svmtest.Semesterrechnung(semester_id, person_id, version, stipendium
                                      datum_zahlung_3_nachrechnung, betrag_zahlung_3_nachrechnung,
                                      code_id, bemerkungen, deleted, creation_date, last_modified)
     VALUES (102, 503, 0, null, 0, '2025-02-01', 0.00, null, 0.00, null,
-            18, 0.00, null, null, null, null, null, null,
-            '2025-02-01', 0.00, null, 0.00, null, 19, 0.00,
+            21, 2.00, null, null, null, null, null, null,
+            '2025-02-01', 0.00, null, 0.00, null, 22, 0.00,
             null, null, null, null, null, null, 701,
             null, 0, '2025-10-01', '2025-10-01');
 
@@ -222,7 +233,39 @@ INSERT INTO svmtest.Semesterrechnung(semester_id, person_id, version, stipendium
                                      datum_zahlung_3_nachrechnung, betrag_zahlung_3_nachrechnung,
                                      code_id, bemerkungen, deleted, creation_date, last_modified)
     VALUES (103, 505, 0, null, 0, null, 0.00, null, 0.00, null,
-            1, 0.00, null, null, null, null, null, null,
+            1, 3.00, null, null, null, null, null, null,
             null, 0.00, null, 0.00, null, 0, 0.00,
             null, null, null, null, null, null, 701,
             null, 0, '2025-10-01', '2025-10-01');
+
+INSERT INTO svmtest.Semesterrechnung(semester_id, person_id, version, stipendium, gratiskinder,
+                                     rechnungsdatum_vorrechnung, ermaessigung_vorrechnung,
+                                     ermaessigungsgrund_vorrechnung, zuschlag_vorrechnung,
+                                     zuschlagsgrund_vorrechnung, anzahl_wochen_vorrechnung,
+                                     wochenbetrag_vorrechnung, datum_zahlung_1_vorrechnung,
+                                     betrag_zahlung_1_vorrechnung, datum_zahlung_2_vorrechnung,
+                                     betrag_zahlung_2_vorrechnung, datum_zahlung_3_vorrechnung,
+                                     betrag_zahlung_3_vorrechnung, rechnungsdatum_nachrechnung,
+                                     ermaessigung_nachrechnung, ermaessigungsgrund_nachrechnung,
+                                     zuschlag_nachrechnung, zuschlagsgrund_nachrechnung,
+                                     anzahl_wochen_nachrechnung, wochenbetrag_nachrechnung,
+                                     datum_zahlung_1_nachrechnung, betrag_zahlung_1_nachrechnung,
+                                     datum_zahlung_2_nachrechnung, betrag_zahlung_2_nachrechnung,
+                                     datum_zahlung_3_nachrechnung, betrag_zahlung_3_nachrechnung,
+                                     code_id, bemerkungen, deleted, creation_date, last_modified)
+    VALUES (104, 505, 0, null, 0, '2025-08-01', 0.00, null, 0.00, null,
+            1, 0.00, null, null, null, null, null, null,
+            null, 0.00, null, 0.00, null, 22, 0.00,
+            null, null, null, null, null, null, 701,
+            null, 0, '2025-10-01', '2025-10-01');
+
+INSERT INTO svmtest.Lektionsgebuehren(id, lektionslaenge, version, betrag_1_kind, betrag_2_kinder,
+                                      betrag_3_kinder, betrag_4_kinder, betrag_5_kinder,
+                                      betrag_6_kinder, creation_date, last_modified)
+    VALUES (1, 50, 0, 50.00, 40.00, 30.00, 20.00, 10.00, 1.00,
+            '2025-10-01', '2025-10-01');
+INSERT INTO svmtest.Lektionsgebuehren(id, lektionslaenge, version, betrag_1_kind, betrag_2_kinder,
+                                      betrag_3_kinder, betrag_4_kinder, betrag_5_kinder,
+                                      betrag_6_kinder, creation_date, last_modified)
+    VALUES (2, 60, 0, 60.00, 50.00, 40.00, 30.00, 20.00, 10.00,
+            '2025-10-01', '2025-10-01');

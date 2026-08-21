@@ -7,6 +7,7 @@ import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import java.sql.Time;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -62,4 +63,8 @@ public interface KursLehrkraftRepository extends JpaRepository<KursLehrkraft, In
           + "ORDER BY kl.kurs.kursId, kl.lehrkraefteOrder")
   List<KursIdAndLehrkraft> findKursIdAndLehrkraefteBySemesterIdOrderByKursIdAndLehrkraefteOrder(
       @Param("semesterId") int semesterId);
+
+  @Modifying
+  @Query("DELETE FROM KursLehrkraft kl WHERE kl.kurs.kursId = :kursId")
+  void deleteByKursId(@Param("kursId") int kursId);
 }

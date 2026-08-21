@@ -2,6 +2,7 @@ package ch.metzenthin.svm.service.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.domain.model.SemesterAndNumberOfKurse;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -73,6 +74,33 @@ class SemesterServiceImplTest {
   }
 
   @Test
+  void testFindNaechstesSemester() {
+    Semester semester = new Semester();
+
+    semester.setSchuljahr("2024/2025");
+    semester.setSemesterbezeichnung(Semesterbezeichnung.ZWEITES_SEMESTER);
+    Optional<Semester> naechstesSemesterOptional = semesterService.findNaechstesSemester(semester);
+    assertTrue(naechstesSemesterOptional.isPresent());
+    assertEquals("2025/2026", naechstesSemesterOptional.get().getSchuljahr());
+    assertEquals(
+        Semesterbezeichnung.ERSTES_SEMESTER,
+        naechstesSemesterOptional.get().getSemesterbezeichnung());
+
+    semester.setSchuljahr("2025/2026");
+    semester.setSemesterbezeichnung(Semesterbezeichnung.ERSTES_SEMESTER);
+    naechstesSemesterOptional = semesterService.findNaechstesSemester(semester);
+    assertTrue(naechstesSemesterOptional.isPresent());
+    assertEquals("2025/2026", naechstesSemesterOptional.get().getSchuljahr());
+    assertEquals(
+        Semesterbezeichnung.ZWEITES_SEMESTER,
+        naechstesSemesterOptional.get().getSemesterbezeichnung());
+
+    semester.setSemesterbezeichnung(Semesterbezeichnung.ZWEITES_SEMESTER);
+    naechstesSemesterOptional = semesterService.findNaechstesSemester(semester);
+    assertTrue(naechstesSemesterOptional.isEmpty());
+  }
+
+  @Test
   void determineNaechstesNochNichtErfasstesSemester() {
     Semester semester = semesterService.determineNaechstesNochNichtErfasstesSemester();
     assertNotNull(semester);
@@ -106,7 +134,7 @@ class SemesterServiceImplTest {
     semesterService.saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(semester, true);
     assertEquals("2025-2026", semester.getSchuljahr());
     List<Semesterrechnung> semesterrechnungenBySemesterId =
-        semesterrechnungRepository.findSemesterrechnungenBySemesterId(semester.getSemesterId());
+        semesterrechnungRepository.findBySemesterId(semester.getSemesterId());
     assertEquals(1, semesterrechnungenBySemesterId.size());
     Semesterrechnung semesterrechnung = semesterrechnungenBySemesterId.get(0);
     assertEquals(27, semesterrechnung.getAnzahlWochenVorrechnung());

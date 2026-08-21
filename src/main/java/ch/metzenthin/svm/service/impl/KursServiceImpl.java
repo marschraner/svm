@@ -3,9 +3,12 @@ package ch.metzenthin.svm.service.impl;
 import ch.metzenthin.svm.domain.model.IdAndCount;
 import ch.metzenthin.svm.domain.model.KursAndLehrkraefteAndNumberOfKursanmeldungen;
 import ch.metzenthin.svm.domain.model.KursIdAndLehrkraft;
+import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.KursLehrkraft;
+import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
+import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.repository.KursLehrkraftRepository;
 import ch.metzenthin.svm.persistence.repository.KursRepository;
 import ch.metzenthin.svm.persistence.repository.KursanmeldungRepository;
@@ -15,6 +18,8 @@ import ch.metzenthin.svm.persistence.repository.LektionsgebuehrenRepository;
 import ch.metzenthin.svm.persistence.repository.MitarbeiterRepository;
 import ch.metzenthin.svm.persistence.repository.SemesterRepository;
 import ch.metzenthin.svm.service.KursService;
+import ch.metzenthin.svm.service.SemesterService;
+import ch.metzenthin.svm.service.SemesterrechnungService;
 import ch.metzenthin.svm.service.result.DeleteKursResult;
 import ch.metzenthin.svm.service.result.SaveKursResult;
 import java.util.ArrayList;
@@ -33,6 +38,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class KursServiceImpl implements KursService {
 
+  private final SemesterService semesterService;
+  private final SemesterrechnungService semesterrechnungService;
   private final KursRepository kursRepository;
   private final KursLehrkraftRepository kursLehrkraftRepository;
   private final LektionsgebuehrenRepository lektionsgebuehrenRepository;
@@ -43,6 +50,8 @@ public class KursServiceImpl implements KursService {
   private final MitarbeiterRepository mitarbeiterRepository;
 
   public KursServiceImpl(
+      SemesterService semesterService,
+      SemesterrechnungService semesterrechnungService,
       KursRepository kursRepository,
       KursLehrkraftRepository kursLehrkraftRepository,
       LektionsgebuehrenRepository lektionsgebuehrenRepository,
@@ -51,6 +60,8 @@ public class KursServiceImpl implements KursService {
       KursortRepository kursortRepository,
       KursanmeldungRepository kursanmeldungRepository,
       MitarbeiterRepository mitarbeiterRepository) {
+    this.semesterService = semesterService;
+    this.semesterrechnungService = semesterrechnungService;
     this.kursRepository = kursRepository;
     this.kursLehrkraftRepository = kursLehrkraftRepository;
     this.lektionsgebuehrenRepository = lektionsgebuehrenRepository;
@@ -254,11 +265,32 @@ public class KursServiceImpl implements KursService {
   }
 
   @Override
-  public DeleteKursResult deleteKurs(Kurs kurs) {
-    // TODO Kursanmeldungen-Releations löschen (keine EntityStillReferencedException, da im UI
-    // bereits
-    // gefragt wird, ob diese gelöscht werden sollen)
-    // TODO Semesterrechnungen aktualisieren
+  @Transactional
+  public DeleteKursResult deleteKurs(int kursId) {
+    Optional<Semester> currentSemesterOptional = kursRepository.findSemesterByKursId(kursId);
+    if (currentSemesterOptional.isEmpty()) {
+      return DeleteKursResult.LOESCHEN_ERFOLGREICH;
+    }
+
+    Semester currentSemester = currentSemesterOptional.get();
+    Optional<Semester> nextSemesterOptional =
+        semesterService.findNaechstesSemester(currentSemester);
+
+    List<Kursanmeldung> kursanmeldungen = kursanmeldungRepository.findByKursId(kursId);
+    List<Angehoeriger> rechnungsempfaengerList =
+        kursanmeldungen.stream()
+            .map(kursanmeldung -> kursanmeldung.getSchueler().getRechnungsempfaenger())
+            .toList();
+
+    kursanmeldungRepository.deleteByKursId(kursId);
+    kursLehrkraftRepository.deleteByKursId(kursId);
+    kursRepository.deleteByKursId(kursId);
+
+    for (Angehoeriger rechnungsempfaenger : rechnungsempfaengerList) {
+      semesterrechnungService.calculateAndUpdateAnzahlWochenAndWochenbetrag(
+          currentSemester, nextSemesterOptional, rechnungsempfaenger);
+    }
+
     return DeleteKursResult.LOESCHEN_ERFOLGREICH;
   }
 }

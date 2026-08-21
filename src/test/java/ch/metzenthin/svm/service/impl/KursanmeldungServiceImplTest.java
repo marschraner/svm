@@ -2,12 +2,15 @@ package ch.metzenthin.svm.service.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.repository.SchuelerRepository;
 import ch.metzenthin.svm.persistence.repository.SemesterRepository;
 import ch.metzenthin.svm.service.KursanmeldungService;
 import ch.metzenthin.svm.service.ServiceTestConfiguration;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -31,30 +34,52 @@ class KursanmeldungServiceImplTest {
   @Autowired KursanmeldungService kursanmeldungService;
 
   @Test
-  void calculateHoechsteAnzahlWochen_ganzesSemester() {
+  void calculateMaxAnzahlWochen_ganzesSemester() {
     Schueler schueler = schuelerRepository.findById(502).get();
     Semester semester = semesterRepository.findById(101).get();
     int anzahlSchulwochenSemester = semester.getAnzahlSchulwochen();
     int anzahlWochenKursanmeldungen =
-        kursanmeldungService.calculateHoechsteAnzahlWochen(schueler, semester);
+        kursanmeldungService.calculateMaxAnzahlWochen(schueler, semester).maxAnzahlWochen();
     assertEquals(anzahlSchulwochenSemester, anzahlWochenKursanmeldungen);
   }
 
   @Test
-  void calculateHoechsteAnzahlWochen_ohneKursanmeldungen() {
+  void calculateMaxAnzahlWochen_ohneKursanmeldungen() {
     Schueler schueler = schuelerRepository.findById(504).get();
     Semester semester = semesterRepository.findById(101).get();
     int anzahlWochenKursanmeldungen =
-        kursanmeldungService.calculateHoechsteAnzahlWochen(schueler, semester);
+        kursanmeldungService.calculateMaxAnzahlWochen(schueler, semester).maxAnzahlWochen();
     assertEquals(0, anzahlWochenKursanmeldungen);
   }
 
   @Test
-  void calculateHoechsteAnzahlWochen_zweiKursanmeldungen() {
+  void calculateMaxAnzahlWochen_zweiKursanmeldungen() {
     Schueler schueler = schuelerRepository.findById(506).get();
     Semester semester = semesterRepository.findById(101).get();
     int anzahlWochenKursanmeldungen =
-        kursanmeldungService.calculateHoechsteAnzahlWochen(schueler, semester);
+        kursanmeldungService.calculateMaxAnzahlWochen(schueler, semester).maxAnzahlWochen();
     assertEquals(20, anzahlWochenKursanmeldungen);
+  }
+
+  @Test
+  void findKursanmeldungenForSemesterAndRechnungsempfaengerBySchueler_ohneKursanmeldungen() {
+    Schueler schueler = schuelerRepository.findById(504).get();
+    Semester semester = semesterRepository.findById(101).get();
+    Map<Schueler, List<Kursanmeldung>> kursanmeldungenBySchueler =
+        kursanmeldungService.findKursanmeldungenForSemesterAndRechnungsempfaengerBySchueler(
+            semester, schueler.getRechnungsempfaenger());
+    assertTrue(kursanmeldungenBySchueler.isEmpty());
+  }
+
+  @Test
+  void findKursanmeldungenForSemesterAndRechnungsempfaengerBySchueler_zweiKursanmeldungen() {
+    Schueler schueler = schuelerRepository.findById(506).get();
+    Semester semester = semesterRepository.findById(101).get();
+    Map<Schueler, List<Kursanmeldung>> kursanmeldungenBySchueler =
+        kursanmeldungService.findKursanmeldungenForSemesterAndRechnungsempfaengerBySchueler(
+            semester, schueler.getRechnungsempfaenger());
+    assertEquals(1, kursanmeldungenBySchueler.size());
+    List<Kursanmeldung> kursanmeldungen = kursanmeldungenBySchueler.get(schueler);
+    assertEquals(2, kursanmeldungen.size());
   }
 }

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.persistence.entities.Semesterrechnung;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -43,13 +44,31 @@ class SemesterrechnungRepositoryTest {
   }
 
   @Test
-  void testFindSemesterrechnungenBySemesterId() {
+  void testFindBySemesterId() {
     List<Semesterrechnung> semesterrechnungen;
-    semesterrechnungen = semesterrechnungRepository.findSemesterrechnungenBySemesterId(10);
+    semesterrechnungen = semesterrechnungRepository.findBySemesterId(10);
     assertEquals(1, semesterrechnungen.size());
     assertEquals(10, semesterrechnungen.get(0).getSemester().getSemesterId());
 
-    semesterrechnungen = semesterrechnungRepository.findSemesterrechnungenBySemesterId(9999);
+    semesterrechnungen = semesterrechnungRepository.findBySemesterId(9999);
+    assertTrue(semesterrechnungen.isEmpty());
+  }
+
+  @Test
+  void testFindBySemesterIdAndRechnungsempfaengerId() {
+    Optional<Semesterrechnung> semesterrechnungen;
+    semesterrechnungen =
+        semesterrechnungRepository.findBySemesterIdAndRechnungsempfaengerId(10, 20);
+    assertTrue(semesterrechnungen.isPresent());
+    assertEquals(10, semesterrechnungen.get().getSemester().getSemesterId());
+    assertEquals(20, semesterrechnungen.get().getRechnungsempfaenger().getPersonId());
+
+    semesterrechnungen =
+        semesterrechnungRepository.findBySemesterIdAndRechnungsempfaengerId(10, 99);
+    assertTrue(semesterrechnungen.isEmpty());
+
+    semesterrechnungen =
+        semesterrechnungRepository.findBySemesterIdAndRechnungsempfaengerId(99, 20);
     assertTrue(semesterrechnungen.isEmpty());
   }
 

@@ -9,7 +9,6 @@ import ch.metzenthin.svm.domain.model.SemesterAndNumberOfKurse;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.repository.KursRepository;
 import ch.metzenthin.svm.persistence.repository.SemesterRepository;
-import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.SemesterService;
 import ch.metzenthin.svm.service.SemesterrechnungService;
 import ch.metzenthin.svm.service.result.DeleteSemesterResult;
@@ -34,19 +33,16 @@ public class SemesterServiceImpl implements SemesterService {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SemesterServiceImpl.class);
 
-  private final KursService kursService;
   private final SemesterrechnungService semesterrechnungService;
   private final SemesterRepository semesterRepository;
   private final KursRepository kursRepository;
 
   public SemesterServiceImpl(
-      KursService kursService,
-      SemesterRepository semesterRepository,
       SemesterrechnungService semesterrechnungService,
+      SemesterRepository semesterRepository,
       KursRepository kursRepository) {
-    this.kursService = kursService;
-    this.semesterRepository = semesterRepository;
     this.semesterrechnungService = semesterrechnungService;
+    this.semesterRepository = semesterRepository;
     this.kursRepository = kursRepository;
   }
 
@@ -77,6 +73,22 @@ public class SemesterServiceImpl implements SemesterService {
       }
     }
     return false;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Optional<Semester> findNaechstesSemester(Semester semester) {
+    String schuljahrNextSemester;
+    Semesterbezeichnung semesterbezeichnungPreviousSemester;
+    if (semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER) {
+      schuljahrNextSemester = semester.getSchuljahr();
+      semesterbezeichnungPreviousSemester = Semesterbezeichnung.ZWEITES_SEMESTER;
+    } else {
+      schuljahrNextSemester = Schuljahre.getNextSchuljahr(semester.getSchuljahr());
+      semesterbezeichnungPreviousSemester = Semesterbezeichnung.ERSTES_SEMESTER;
+    }
+    return semesterRepository.findBySchuljahrAndSemesterbezeichnung(
+        schuljahrNextSemester, semesterbezeichnungPreviousSemester);
   }
 
   @SuppressWarnings("DuplicatedCode")
@@ -208,7 +220,7 @@ public class SemesterServiceImpl implements SemesterService {
   @Override
   @Transactional
   public DeleteSemesterResult deleteSemesterrechnungenAndSemester(Semester semester) {
-    if (kursService.existsKursBySemesterId(semester.getSemesterId())) {
+    if (kursRepository.countBySemesterId(semester.getSemesterId()) > 0) {
       return DeleteSemesterResult.SEMESTER_VON_KURS_REFERENZIERT;
     }
 

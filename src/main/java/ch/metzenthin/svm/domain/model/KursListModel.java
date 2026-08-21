@@ -63,7 +63,7 @@ public class KursListModel
     Kurs kursToBeDeleted = getSelectedRow(indexOfKursToBeDeleted).kurs();
     DeleteKursResult deleteKursResult;
     try {
-      deleteKursResult = kursService.deleteKurs(kursToBeDeleted);
+      deleteKursResult = kursService.deleteKurs(kursToBeDeleted.getKursId());
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       deleteKursResult = DeleteKursResult.KURS_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

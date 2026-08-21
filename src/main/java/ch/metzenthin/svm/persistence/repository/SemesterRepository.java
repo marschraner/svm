@@ -3,6 +3,7 @@ package ch.metzenthin.svm.persistence.repository;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,4 +36,11 @@ public interface SemesterRepository extends JpaRepository<Semester, Integer> {
 
   @Query("SELECT s FROM Semester s ORDER BY s.semesterbeginn DESC, s.semesterende DESC")
   List<Semester> findAllOrderBySemesterbeginnAndSemesterendeDesc();
+
+  @Query(
+      "SELECT s FROM Semester s "
+          + "WHERE s.schuljahr = :schuljahr AND s.semesterbezeichnung = :semesterbezeichnung")
+  Optional<Semester> findBySchuljahrAndSemesterbezeichnung(
+      @Param("schuljahr") String schuljahr,
+      @Param("semesterbezeichnung") Semesterbezeichnung semesterbezeichnung);
 }

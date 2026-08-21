@@ -40,7 +40,7 @@ class KursanmeldungServiceImplCalculateTest {
           null);
 
   @Test
-  void testCalculateHoechsteAnzahlWochen_MittwochKurs() {
+  void testCalculateMaxAnzahlWochen_MittwochKurs() {
 
     Kurs kurs =
         new Kurs(
@@ -610,7 +610,7 @@ class KursanmeldungServiceImplCalculateTest {
   }
 
   @Test
-  void testCalculateHoechsteAnzahlWochen_MontagKurs() {
+  void testCalculateMaxAnzahlWochen_MontagKurs() {
 
     Kurs kurs =
         new Kurs(
@@ -764,7 +764,7 @@ class KursanmeldungServiceImplCalculateTest {
   }
 
   @Test
-  void testCalculateHoechsteAnzahlWochen_SamstagKurs() {
+  void testCalculateMaxAnzahlWochen_SamstagKurs() {
 
     Kurs kurs =
         new Kurs(

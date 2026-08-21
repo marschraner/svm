@@ -75,7 +75,7 @@ INSERT INTO svmtest.Schueler(person_id, geschlecht, vater_id, mutter_id, rechnun
 INSERT INTO svmtest.Person(person_id, version, discriminator, anrede, vorname, nachname,
                            geburtsdatum, festnetz, natel, email, adresse_id, creation_date,
                            last_modified)
-    VALUES (505, 0, 'Angehoeriger', 'Herr', 'Jürg', 'Müller',
+    VALUES (505, 0, 'Angehoeriger', 'HERR', 'Jürg', 'Müller',
             null, null, null, null, null,
             '2026-02-01', '2026-02-01');
 INSERT INTO svmtest.Angehoeriger(person_id, wuenscht_emails)
@@ -88,7 +88,7 @@ INSERT INTO svmtest.Person(person_id, version, discriminator, anrede, vorname, n
             '2026-02-01', '2026-02-01');
 INSERT INTO svmtest.Schueler(person_id, geschlecht, vater_id, mutter_id, rechnungsempfaenger_id,
                              bemerkungen)
-    VALUES (506, 'F', null, null, 505, null);
+    VALUES (506, 'W', null, null, 505, null);
 
 INSERT INTO svmtest.Kursanmeldung(person_id, kurs_id, version, anmeldedatum, abmeldedatum,
                                   bemerkungen, creation_date, last_modified)

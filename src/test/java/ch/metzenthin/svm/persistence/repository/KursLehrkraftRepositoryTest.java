@@ -1,6 +1,8 @@
 package ch.metzenthin.svm.persistence.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.common.utils.DateAndTimeUtils;
@@ -88,5 +90,15 @@ class KursLehrkraftRepositoryTest {
     assertEquals(21, kursLehrkraftList.get(0).lehrkraft().getPersonId());
     assertEquals(402, kursLehrkraftList.get(1).kursId());
     assertEquals(22, kursLehrkraftList.get(1).lehrkraft().getPersonId());
+  }
+
+  @Test
+  void testDeleteByKursId() {
+    List<KursLehrkraft> kursLehrkraefte =
+        kursLehrkraftRepository.findByKursIdOrderByLehrkraefteOrder(402);
+    assertFalse(kursLehrkraefte.isEmpty());
+    kursLehrkraftRepository.deleteByKursId(402);
+    kursLehrkraefte = kursLehrkraftRepository.findByKursIdOrderByLehrkraefteOrder(402);
+    assertTrue(kursLehrkraefte.isEmpty());
   }
 }

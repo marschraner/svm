@@ -4,6 +4,7 @@ import ch.metzenthin.svm.domain.model.IdAndCount;
 import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -26,12 +27,27 @@ public interface KursanmeldungRepository extends JpaRepository<Kursanmeldung, In
   List<IdAndCount> countKursanmeldungenBySemesterIdGroupByKursId(
       @Param("semesterId") int semesterId);
 
+  @Query("SELECT ka FROM Kursanmeldung ka WHERE ka.kurs.kursId = :kursId")
+  List<Kursanmeldung> findByKursId(@Param("kursId") int kursId);
+
   @Query(
-      "SELECT (ka) "
+      "SELECT ka "
           + "FROM Kursanmeldung ka "
-          + "JOIN Kurs k ON k.kursId = ka.kurs.kursId "
           + "WHERE ka.schueler.personId = :schuelerId "
-          + "AND k.semester.semesterId = :semesterId")
+          + "AND ka.kurs.semester.semesterId = :semesterId")
   List<Kursanmeldung> findBySchuelerIdAndSemesterId(
       @Param("schuelerId") int schuelerId, @Param("semesterId") int semesterId);
+
+  @Query(
+      "SELECT ka FROM Kursanmeldung ka "
+          + "WHERE ka.kurs.semester.semesterId = :semesterId "
+          + "AND ka.schueler.rechnungsempfaenger.personId = :rechnungsempfaengerId "
+          + "ORDER BY ka.schueler.personId")
+  List<Kursanmeldung> findBySemesterIdAndRechnungsempfaengerIdOrderBySchuelerId(
+      @Param("semesterId") int semesterId,
+      @Param("rechnungsempfaengerId") int rechnungsempfaengerId);
+
+  @Modifying
+  @Query("DELETE FROM Kursanmeldung ka WHERE ka.kurs.kursId = :kursId")
+  void deleteByKursId(@Param("kursId") int kursId);
 }

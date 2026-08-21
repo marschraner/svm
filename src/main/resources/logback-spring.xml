@@ -43,7 +43,7 @@
   <logger name="org.docx4j.XmlUtils" level="ERROR"/>
 
   <!-- SVM -->
-  <Logger name="ch.metzenthin.svm.service.impl.SemesterServiceImpl" level="DEBUG"/>
+  <Logger name="ch.metzenthin.svm.service.impl" level="DEBUG"/>
 
   <!-- Root Logger -->
   <root level="INFO">

@@ -3,14 +3,19 @@ package ch.metzenthin.svm.service.impl;
 import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNumberOfDaysOfPeriod;
 import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNumberOfWeeksBetween;
 
+import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Kursanmeldung;
 import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.repository.KursanmeldungRepository;
 import ch.metzenthin.svm.service.KursanmeldungService;
+import ch.metzenthin.svm.service.result.CalculateMaxAnzahlWochenKursanmeldungenResult;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,17 +30,39 @@ public class KursanmeldungServiceImpl implements KursanmeldungService {
 
   @Override
   @Transactional(readOnly = true)
-  public int calculateHoechsteAnzahlWochen(Schueler schueler, Semester semester) {
+  public CalculateMaxAnzahlWochenKursanmeldungenResult calculateMaxAnzahlWochen(
+      Schueler schueler, Semester semester) {
 
     List<Kursanmeldung> kursanmeldungen =
         kursanmeldungRepository.findBySchuelerIdAndSemesterId(
             schueler.getPersonId(), semester.getSemesterId());
-    Optional<Integer> maxAnzahlWochenOptional =
+    Set<Integer> anzahlWochenKursanmeldungenSet =
         kursanmeldungen.stream()
             .map(kursanmeldung -> calculateAnzahlWochen(kursanmeldung, semester))
-            .max(Integer::compare);
+            .collect(Collectors.toSet());
 
-    return maxAnzahlWochenOptional.orElse(0);
+    Optional<Integer> maxAnzahlWochenOptional =
+        anzahlWochenKursanmeldungenSet.stream().max(Integer::compareTo);
+    Integer maxAnzahlWochen = maxAnzahlWochenOptional.orElse(0);
+    boolean kursanmeldungenWithDifferentAnzahlWochen = anzahlWochenKursanmeldungenSet.size() > 1;
+    return new CalculateMaxAnzahlWochenKursanmeldungenResult(
+        maxAnzahlWochen, kursanmeldungenWithDifferentAnzahlWochen);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Map<Schueler, List<Kursanmeldung>>
+      findKursanmeldungenForSemesterAndRechnungsempfaengerBySchueler(
+          Semester semester, Angehoeriger rechnungsempfaenger) {
+
+    List<Kursanmeldung> kursanmeldungen =
+        kursanmeldungRepository.findBySemesterIdAndRechnungsempfaengerIdOrderBySchuelerId(
+            semester.getSemesterId(), rechnungsempfaenger.getPersonId());
+    return kursanmeldungen.stream()
+        .collect(
+            Collectors.groupingBy(
+                Kursanmeldung::getSchueler,
+                Collectors.mapping(kursanmeldung -> kursanmeldung, Collectors.toList())));
   }
 
   @SuppressWarnings("java:S3776")

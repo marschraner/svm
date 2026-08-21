@@ -27,5 +27,5 @@ public interface KursService {
 
   SaveKursResult saveKurs(Kurs kurs, Mitarbeiter lehrkraft1, Mitarbeiter lehrkraft2);
 
-  DeleteKursResult deleteKurs(Kurs kurs);
+  DeleteKursResult deleteKurs(int kursId);
 }

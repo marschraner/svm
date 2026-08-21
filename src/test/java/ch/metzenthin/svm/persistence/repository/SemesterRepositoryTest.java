@@ -1,10 +1,12 @@
 package ch.metzenthin.svm.persistence.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -74,5 +76,27 @@ class SemesterRepositoryTest {
     assertEquals("2017/2018", semestersFound.get(2).getSchuljahr());
     assertEquals(
         Semesterbezeichnung.ERSTES_SEMESTER, semestersFound.get(2).getSemesterbezeichnung());
+  }
+
+  @Test
+  void testFindBySchuljahrAndSemesterbezeichnung() {
+    Optional<Semester> semesterOptional;
+    semesterOptional =
+        semesterRepository.findBySchuljahrAndSemesterbezeichnung(
+            "2018/2019", Semesterbezeichnung.ERSTES_SEMESTER);
+    assertTrue(semesterOptional.isPresent());
+    assertEquals("2018/2019", semesterOptional.get().getSchuljahr());
+    assertEquals(
+        Semesterbezeichnung.ERSTES_SEMESTER, semesterOptional.get().getSemesterbezeichnung());
+
+    semesterOptional =
+        semesterRepository.findBySchuljahrAndSemesterbezeichnung(
+            "2018/2019", Semesterbezeichnung.ZWEITES_SEMESTER);
+    assertTrue(semesterOptional.isEmpty());
+
+    semesterOptional =
+        semesterRepository.findBySchuljahrAndSemesterbezeichnung(
+            "2019/2020", Semesterbezeichnung.ERSTES_SEMESTER);
+    assertTrue(semesterOptional.isEmpty());
   }
 }

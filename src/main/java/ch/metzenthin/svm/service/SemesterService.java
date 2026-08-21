@@ -6,6 +6,7 @@ import ch.metzenthin.svm.service.result.DeleteSemesterResult;
 import ch.metzenthin.svm.service.result.SaveSemesterResult;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Hans Stamm
@@ -20,6 +21,8 @@ public interface SemesterService {
       Calendar ferienende1,
       Calendar ferienbeginn2,
       Calendar ferienende2);
+
+  Optional<Semester> findNaechstesSemester(Semester semester);
 
   Semester determineNaechstesNochNichtErfasstesSemester();
 

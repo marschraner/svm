@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.persistence.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import ch.metzenthin.svm.domain.model.IdAndCount;
@@ -50,6 +51,19 @@ class KursanmeldungRepositoryTest {
   }
 
   @Test
+  void testFindByKursId() {
+    List<Kursanmeldung> kursanmeldungenByKursId;
+    kursanmeldungenByKursId = kursanmeldungRepository.findByKursId(401);
+    assertEquals(1, kursanmeldungenByKursId.size());
+
+    kursanmeldungenByKursId = kursanmeldungRepository.findByKursId(403);
+    assertEquals(2, kursanmeldungenByKursId.size());
+
+    kursanmeldungenByKursId = kursanmeldungRepository.findByKursId(999);
+    assertEquals(0, kursanmeldungenByKursId.size());
+  }
+
+  @Test
   void testFindBySchuelerIdAndSemesterId() {
     List<Kursanmeldung> kursanmeldungenBySchuelerIdAndSemesterId =
         kursanmeldungRepository.findBySchuelerIdAndSemesterId(502, 101);
@@ -62,5 +76,34 @@ class KursanmeldungRepositoryTest {
     kursanmeldungenBySchuelerIdAndSemesterId =
         kursanmeldungRepository.findBySchuelerIdAndSemesterId(503, 101);
     assertTrue(kursanmeldungenBySchuelerIdAndSemesterId.isEmpty());
+  }
+
+  @Test
+  void testFindBySemesterIdAndRechnungsempfaengerIdOrderBySchuelerId() {
+    List<Kursanmeldung> kursanmeldungen;
+    kursanmeldungen =
+        kursanmeldungRepository.findBySemesterIdAndRechnungsempfaengerIdOrderBySchuelerId(101, 501);
+    assertEquals(1, kursanmeldungen.size());
+
+    kursanmeldungen =
+        kursanmeldungRepository.findBySemesterIdAndRechnungsempfaengerIdOrderBySchuelerId(102, 503);
+    assertEquals(1, kursanmeldungen.size());
+
+    kursanmeldungen =
+        kursanmeldungRepository.findBySemesterIdAndRechnungsempfaengerIdOrderBySchuelerId(102, 505);
+    assertEquals(1, kursanmeldungen.size());
+
+    kursanmeldungen =
+        kursanmeldungRepository.findBySemesterIdAndRechnungsempfaengerIdOrderBySchuelerId(102, 501);
+    assertEquals(0, kursanmeldungen.size());
+  }
+
+  @Test
+  void testDeleteByKursId() {
+    List<Kursanmeldung> kursanmeldungen = kursanmeldungRepository.findByKursId(401);
+    assertFalse(kursanmeldungen.isEmpty());
+    kursanmeldungRepository.deleteByKursId(401);
+    kursanmeldungen = kursanmeldungRepository.findByKursId(401);
+    assertTrue(kursanmeldungen.isEmpty());
   }
 }

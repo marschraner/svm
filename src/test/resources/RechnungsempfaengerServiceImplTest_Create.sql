@@ -29,7 +29,7 @@ INSERT INTO svmtest.Kurs(kurs_id, version, semester_id, kurstyp_id, altersbereic
             'MITTWOCH', '14:00:00', '15:00:00', 301, NULL,
             '2025-10-01', '2025-10-01');
 
--- Angehöriger (Rechnungsempfänger) und Schüler mit einer Kursanmeldung für das ganze Semester
+-- Angehöriger (Rechnungsempfänger) und zwei Schüler mit Kursanmeldung für das ganze Semester
 INSERT INTO svmtest.Person(person_id, version, discriminator, anrede, vorname, nachname,
                            geburtsdatum, festnetz, natel, email, adresse_id, creation_date,
                            last_modified)
@@ -55,6 +55,24 @@ INSERT INTO svmtest.Anmeldung(anmeldung_id, version, anmeldedatum, abmeldedatum,
 INSERT INTO svmtest.Kursanmeldung(person_id, kurs_id, version, anmeldedatum, abmeldedatum,
                                   bemerkungen, creation_date, last_modified)
     VALUES (502, 401, 0, '2025-01-01', null, null,
+            '2025-10-01','2025-10-01');
+INSERT INTO svmtest.Person(person_id, version, discriminator, anrede, vorname, nachname,
+                           geburtsdatum, festnetz, natel, email, adresse_id, creation_date,
+                           last_modified)
+    VALUES (508, 0, 'Schueler', 'KEINE', 'Peter', 'Muster 2',
+            null, null, null, null, null,
+            '2025-10-01', '2025-10-01');
+INSERT INTO svmtest.Schueler(person_id, geschlecht, vater_id, mutter_id, rechnungsempfaenger_id,
+                             bemerkungen)
+    VALUES (508, 'M', null, null, 501, null);
+
+INSERT INTO svmtest.Anmeldung(anmeldung_id, version, anmeldedatum, abmeldedatum, schueler_id,
+                              creation_date, last_modified)
+    VALUES (605, 0, '2025-01-01', null, 508, '2025-10-01', '2025-10-01');
+
+INSERT INTO svmtest.Kursanmeldung(person_id, kurs_id, version, anmeldedatum, abmeldedatum,
+                                  bemerkungen, creation_date, last_modified)
+    VALUES (508, 401, 0, '2025-01-01', null, null,
             '2025-10-01','2025-10-01');
 
 -- Angehöriger (Rechnungsempfänger) und Schüler (abgemeldet)
