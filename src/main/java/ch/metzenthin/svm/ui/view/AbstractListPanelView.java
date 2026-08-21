@@ -141,6 +141,10 @@ public abstract class AbstractListPanelView extends AbstractView {
     showErrorMessageDialog(rootComponent, message, title);
   }
 
+  public void showInfoMessageDialog(String message, String title) {
+    showInfoMessageDialog(rootComponent, message, title);
+  }
+
   public int showYesNoDialog(String message, String title) {
     return showYesNoDialog(rootComponent, message, title);
   }

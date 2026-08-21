@@ -12,6 +12,10 @@ import javax.swing.JOptionPane;
  */
 public abstract class AbstractView {
 
+  protected void showInfoMessageDialog(Component parent, String message, String title) {
+    JOptionPane.showMessageDialog(parent, message, title, JOptionPane.INFORMATION_MESSAGE);
+  }
+
   protected void showErrorMessageDialog(Component parent, String message, String title) {
     JOptionPane.showMessageDialog(parent, message, title, JOptionPane.ERROR_MESSAGE);
   }
@@ -58,6 +62,7 @@ public abstract class AbstractView {
     dialog.setTitle("Verarbeitung läuft ...");
     dialog.setModal(true);
     dialog.setContentPane(optionPane);
+    dialog.setLocationRelativeTo(null);
     dialog.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     dialog.pack();
 

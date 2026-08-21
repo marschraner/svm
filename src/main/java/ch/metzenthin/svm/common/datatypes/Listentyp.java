@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.common.datatypes;
 
 import ch.metzenthin.svm.common.utils.SvmProperties;
+import lombok.Getter;
 
 /**
  * @author Martin Schraner
@@ -56,7 +57,7 @@ public enum Listentyp {
       "Mitarbeiter-Liste Name zweispaltig (CSV)", "Mitarbeiter-Liste", Filetyp.CSV, null),
   MITARBEITER_LISTE_NAME_EINSPALTIG_CSV(
       "Mitarbeiter-Liste Name einspaltig (CSV)", "Mitarbeiter-Liste", Filetyp.CSV, null),
-  KURSLISTE_WORD("Kursliste (Word)", "Kursliste", Filetyp.DOCX, null),
+  KURSLISTE_WORD("Kursliste (Word)", "Kursliste", Filetyp.DOCX, null, "Kurse", true),
   KURSLISTE_CSV("Kursliste (CSV)", "Kursliste", Filetyp.CSV, null),
   VORRECHNUNGEN_SERIENBRIEF(
       "Vorrechnungen-Serienbrief", "Vorrechnungen-Serienbrief", Filetyp.CSV, null),
@@ -80,28 +81,30 @@ public enum Listentyp {
   RECHNUNGSLISTE("Rechnungsliste", "Rechnungsliste", Filetyp.CSV, null);
 
   private final String name;
-  private final String filenameOhneFileExtension;
-  private final Filetyp filetyp;
-  private final String svmPropertiesKey;
+  @Getter private final String filenameOhneFileExtension;
+  @Getter private final Filetyp filetyp;
+  @Getter private final String svmPropertiesKey;
+  @Getter private final String listenTitel;
+  @Getter private final boolean isListenTitelRequired;
 
   Listentyp(
       String name, String filenameOhneFileExtension, Filetyp filetyp, String svmPropertiesKey) {
+    this(name, filenameOhneFileExtension, filetyp, svmPropertiesKey, null, false);
+  }
+
+  Listentyp(
+      String name,
+      String filenameOhneFileExtension,
+      Filetyp filetyp,
+      String svmPropertiesKey,
+      String listenTitel,
+      boolean isListenTitelRequired) {
     this.name = name;
     this.filenameOhneFileExtension = filenameOhneFileExtension;
     this.filetyp = filetyp;
     this.svmPropertiesKey = svmPropertiesKey;
-  }
-
-  public String getFilenameOhneFileExtension() {
-    return filenameOhneFileExtension;
-  }
-
-  public Filetyp getFiletyp() {
-    return filetyp;
-  }
-
-  public String getSvmPropertiesKey() {
-    return svmPropertiesKey;
+    this.listenTitel = listenTitel;
+    this.isListenTitelRequired = isListenTitelRequired;
   }
 
   @Override

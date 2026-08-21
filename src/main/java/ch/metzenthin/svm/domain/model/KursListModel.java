@@ -1,13 +1,16 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.datatypes.Listentyp;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.result.DeleteKursResult;
+import ch.metzenthin.svm.service.result.ExportListResult;
 import ch.metzenthin.svm.ui.componentmodel.KursTableModel;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import jakarta.persistence.OptimisticLockException;
+import java.io.File;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -96,5 +99,10 @@ public class KursListModel
 
   public String getSemesterDisplayName() {
     return semester.getSemesterbezeichnung() + " " + semester.getSchuljahr();
+  }
+
+  public ExportListResult exportList(Listentyp listentyp, String listenTitel, File outputFile) {
+    return kursService.exportList(
+        listentyp, listenTitel, outputFile, getTableModel().getRowIterator(), semester);
   }
 }

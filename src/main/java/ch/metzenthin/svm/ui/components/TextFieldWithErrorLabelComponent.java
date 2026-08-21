@@ -49,6 +49,13 @@ public class TextFieldWithErrorLabelComponent {
     return textField.isEnabled();
   }
 
+  public void setEnabled(boolean enabled) {
+    textField.setEnabled(enabled);
+    if (!enabled) {
+      setErrorLabelVisible(false);
+    }
+  }
+
   public void setErrorLabelText(String errorLabelText) {
     this.errorLabel.setText(errorLabelText);
   }

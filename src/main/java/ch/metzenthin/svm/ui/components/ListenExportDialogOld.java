@@ -1,44 +1,93 @@
 package ch.metzenthin.svm.ui.components;
 
+import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.datatypes.ListenExportTyp;
 import ch.metzenthin.svm.common.datatypes.Listentyp;
+import ch.metzenthin.svm.ui.componentmodel.KurseTableModel;
+import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
+import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
+import ch.metzenthin.svm.ui.componentmodel.SemesterrechnungenTableModel;
+import ch.metzenthin.svm.ui.control.ListenExportControllerOld;
 import java.awt.*;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
-import lombok.Getter;
 
 @SuppressWarnings({"java:S100", "java:S1450"})
-public class ListenExportDialog extends SpeichernAbbrechenDialog {
+public class ListenExportDialogOld extends JDialog {
+
+  // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
+  private static final boolean DEFAULT_BUTTON_ENABLED = false;
 
   private JPanel contentPane;
   private JPanel datenPanel;
-  private JPanel buttonPanel;
-  private JLabel titel;
   private JLabel txtListentyp;
-  @Getter private JComboBox<Listentyp> comboBoxListentyp;
-  @Getter private JLabel errLblListentyp;
-  @Getter private JTextField txtTitel;
-  @Getter private JLabel errLblTitel;
+  private JComboBox<Listentyp> comboBoxListentyp;
+  private JLabel titel;
+  private JTextField txtTitel;
+  private JLabel errLblListentyp;
+  private JLabel errLblTitel;
+  private JPanel buttonPanel;
   private JButton btnOk;
   private JButton btnAbbrechen;
 
-  @Override
-  public JButton getSpeichernButton() {
-    return btnOk;
-  }
-
-  @Override
-  public JButton getAbbrechenButton() {
-    return btnAbbrechen;
-  }
-
-  public ListenExportDialog(String titel) {
+  public ListenExportDialogOld(
+      SvmContext svmContext,
+      SchuelerSuchenTableModel schuelerSuchenTableModel,
+      MitarbeitersTableModel mitarbeitersTableModel,
+      KurseTableModel kurseTableModel,
+      SemesterrechnungenTableModel semesterrechnungenTableModel,
+      ListenExportTyp listenExportTyp) {
     $$$setupUI$$$();
     setContentPane(contentPane);
     setModal(true);
-    setTitle(titel);
+    setTitle("Als Liste exportieren");
+    initializeErrLbls();
+    if (DEFAULT_BUTTON_ENABLED) {
+      getRootPane().setDefaultButton(btnOk);
+    }
+    createListenExportController(
+        svmContext,
+        schuelerSuchenTableModel,
+        mitarbeitersTableModel,
+        kurseTableModel,
+        semesterrechnungenTableModel,
+        listenExportTyp);
+  }
+
+  private void createListenExportController(
+      SvmContext svmContext,
+      SchuelerSuchenTableModel schuelerSuchenTableModel,
+      MitarbeitersTableModel mitarbeitersTableModel,
+      KurseTableModel kurseTableModel,
+      SemesterrechnungenTableModel semesterrechnungenTableModel,
+      ListenExportTyp listenExportTyp) {
+    ListenExportControllerOld listenExportControllerOld =
+        new ListenExportControllerOld(
+            svmContext.getModelFactory().createListenExportModel(),
+            schuelerSuchenTableModel,
+            mitarbeitersTableModel,
+            kurseTableModel,
+            semesterrechnungenTableModel,
+            listenExportTyp,
+            DEFAULT_BUTTON_ENABLED);
+    listenExportControllerOld.setListenExportDialog(this);
+    listenExportControllerOld.setContentPane(contentPane);
+    listenExportControllerOld.setComboBoxListentyp(comboBoxListentyp);
+    listenExportControllerOld.setTxtTitel(txtTitel);
+    listenExportControllerOld.setBtnOk(btnOk);
+    listenExportControllerOld.setBtnAbbrechen(btnAbbrechen);
+    listenExportControllerOld.setErrLblListentyp(errLblListentyp);
+    listenExportControllerOld.setErrLblTitel(errLblTitel);
+  }
+
+  private void initializeErrLbls() {
+    errLblListentyp.setVisible(false);
+    errLblListentyp.setForeground(Color.RED);
+    errLblTitel.setVisible(false);
+    errLblTitel.setForeground(Color.RED);
   }
 
   private void createUIComponents() {

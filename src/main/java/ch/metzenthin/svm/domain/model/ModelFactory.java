@@ -90,7 +90,7 @@ public interface ModelFactory {
 
   KursanmeldungErfassenModel createKursanmeldungErfassenModel();
 
-  ListenExportModel createListenExportModel();
+  ListenExportModelOld createListenExportModel();
 
   MaerchenListModel createMaerchenListModel();
 

@@ -3,6 +3,7 @@ package ch.metzenthin.svm.common.utils;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -61,5 +62,42 @@ class SvmStringUtilsTest {
             "\n\nZeile 1 \n Äh Zeile 2 \n äh Zeile 3\n"));
 
     assertNull(SvmStringUtils.replaceLineBreaksByCommaOrPeriod(null));
+  }
+
+  @Test
+  void testSplitStringIntoMultipleLinesLeerschlag() {
+    String string = "Dies ist eine Zeile, die zu lange ist.";
+    List<String> lines = SvmStringUtils.splitStringIntoMultipleLines(string, 15, 3);
+    assertEquals(3, lines.size());
+    assertEquals("Dies ist eine", lines.get(0));
+    assertEquals("Zeile, die zu", lines.get(1));
+    assertEquals("lange ist.", lines.get(2));
+  }
+
+  @Test
+  void testSplitStringIntoMultipleLinesLeerschlagMaxLines() {
+    String string = "Dies ist eine Zeile, die zu lange ist.";
+    List<String> lines = SvmStringUtils.splitStringIntoMultipleLines(string, 15, 2);
+    assertEquals(2, lines.size());
+    assertEquals("Dies ist eine", lines.get(0));
+    assertEquals("Zeile, die zu lange ist.", lines.get(1));
+  }
+
+  @Test
+  void testSplitStringIntoMultipleLinesBindestrich() {
+    String string = "Rhythmik-Darstellendes Spiel";
+    List<String> lines = SvmStringUtils.splitStringIntoMultipleLines(string, 20, 2);
+    assertEquals(2, lines.size());
+    assertEquals("Rhythmik-", lines.get(0));
+    assertEquals("Darstellendes Spiel", lines.get(1));
+  }
+
+  @Test
+  void testSplitStringIntoMultipleLinesSchraegstrich() {
+    String string = "Mittwoch Morgen/Abend";
+    List<String> lines = SvmStringUtils.splitStringIntoMultipleLines(string, 18, 2);
+    assertEquals(2, lines.size());
+    assertEquals("Mittwoch Morgen/", lines.get(0));
+    assertEquals("Abend", lines.get(1));
   }
 }

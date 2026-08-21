@@ -10,7 +10,7 @@ import ch.metzenthin.svm.domain.commands.DeleteMitarbeiterCommand;
 import ch.metzenthin.svm.domain.model.MitarbeitersModel;
 import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
-import ch.metzenthin.svm.ui.components.ListenExportDialog;
+import ch.metzenthin.svm.ui.components.ListenExportDialogOld;
 import ch.metzenthin.svm.ui.components.MitarbeiterErfassenDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -322,11 +322,11 @@ public class MitarbeitersController {
           "Nicht alle Einträge selektiert",
           JOptionPane.INFORMATION_MESSAGE);
     }
-    ListenExportDialog listenExportDialog =
-        new ListenExportDialog(
+    ListenExportDialogOld listenExportDialogOld =
+        new ListenExportDialogOld(
             svmContext, null, mitarbeitersTableModel, null, null, ListenExportTyp.MITARBEITERS);
-    listenExportDialog.pack();
-    listenExportDialog.setVisible(true);
+    listenExportDialogOld.pack();
+    listenExportDialogOld.setVisible(true);
     btnExportieren.setFocusPainted(false);
   }
 

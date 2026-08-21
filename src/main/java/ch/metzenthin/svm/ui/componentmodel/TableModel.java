@@ -2,6 +2,7 @@ package ch.metzenthin.svm.ui.componentmodel;
 
 import ch.metzenthin.svm.domain.model.AbstractTableData;
 import java.io.Serial;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.table.AbstractTableModel;
@@ -64,5 +65,9 @@ public class TableModel<T extends AbstractTableData<U>, U> extends AbstractTable
 
   public void forEachRow(Consumer<U> action) {
     tableData.forEachRow(action);
+  }
+
+  public Iterator<U> getRowIterator() {
+    return tableData.getIterator();
   }
 }

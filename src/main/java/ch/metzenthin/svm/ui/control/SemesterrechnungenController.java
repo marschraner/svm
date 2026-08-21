@@ -9,7 +9,7 @@ import ch.metzenthin.svm.domain.model.SemesterrechnungBearbeitenModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungenModel;
 import ch.metzenthin.svm.ui.componentmodel.*;
 import ch.metzenthin.svm.ui.components.EmailSemesterrechnungenDialog;
-import ch.metzenthin.svm.ui.components.ListenExportDialog;
+import ch.metzenthin.svm.ui.components.ListenExportDialogOld;
 import ch.metzenthin.svm.ui.components.RechnungsdatumErfassenDialog;
 import ch.metzenthin.svm.ui.components.SemesterrechnungBearbeitenPanel;
 import java.awt.*;
@@ -347,16 +347,16 @@ public class SemesterrechnungenController {
           "Nicht alle Einträge selektiert",
           JOptionPane.INFORMATION_MESSAGE);
     }
-    ListenExportDialog listenExportDialog =
-        new ListenExportDialog(
+    ListenExportDialogOld listenExportDialogOld =
+        new ListenExportDialogOld(
             svmContext,
             null,
             null,
             null,
             semesterrechnungenTableModel,
             ListenExportTyp.SEMESTERRECHNUNGEN);
-    listenExportDialog.pack();
-    listenExportDialog.setVisible(true);
+    listenExportDialogOld.pack();
+    listenExportDialogOld.setVisible(true);
     btnExportieren.setFocusPainted(false);
   }
 

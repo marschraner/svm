@@ -2,6 +2,7 @@ package ch.metzenthin.svm;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.utils.SvmProperties;
+import ch.metzenthin.svm.config.SvmProperties2;
 import ch.metzenthin.svm.domain.model.ModelFactory;
 import ch.metzenthin.svm.domain.model.SvmModel;
 import ch.metzenthin.svm.ui.components.SvmDesktop;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -22,6 +24,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * SVM Applikation
  */
 @SpringBootApplication
+@EnableConfigurationProperties(SvmProperties2.class)
 @EnableJpaRepositories("ch.metzenthin.svm.persistence.repository")
 public class Svm {
 

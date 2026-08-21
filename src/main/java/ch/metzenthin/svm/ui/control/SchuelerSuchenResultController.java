@@ -8,7 +8,7 @@ import ch.metzenthin.svm.common.datatypes.ListenExportTyp;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.EmailSchuelerListeDialog;
-import ch.metzenthin.svm.ui.components.ListenExportDialog;
+import ch.metzenthin.svm.ui.components.ListenExportDialogOld;
 import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -228,11 +228,11 @@ public class SchuelerSuchenResultController {
           "Nicht alle Einträge selektiert",
           JOptionPane.INFORMATION_MESSAGE);
     }
-    ListenExportDialog listenExportDialog =
-        new ListenExportDialog(
+    ListenExportDialogOld listenExportDialogOld =
+        new ListenExportDialogOld(
             svmContext, schuelerSuchenTableModel, null, null, null, ListenExportTyp.SCHUELER);
-    listenExportDialog.pack();
-    listenExportDialog.setVisible(true);
+    listenExportDialogOld.pack();
+    listenExportDialogOld.setVisible(true);
     btnExportieren.setFocusPainted(false);
   }
 

@@ -268,8 +268,8 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
-  public ListenExportModel createListenExportModel() {
-    return new ListenExportModelImpl();
+  public ListenExportModelOld createListenExportModel() {
+    return new ListenExportModelOldImpl();
   }
 
   @Override

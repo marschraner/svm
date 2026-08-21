@@ -1,13 +1,18 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.common.datatypes.Listentyp;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateKursModel;
 import ch.metzenthin.svm.domain.model.KursAndLehrkraefteAndNumberOfKursanmeldungen;
 import ch.metzenthin.svm.domain.model.KursListModel;
 import ch.metzenthin.svm.domain.model.KursTableData;
+import ch.metzenthin.svm.domain.model.ListenExportModel;
+import ch.metzenthin.svm.domain.model.ListenExportModelImpl;
 import ch.metzenthin.svm.service.result.DeleteKursResult;
+import ch.metzenthin.svm.service.result.ExportListResult;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import ch.metzenthin.svm.ui.components.KursListPanel;
+import ch.metzenthin.svm.ui.components.SwingWorkerWithBusyDialog;
 import ch.metzenthin.svm.ui.view.KursListView;
 import java.awt.event.ActionListener;
 
@@ -127,7 +132,34 @@ public class KursListController
   }
 
   private void showOnExportDialog() {
-    // TODO Exportieren
+    ListenExportModel listenExportModel = new ListenExportModelImpl();
+    ListenExportController listenExportController =
+        new ListenExportController(
+            listenExportModel,
+            "Kurse exportieren",
+            new Listentyp[] {Listentyp.KURSLISTE_WORD, Listentyp.KURSLISTE_CSV});
+    listenExportController.showDialog();
+
+    if (listenExportModel.getExportFile() != null) {
+      SwingWorkerWithBusyDialog<ExportListResult> swingWorker =
+          view.createSwingWorkerWithBusyDialog("Die Datei wird erstellt. Bitte warten ...");
+      try {
+        ExportListResult exportResult =
+            swingWorker.executeAndGetResult(
+                () ->
+                    model.exportList(
+                        listenExportModel.getListentyp(),
+                        listenExportModel.getTitel(),
+                        listenExportModel.getExportFile()));
+        if (exportResult == ExportListResult.LISTE_ERFOLGREICH_ERSTELLT) {
+          view.showInfoMessageDialog(
+              "Die Liste wurde erfolgreich erstellt.", "Liste erfolgreich erstellt");
+        }
+      } catch (Exception e) {
+        view.showErrorMessageDialog(
+            "Die Liste konnte nicht erstellt werden.", "Liste nicht erfolgreich erstellt");
+      }
+    }
   }
 
   @Override

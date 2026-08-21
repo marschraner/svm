@@ -1,5 +1,11 @@
 package ch.metzenthin.svm.service.impl;
 
+import static ch.metzenthin.svm.common.utils.Converter.asString;
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
+import static ch.metzenthin.svm.common.utils.SvmStringUtils.splitStringIntoMultipleLines;
+
+import ch.metzenthin.svm.common.datatypes.Listentyp;
+import ch.metzenthin.svm.config.SvmProperties2;
 import ch.metzenthin.svm.domain.model.IdAndCount;
 import ch.metzenthin.svm.domain.model.KursAndLehrkraefteAndNumberOfKursanmeldungen;
 import ch.metzenthin.svm.domain.model.KursIdAndLehrkraft;
@@ -20,14 +26,22 @@ import ch.metzenthin.svm.persistence.repository.SemesterRepository;
 import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.SemesterService;
 import ch.metzenthin.svm.service.SemesterrechnungService;
+import ch.metzenthin.svm.service.export.csv.CsvExportService;
+import ch.metzenthin.svm.service.export.word.CellLayout;
+import ch.metzenthin.svm.service.export.word.WordExportService;
+import ch.metzenthin.svm.service.export.word.WordTableLayout;
 import ch.metzenthin.svm.service.result.DeleteKursResult;
+import ch.metzenthin.svm.service.result.ExportListResult;
 import ch.metzenthin.svm.service.result.SaveKursResult;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +54,8 @@ public class KursServiceImpl implements KursService {
 
   private final SemesterService semesterService;
   private final SemesterrechnungService semesterrechnungService;
+  private final CsvExportService csvExportService;
+  private final WordExportService wordExportService;
   private final KursRepository kursRepository;
   private final KursLehrkraftRepository kursLehrkraftRepository;
   private final LektionsgebuehrenRepository lektionsgebuehrenRepository;
@@ -48,10 +64,13 @@ public class KursServiceImpl implements KursService {
   private final KursortRepository kursortRepository;
   private final KursanmeldungRepository kursanmeldungRepository;
   private final MitarbeiterRepository mitarbeiterRepository;
+  private final SvmProperties2 svmProperties2;
 
   public KursServiceImpl(
       SemesterService semesterService,
       SemesterrechnungService semesterrechnungService,
+      CsvExportService csvExportService,
+      WordExportService wordExportService,
       KursRepository kursRepository,
       KursLehrkraftRepository kursLehrkraftRepository,
       LektionsgebuehrenRepository lektionsgebuehrenRepository,
@@ -59,9 +78,12 @@ public class KursServiceImpl implements KursService {
       KurstypRepository kurstypRepository,
       KursortRepository kursortRepository,
       KursanmeldungRepository kursanmeldungRepository,
-      MitarbeiterRepository mitarbeiterRepository) {
+      MitarbeiterRepository mitarbeiterRepository,
+      SvmProperties2 svmProperties2) {
     this.semesterService = semesterService;
     this.semesterrechnungService = semesterrechnungService;
+    this.csvExportService = csvExportService;
+    this.wordExportService = wordExportService;
     this.kursRepository = kursRepository;
     this.kursLehrkraftRepository = kursLehrkraftRepository;
     this.lektionsgebuehrenRepository = lektionsgebuehrenRepository;
@@ -70,6 +92,7 @@ public class KursServiceImpl implements KursService {
     this.kursortRepository = kursortRepository;
     this.kursanmeldungRepository = kursanmeldungRepository;
     this.mitarbeiterRepository = mitarbeiterRepository;
+    this.svmProperties2 = svmProperties2;
   }
 
   @Override
@@ -292,5 +315,135 @@ public class KursServiceImpl implements KursService {
     }
 
     return DeleteKursResult.LOESCHEN_ERFOLGREICH;
+  }
+
+  @SuppressWarnings("ExtractMethodRecommender")
+  @Override
+  public ExportListResult exportList(
+      Listentyp listentyp,
+      String listenTitel,
+      File outputFile,
+      Iterator<KursAndLehrkraefteAndNumberOfKursanmeldungen> rowIterator,
+      Semester semester) {
+
+    switch (listentyp) {
+      case KURSLISTE_CSV -> {
+        Function<KursAndLehrkraefteAndNumberOfKursanmeldungen, List<String>> columnsSupplier =
+            kursAndLehrkraefteAndNumberOfKursanmeldungen -> {
+              Kurs kurs = kursAndLehrkraefteAndNumberOfKursanmeldungen.kurs();
+              String bemerkungen = "";
+              if (checkNotEmpty(kurs.getBemerkungen())) {
+                bemerkungen = kurs.getBemerkungen().replace(";", ",");
+              }
+              return List.of(
+                  kurs.getKurstyp().getBezeichnung(),
+                  kurs.getAltersbereich(),
+                  kurs.getStufe(),
+                  kurs.getWochentag().toString(),
+                  kurs.getZeitBeginn().toString(),
+                  kurs.getZeitEnde().toString(),
+                  kurs.getKursort().getBezeichnung(),
+                  getMitarbeiterShortAsStr(kursAndLehrkraefteAndNumberOfKursanmeldungen),
+                  bemerkungen);
+            };
+        csvExportService.exportList(
+            List.of(
+                "Kurstyp", "Alter", "Stufe", "Tag", "Von", "Bis", "Ort", "Leitung", "Bemerkungen"),
+            rowIterator,
+            columnsSupplier,
+            outputFile);
+      }
+
+      case KURSLISTE_WORD -> {
+        WordTableLayout wordTableLayout = createWordTableLayout();
+        String title1 =
+            svmProperties2.getTheaterName()
+                + "                              "
+                + getSemesterTitel(semester);
+        List<List<String>> headerColumnsRows =
+            List.of(
+                List.of("", "Kurstyp", "Alter", "Tag", "Leitung", "Bemerkungen"),
+                List.of("", "", "Stufe", "Zeit", "Ort", ""));
+
+        final int[] rowNumber = {0};
+        Function<KursAndLehrkraefteAndNumberOfKursanmeldungen, List<List<String>>> columnsSupplier =
+            kursAndLehrkraefteAndNumberOfKursanmeldungen -> {
+              rowNumber[0]++;
+              Kurs kurs = kursAndLehrkraefteAndNumberOfKursanmeldungen.kurs();
+              List<String> kurstypLines =
+                  splitStringIntoMultipleLines(kurs.getKurstyp().getBezeichnung(), 22, 2);
+              List<String> bemerkungenLines =
+                  splitStringIntoMultipleLines(kurs.getBemerkungen(), 16, 2);
+              return List.of(
+                  List.of(
+                      Integer.toString(rowNumber[0]),
+                      kurstypLines.get(0),
+                      kurs.getAltersbereich(),
+                      kurs.getWochentag().toString(),
+                      getMitarbeiterShortAsStr(kursAndLehrkraefteAndNumberOfKursanmeldungen),
+                      (!bemerkungenLines.isEmpty() ? bemerkungenLines.get(0) : "")),
+                  List.of(
+                      "",
+                      ((kurstypLines.size() > 1) ? kurstypLines.get(1) : ""),
+                      kurs.getStufe(),
+                      asString(kurs.getZeitBeginn()) + " - " + asString(kurs.getZeitEnde()),
+                      kurs.getKursort().getBezeichnung(),
+                      ((bemerkungenLines.size() > 1) ? bemerkungenLines.get(1) : "")));
+            };
+
+        wordExportService.exportList(
+            wordTableLayout,
+            title1,
+            listenTitel,
+            headerColumnsRows,
+            rowIterator,
+            columnsSupplier,
+            outputFile);
+      }
+
+      default -> throw new IllegalStateException("Unexpected value: " + listentyp);
+    }
+
+    return ExportListResult.LISTE_ERFOLGREICH_ERSTELLT;
+  }
+
+  private static String getMitarbeiterShortAsStr(
+      KursAndLehrkraefteAndNumberOfKursanmeldungen kursAndLehrkraefteAndNumberOfKursanmeldungen) {
+    return Mitarbeiter.getMitarbeiterShortAsStr(
+        kursAndLehrkraefteAndNumberOfKursanmeldungen.lehrkraefte());
+  }
+
+  private static String getSemesterTitel(Semester semester) {
+    return (semester == null)
+        ? ""
+        : "Schuljahr " + semester.getSchuljahr() + ", " + semester.getSemesterbezeichnung();
+  }
+
+  private static WordTableLayout createWordTableLayout() {
+    // Spaltenbreiten
+    // ACHTUNG: Summe muss <= 11200 (wenn nicht anders möglich: <= 11500) sein (bei linkem
+    // Default-Rand von 600)!
+    //          Bei > 11200 hinten schmalerer Rand!
+    //          Bei > 11500 Spaltenbreite durch Inhalt beeinflusst!!!
+    List<Integer> columnWidths = List.of(500, 2100, 2100, 1900, 2800, 1600);
+
+    List<List<CellLayout>> datasetRowCellLayouts =
+        List.of(
+            List.of(
+                new CellLayout(false, 0, new int[] {0}),
+                new CellLayout(false, 0, new int[] {0}),
+                new CellLayout(false, 0, new int[] {22, 23, 24, 25, 26, 28}),
+                new CellLayout(false, 0, new int[] {0}),
+                new CellLayout(false, 0, new int[] {26, 27, 28, 29, 30, 32}),
+                new CellLayout(false, 0, new int[] {16, 17, 18, 19, 20, 22})),
+            List.of(
+                new CellLayout(false, 0, new int[] {0}),
+                new CellLayout(false, 0, new int[] {20, 21, 22, 23, 24, 26}),
+                new CellLayout(false, 0, new int[] {22, 23, 24, 25, 26, 28}),
+                new CellLayout(false, 0, new int[] {0}),
+                new CellLayout(false, 0, new int[] {26, 27, 28, 29, 30, 32}),
+                new CellLayout(false, 0, new int[] {16, 17, 18, 19, 20, 22})));
+
+    return new WordTableLayout(columnWidths, datasetRowCellLayouts);
   }
 }

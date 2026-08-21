@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Field;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 import lombok.Setter;
@@ -41,5 +42,9 @@ public abstract class AbstractTableData<T> {
 
   public void forEachRow(Consumer<T> action) {
     data.forEach(action);
+  }
+
+  public Iterator<T> getIterator() {
+    return data.iterator();
   }
 }

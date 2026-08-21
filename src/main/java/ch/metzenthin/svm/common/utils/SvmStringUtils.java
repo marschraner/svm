@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.common.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -70,5 +72,56 @@ public class SvmStringUtils {
     }
 
     return "<html>" + text.replace("\n", "<br>") + "</html>";
+  }
+
+  @SuppressWarnings("java:S3776")
+  public static List<String> splitStringIntoMultipleLines(
+      String string, int maxLength, int maxLines) {
+
+    List<String> lines = new ArrayList<>();
+
+    if (string == null) {
+      return lines;
+    }
+
+    // Alle "-" durch "- " ersetzen, damit Leerschlag-Trennung wirksam wird
+    String stringTmp = string.replace("-", "- ");
+    // Alle "/" durch "/ " ersetzen, damit Leerschlag-Trennung wirksam wird
+    stringTmp = stringTmp.replace("/", "/ ");
+
+    String[] stringSpl = stringTmp.split("\\s");
+    StringBuilder line = new StringBuilder();
+    int length = 0;
+    int j = 0;
+    for (int i = 0; i < stringSpl.length; i++) {
+      if (line.isEmpty()) {
+        line = new StringBuilder(stringSpl[i]);
+      } else {
+        line.append(" ").append(stringSpl[i]);
+      }
+      length += stringSpl[i].length() + 1; // + 1 wegen Leerzeichen
+      if (i == stringSpl.length - 1 || length + stringSpl[i + 1].length() > maxLength) {
+        // Maximal zulässige Anzahl Zeilen erreicht -> den Rest auch rausschreiben
+        if (j == maxLines - 1) {
+          for (int ii = i + 1; ii < stringSpl.length; ii++) {
+            line.append(" ").append(stringSpl[ii]);
+          }
+        }
+        // Alle "- " wieder durch "-" ersetzen
+        line = new StringBuilder(line.toString().replace("- ", "-"));
+        // Alle "/ " wieder durch "/" ersetzen
+        line = new StringBuilder(line.toString().replace("/ ", "/"));
+        // Jetzige Zeile schreiben und neue Zeile beginnen
+        lines.add(line.toString());
+        if (j == maxLines - 1) {
+          return lines;
+        }
+        line = new StringBuilder();
+        length = 0;
+        j++;
+      }
+    }
+
+    return lines;
   }
 }
