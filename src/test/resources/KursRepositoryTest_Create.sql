@@ -147,3 +147,14 @@ INSERT INTO svmtest.Kurs_Lehrkraft(kurs_id, person_id, lehrkraefte_ORDER, creati
     VALUES (403, 509, 1, '2025-10-01');
 INSERT INTO svmtest.Kurs_Lehrkraft(kurs_id, person_id, lehrkraefte_ORDER, creation_date)
     VALUES (403, 508, 0, '2025-10-01');
+
+INSERT INTO svmtest.Lektionsgebuehren(id, lektionslaenge, version, betrag_1_kind, betrag_2_kinder,
+                                      betrag_3_kinder, betrag_4_kinder, betrag_5_kinder,
+                                      betrag_6_kinder, creation_date, last_modified)
+    VALUES (1, 50, 0, 50.00, 40.00, 30.00, 20.00, 10.00, 1.00,
+            '2025-10-01', '2025-10-01');
+INSERT INTO svmtest.Lektionsgebuehren(id, lektionslaenge, version, betrag_1_kind, betrag_2_kinder,
+                                      betrag_3_kinder, betrag_4_kinder, betrag_5_kinder,
+                                      betrag_6_kinder, creation_date, last_modified)
+    VALUES (2, 60, 0, 60.00, 50.00, 40.00, 30.00, 20.00, 10.00,
+            '2025-10-01', '2025-10-01');
