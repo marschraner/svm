@@ -58,7 +58,7 @@ class ElternmithilfeCodeDaoTest {
   }
 
   @Test
-  void save() {
+  void testSave() {
     EntityManager entityManager = db.getCurrentEntityManager();
     EntityTransaction tx = null;
     try {

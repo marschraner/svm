@@ -53,7 +53,7 @@ class RechnungsempfaengerServiceImplMockTest {
   @Mock private SchuelerRepository schuelerRepository;
 
   @Test
-  void calculateMaxAnzahlWochen_keineKursanmeldungen() {
+  void testCalculateMaxAnzahlWochen_keineKursanmeldungen() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Schueler schueler1 = createSchueler(501, "Peter1", "Test1", rechnungsempfaenger);
@@ -78,7 +78,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void calculateMaxAnzahlWochen_Abgemeldet() {
+  void testCalculateMaxAnzahlWochen_Abgemeldet() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Schueler schueler1 = createSchueler(501, "Peter1", "Test1", rechnungsempfaenger);
@@ -100,7 +100,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void calculateMaxAnzahlWochen_gleicheAnzahlWochen() {
+  void testCalculateMaxAnzahlWochen_gleicheAnzahlWochen() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Schueler schueler1 = createSchueler(501, "Peter", "Test1", rechnungsempfaenger);
@@ -129,7 +129,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void calculateMaxAnzahlWochen_unterschiedlicheAnzahlWochen() {
+  void testCalculateMaxAnzahlWochen_unterschiedlicheAnzahlWochen() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Schueler schueler1 = createSchueler(501, "Peter", "Test1", rechnungsempfaenger);
@@ -158,7 +158,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void calculateWochenbetrag() {
+  void testCalculateWochenbetrag() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Semesterrechnung semesterrechnung = createSemesterrechnung(semester, rechnungsempfaenger);
@@ -177,7 +177,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void calculateWochenbetrag_NotAllLektionsgebuehrenForKurslaengenFound() {
+  void testCalculateWochenbetrag_NotAllLektionsgebuehrenForKurslaengenFound() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Semesterrechnung semesterrechnung = createSemesterrechnung(semester, rechnungsempfaenger);
@@ -214,7 +214,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void calculateWochenbetrag_OhneSechsJahresrabatt() {
+  void testCalculateWochenbetrag_OhneSechsJahresrabatt() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Semesterrechnung semesterrechnung = createSemesterrechnung(semester, rechnungsempfaenger);
@@ -266,7 +266,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void calculateWochenbetrag_MitSechsJahresrabatt() {
+  void testCalculateWochenbetrag_MitSechsJahresrabatt() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Semesterrechnung semesterrechnung = createSemesterrechnung(semester, rechnungsempfaenger);
@@ -318,7 +318,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void isAngemeldetOnSemesterbeginn() {
+  void testIsAngemeldetOnSemesterbeginn() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Schueler schueler = createSchueler(501, "Peter", "Test1", rechnungsempfaenger);
@@ -349,7 +349,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void filterAbgemeldeteSchueler() {
+  void testFilterAbgemeldeteSchueler() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Schueler schueler = createSchueler(501, "Peter", "Test1", rechnungsempfaenger);
@@ -388,7 +388,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void getAnzahlKurseRechnungsempfaenger() {
+  void testGetAnzahlKurseRechnungsempfaenger() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Kurstyp kurstyp = createKurstyp("Tanzen Test", true);
@@ -489,7 +489,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void isNachrechnungOrNotAbgemeldet() {
+  void testIsNachrechnungOrNotAbgemeldet() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Schueler schueler = createSchueler(501, "Peter", "Test1", rechnungsempfaenger);
@@ -524,7 +524,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void getRelevanteKurseSchueler() {
+  void testGetRelevanteKurseSchueler() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Kurstyp kurstyp = createKurstyp("Tanzen Test", true);
@@ -608,7 +608,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void getWochenbetragOhneSechsJahresRabatt() {
+  void testGetWochenbetragOhneSechsJahresRabatt() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Kurstyp kurstyp = createKurstyp("Tanzen Test", true);
     Kursort kursort = createKursort("Saal Test", true);
@@ -679,7 +679,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void hasSchuelerSechsJahresRabatt() {
+  void testHasSchuelerSechsJahresRabatt() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Kurstyp kurstyp = createKurstyp("Tanzen Test", true);
@@ -746,7 +746,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void getAnmeldungsdauer() {
+  void testGetAnmeldungsdauer() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Angehoeriger rechnungsempfaenger = createRechnungsempfaenger();
     Schueler schueler = createSchueler(501, "Peter", "Test1", rechnungsempfaenger);
@@ -771,7 +771,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void calculateReductionSechsJahresRabatt() {
+  void testCalculateReductionSechsJahresRabatt() {
     BigDecimal wochenbetragReduced;
     wochenbetragReduced =
         RechnungsempfaengerServiceImpl.calculateReductionSechsJahresRabatt(
@@ -793,7 +793,7 @@ class RechnungsempfaengerServiceImplMockTest {
   }
 
   @Test
-  void getMinimaleKurslaenge() {
+  void testGetMinimaleKurslaenge() {
     Semester semester = createSemester_20252026_ErstesSemester();
     Kurstyp kurstyp = createKurstyp("Tanzen Test", true);
     Kursort kursort = createKursort("Saal Test", true);

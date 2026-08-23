@@ -34,7 +34,7 @@ class KursanmeldungServiceImplTest {
   @Autowired KursanmeldungService kursanmeldungService;
 
   @Test
-  void calculateMaxAnzahlWochen_ganzesSemester() {
+  void testCalculateMaxAnzahlWochen_ganzesSemester() {
     Schueler schueler = schuelerRepository.findById(502).get();
     Semester semester = semesterRepository.findById(101).get();
     int anzahlSchulwochenSemester = semester.getAnzahlSchulwochen();
@@ -44,7 +44,7 @@ class KursanmeldungServiceImplTest {
   }
 
   @Test
-  void calculateMaxAnzahlWochen_ohneKursanmeldungen() {
+  void testCalculateMaxAnzahlWochen_ohneKursanmeldungen() {
     Schueler schueler = schuelerRepository.findById(504).get();
     Semester semester = semesterRepository.findById(101).get();
     int anzahlWochenKursanmeldungen =
@@ -53,7 +53,7 @@ class KursanmeldungServiceImplTest {
   }
 
   @Test
-  void calculateMaxAnzahlWochen_zweiKursanmeldungen() {
+  void testCalculateMaxAnzahlWochen_zweiKursanmeldungen() {
     Schueler schueler = schuelerRepository.findById(506).get();
     Semester semester = semesterRepository.findById(101).get();
     int anzahlWochenKursanmeldungen =
@@ -62,7 +62,7 @@ class KursanmeldungServiceImplTest {
   }
 
   @Test
-  void findKursanmeldungenForSemesterAndRechnungsempfaengerBySchueler_ohneKursanmeldungen() {
+  void testFindKursanmeldungenForSemesterAndRechnungsempfaengerBySchueler_ohneKursanmeldungen() {
     Schueler schueler = schuelerRepository.findById(504).get();
     Semester semester = semesterRepository.findById(101).get();
     Map<Schueler, List<Kursanmeldung>> kursanmeldungenBySchueler =
@@ -72,7 +72,7 @@ class KursanmeldungServiceImplTest {
   }
 
   @Test
-  void findKursanmeldungenForSemesterAndRechnungsempfaengerBySchueler_zweiKursanmeldungen() {
+  void testFindKursanmeldungenForSemesterAndRechnungsempfaengerBySchueler_zweiKursanmeldungen() {
     Schueler schueler = schuelerRepository.findById(506).get();
     Semester semester = semesterRepository.findById(101).get();
     Map<Schueler, List<Kursanmeldung>> kursanmeldungenBySchueler =

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class MaercheneinteilungTest {
 
   @Test
-  void getRolle1WithoutSorterCharacters() {
+  void testGetRolle1WithoutSorterCharacters() {
     Maercheneinteilung maercheneinteilung = new Maercheneinteilung();
 
     maercheneinteilung.setRolle1("Hund 2");

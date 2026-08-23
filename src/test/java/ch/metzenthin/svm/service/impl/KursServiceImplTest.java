@@ -37,13 +37,13 @@ class KursServiceImplTest {
   @PersistenceContext private EntityManager entityManager;
 
   @Test
-  void existsKursByLektionslaenge() {
+  void testExistsKursByLektionslaenge() {
     assertFalse(kursService.existsKursByLektionslaenge(1));
     assertTrue(kursService.existsKursByLektionslaenge(60));
   }
 
   @Test
-  void findAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester() {
+  void testFindAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester() {
     List<KursAndLehrkraefteAndNumberOfKursanmeldungen>
         kurseAndLehrkraefteAndNumberOfSchuelerForSemester101 =
             kursService.findAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester(101);
@@ -73,10 +73,10 @@ class KursServiceImplTest {
   }
 
   @Test
-  void saveKurs() {}
+  void testSaveKurs() {}
 
   @Test
-  void deleteKurs() {
+  void testDeleteKurs() {
     Kurs kurs = kursRepository.findById(403).orElseThrow();
     assertTrue(kursanmeldungRepository.countByKursId(kurs.getKursId()) > 0);
     List<KursLehrkraft> lehrkraefteLinksBefore =

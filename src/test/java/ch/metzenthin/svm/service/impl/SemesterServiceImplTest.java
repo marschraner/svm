@@ -41,7 +41,7 @@ class SemesterServiceImplTest {
   @PersistenceContext private EntityManager entityManager;
 
   @Test
-  void checkIfUpdateAffectsSemesterrechnungen() throws ParseException {
+  void testCheckIfUpdateAffectsSemesterrechnungen() throws ParseException {
     Optional<Semester> semesterOptional = semesterRepository.findById(101);
     assertTrue(semesterOptional.isPresent());
     Semester semester = semesterOptional.get();
@@ -101,13 +101,13 @@ class SemesterServiceImplTest {
   }
 
   @Test
-  void determineNaechstesNochNichtErfasstesSemester() {
+  void testDetermineNaechstesNochNichtErfasstesSemester() {
     Semester semester = semesterService.determineNaechstesNochNichtErfasstesSemester();
     assertNotNull(semester);
   }
 
   @Test
-  void findAllSemesterAndNumberOfKurse() {
+  void testFindAllSemesterAndNumberOfKurse() {
     List<SemesterAndNumberOfKurse> semestersAndNumberOfKurse =
         semesterService.findAllSemesterAndNumberOfKurse();
     assertEquals(2, semestersAndNumberOfKurse.size());
@@ -123,7 +123,7 @@ class SemesterServiceImplTest {
   }
 
   @Test
-  void saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen_updateTrueNoUpdates() {
+  void testSaveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen_updateTrueNoUpdates() {
     Optional<Semester> semesterOptional = semesterRepository.findById(101);
     assertTrue(semesterOptional.isPresent());
     Semester semester = semesterOptional.get();
@@ -142,7 +142,7 @@ class SemesterServiceImplTest {
   }
 
   @Test
-  void saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen_updateTrueWithUpdates()
+  void testSaveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen_updateTrueWithUpdates()
       throws ParseException {
     Optional<Semester> semesterOptional = semesterRepository.findById(101);
     assertTrue(semesterOptional.isPresent());
@@ -158,7 +158,8 @@ class SemesterServiceImplTest {
   }
 
   @Test
-  void saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen_updateFalse() throws ParseException {
+  void testSaveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen_updateFalse()
+      throws ParseException {
     Optional<Semester> semesterOptional = semesterRepository.findById(101);
     assertTrue(semesterOptional.isPresent());
     Semester semester = semesterOptional.get();
@@ -173,7 +174,7 @@ class SemesterServiceImplTest {
   }
 
   @Test
-  void deleteSemesterrechnungenAndSemester() {
+  void testDeleteSemesterrechnungenAndSemester() {
     Optional<Semester> semesterOptional = semesterRepository.findById(101);
     assertTrue(semesterOptional.isPresent());
     Semester semester = semesterOptional.get();

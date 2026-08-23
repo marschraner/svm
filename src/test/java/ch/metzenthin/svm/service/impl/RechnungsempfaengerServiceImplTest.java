@@ -37,7 +37,7 @@ class RechnungsempfaengerServiceImplTest {
   @Autowired RechnungsempfaengerService rechnungsempfaengerService;
 
   @Test
-  void calculateMaxAnzahlWochen() {
+  void testCalculateMaxAnzahlWochen() {
     Optional<Semester> semesterOptional = semesterRepository.findById(101);
     assertTrue(semesterOptional.isPresent());
     Semester semester = semesterOptional.get();
@@ -73,7 +73,7 @@ class RechnungsempfaengerServiceImplTest {
   }
 
   @Test
-  void calculateWochenbetrag() {
+  void testCalculateWochenbetrag() {
     Optional<Semesterrechnung> semesterrechnungOptional =
         semesterrechnungRepository.findBySemesterIdAndRechnungsempfaengerId(101, 501);
     assertTrue(semesterrechnungOptional.isPresent());
