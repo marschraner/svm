@@ -29,6 +29,7 @@ public abstract class AbstractSubmitDialogView<T extends AbstractSubmitDialog>
     this.buttonAbbrechen = dialog.getAbbrechenButton();
   }
 
+  @Override
   public void configDialogClosing(ActionListener closeActionListener) {
     dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     // call closeActionListener on ESCAPE
@@ -51,23 +52,28 @@ public abstract class AbstractSubmitDialogView<T extends AbstractSubmitDialog>
    * Der Aufruf dieser Methode blockiert das UI. Nach dem Schliessen des Dialogs geht es weiter mit
    * dem Statement nach dem Methodenaufruf.
    */
+  @Override
   public void showDialog() {
     dialog.pack();
     dialog.setVisible(true);
   }
 
+  @Override
   public void closeDialog() {
     dialog.dispose();
   }
 
+  @Override
   public void addButtonSubmitActionListener(ActionListener actionListener) {
     buttonSubmit.addActionListener(actionListener);
   }
 
+  @Override
   public void setButtonSubmitFocusPainted(boolean focusPainted) {
     buttonSubmit.setFocusPainted(focusPainted);
   }
 
+  @Override
   public void addButtonAbbrechenActionListener(ActionListener actionListener) {
     buttonAbbrechen.addActionListener(actionListener);
   }

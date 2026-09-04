@@ -1,17 +1,17 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.persistence.entities.Semester;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Martin Schraner
  */
-public interface KurseSemesterwahlModel extends Model {
+public interface KurseSemesterwahlModel {
 
-  Semester getSemester();
+  List<Semester> getAllSemesters();
 
-  void setSemester(Semester semester);
+  Optional<Semester> getInitSemester();
 
-  Semester getInitSemester(SvmModel svmModel);
-
-  KurseTableData suchen();
+  KursListModel suchen(Semester semester);
 }

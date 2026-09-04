@@ -1,119 +1,69 @@
 package ch.metzenthin.svm.ui.control;
 
-import static ch.metzenthin.svm.common.utils.SimpleValidator.equalsNullSafe;
-
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Field;
-import ch.metzenthin.svm.domain.SvmValidationException;
 import ch.metzenthin.svm.domain.model.KursListModel;
 import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
+import ch.metzenthin.svm.domain.model.validation.ValidationResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndListModel;
 import ch.metzenthin.svm.persistence.entities.Semester;
-import java.awt.*;
+import ch.metzenthin.svm.ui.view.KurseSemesterwahlView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.util.Set;
-import javax.swing.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Martin Schraner
  */
-public class KurseSemesterwahlController extends AbstractController {
+public class KurseSemesterwahlController
+    extends AbstractSuchenPanelController<KurseSemesterwahlView, KursListModel> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(KurseSemesterwahlController.class);
-
-  // Möglichkeit zum Umschalten des validation modes (nicht dynamisch)
-  private static final boolean MODEL_VALIDATION_MODE = false;
-
-  private JPanel mainPanel;
-  private ActionListener closeListener;
-  private ActionListener nextPanelListener;
-  private final KurseSemesterwahlModel kurseSemesterwahlModel;
   private final SvmContext svmContext;
-  private JSpinner spinnerSemester;
-  private JButton btnOk;
-  private JButton btnAbbrechen;
+  private final KurseSemesterwahlModel model;
+  private final ActionListener closeListener;
+  private final ActionListener nextPanelListener;
 
   public KurseSemesterwahlController(
-      SvmContext svmContext, KurseSemesterwahlModel kurseSemesterwahlModel) {
-    super(kurseSemesterwahlModel);
+      SvmContext svmContext,
+      KurseSemesterwahlModel kurseSemesterwahlModel,
+      ActionListener closeListener,
+      ActionListener nextPanelListener) {
+    super(createView(closeListener));
     this.svmContext = svmContext;
-    this.kurseSemesterwahlModel = kurseSemesterwahlModel;
-    this.kurseSemesterwahlModel.addPropertyChangeListener(this);
-    this.kurseSemesterwahlModel.addDisableFieldsListener(this);
-    this.kurseSemesterwahlModel.addMakeErrorLabelsInvisibleListener(this);
-    this.kurseSemesterwahlModel.addCompletedListener(this::onKurseSuchenModelCompleted);
-    this.setModelValidationMode(MODEL_VALIDATION_MODE);
+    this.model = kurseSemesterwahlModel;
+    this.closeListener = closeListener;
+    this.nextPanelListener = nextPanelListener;
+    configSpinnerSemesterList();
+    initialiseViewFields();
   }
 
-  public void constructionDone() {
-    kurseSemesterwahlModel.initializeCompleted();
+  private static KurseSemesterwahlView createView(ActionListener closeListener) {
+    return new KurseSemesterwahlView(closeListener);
   }
 
-  public void setMainPanel(JPanel mainPanel) {
-    this.mainPanel = mainPanel;
+  public void configSpinnerSemesterList() {
+    List<Semester> semesterList = model.getAllSemesters();
+    view.setSemesterSpinnerModelValues(semesterList);
   }
 
-  public void setSpinnerSemester(JSpinner spinnerSemester) {
-    this.spinnerSemester = spinnerSemester;
-    java.util.List<Semester> semesterList = svmContext.getSvmModel().getSemestersAll();
-    if (semesterList.isEmpty()) {
-      // keine Semester erfasst
-      SpinnerModel spinnerModel = new SpinnerListModel(new String[] {""});
-      spinnerSemester.setModel(spinnerModel);
-      spinnerSemester.setEnabled(false);
-      return;
-    }
-    Semester[] semesters = semesterList.toArray(new Semester[0]);
-    SpinnerModel spinnerModelSemester = new SpinnerListModel(semesters);
-    spinnerSemester.setModel(spinnerModelSemester);
-    spinnerSemester.addChangeListener(e -> onSemesterSelected());
-    // Model initialisieren
-    kurseSemesterwahlModel.setSemester(
-        kurseSemesterwahlModel.getInitSemester(svmContext.getSvmModel()));
+  private void initialiseViewFields() {
+    Optional<Semester> initSemesterOptional = model.getInitSemester();
+    initSemesterOptional.ifPresent(view::setSemesterSpinnerValue);
   }
 
-  private void onSemesterSelected() {
-    LOGGER.trace(
-        "KurseSemesterwahlController Event Semester selected ={}", spinnerSemester.getValue());
-    boolean equalFieldAndModelValue =
-        equalsNullSafe(spinnerSemester.getValue(), kurseSemesterwahlModel.getSemester());
-    setModelSemester();
-    if (equalFieldAndModelValue && isModelValidationMode()) {
-      // Wenn Field und Model den gleichen Wert haben, erfolgt kein PropertyChangeEvent. Deshalb
-      // muss hier die Validierung angestossen werden.
-      LOGGER.trace("Validierung wegen equalFieldAndModelValue");
-      validate();
-    }
+  @Override
+  protected ValidationResultsAndListModel<KursListModel> suchen() {
+    view.setWaitCursorAllComponents();
+    KursListModel kursListModel = model.suchen(view.getSemesterSpinnerValue());
+    view.resetCursorAllComponents();
+    return new ValidationResultsAndListModel<>(kursListModel);
   }
 
-  private void setModelSemester() {
-    makeErrorLabelInvisible(Field.SEMESTER_KURS);
-    kurseSemesterwahlModel.setSemester((Semester) spinnerSemester.getValue());
-  }
-
-  public void setBtnOk(JButton btnOk) {
-    this.btnOk = btnOk;
-    if (svmContext.getSvmModel().getSemestersAll().isEmpty() || isModelValidationMode()) {
-      btnOk.setEnabled(false);
-    }
-    this.btnOk.addActionListener(e -> onSuchen());
-  }
-
-  private void onSuchen() {
-    LOGGER.trace("KurseSemesterwahlController OK gedrückt");
-    if (!isModelValidationMode() && !validateOnSpeichern()) {
-      btnOk.setFocusPainted(false);
-      return;
-    }
-    setWaitCursorAllComponents();
-    KursListModel kursListModel =
-        svmContext.getModelFactory().createKursListModel(kurseSemesterwahlModel.getSemester());
+  @Override
+  protected void showNextPanel(KursListModel kursListModel) {
     KursListController kursListController =
         new KursListController(svmContext, kursListModel, closeListener);
-    resetCursorAllComponents();
     nextPanelListener.actionPerformed(
         new ActionEvent(
             new Object[] {
@@ -124,77 +74,13 @@ public class KurseSemesterwahlController extends AbstractController {
             "Suchresultat verfügbar"));
   }
 
-  public void setBtnAbbrechen(JButton btnAbbrechen) {
-    this.btnAbbrechen = btnAbbrechen;
-    this.btnAbbrechen.addActionListener(e -> onAbbrechen());
-  }
-
-  private void onAbbrechen() {
-    LOGGER.trace("KurseSemesterwahlController Abbrechen gedrückt");
-    closeListener.actionPerformed(
-        new ActionEvent(btnAbbrechen, ActionEvent.ACTION_PERFORMED, "Close nach Abbrechen"));
-  }
-
-  private void onKurseSuchenModelCompleted(boolean completed) {
-    LOGGER.trace("KurseSemesterwahlModel completed={}", completed);
-    if (completed) {
-      btnOk.setToolTipText(null);
-      btnOk.setEnabled(true);
-    } else {
-      btnOk.setToolTipText("Bitte Eingabedaten vervollständigen");
-      btnOk.setEnabled(false);
-    }
-  }
-
-  public void addCloseListener(ActionListener closeListener) {
-    this.closeListener = closeListener;
-  }
-
-  public void addNextPanelListener(ActionListener nextPanelListener) {
-    this.nextPanelListener = nextPanelListener;
-  }
-
-  private void setWaitCursorAllComponents() {
-    Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
-    mainPanel.setCursor(waitCursor);
-    // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
-  }
-
-  private void resetCursorAllComponents() {
-    mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-    // Spinner nicht verändern, da sonst Pfeile nicht mehr korrekt angezeigt werden
+  @Override
+  protected void setErrorLabelVisible(ValidationResult validationResult, Field field) {
+    // No validation
   }
 
   @Override
-  void doPropertyChange(PropertyChangeEvent evt) {
-    super.doPropertyChange(evt);
-    if (checkIsFieldChange(Field.SEMESTER, evt)) {
-      spinnerSemester.setValue(kurseSemesterwahlModel.getSemester());
-    }
-  }
-
-  @Override
-  void validateFields() throws SvmValidationException {
-    // Keine zu validierenden Felder
-  }
-
-  @Override
-  void showErrMsg(SvmValidationException e) {
-    // Keine Fehlermeldungen
-  }
-
-  @Override
-  void showErrMsgAsToolTip(SvmValidationException e) {
-    // Keine Fehlermeldungen
-  }
-
-  @Override
-  public void makeErrorLabelsInvisible(Set<Field> fields) {
-    // Keine Fehlermeldungen
-  }
-
-  @Override
-  public void disableFields(boolean disable, Set<Field> fields) {
-    // Keine zu deaktivierenden Felder
+  protected void setAllErrorLabelsInvisible() {
+    // No validation
   }
 }

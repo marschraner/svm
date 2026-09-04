@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.datatypes.Schuljahre;
 import java.awt.*;
 import java.util.Locale;
 import javax.swing.*;
@@ -15,7 +14,7 @@ public class CreateOrUpdateMaerchenDialog extends AbstractSubmitDialog {
   private JPanel contentPane;
   private JPanel datenPanel;
   private JPanel buttonPanel;
-  @Getter private JSpinner spinnerSchuljahre;
+  @Getter private JSpinner schuljahrSpinner;
   @Getter private JTextField txtBezeichnung;
   @Getter private JTextField txtAnzahlVorstellungen;
   @Getter private JLabel errLblBezeichnung;
@@ -28,12 +27,6 @@ public class CreateOrUpdateMaerchenDialog extends AbstractSubmitDialog {
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
-  }
-
-  private void createUIComponents() {
-    String[] schuljahre = new Schuljahre().getSchuljahre();
-    SpinnerModel spinnerModelSchuljahre = new SpinnerListModel(schuljahre);
-    spinnerSchuljahre = new JSpinner(spinnerModelSchuljahre);
   }
 
   @Override
@@ -52,7 +45,6 @@ public class CreateOrUpdateMaerchenDialog extends AbstractSubmitDialog {
    * @noinspection ALL
    */
   private void $$$setupUI$$$() {
-    createUIComponents();
     contentPane = new JPanel();
     contentPane.setLayout(new BorderLayout(0, 0));
     datenPanel = new JPanel();
@@ -101,12 +93,13 @@ public class CreateOrUpdateMaerchenDialog extends AbstractSubmitDialog {
     gbc.gridy = 0;
     gbc.fill = GridBagConstraints.VERTICAL;
     panel1.add(spacer4, gbc);
+    schuljahrSpinner = new JSpinner();
     gbc = new GridBagConstraints();
     gbc.gridx = 2;
     gbc.gridy = 1;
     gbc.anchor = GridBagConstraints.WEST;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    panel1.add(spinnerSchuljahre, gbc);
+    panel1.add(schuljahrSpinner, gbc);
     final JPanel spacer5 = new JPanel();
     gbc = new GridBagConstraints();
     gbc.gridx = 2;
@@ -214,7 +207,7 @@ public class CreateOrUpdateMaerchenDialog extends AbstractSubmitDialog {
     gbc.gridy = 1;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     buttonPanel.add(btnAbbrechen, gbc);
-    label1.setLabelFor(spinnerSchuljahre);
+    label1.setLabelFor(schuljahrSpinner);
     label2.setLabelFor(txtBezeichnung);
     errLblAnzahlVorstellungen.setLabelFor(txtAnzahlVorstellungen);
   }

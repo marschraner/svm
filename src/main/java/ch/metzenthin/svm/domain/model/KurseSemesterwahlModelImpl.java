@@ -1,57 +1,36 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.datatypes.Field;
-import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
-import ch.metzenthin.svm.domain.commands.DetermineSemesterInitCommand;
-import ch.metzenthin.svm.domain.commands.FindKurseSemesterCommand;
-import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Semester;
+import ch.metzenthin.svm.service.KursService;
+import ch.metzenthin.svm.service.SemesterService;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Martin Schraner
  */
-public class KurseSemesterwahlModelImpl extends AbstractModel implements KurseSemesterwahlModel {
+public class KurseSemesterwahlModelImpl implements KurseSemesterwahlModel {
 
-  private Semester semester;
+  private final KursService kursService;
+  private final SemesterService semesterService;
 
-  @Override
-  public Semester getSemester() {
-    return semester;
+  public KurseSemesterwahlModelImpl(KursService kursService, SemesterService semesterService) {
+    this.kursService = kursService;
+    this.semesterService = semesterService;
   }
 
   @Override
-  public void setSemester(Semester semester) {
-    Semester oldValue = this.semester;
-    this.semester = semester;
-    firePropertyChange(Field.SEMESTER, oldValue, this.semester);
+  public List<Semester> getAllSemesters() {
+    return semesterService.findAllSemesters();
   }
 
   @Override
-  public Semester getInitSemester(SvmModel svmModel) {
-    DetermineSemesterInitCommand determineSemesterInitCommand =
-        new DetermineSemesterInitCommand(svmModel, 40);
-    determineSemesterInitCommand.execute();
-    return determineSemesterInitCommand.getSemesterInit();
+  public Optional<Semester> getInitSemester() {
+    return semesterService.determineInitSemesterForSemesterSelectionComponents(40);
   }
 
   @Override
-  public KurseTableData suchen() {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    FindKurseSemesterCommand findKurseSemesterCommand = new FindKurseSemesterCommand(semester);
-    commandInvoker.executeCommand(findKurseSemesterCommand);
-    List<Kurs> kurseFound = findKurseSemesterCommand.getKurseFound();
-    return new KurseTableData(kurseFound);
-  }
-
-  @Override
-  void doValidate() throws SvmValidationException {
-    // Keine feldübergreifende Validierung notwendig
-  }
-
-  @Override
-  public boolean isCompleted() {
-    return true;
+  public KursListModel suchen(Semester semester) {
+    return new KursListModel(kursService, semester);
   }
 }

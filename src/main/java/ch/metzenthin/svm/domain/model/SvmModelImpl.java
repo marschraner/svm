@@ -165,7 +165,7 @@ public class SvmModelImpl implements SvmModel {
 
   @Override
   public List<Semester> getSemestersAll() {
-    return semesterService.findAllSemester();
+    return semesterService.findAllSemesters();
   }
 
   @Override

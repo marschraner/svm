@@ -5,6 +5,7 @@ import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.checkIfTwoPeriodsO
 import ch.metzenthin.svm.common.datatypes.Schuljahre;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.domain.model.IdAndCount;
+import ch.metzenthin.svm.domain.model.PreviousCurrentNextSemester;
 import ch.metzenthin.svm.domain.model.SemesterAndNumberOfKurse;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.repository.KursRepository;
@@ -15,6 +16,7 @@ import ch.metzenthin.svm.service.result.DeleteSemesterResult;
 import ch.metzenthin.svm.service.result.SaveSemesterResult;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
@@ -162,6 +164,101 @@ public class SemesterServiceImpl implements SemesterService {
         naechstesSchuljahr, naechsteSemesterbezeichnung, null, null, null, null, null, null);
   }
 
+  @SuppressWarnings("java:S3776")
+  @Override
+  public PreviousCurrentNextSemester determinePreviousCurrentNextSemesterFor(
+      Calendar calendar, List<Semester> semesterList) {
+
+    if (semesterList.isEmpty()) {
+      return new PreviousCurrentNextSemester(Optional.empty(), Optional.empty(), Optional.empty());
+    }
+
+    Collections.sort(semesterList); // ältestes Semester zuerst
+
+    Optional<Semester> previousSemesterOptional;
+    Optional<Semester> currentSemesterOptional;
+    Optional<Semester> nextSemesterOptional;
+
+    for (int i = 0; i < semesterList.size(); i++) {
+      if ((semesterList.get(i).getSemesterbeginn().before(calendar)
+              || semesterList.get(i).getSemesterbeginn().equals(calendar))
+          && (semesterList.get(i).getSemesterende().after(calendar)
+              || semesterList.get(i).getSemesterende().equals(calendar))) {
+
+        // calendar liegt innerhalb eines Semesters
+        currentSemesterOptional = Optional.of(semesterList.get(i));
+        nextSemesterOptional = (i > 0) ? Optional.of(semesterList.get(i - 1)) : Optional.empty();
+        previousSemesterOptional =
+            (i + 1 < semesterList.size()) ? Optional.of(semesterList.get(i + 1)) : Optional.empty();
+
+        return new PreviousCurrentNextSemester(
+            previousSemesterOptional, currentSemesterOptional, nextSemesterOptional);
+
+      } else if (i + 1 < semesterList.size()
+          && semesterList.get(i + 1).getSemesterende().before(calendar)
+          && semesterList.get(i).getSemesterbeginn().after(calendar)) {
+
+        // calendar liegt in den Ferien zwischen zwei Semestern
+        currentSemesterOptional = Optional.empty();
+        nextSemesterOptional = Optional.of(semesterList.get(i));
+        previousSemesterOptional = Optional.of(semesterList.get(i + 1));
+
+        return new PreviousCurrentNextSemester(
+            previousSemesterOptional, currentSemesterOptional, nextSemesterOptional);
+      }
+    }
+
+    // Keiner der beiden Fälle gefunden -> calendar liegt vor oder nach allen erfassten Semestern
+    if (semesterList.get(0).getSemesterende().before(calendar)) {
+      currentSemesterOptional = Optional.empty();
+      previousSemesterOptional = Optional.of(semesterList.get(0));
+      nextSemesterOptional = Optional.empty();
+    } else {
+      currentSemesterOptional = Optional.empty();
+      previousSemesterOptional = Optional.empty();
+      nextSemesterOptional = Optional.of(semesterList.get(semesterList.size() - 1));
+    }
+
+    return new PreviousCurrentNextSemester(
+        previousSemesterOptional, currentSemesterOptional, nextSemesterOptional);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Optional<Semester> determineInitSemesterForSemesterSelectionComponents(
+      int daysBeforeSemesterEndToShowNextSemester) {
+
+    List<Semester> semesterList = semesterRepository.findAll();
+
+    PreviousCurrentNextSemester previousCurrentNextSemester =
+        determinePreviousCurrentNextSemesterFor(new GregorianCalendar(), semesterList);
+
+    Optional<Semester> currentSemesterOptional =
+        previousCurrentNextSemester.currentSemesterOptional();
+    Optional<Semester> nextSemesterOptional = previousCurrentNextSemester.nextSemesterOptional();
+
+    Calendar dayToShowNextSemester = new GregorianCalendar();
+    dayToShowNextSemester.add(Calendar.DAY_OF_YEAR, daysBeforeSemesterEndToShowNextSemester);
+
+    Optional<Semester> semesterInitOptional;
+    if (currentSemesterOptional.isEmpty()) {
+      // Ferien zwischen 2 Semestern
+      semesterInitOptional = nextSemesterOptional;
+    } else if (dayToShowNextSemester.after(currentSemesterOptional.get().getSemesterende())
+        && nextSemesterOptional.isPresent()) {
+      // weniger als daysBeforeSemesterEndToShowNextSemester Tage vor Semesterende
+      semesterInitOptional = nextSemesterOptional;
+    } else {
+      semesterInitOptional = currentSemesterOptional;
+    }
+
+    if (semesterInitOptional.isEmpty() && !semesterList.isEmpty()) {
+      semesterInitOptional = Optional.of(semesterList.get(0));
+    }
+
+    return semesterInitOptional;
+  }
+
   private boolean isSemesterBereitsErfasst(
       String naechstesSchuljahr,
       Semesterbezeichnung naechsteSemesterbezeichnung,
@@ -175,7 +272,7 @@ public class SemesterServiceImpl implements SemesterService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<Semester> findAllSemester() {
+  public List<Semester> findAllSemesters() {
     return doFindAllSemester();
   }
 

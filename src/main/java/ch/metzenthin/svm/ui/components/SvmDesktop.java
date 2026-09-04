@@ -2,6 +2,7 @@ package ch.metzenthin.svm.ui.components;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.ElternmithilfeCodeListModel;
+import ch.metzenthin.svm.domain.model.KurseSemesterwahlModel;
 import ch.metzenthin.svm.domain.model.KursortListModel;
 import ch.metzenthin.svm.domain.model.KurstypListModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenListModel;
@@ -13,6 +14,7 @@ import ch.metzenthin.svm.domain.model.SemesterrechnungCodeListModel;
 import ch.metzenthin.svm.persistence.DB;
 import ch.metzenthin.svm.persistence.DBFactory;
 import ch.metzenthin.svm.ui.control.ElternmithilfeCodeListController;
+import ch.metzenthin.svm.ui.control.KurseSemesterwahlController;
 import ch.metzenthin.svm.ui.control.KursortListController;
 import ch.metzenthin.svm.ui.control.KurstypListController;
 import ch.metzenthin.svm.ui.control.LektionsgebuehrenListController;
@@ -288,11 +290,16 @@ public class SvmDesktop extends JFrame implements ActionListener {
       setAndShowActivePanel(mitarbeiterCodeCodeListController.getView().getRootComponent(), title);
 
     } else if ("kurseVerwalten".equals(e.getActionCommand())) {
-      KurseSemesterwahlPanel kurseSemesterwahlPanel = new KurseSemesterwahlPanel(svmContext);
-      kurseSemesterwahlPanel.addCloseListener(e6 -> onFrameAbbrechen());
-      kurseSemesterwahlPanel.addNextPanelListener(e6 -> onNextPanelAvailable(e6.getSource()));
+      KurseSemesterwahlModel kurseSemesterwahlModel =
+          svmContext.getModelFactory().createKurseSemesterwahlModel();
+      KurseSemesterwahlController kurseSemesterwahlController =
+          new KurseSemesterwahlController(
+              svmContext,
+              kurseSemesterwahlModel,
+              e6 -> onFrameAbbrechen(),
+              e6 -> onNextPanelAvailable(e6.getSource()));
       setAndShowActivePanel(
-          kurseSemesterwahlPanel.$$$getRootComponent$$$(),
+          kurseSemesterwahlController.getView().getRootComponent(),
           "Kurse verwalten: Schuljahr / Semester wählen");
 
     } else if ("kurstypenVerwalten".equals(e.getActionCommand())) {

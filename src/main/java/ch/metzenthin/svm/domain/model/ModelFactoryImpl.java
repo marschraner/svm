@@ -236,7 +236,7 @@ public class ModelFactoryImpl implements ModelFactory {
 
   @Override
   public KurseSemesterwahlModel createKurseSemesterwahlModel() {
-    return new KurseSemesterwahlModelImpl();
+    return new KurseSemesterwahlModelImpl(kursService, semesterService);
   }
 
   @Override

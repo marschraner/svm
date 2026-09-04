@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.datatypes.Schuljahre;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateMaerchenModel;
 import ch.metzenthin.svm.domain.model.entityfields.MaerchenFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
@@ -36,14 +37,16 @@ public class CreateOrUpdateMaerchenController
   }
 
   private void configSpinnerSchuljahre() {
-    view.addSpinnerSchuljahreChangeListener(e -> onSchuljahrSelected());
+    String[] schuljahre = new Schuljahre().getSchuljahre();
+    view.setSchuljahrSpinnerModelValues(schuljahre);
+    view.addSchuljahrSpinnerChangeListener(e -> onSchuljahrSelected());
   }
 
   private void onSchuljahrSelected() {
     LOGGER.trace(
         "CreateOrUpdateMaerchenController Event Schuljahre selected ={}",
-        view.getSpinnerSchuljahreValue());
-    ValidationResult validationResult = model.validateSchuljahr(view.getSpinnerSchuljahreValue());
+        view.getSchuljahrSpinnerValue());
+    ValidationResult validationResult = model.validateSchuljahr(view.getSchuljahrSpinnerValue());
     if (!validationResult.isValid()) {
       view.showErrorMessageDialog(validationResult.errorMessage(), "Fehler");
     }
@@ -94,12 +97,12 @@ public class CreateOrUpdateMaerchenController
   private void initialiseViewFields() {
     if (!model.isNeu()) {
       MaerchenFields maerchenFields = model.getMaerchenFields();
-      view.setSpinnerSchuljahreValue(maerchenFields.schuljahr());
+      view.setSchuljahrSpinnerValue(maerchenFields.schuljahr());
       view.setTxtBezeichnungText(maerchenFields.bezeichnung());
       view.setTxtAnzahlVorstellungenText(maerchenFields.anzahlVorstellungen());
     } else {
       String naechstesNochNichtErfasstesSchuljahr = model.getNaechstesNochNichtErfasstesSchuljahr();
-      view.setSpinnerSchuljahreValue(naechstesNochNichtErfasstesSchuljahr);
+      view.setSchuljahrSpinnerValue(naechstesNochNichtErfasstesSchuljahr);
     }
   }
 
@@ -107,7 +110,7 @@ public class CreateOrUpdateMaerchenController
   protected ValidationResultsAndSubmitResult submit() {
     MaerchenFields maerchenFields =
         new MaerchenFields(
-            view.getSpinnerSchuljahreValue(),
+            view.getSchuljahrSpinnerValue(),
             view.getTxtBezeichnungText(),
             view.getTxtAnzahlVorstellungenText());
 

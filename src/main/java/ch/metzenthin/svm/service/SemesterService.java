@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.service;
 
+import ch.metzenthin.svm.domain.model.PreviousCurrentNextSemester;
 import ch.metzenthin.svm.domain.model.SemesterAndNumberOfKurse;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.service.result.DeleteSemesterResult;
@@ -30,7 +31,13 @@ public interface SemesterService {
 
   Semester determineNaechstesNochNichtErfasstesSemester();
 
-  List<Semester> findAllSemester();
+  PreviousCurrentNextSemester determinePreviousCurrentNextSemesterFor(
+      Calendar calendar, List<Semester> semesterList);
+
+  Optional<Semester> determineInitSemesterForSemesterSelectionComponents(
+      int daysBeforeSemesterEndToShowNextSemester);
+
+  List<Semester> findAllSemesters();
 
   List<SemesterAndNumberOfKurse> findAllSemesterAndNumberOfKurse();
 

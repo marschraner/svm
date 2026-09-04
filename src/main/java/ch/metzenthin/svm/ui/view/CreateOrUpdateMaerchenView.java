@@ -5,6 +5,8 @@ import ch.metzenthin.svm.ui.components.TextFieldWithErrorLabelComponent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import javax.swing.JSpinner;
+import javax.swing.SpinnerListModel;
+import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeListener;
 
 /**
@@ -13,13 +15,13 @@ import javax.swing.event.ChangeListener;
 public class CreateOrUpdateMaerchenView
     extends AbstractSubmitDialogView<CreateOrUpdateMaerchenDialog> {
 
-  private final JSpinner spinnerSchuljahre;
+  private final JSpinner schuljahrSpinner;
   private final TextFieldWithErrorLabelComponent bezeichnungWithErrorLabel;
   private final TextFieldWithErrorLabelComponent anzahlVorstellungenWithErrorLabel;
 
   public CreateOrUpdateMaerchenView(String title) {
     super(new CreateOrUpdateMaerchenDialog(title));
-    this.spinnerSchuljahre = dialog.getSpinnerSchuljahre();
+    this.schuljahrSpinner = dialog.getSchuljahrSpinner();
     this.bezeichnungWithErrorLabel =
         new TextFieldWithErrorLabelComponent(
             dialog.getTxtBezeichnung(), dialog.getErrLblBezeichnung());
@@ -29,16 +31,21 @@ public class CreateOrUpdateMaerchenView
   }
 
   // Schuljahre
-  public void addSpinnerSchuljahreChangeListener(ChangeListener changeListenerDelegate) {
-    spinnerSchuljahre.addChangeListener(changeListenerDelegate);
+  public void setSchuljahrSpinnerModelValues(String[] schuljahre) {
+    SpinnerModel schuljahrSpinnerModel = new SpinnerListModel(schuljahre);
+    schuljahrSpinner.setModel(schuljahrSpinnerModel);
   }
 
-  public String getSpinnerSchuljahreValue() {
-    return (spinnerSchuljahre.getValue() == null) ? "" : spinnerSchuljahre.getValue().toString();
+  public String getSchuljahrSpinnerValue() {
+    return (schuljahrSpinner.getValue() == null) ? "" : schuljahrSpinner.getValue().toString();
   }
 
-  public void setSpinnerSchuljahreValue(Object value) {
-    spinnerSchuljahre.setValue(value);
+  public void setSchuljahrSpinnerValue(Object value) {
+    schuljahrSpinner.setValue(value);
+  }
+
+  public void addSchuljahrSpinnerChangeListener(ChangeListener changeListenerDelegate) {
+    schuljahrSpinner.addChangeListener(changeListenerDelegate);
   }
 
   // Bezeichnung
