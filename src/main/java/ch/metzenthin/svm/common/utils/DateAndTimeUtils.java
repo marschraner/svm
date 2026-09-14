@@ -68,6 +68,26 @@ public class DateAndTimeUtils {
     return weeks;
   }
 
+  public static Calendar getNYearsBeforeNow(int n) {
+    Calendar cal = new GregorianCalendar();
+    cal.add(Calendar.YEAR, -n);
+    return cal;
+  }
+
+  public static Calendar getNYearsAfterNow(int n) {
+    return getNYearsBeforeNow(-n);
+  }
+
+  public static Calendar getNMonthsBeforeNow(int n) {
+    Calendar cal = new GregorianCalendar();
+    cal.add(Calendar.MONTH, -n);
+    return cal;
+  }
+
+  public static Calendar getNMonthsAfterNow(int n) {
+    return getNMonthsBeforeNow(-n);
+  }
+
   public static String getCalendarAsDDMMYYYY(Calendar calendar) {
     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
     return sdf.format(calendar.getTime());

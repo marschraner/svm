@@ -7,7 +7,7 @@ INSERT INTO svmtest.Person(person_id, version, discriminator, anrede, vorname, n
                            geburtsdatum, festnetz, natel, email, adresse_id, creation_date,
                            last_modified)
     VALUES (21, 0, 'Mitarbeiter', 'FRAU', 'Monika', 'Kuster',
-            null, null, null, null, null, '2025-10-01', '2025-10-01');
+            '2000-01-01', null, null, null, null, '2025-10-01', '2025-10-01');
 INSERT INTO svmtest.Person(person_id, version, discriminator, anrede, vorname, nachname,
                            geburtsdatum, festnetz, natel, email, adresse_id, creation_date,
                            last_modified)

@@ -6,6 +6,7 @@ import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -18,6 +19,7 @@ import ch.metzenthin.svm.service.KurstypService;
 import ch.metzenthin.svm.service.LektionsgebuehrenService;
 import ch.metzenthin.svm.service.MaerchenService;
 import ch.metzenthin.svm.service.MitarbeiterCodeService;
+import ch.metzenthin.svm.service.MitarbeiterMitarbeiterCodeService;
 import ch.metzenthin.svm.service.MitarbeiterService;
 import ch.metzenthin.svm.service.SchuelerCodeService;
 import ch.metzenthin.svm.service.SemesterService;
@@ -46,6 +48,7 @@ public class ModelFactoryImpl implements ModelFactory {
   private final SemesterrechnungService semesterrechnungService;
   private final MitarbeiterService mitarbeiterService;
   private final KursLehrkraftService kursLehrkraftService;
+  private final MitarbeiterMitarbeiterCodeService mitarbeiterMitarbeiterCodeService;
 
   public ModelFactoryImpl(
       KursService kursService,
@@ -60,7 +63,8 @@ public class ModelFactoryImpl implements ModelFactory {
       SemesterService semesterService,
       SemesterrechnungService semesterrechnungService,
       MitarbeiterService mitarbeiterService,
-      KursLehrkraftService kursLehrkraftService) {
+      KursLehrkraftService kursLehrkraftService,
+      MitarbeiterMitarbeiterCodeService mitarbeiterMitarbeiterCodeService) {
     this.kursService = kursService;
     this.kursortService = kursortService;
     this.kurstypService = kurstypService;
@@ -74,6 +78,7 @@ public class ModelFactoryImpl implements ModelFactory {
     this.semesterrechnungService = semesterrechnungService;
     this.mitarbeiterService = mitarbeiterService;
     this.kursLehrkraftService = kursLehrkraftService;
+    this.mitarbeiterMitarbeiterCodeService = mitarbeiterMitarbeiterCodeService;
   }
 
   @Override
@@ -199,6 +204,13 @@ public class ModelFactoryImpl implements ModelFactory {
   @Override
   public MitarbeiterErfassenModel createMitarbeiterErfassenModel() {
     return new MitarbeiterErfassenModelImpl();
+  }
+
+  @Override
+  public CreateOrUpdateMitarbeiterModel createCreateOrUpdateMitarbeiterModel(
+      Optional<Mitarbeiter> mitarbeiterToBeModifiedOptional) {
+    return new CreateOrUpdateMitarbeiterModelImpl(
+        mitarbeiterToBeModifiedOptional, mitarbeiterService, mitarbeiterMitarbeiterCodeService);
   }
 
   @Override

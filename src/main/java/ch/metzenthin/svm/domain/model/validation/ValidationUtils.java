@@ -8,12 +8,25 @@ import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Martin Schraner
  */
-@SuppressWarnings("java:S1192")
+@SuppressWarnings({"java:S1192", "java:S5998"})
 public class ValidationUtils {
+
+  // Quelle:
+  // http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/
+  // (modified)
+  private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+      Pattern.compile(
+          "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@"
+              + "[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
+
+  // Quelle: https://www.moneytoday.ch/lexikon/iban/
+  private static final Pattern VALID_IBAN_REGEX = Pattern.compile("^[A-Z]{2}[A-Za-z0-9]+$");
 
   private static final String EINTRAG_OBLIGATORISCH = "Eintrag ist obligatorisch!";
   private static final String KEIN_GUELTIGER_PREIS_IM_FORMAT_FR_RP =
@@ -59,7 +72,7 @@ public class ValidationUtils {
     return validateNotTooLong(value, maxLength, field);
   }
 
-  public static ValidationResult validateLengthWhenNotEmpty(
+  public static ValidationResult validateLengthIfNotEmpty(
       String value, int minLength, int maxLength, Field field) {
     if (value == null || value.isBlank()) {
       return new ValidationResult();
@@ -264,5 +277,49 @@ public class ValidationUtils {
           String.format("%s darf nicht grösser als %s sein", field, maxValue), Set.of(field));
     }
     return new ValidationResult();
+  }
+
+  public static ValidationResult validateEmail(String email, Field field) {
+    boolean valid = validateEmail(email);
+    return (valid)
+        ? new ValidationResult()
+        : new ValidationResult(field + " ist ungültig", Set.of(field));
+  }
+
+  static boolean validateEmail(String email) {
+    if (email == null || email.isBlank()) {
+      return true;
+    }
+    Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
+    return matcher.matches();
+  }
+
+  public static ValidationResult validateIbanNummer(String ibanNummer, Field field) {
+    boolean valid = validateIbanNummer(ibanNummer);
+    return (valid)
+        ? new ValidationResult()
+        : new ValidationResult(field + " ist ungültig", Set.of(field));
+  }
+
+  static boolean validateIbanNummer(String ibanNummer) {
+    if (ibanNummer == null || ibanNummer.isBlank()) {
+      return true;
+    }
+
+    String ibanNummerWithoutSpaces = ibanNummer.replaceAll("\\s", "");
+
+    if (ibanNummer.startsWith("CH")) {
+      // In der Schweiz muss eine IBAN-Nummer genau 21 Stellen haben
+      if (ibanNummerWithoutSpaces.length() != 21) {
+        return false;
+      }
+    } else {
+      if (ibanNummerWithoutSpaces.length() < 15 || ibanNummerWithoutSpaces.length() > 34) {
+        return false;
+      }
+    }
+
+    Matcher matcher = VALID_IBAN_REGEX.matcher(ibanNummerWithoutSpaces);
+    return matcher.matches();
   }
 }

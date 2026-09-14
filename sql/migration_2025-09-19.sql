@@ -73,6 +73,7 @@ ALTER TABLE svm.Person ADD COLUMN version INT NOT NULL AFTER person_id;
 ALTER TABLE svm.Person ADD COLUMN creation_date TIMESTAMP NOT NULL AFTER adresse_id;
 ALTER TABLE svm.Person CHANGE last_updated last_modified TIMESTAMP NOT NULL;
 UPDATE svm.Person SET creation_date = last_modified;
+ALTER TABLE svm.Person MODIFY anrede VARCHAR(5) NOT NULL;
 
 -- Sub-Tabellen von Person
 ALTER TABLE svm.Angehoeriger DROP COLUMN last_updated;

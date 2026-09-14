@@ -26,7 +26,7 @@ public class ListenExportModelImpl implements ListenExportModel {
 
   @Override
   public ValidationResult validateTitel(String titel) {
-    return ValidationUtils.validateLengthWhenNotEmpty(titel, 2, 110, Field.TITEL);
+    return ValidationUtils.validateLengthIfNotEmpty(titel, 2, 110, Field.TITEL);
   }
 
   // Übergreifende Validierungen

@@ -6,6 +6,7 @@ import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
+import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -63,6 +64,9 @@ public interface ModelFactory {
   MitarbeitersModel createLehrkraefteModel();
 
   MitarbeiterErfassenModel createMitarbeiterErfassenModel();
+
+  CreateOrUpdateMitarbeiterModel createCreateOrUpdateMitarbeiterModel(
+      Optional<Mitarbeiter> mitarbeiterToBeModifiedOptional);
 
   KursortListModel createKursortListModel();
 

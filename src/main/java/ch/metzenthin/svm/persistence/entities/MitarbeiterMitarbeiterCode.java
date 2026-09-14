@@ -28,6 +28,13 @@ public class MitarbeiterMitarbeiterCode {
   @JoinColumn(name = "code_id")
   private MitarbeiterCode mitarbeiterCode;
 
+  public MitarbeiterMitarbeiterCode() {}
+
+  public MitarbeiterMitarbeiterCode(Mitarbeiter mitarbeiter, MitarbeiterCode mitarbeiterCode) {
+    this.mitarbeiter = mitarbeiter;
+    this.mitarbeiterCode = mitarbeiterCode;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

@@ -158,19 +158,19 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
   }
 
   // Übergreifende Validierungen
-  private ValidationResult validateSemesterPeriod(Calendar beginn, Calendar ende) {
+  private static ValidationResult validateSemesterPeriod(Calendar beginn, Calendar ende) {
     return validatePeriod(beginn, ende, Field.SEMESTERBEGINN, Field.SEMESTERENDE);
   }
 
-  private ValidationResult validateFerien1Period(Calendar beginn, Calendar ende) {
+  private static ValidationResult validateFerien1Period(Calendar beginn, Calendar ende) {
     return validatePeriod(beginn, ende, Field.FERIENBEGINN1, Field.FERIENBEGINN1);
   }
 
-  private ValidationResult validateFerien2Period(Calendar beginn, Calendar ende) {
+  private static ValidationResult validateFerien2Period(Calendar beginn, Calendar ende) {
     return validatePeriod(beginn, ende, Field.FERIENBEGINN2, Field.FERIENBEGINN2);
   }
 
-  private ValidationResult validateSemesterWithinSchuljahr(
+  private static ValidationResult validateSemesterWithinSchuljahr(
       String schuljahr, Calendar beginn, Calendar ende) {
     ValidationResult validationResult =
         validateWithinSchuljahr(schuljahr, beginn, Field.SEMESTERBEGINN);
@@ -181,7 +181,8 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
     return validateWithinSchuljahr(schuljahr, ende, Field.SEMESTERENDE);
   }
 
-  private ValidationResult validateWithinSchuljahr(String schuljahr, Calendar beginn, Field field) {
+  private static ValidationResult validateWithinSchuljahr(
+      String schuljahr, Calendar beginn, Field field) {
     return (schuljahr != null
             && beginn != null
             && !schuljahr.contains(Integer.toString(beginn.get(Calendar.YEAR))))
@@ -189,13 +190,13 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
         : new ValidationResult();
   }
 
-  private ValidationResult validateFerien1WithinSemester(
+  private static ValidationResult validateFerien1WithinSemester(
       Calendar beginn, Calendar ende, Calendar semesterbeginn, Calendar semesterende) {
     return validationPeriodWithinSemester(
         beginn, ende, semesterbeginn, semesterende, Field.FERIENBEGINN1, Field.FERIENENDE1);
   }
 
-  private ValidationResult validationPeriodWithinSemester(
+  private static ValidationResult validationPeriodWithinSemester(
       Calendar beginn,
       Calendar ende,
       Calendar semesterbeginn,
@@ -210,13 +211,13 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
     return validateWithinPeriod(ende, semesterbeginn, semesterende, fieldEnde);
   }
 
-  private ValidationResult validateFerien2WithinSemester(
+  private static ValidationResult validateFerien2WithinSemester(
       Calendar beginn, Calendar ende, Calendar semesterbeginn, Calendar semesterende) {
     return validationPeriodWithinSemester(
         beginn, ende, semesterbeginn, semesterende, Field.FERIENBEGINN2, Field.FERIENENDE2);
   }
 
-  private ValidationResult validateFerien2AfterFerien1(
+  private static ValidationResult validateFerien2AfterFerien1(
       Calendar ferienende1, Calendar ferienbeginn2) {
     return validateNotBefore(ferienbeginn2, ferienende1, Field.FERIENBEGINN2);
   }
@@ -344,8 +345,8 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
     return validationResults;
   }
 
-  void updateModel(ConvertedSemesterFields semesterFields) {
-    semesterFields.mergeIntoEntity(semester);
+  void updateModel(ConvertedSemesterFields convertedSemesterFields) {
+    convertedSemesterFields.mergeIntoEntity(semester);
   }
 
   private SaveSemesterResult saveSemester(boolean updateSemesterrechnungen) {

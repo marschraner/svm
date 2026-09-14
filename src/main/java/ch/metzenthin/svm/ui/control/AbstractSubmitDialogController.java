@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 /**
  * @author Martin Schraner
@@ -97,6 +98,20 @@ public abstract class AbstractSubmitDialogController<T extends SubmitDialogView>
       Consumer<String> setErrorLabelVisibleConsumer,
       Runnable setErrorLabelInvisibleRunnable) {
     String formattedFieldValue = FormattingUtils.formatString(fieldValue);
+    setAndValidateFormattedStringValue(
+        validateFieldFunction,
+        setFieldConsumer,
+        setErrorLabelVisibleConsumer,
+        setErrorLabelInvisibleRunnable,
+        formattedFieldValue);
+  }
+
+  private static void setAndValidateFormattedStringValue(
+      Function<String, ValidationResult> validateFieldFunction,
+      Consumer<String> setFieldConsumer,
+      Consumer<String> setErrorLabelVisibleConsumer,
+      Runnable setErrorLabelInvisibleRunnable,
+      String formattedFieldValue) {
     setFieldConsumer.accept(formattedFieldValue);
     ValidationResult validationResult = validateFieldFunction.apply(formattedFieldValue);
     if (validationResult.isValid()) {
@@ -104,6 +119,22 @@ public abstract class AbstractSubmitDialogController<T extends SubmitDialogView>
     } else {
       setErrorLabelVisibleConsumer.accept(validationResult.errorMessage());
     }
+  }
+
+  protected static void formatAndValidateString(
+      String fieldValue,
+      UnaryOperator<String> formatFunction,
+      Function<String, ValidationResult> validateFieldFunction,
+      Consumer<String> setFieldConsumer,
+      Consumer<String> setErrorLabelVisibleConsumer,
+      Runnable setErrorLabelInvisibleRunnable) {
+    String formattedFieldValue = formatFunction.apply(FormattingUtils.formatString(fieldValue));
+    setAndValidateFormattedStringValue(
+        validateFieldFunction,
+        setFieldConsumer,
+        setErrorLabelVisibleConsumer,
+        setErrorLabelInvisibleRunnable,
+        formattedFieldValue);
   }
 
   protected static void formatConvertAndValidateDate(

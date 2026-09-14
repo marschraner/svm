@@ -1,170 +1,69 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Anrede;
-import ch.metzenthin.svm.domain.model.MitarbeiterErfassenModel;
-import ch.metzenthin.svm.domain.model.MitarbeitersModel;
-import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
-import ch.metzenthin.svm.ui.control.MitarbeiterErfassenController;
 import java.awt.*;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
+import lombok.Getter;
 
 @SuppressWarnings({"java:S100", "java:S1450"})
-public class MitarbeiterErfassenDialog extends JDialog {
-
-  // Schalter zur Aktivierung des Default-Button (nicht dynamisch)
-  private static final boolean DEFAULT_BUTTON_ENABLED = false;
+public class CreateOrUpdateMitarbeiterDialog extends AbstractSubmitDialog {
 
   private JPanel contentPane;
   private JPanel datenPanel;
-  private JComboBox<Anrede> comboBoxAnrede;
-  private JTextField txtNachname;
-  private JTextField txtVorname;
-  private JTextField txtStrasseHausnummer;
-  private JTextField txtPlz;
-  private JTextField txtOrt;
-  private JTextField txtFestnetz;
-  private JTextField txtNatel;
-  private JTextField txtEmail;
-  private JTextField txtGeburtsdatum;
-  private JTextField txtAhvNummer;
-  private JTextField txtIbanNummer;
-  private JTextArea textAreaVertretungsmoeglichkeiten;
-  private JTextArea textAreaBemerkungen;
-  private JLabel errLblAnrede;
-  private JLabel errLblNachname;
-  private JLabel errLblVorname;
-  private JLabel errLblStrasseHausnummer;
-  private JLabel errLblPlz;
-  private JLabel errLblOrt;
-  private JLabel errLblFestnetz;
-  private JLabel errLblNatel;
-  private JLabel errLblEmail;
-  private JLabel errLblGeburtsdatum;
-  private JLabel errLblAhvNummer;
-  private JLabel errLblIbanNummer;
-  private JLabel errLblVertretungsmoeglichkeiten;
-  private JLabel errLblBemerkungen;
-  private JCheckBox checkBoxLehrkraft;
-  private JCheckBox checkBoxAktiv;
-  private JLabel lblCodes;
-  private JButton btnCodesBearbeiten;
-  private JButton btnSpeichern;
-  private JButton btnAbbrechen;
+  @Getter private JComboBox<Anrede> comboBoxAnrede;
+  @Getter private JLabel errLblAnrede;
+  @Getter private JTextField txtNachname;
+  @Getter private JLabel errLblNachname;
+  @Getter private JTextField txtVorname;
+  @Getter private JLabel errLblVorname;
+  @Getter private JTextField txtStrasseHausnummer;
+  @Getter private JLabel errLblStrasseHausnummer;
+  @Getter private JTextField txtPlz;
+  @Getter private JLabel errLblPlz;
+  @Getter private JTextField txtOrt;
+  @Getter private JLabel errLblOrt;
+  @Getter private JTextField txtFestnetz;
+  @Getter private JLabel errLblFestnetz;
+  @Getter private JTextField txtNatel;
+  @Getter private JLabel errLblNatel;
+  @Getter private JTextField txtEmail;
+  @Getter private JLabel errLblEmail;
+  @Getter private JTextField txtGeburtsdatum;
+  @Getter private JLabel errLblGeburtsdatum;
+  @Getter private JTextField txtAhvNummer;
+  @Getter private JLabel errLblAhvNummer;
+  @Getter private JTextField txtIbanNummer;
+  @Getter private JLabel errLblIbanNummer;
+  @Getter private JTextArea textAreaVertretungsmoeglichkeiten;
+  @Getter private JLabel errLblVertretungsmoeglichkeiten;
+  @Getter private JTextArea textAreaBemerkungen;
+  @Getter private JLabel errLblBemerkungen;
+  @Getter private JCheckBox checkBoxLehrkraft;
+  @Getter private JCheckBox checkBoxAktiv;
+  @Getter private JLabel lblCodes;
+  @Getter private JButton btnCodesBearbeiten;
+  @Getter private JButton btnSpeichern;
+  @Getter private JButton btnAbbrechen;
 
-  public MitarbeiterErfassenDialog(
-      SvmContext svmContext,
-      MitarbeitersTableModel mitarbeitersTableModel,
-      MitarbeitersModel mitarbeitersModel,
-      int indexBearbeiten,
-      boolean isBearbeiten,
-      String title) {
+  public CreateOrUpdateMitarbeiterDialog(String title) {
     $$$setupUI$$$();
     setContentPane(contentPane);
     setModal(true);
     setTitle(title);
-    if (DEFAULT_BUTTON_ENABLED) {
-      getRootPane().setDefaultButton(btnSpeichern);
-    }
-    createLehrkraftErfassenController(
-        svmContext, mitarbeitersTableModel, mitarbeitersModel, indexBearbeiten, isBearbeiten);
-    initializeErrLbls();
   }
 
-  @SuppressWarnings("DuplicatedCode")
-  private void createLehrkraftErfassenController(
-      SvmContext svmContext,
-      MitarbeitersTableModel mitarbeitersTableModel,
-      MitarbeitersModel mitarbeitersModel,
-      int indexBearbeiten,
-      boolean isBearbeiten) {
-    MitarbeiterErfassenModel mitarbeiterErfassenModel =
-        (isBearbeiten
-            ? mitarbeitersModel.getMitarbeiterErfassenModel(
-                svmContext, mitarbeitersTableModel, indexBearbeiten)
-            : svmContext.getModelFactory().createMitarbeiterErfassenModel());
-    MitarbeiterErfassenController mitarbeiterErfassenController =
-        new MitarbeiterErfassenController(
-            svmContext,
-            mitarbeitersTableModel,
-            mitarbeiterErfassenModel,
-            isBearbeiten,
-            DEFAULT_BUTTON_ENABLED);
-    mitarbeiterErfassenController.setMitarbeiterErfassenDialog(this);
-    mitarbeiterErfassenController.setContentPane(contentPane);
-    mitarbeiterErfassenController.setComboBoxAnrede(comboBoxAnrede);
-    mitarbeiterErfassenController.setTxtNachname(txtNachname);
-    mitarbeiterErfassenController.setTxtVorname(txtVorname);
-    mitarbeiterErfassenController.setTxtStrasseHausnummer(txtStrasseHausnummer);
-    mitarbeiterErfassenController.setTxtPlz(txtPlz);
-    mitarbeiterErfassenController.setTxtOrt(txtOrt);
-    mitarbeiterErfassenController.setTxtFestnetz(txtFestnetz);
-    mitarbeiterErfassenController.setTxtNatel(txtNatel);
-    mitarbeiterErfassenController.setTxtEmail(txtEmail);
-    mitarbeiterErfassenController.setTxtGeburtsdatum(txtGeburtsdatum);
-    mitarbeiterErfassenController.setTxtAhvNummer(txtAhvNummer);
-    mitarbeiterErfassenController.setTxtIbanNummer(txtIbanNummer);
-    mitarbeiterErfassenController.setTextAreaVertretungsmoeglichkeiten(
-        textAreaVertretungsmoeglichkeiten);
-    mitarbeiterErfassenController.setTextAreaBemerkungen(textAreaBemerkungen);
-    mitarbeiterErfassenController.setCheckBoxLehrkraft(checkBoxLehrkraft);
-    mitarbeiterErfassenController.setCheckBoxAktiv(checkBoxAktiv);
-    mitarbeiterErfassenController.setLblCodes(lblCodes);
-    mitarbeiterErfassenController.setBtnCodesBearbeiten(btnCodesBearbeiten);
-    mitarbeiterErfassenController.setBtnSpeichern(btnSpeichern);
-    mitarbeiterErfassenController.setBtnAbbrechen(btnAbbrechen);
-    mitarbeiterErfassenController.setErrLblAnrede(errLblAnrede);
-    mitarbeiterErfassenController.setErrLblNachname(errLblNachname);
-    mitarbeiterErfassenController.setErrLblVorname(errLblVorname);
-    mitarbeiterErfassenController.setErrLblStrasseHausnummer(errLblStrasseHausnummer);
-    mitarbeiterErfassenController.setErrLblPlz(errLblPlz);
-    mitarbeiterErfassenController.setErrLblOrt(errLblOrt);
-    mitarbeiterErfassenController.setErrLblFestnetz(errLblFestnetz);
-    mitarbeiterErfassenController.setErrLblNatel(errLblNatel);
-    mitarbeiterErfassenController.setErrLblEmail(errLblEmail);
-    mitarbeiterErfassenController.setErrLblGeburtsdatum(errLblGeburtsdatum);
-    mitarbeiterErfassenController.setErrLblAhvNummer(errLblAhvNummer);
-    mitarbeiterErfassenController.setErrLblIbanNummer(errLblIbanNummer);
-    mitarbeiterErfassenController.setErrLblVertretungsmoeglichkeiten(
-        errLblVertretungsmoeglichkeiten);
-    mitarbeiterErfassenController.setErrLblBemerkungen(errLblBemerkungen);
-    mitarbeiterErfassenController.constructionDone();
+  @Override
+  public JButton getSubmitButton() {
+    return btnSpeichern;
   }
 
-  @SuppressWarnings("DuplicatedCode")
-  private void initializeErrLbls() {
-    errLblAnrede.setVisible(false);
-    errLblAnrede.setForeground(Color.RED);
-    errLblNachname.setVisible(false);
-    errLblNachname.setForeground(Color.RED);
-    errLblVorname.setVisible(false);
-    errLblVorname.setForeground(Color.RED);
-    errLblStrasseHausnummer.setVisible(false);
-    errLblStrasseHausnummer.setForeground(Color.RED);
-    errLblPlz.setVisible(false);
-    errLblPlz.setForeground(Color.RED);
-    errLblOrt.setVisible(false);
-    errLblOrt.setForeground(Color.RED);
-    errLblFestnetz.setVisible(false);
-    errLblFestnetz.setForeground(Color.RED);
-    errLblNatel.setVisible(false);
-    errLblNatel.setForeground(Color.RED);
-    errLblEmail.setVisible(false);
-    errLblEmail.setForeground(Color.RED);
-    errLblGeburtsdatum.setVisible(false);
-    errLblGeburtsdatum.setForeground(Color.RED);
-    errLblAhvNummer.setVisible(false);
-    errLblAhvNummer.setForeground(Color.RED);
-    errLblIbanNummer.setVisible(false);
-    errLblIbanNummer.setForeground(Color.RED);
-    errLblVertretungsmoeglichkeiten.setVisible(false);
-    errLblVertretungsmoeglichkeiten.setForeground(Color.RED);
-    errLblBemerkungen.setVisible(false);
-    errLblBemerkungen.setForeground(Color.RED);
+  @Override
+  public JButton getAbbrechenButton() {
+    return btnAbbrechen;
   }
 
   private void createUIComponents() {
