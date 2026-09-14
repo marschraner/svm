@@ -11,7 +11,7 @@ import ch.metzenthin.svm.domain.model.MitarbeitersModel;
 import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeitersTableModel;
 import ch.metzenthin.svm.ui.components.ListenExportDialogOld;
-import ch.metzenthin.svm.ui.components.MitarbeiterErfassenDialog;
+import ch.metzenthin.svm.ui.components.CreateOrUpdateMitarbeiterDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -169,11 +169,11 @@ public class MitarbeitersController {
 
   private void onNeu() {
     btnNeu.setFocusPainted(true);
-    MitarbeiterErfassenDialog mitarbeiterErfassenDialog =
-        new MitarbeiterErfassenDialog(
+    CreateOrUpdateMitarbeiterDialog createOrUpdateMitarbeiterDialog =
+        new CreateOrUpdateMitarbeiterDialog(
             svmContext, mitarbeitersTableModel, mitarbeitersModel, 0, false, "Neuer Mitarbeiter");
-    mitarbeiterErfassenDialog.pack();
-    mitarbeiterErfassenDialog.setVisible(true);
+    createOrUpdateMitarbeiterDialog.pack();
+    createOrUpdateMitarbeiterDialog.setVisible(true);
     setLblTotal();
     if (mitarbeitersTableModel.getRowCount() <= 1) {
       btnEmail.setText(EMAIL);
@@ -196,16 +196,16 @@ public class MitarbeitersController {
 
   private void onBearbeiten() {
     btnBearbeiten.setFocusPainted(true);
-    MitarbeiterErfassenDialog mitarbeiterErfassenDialog =
-        new MitarbeiterErfassenDialog(
+    CreateOrUpdateMitarbeiterDialog createOrUpdateMitarbeiterDialog =
+        new CreateOrUpdateMitarbeiterDialog(
             svmContext,
             mitarbeitersTableModel,
             mitarbeitersModel,
             mitarbeitersTable.convertRowIndexToModel(mitarbeitersTable.getSelectedRow()),
             true,
             "Mitarbeiter bearbeiten");
-    mitarbeiterErfassenDialog.pack();
-    mitarbeiterErfassenDialog.setVisible(true);
+    createOrUpdateMitarbeiterDialog.pack();
+    createOrUpdateMitarbeiterDialog.setVisible(true);
     mitarbeitersTableModel.fireTableDataChanged();
     btnBearbeiten.setFocusPainted(false);
     int rowCount = mitarbeitersTableModel.getRowCount();

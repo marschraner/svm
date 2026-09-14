@@ -18,4 +18,8 @@ public enum Anrede {
   public String toString() {
     return name;
   }
+
+  public static Anrede[] getSelectableValues() {
+    return new Anrede[] {FRAU, HERR};
+  }
 }

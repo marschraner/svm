@@ -219,7 +219,7 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
 
   @Override
   public ValidationResult validateBemerkungen(String bemerkungen) {
-    return ValidationUtils.validateLengthWhenNotEmpty(bemerkungen, 2, 100, Field.BEMERKUNGEN);
+    return ValidationUtils.validateLengthIfNotEmpty(bemerkungen, 2, 100, Field.BEMERKUNGEN);
   }
 
   // Übergreifende Validierungen

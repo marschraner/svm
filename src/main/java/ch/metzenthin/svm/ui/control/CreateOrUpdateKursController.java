@@ -310,6 +310,6 @@ public class CreateOrUpdateKursController
     view.setErrorLabelKursortInvisible();
     view.setErrorLabelLehrkraft1Invisible();
     view.setErrorLabelLehrkraft2Invisible();
-    // Keine Validierung für Field Bemerkungen
+    view.setErrorLabelBemerkungenInvisible();
   }
 }
