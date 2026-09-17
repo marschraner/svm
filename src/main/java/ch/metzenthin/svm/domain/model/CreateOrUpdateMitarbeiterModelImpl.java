@@ -158,14 +158,7 @@ public class CreateOrUpdateMitarbeiterModelImpl extends CreateOrUpdatePersonMode
 
     // Person-Felder validieren
     ConvertedPersonFields convertedPersonFields =
-        new ConvertedPersonFields(
-            convertedMitarbeiterFields.anrede(),
-            convertedMitarbeiterFields.vorname(),
-            convertedMitarbeiterFields.nachname(),
-            convertedMitarbeiterFields.geburtsdatum(),
-            convertedMitarbeiterFields.festnetz(),
-            convertedMitarbeiterFields.natel(),
-            convertedMitarbeiterFields.email());
+        convertedMitarbeiterFields.createConvertedPersonFields();
     List<ValidationResult> validationResults = validateAll(convertedPersonFields, adresseFields);
 
     boolean errorsFound =

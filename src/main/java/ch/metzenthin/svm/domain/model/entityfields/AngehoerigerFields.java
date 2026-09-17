@@ -63,4 +63,9 @@ public record AngehoerigerFields(
 
     return new ConvertedFieldsAndConversionResults<>(convertedAngehoerigerFields, conversionErrors);
   }
+
+  public PersonFields createPersonFields() {
+    return new PersonFields(
+        anrede(), vorname(), nachname(), geburtsdatum(), festnetz(), natel(), email());
+  }
 }

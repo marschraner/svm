@@ -63,4 +63,9 @@ public record SchuelerFields(
 
     return new ConvertedFieldsAndConversionResults<>(convertedSchuelerFields, conversionErrors);
   }
+
+  public PersonFields createPersonFields() {
+    return new PersonFields(
+        anrede(), vorname(), nachname(), geburtsdatum(), festnetz(), natel(), email());
+  }
 }

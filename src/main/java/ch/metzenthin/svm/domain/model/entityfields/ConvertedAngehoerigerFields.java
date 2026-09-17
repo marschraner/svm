@@ -45,4 +45,9 @@ public record ConvertedAngehoerigerFields(
     entity.setNatel(natel());
     entity.setEmail(email());
   }
+
+  public ConvertedPersonFields createConvertedPersonFields() {
+    return new ConvertedPersonFields(
+        anrede(), vorname(), nachname(), geburtsdatum(), festnetz(), natel(), email());
+  }
 }

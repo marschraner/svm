@@ -23,4 +23,8 @@ public record ElternmithilfeCodeFields(String kuerzel, String beschreibung, bool
     entity.setBeschreibung(beschreibung());
     entity.setSelektierbar(selektierbar());
   }
+
+  public CodeFields createCodeFields() {
+    return new CodeFields(kuerzel(), beschreibung(), selektierbar());
+  }
 }

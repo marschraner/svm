@@ -23,4 +23,8 @@ public record MitarbeiterCodeFields(String kuerzel, String beschreibung, boolean
     entity.setBeschreibung(beschreibung());
     entity.setSelektierbar(selektierbar());
   }
+
+  public CodeFields createCodeFields() {
+    return new CodeFields(kuerzel(), beschreibung(), selektierbar());
+  }
 }

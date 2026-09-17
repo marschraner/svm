@@ -74,4 +74,9 @@ public record MitarbeiterFields(
 
     return new ConvertedFieldsAndConversionResults<>(convertedMitarbeiterFields, conversionErrors);
   }
+
+  public PersonFields createPersonFields() {
+    return new PersonFields(
+        anrede(), vorname(), nachname(), geburtsdatum(), festnetz(), natel(), email());
+  }
 }

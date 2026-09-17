@@ -8,6 +8,7 @@ import ch.metzenthin.svm.domain.model.conversion.ConvertedFieldsAndConversionRes
 import ch.metzenthin.svm.domain.model.conversion.IntegerConverter;
 import ch.metzenthin.svm.domain.model.conversion.TimeConverter;
 import ch.metzenthin.svm.persistence.entities.AbstractEntity;
+import ch.metzenthin.svm.persistence.entities.AbstractEntityWithoutVersionLastModified;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -152,11 +153,21 @@ public class RecordGenerator {
   private static List<Field> getAllFieldsInHierarchy(Class<?> clazz) {
     Field[] declaredFields = clazz.getDeclaredFields();
     List<Field> filteredFields = new ArrayList<>(filterFields(declaredFields));
-    Class<?> superclass = clazz.getSuperclass();
-    if (superclass != null && !superclass.equals(AbstractEntity.class)) {
+    Class<?> superclass = getSuperclass(clazz);
+    if (superclass != null) {
       filteredFields.addAll(getAllFieldsInHierarchy(superclass));
     }
     return filteredFields;
+  }
+
+  private static Class<?> getSuperclass(Class<?> clazz) {
+    Class<?> superclass = clazz.getSuperclass();
+    if (superclass != null
+        && !superclass.equals(AbstractEntity.class)
+        && !superclass.equals(AbstractEntityWithoutVersionLastModified.class)) {
+      return superclass;
+    }
+    return null;
   }
 
   private static List<Field> filterFields(Field[] fields) {
@@ -320,6 +331,28 @@ public class RecordGenerator {
       if (!conversionStatements.isEmpty()) {
         code.append(conversionStatements);
       }
+
+      code.append(endOfMethod);
+    }
+
+    Class<?> superClass = getSuperclass(entityClass);
+    if (superClass != null) {
+      // mergeInto Superclass
+      String superClassName = superClass.getSimpleName();
+      String superClassRecordName = recordNamePrefix + superClassName + RECORD_NAME_SUFFIX;
+      List<Field> superClassFieldsInHierarchy = getAllFieldsInHierarchy(superClass);
+      List<String> fieldGetters = new ArrayList<>();
+      superClassFieldsInHierarchy.forEach(f -> fieldGetters.add("      " + f.getName() + "()"));
+
+      code.append("\n  public ")
+          .append(superClassRecordName)
+          .append(" create")
+          .append(superClassRecordName)
+          .append("() {\n");
+
+      code.append("    return new ").append(superClassRecordName).append("( \n");
+
+      code.append(String.join(",\n", fieldGetters)).append(");\n");
 
       code.append(endOfMethod);
     }

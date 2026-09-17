@@ -57,4 +57,9 @@ public record ElternmithilfeDrittpersonFields(
     return new ConvertedFieldsAndConversionResults<>(
         convertedElternmithilfeDrittpersonFields, conversionErrors);
   }
+
+  public PersonFields createPersonFields() {
+    return new PersonFields(
+        anrede(), vorname(), nachname(), geburtsdatum(), festnetz(), natel(), email());
+  }
 }

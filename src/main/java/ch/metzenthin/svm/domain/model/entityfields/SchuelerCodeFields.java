@@ -23,4 +23,8 @@ public record SchuelerCodeFields(String kuerzel, String beschreibung, boolean se
     entity.setBeschreibung(beschreibung());
     entity.setSelektierbar(selektierbar());
   }
+
+  public CodeFields createCodeFields() {
+    return new CodeFields(kuerzel(), beschreibung(), selektierbar());
+  }
 }

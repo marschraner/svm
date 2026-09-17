@@ -24,4 +24,8 @@ public record SemesterrechnungCodeFields(
     entity.setBeschreibung(beschreibung());
     entity.setSelektierbar(selektierbar());
   }
+
+  public CodeFields createCodeFields() {
+    return new CodeFields(kuerzel(), beschreibung(), selektierbar());
+  }
 }
