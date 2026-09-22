@@ -11,6 +11,8 @@ public interface CreateOrUpdatePersonModel {
 
   boolean isNeu();
 
+  String getPersonVornameNachname();
+
   ValidationResult validateAnrede(Anrede anrede);
 
   ValidationResult validateVorname(String vorname);

@@ -14,8 +14,15 @@ public class CodeTableData<T extends Code> extends AbstractTableData<T> {
 
   private static final Field[] COLUMNS = {Field.KUERZEL, Field.BESCHREIBUNG, Field.SELEKTIERBAR};
 
-  public CodeTableData(List<T> codeList) {
-    super(COLUMNS, codeList);
+  public CodeTableData(List<T> codeList, boolean isSelektierbarToBeDisplayed) {
+    super(getColumns(isSelektierbarToBeDisplayed), codeList);
+  }
+
+  private static Field[] getColumns(boolean isSelektierbarToBeDisplayed) {
+    if (!isSelektierbarToBeDisplayed) {
+      return new Field[] {Field.KUERZEL, Field.BESCHREIBUNG};
+    }
+    return COLUMNS;
   }
 
   public Object getValueAt(int rowIndex, int columnIndex) {

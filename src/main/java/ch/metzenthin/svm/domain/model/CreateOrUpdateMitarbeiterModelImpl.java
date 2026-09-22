@@ -13,6 +13,7 @@ import ch.metzenthin.svm.domain.model.validation.ValidationUtils;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
+import ch.metzenthin.svm.service.MitarbeiterCodeService;
 import ch.metzenthin.svm.service.MitarbeiterMitarbeiterCodeService;
 import ch.metzenthin.svm.service.MitarbeiterService;
 import ch.metzenthin.svm.service.result.SaveMitarbeiterResult;
@@ -23,7 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import lombok.Setter;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
@@ -35,12 +35,14 @@ public class CreateOrUpdateMitarbeiterModelImpl extends CreateOrUpdatePersonMode
 
   private final Mitarbeiter mitarbeiter;
   private Optional<Adresse> adresseOptional;
-  @Setter private Set<MitarbeiterCode> mitarbeiterCodes;
+  private Set<MitarbeiterCode> mitarbeiterCodes;
   private final MitarbeiterService mitarbeiterService;
+  private final MitarbeiterCodeService mitarbeiterCodeService;
 
   public CreateOrUpdateMitarbeiterModelImpl(
       Optional<Mitarbeiter> mitarbeiterToBeModifiedOptional,
       MitarbeiterService mitarbeiterService,
+      MitarbeiterCodeService mitarbeiterCodeService,
       MitarbeiterMitarbeiterCodeService mitarbeiterMitarbeiterCodeService) {
     super(
         mitarbeiterToBeModifiedOptional.isEmpty(),
@@ -49,6 +51,7 @@ public class CreateOrUpdateMitarbeiterModelImpl extends CreateOrUpdatePersonMode
         Optional.of(DateAndTimeUtils.getNYearsBeforeNow(80)),
         Optional.of(DateAndTimeUtils.getNYearsBeforeNow(10)),
         false);
+    this.mitarbeiterCodeService = mitarbeiterCodeService;
     this.mitarbeiter = person;
     this.adresseOptional =
         (mitarbeiter.getAdresse() != null)
@@ -83,6 +86,17 @@ public class CreateOrUpdateMitarbeiterModelImpl extends CreateOrUpdatePersonMode
     List<MitarbeiterCode> mitarbeiterCodesAsList = new ArrayList<>(mitarbeiterCodes);
     Collections.sort(mitarbeiterCodesAsList);
     return mitarbeiterCodesAsList;
+  }
+
+  @Override
+  public void setMitarbeiterCodes(Set<MitarbeiterCode> mitarbeiterCodes) {
+    this.mitarbeiterCodes = mitarbeiterCodes;
+  }
+
+  @Override
+  public AddOrRemoveMitarbeiterCodeAssignmentListModel createMitarbeiterCodeAssignmentListModel() {
+    return new AddOrRemoveMitarbeiterCodeAssignmentListModel(
+        mitarbeiterCodeService, getMitarbeiterCodesAsSortedList());
   }
 
   @Override
@@ -121,8 +135,7 @@ public class CreateOrUpdateMitarbeiterModelImpl extends CreateOrUpdatePersonMode
 
   @Override
   public ValidationResultsAndSubmitResult speichern(
-      MitarbeiterFieldsAndAdresseFields mitarbeiterFieldsAndAdresseFields,
-      Set<MitarbeiterCode> mitarbeiterCodes) {
+      MitarbeiterFieldsAndAdresseFields mitarbeiterFieldsAndAdresseFields) {
 
     ConvertedFieldsAndConversionResults<ConvertedMitarbeiterFields>
         convertedMitarbeiterFieldsAndConversionResults =

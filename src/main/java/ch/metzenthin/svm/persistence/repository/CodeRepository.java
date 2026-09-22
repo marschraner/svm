@@ -24,4 +24,7 @@ public interface CodeRepository<T extends Code> extends JpaRepository<T, Integer
 
   @Query("SELECT c FROM #{#entityName} c ORDER BY c.kuerzel")
   List<T> findAllOrderByKuerzel();
+
+  @Query("SELECT c FROM #{#entityName} c WHERE c.selektierbar = TRUE ORDER BY c.kuerzel")
+  List<T> findAllSelectableOrderByKuerzel();
 }

@@ -43,6 +43,12 @@ public abstract class AbstractCodeServiceImpl<T extends Code> implements CodeSer
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public List<T> findAllSelectableCodes() {
+    return codeRepository.findAllSelectableOrderByKuerzel();
+  }
+
+  @Override
   @Transactional
   public SaveCodeResult saveCode(T code) {
     long numberOfAlreadyExistingCodes =

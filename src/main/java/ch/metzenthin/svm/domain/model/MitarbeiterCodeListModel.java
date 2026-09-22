@@ -20,7 +20,7 @@ public class MitarbeiterCodeListModel extends CodeListModel<MitarbeiterCode> {
       MitarbeiterCodeService service) {
     List<MitarbeiterCode> mitarbeiterCodeList = service.findAllCodes();
     CodeTableData<MitarbeiterCode> mitarbeiterCodeTableData =
-        new CodeTableData<>(mitarbeiterCodeList);
+        new CodeTableData<>(mitarbeiterCodeList, true);
     return new TableModel<>(mitarbeiterCodeTableData, 0.15, 0.65, 0.2);
   }
 

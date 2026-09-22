@@ -20,7 +20,7 @@ public class SemesterrechnungCodeListModel extends CodeListModel<Semesterrechnun
       createTableModel(SemesterrechnungCodeService service) {
     List<SemesterrechnungCode> semesterrechnungCodeList = service.findAllCodes();
     CodeTableData<SemesterrechnungCode> semesterrechnungCodeTableData =
-        new CodeTableData<>(semesterrechnungCodeList);
+        new CodeTableData<>(semesterrechnungCodeList, true);
     return new TableModel<>(semesterrechnungCodeTableData, 0.15, 0.65, 0.2);
   }
 

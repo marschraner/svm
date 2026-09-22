@@ -1,7 +1,9 @@
 package ch.metzenthin.svm.ui.control;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.domain.model.AddOrRemoveMitarbeiterCodeAssignmentListModel;
 import ch.metzenthin.svm.domain.model.BindestrichLeerzeichenFormatter;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateMitarbeiterModel;
 import ch.metzenthin.svm.domain.model.IbanNummerFormatter;
@@ -13,8 +15,11 @@ import ch.metzenthin.svm.domain.model.entityfields.AdresseFields;
 import ch.metzenthin.svm.domain.model.entityfields.MitarbeiterFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
+import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.ui.view.CreateOrUpdateMitarbeiterView;
 import java.awt.event.*;
+import java.util.HashSet;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,11 +35,16 @@ public class CreateOrUpdateMitarbeiterController
   private static final Logger LOGGER =
       LoggerFactory.getLogger(CreateOrUpdateMitarbeiterController.class);
 
+  private final SvmContext svmContext;
+
   private final CreateOrUpdateMitarbeiterModel model;
 
   public CreateOrUpdateMitarbeiterController(
-      CreateOrUpdateMitarbeiterModel createOrUpdateMitarbeiterModel, String title) {
+      SvmContext svmContext,
+      CreateOrUpdateMitarbeiterModel createOrUpdateMitarbeiterModel,
+      String title) {
     super(createView(title));
+    this.svmContext = svmContext;
     this.model = createOrUpdateMitarbeiterModel;
     configComboBoxAnrede();
     configTxtNachname();
@@ -50,6 +60,7 @@ public class CreateOrUpdateMitarbeiterController
     configTxtIbanNummer();
     configTxtVertretungsmoeglichkeiten();
     configTxtBemerkungen();
+    configButtonCodesBearbeiten();
     initialiseViewFields();
   }
 
@@ -380,6 +391,34 @@ public class CreateOrUpdateMitarbeiterController
         view::setErrorLabelBemerkungenInvisible);
   }
 
+  private void configButtonCodesBearbeiten() {
+    view.addButtonCodesBearbeitenActionListener(e -> onCodesBearbeiten());
+  }
+
+  private void onCodesBearbeiten() {
+    AddOrRemoveMitarbeiterCodeAssignmentListModel addOrRemoveMitarbeiterCodeAssignmentListModel =
+        model.createMitarbeiterCodeAssignmentListModel();
+    String mitarbeiterNameVorname = model.getPersonVornameNachname();
+    String dialogTitel = "Mitarbeiter-Codes";
+    if (!mitarbeiterNameVorname.isEmpty()) {
+      dialogTitel = dialogTitel + " " + mitarbeiterNameVorname;
+    }
+    AddOrRemoveMitarbeiterCodeAssignmentListController
+        addOrRemoveMitarbeiterCodeAssignmentListController =
+            new AddOrRemoveMitarbeiterCodeAssignmentListController(
+                svmContext, addOrRemoveMitarbeiterCodeAssignmentListModel, dialogTitel);
+    addOrRemoveMitarbeiterCodeAssignmentListController.showDialog();
+    List<MitarbeiterCode> assignedCodes =
+        addOrRemoveMitarbeiterCodeAssignmentListModel.getAssignedCodesAsSortedList();
+    model.setMitarbeiterCodes(new HashSet<>(assignedCodes));
+    setCodesLabel();
+  }
+
+  private void setCodesLabel() {
+    String mitarbeiterCodesAsStr = model.getMitarbeiterCodesAsStr();
+    view.setLabelCodesText(mitarbeiterCodesAsStr);
+  }
+
   private void initialiseViewFields() {
     if (!model.isNeu()) {
       MitarbeiterFieldsAndAdresseFields mitarbeiterFieldsAndAdresseFields =
@@ -389,11 +428,13 @@ public class CreateOrUpdateMitarbeiterController
       view.setComboBoxAnredeSelectedItem(mitarbeiterFields.anrede());
       view.setTxtNachnameText(mitarbeiterFields.nachname());
       view.setTxtVornameText(mitarbeiterFields.vorname());
-      StrasseHausnummer strasseHausnummer =
-          new StrasseHausnummer(adresseFields.strasse(), adresseFields.hausnummer());
-      view.setTxtStrasseHausnummerText(strasseHausnummer.toString());
-      view.setTxtPlzText(adresseFields.plz());
-      view.setTxtOrtText(adresseFields.ort());
+      if (adresseFields != null) {
+        StrasseHausnummer strasseHausnummer =
+            new StrasseHausnummer(adresseFields.strasse(), adresseFields.hausnummer());
+        view.setTxtStrasseHausnummerText(strasseHausnummer.toString());
+        view.setTxtPlzText(adresseFields.plz());
+        view.setTxtOrtText(adresseFields.ort());
+      }
       view.setTxtFestnetzText(mitarbeiterFields.festnetz());
       view.setTxtNatelText(mitarbeiterFields.natel());
       view.setTxtEmailText(mitarbeiterFields.email());
@@ -404,11 +445,11 @@ public class CreateOrUpdateMitarbeiterController
       view.setTxtBemerkungenText(mitarbeiterFields.bemerkungen());
       view.setCheckBoxLehrkraftSelected(mitarbeiterFields.lehrkraft());
       view.setCheckBoxAktivSelected(mitarbeiterFields.aktiv());
-      String mitarbeiterCodesAsStr = model.getMitarbeiterCodesAsStr();
-      view.setLabelCodesText(mitarbeiterCodesAsStr);
+      setCodesLabel();
     } else {
       view.setCheckBoxLehrkraftSelected(false);
       view.setCheckBoxAktivSelected(false);
+      view.setLabelCodesText("-");
     }
   }
 
@@ -438,7 +479,7 @@ public class CreateOrUpdateMitarbeiterController
             view.getTxtOrtText());
     MitarbeiterFieldsAndAdresseFields mitarbeiterFieldsAndAdresseFields =
         new MitarbeiterFieldsAndAdresseFields(mitarbeiterFields, adresseFields);
-    return model.speichern(mitarbeiterFieldsAndAdresseFields, null); // TODO Codes
+    return model.speichern(mitarbeiterFieldsAndAdresseFields);
   }
 
   @Override

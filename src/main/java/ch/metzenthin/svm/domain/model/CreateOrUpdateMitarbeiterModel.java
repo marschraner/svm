@@ -10,11 +10,13 @@ import java.util.Set;
  */
 public interface CreateOrUpdateMitarbeiterModel extends CreateOrUpdatePersonModel {
 
-  boolean isNeu();
-
   MitarbeiterFieldsAndAdresseFields getMitarbeiterFieldsAndAdresseFields();
 
   String getMitarbeiterCodesAsStr();
+
+  void setMitarbeiterCodes(Set<MitarbeiterCode> mitarbeiterCodes);
+
+  AddOrRemoveMitarbeiterCodeAssignmentListModel createMitarbeiterCodeAssignmentListModel();
 
   ValidationResult validateAhvNummer(String ahvNummer);
 
@@ -25,6 +27,5 @@ public interface CreateOrUpdateMitarbeiterModel extends CreateOrUpdatePersonMode
   ValidationResult validateBemerkungen(String bemerkungen);
 
   ValidationResultsAndSubmitResult speichern(
-      MitarbeiterFieldsAndAdresseFields mitarbeiterFieldsAndAdresseFields,
-      Set<MitarbeiterCode> mitarbeiterCodes);
+      MitarbeiterFieldsAndAdresseFields mitarbeiterFieldsAndAdresseFields);
 }

@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.domain.model;
 
+import static ch.metzenthin.svm.common.utils.SvmStringUtils.isNotEmpty;
+
 import ch.metzenthin.svm.common.datatypes.Anrede;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.entityfields.AdresseFields;
@@ -45,6 +47,14 @@ public abstract class CreateOrUpdatePersonModelImpl<T extends Person>
   @Override
   public boolean isNeu() {
     return neu;
+  }
+
+  @Override
+  public String getPersonVornameNachname() {
+    if (isNotEmpty(person.getNachname()) && isNotEmpty(person.getVorname())) {
+      return person.getVorname() + " " + person.getNachname();
+    }
+    return "";
   }
 
   @Override

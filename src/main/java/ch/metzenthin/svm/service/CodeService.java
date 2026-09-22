@@ -14,6 +14,8 @@ public interface CodeService<T extends Code> {
 
   List<T> findAllCodes();
 
+  List<T> findAllSelectableCodes();
+
   SaveCodeResult saveCode(T code);
 
   DeleteCodeResult deleteCode(T code);

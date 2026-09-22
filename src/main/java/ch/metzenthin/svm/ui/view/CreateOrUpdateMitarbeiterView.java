@@ -7,6 +7,7 @@ import ch.metzenthin.svm.ui.components.TextAreaWithErrorLabelComponent;
 import ch.metzenthin.svm.ui.components.TextFieldWithErrorLabelComponent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
@@ -33,6 +34,7 @@ public class CreateOrUpdateMitarbeiterView
   private final JCheckBox lehrkraftCheckBox;
   private final JCheckBox aktivCheckBox;
   private final JLabel codesLabel;
+  private final JButton buttonCodesBearbeiten;
 
   public CreateOrUpdateMitarbeiterView(String title) {
     super(new CreateOrUpdateMitarbeiterDialog(title));
@@ -73,6 +75,7 @@ public class CreateOrUpdateMitarbeiterView
     this.lehrkraftCheckBox = dialog.getCheckBoxLehrkraft();
     this.aktivCheckBox = dialog.getCheckBoxAktiv();
     this.codesLabel = dialog.getLblCodes();
+    this.buttonCodesBearbeiten = dialog.getBtnCodesBearbeiten();
   }
 
   // Anrede
@@ -465,5 +468,10 @@ public class CreateOrUpdateMitarbeiterView
   // Codes-Label
   public void setLabelCodesText(String codesText) {
     codesLabel.setText(codesText);
+  }
+
+  // Bearbeiten-Button
+  public void addButtonCodesBearbeitenActionListener(ActionListener actionListener) {
+    buttonCodesBearbeiten.addActionListener(actionListener);
   }
 }

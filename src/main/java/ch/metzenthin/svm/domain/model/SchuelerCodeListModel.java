@@ -19,7 +19,7 @@ public class SchuelerCodeListModel extends CodeListModel<SchuelerCode> {
   private static TableModel<CodeTableData<SchuelerCode>, SchuelerCode> createTableModel(
       SchuelerCodeService service) {
     List<SchuelerCode> schuelerCodeList = service.findAllCodes();
-    CodeTableData<SchuelerCode> schuelerCodeTableData = new CodeTableData<>(schuelerCodeList);
+    CodeTableData<SchuelerCode> schuelerCodeTableData = new CodeTableData<>(schuelerCodeList, true);
     return new TableModel<>(schuelerCodeTableData, 0.15, 0.65, 0.2);
   }
 

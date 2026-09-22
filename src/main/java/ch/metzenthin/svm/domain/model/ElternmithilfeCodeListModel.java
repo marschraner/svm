@@ -20,7 +20,7 @@ public class ElternmithilfeCodeListModel extends CodeListModel<ElternmithilfeCod
       ElternmithilfeCodeService service) {
     List<ElternmithilfeCode> elternmithilfeCodeList = service.findAllCodes();
     CodeTableData<ElternmithilfeCode> elternmithilfeCodeTableData =
-        new CodeTableData<>(elternmithilfeCodeList);
+        new CodeTableData<>(elternmithilfeCodeList, true);
     return new TableModel<>(elternmithilfeCodeTableData, 0.15, 0.65, 0.2);
   }
 

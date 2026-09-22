@@ -171,17 +171,11 @@ public class MitarbeitersController {
 
   private void onNeu() {
     btnNeu.setFocusPainted(true);
-    //    CreateOrUpdateMitarbeiterDialog createOrUpdateMitarbeiterDialog =
-    //        new CreateOrUpdateMitarbeiterDialog(
-    //            svmContext, mitarbeitersTableModel, mitarbeitersModel, 0, false, "Neuer
-    // Mitarbeiter");
-    //    createOrUpdateMitarbeiterDialog.pack();
-    //    createOrUpdateMitarbeiterDialog.setVisible(true);
     CreateOrUpdateMitarbeiterModel createOrUpdateMitarbeiterModel =
         svmContext.getModelFactory().createCreateOrUpdateMitarbeiterModel(Optional.empty());
     CreateOrUpdateMitarbeiterController createOrUpdateMitarbeiterController =
         new CreateOrUpdateMitarbeiterController(
-            createOrUpdateMitarbeiterModel, "Neuer Mitarbeiter");
+            svmContext, createOrUpdateMitarbeiterModel, "Neuer Mitarbeiter");
     createOrUpdateMitarbeiterController.showDialog();
 
     setLblTotal();
@@ -206,16 +200,6 @@ public class MitarbeitersController {
 
   private void onBearbeiten() {
     btnBearbeiten.setFocusPainted(true);
-    //    CreateOrUpdateMitarbeiterDialog createOrUpdateMitarbeiterDialog =
-    //        new CreateOrUpdateMitarbeiterDialog(
-    //            svmContext,
-    //            mitarbeitersTableModel,
-    //            mitarbeitersModel,
-    //            mitarbeitersTable.convertRowIndexToModel(mitarbeitersTable.getSelectedRow()),
-    //            true,
-    //            "Mitarbeiter bearbeiten");
-    //    createOrUpdateMitarbeiterDialog.pack();
-    //    createOrUpdateMitarbeiterDialog.setVisible(true);
     Mitarbeiter selectedMitarbeiter =
         mitarbeitersTableModel
             .getMitarbeiters()
@@ -226,7 +210,7 @@ public class MitarbeitersController {
             .createCreateOrUpdateMitarbeiterModel(Optional.of(selectedMitarbeiter));
     CreateOrUpdateMitarbeiterController createOrUpdateMitarbeiterController =
         new CreateOrUpdateMitarbeiterController(
-            createOrUpdateMitarbeiterModel, "Mitarbeiter bearbeiten");
+            svmContext, createOrUpdateMitarbeiterModel, "Mitarbeiter bearbeiten");
     createOrUpdateMitarbeiterController.showDialog();
 
     mitarbeitersTableModel.fireTableDataChanged();

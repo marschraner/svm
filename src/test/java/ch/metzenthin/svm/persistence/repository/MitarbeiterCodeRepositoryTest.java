@@ -49,4 +49,13 @@ class MitarbeiterCodeRepositoryTest {
     assertEquals("MA", mitarbeiterCodesFound.get(0).getKuerzel());
     assertEquals("MB", mitarbeiterCodesFound.get(1).getKuerzel());
   }
+
+  @Test
+  void testFindAllSelectableOrderByKuerzel() {
+    List<MitarbeiterCode> mitarbeiterCodesFound =
+        mitarbeiterCodeRepository.findAllSelectableOrderByKuerzel();
+
+    assertEquals(1, mitarbeiterCodesFound.size());
+    assertEquals("MA", mitarbeiterCodesFound.get(0).getKuerzel());
+  }
 }

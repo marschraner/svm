@@ -19,6 +19,14 @@ public class SvmStringUtils {
 
   private SvmStringUtils() {}
 
+  public static boolean isNotNull(Object o) {
+    return (o != null);
+  }
+
+  public static boolean isNotEmpty(String s) {
+    return isNotNull(s) && !s.isBlank();
+  }
+
   public static String replaceLineBreaksBySemicolonOrPeriod(String text) {
     return replaceLineBreaksByCharsOrPeriod(text, ";");
   }

@@ -1,0 +1,127 @@
+package ch.metzenthin.svm.ui.view;
+
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAsPercentages;
+
+import ch.metzenthin.svm.ui.componentmodel.TableModel;
+import ch.metzenthin.svm.ui.components.AbstractListDialog;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JTable;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
+import lombok.Getter;
+
+/**
+ * @author Hans Stamm
+ */
+public abstract class AbstractListDialogView extends AbstractDialogView<AbstractListDialog> {
+
+  @Getter private final JComponent rootComponent;
+  private final AbstractTableModel tableModel;
+  private final AbstractListDialog listDialog;
+  private final JTable table;
+  private final JButton buttonNeu;
+  private final JButton buttonLoeschen;
+  private final JButton buttonSchliessen;
+
+  protected AbstractListDialogView(TableModel<?, ?> tableModel, AbstractListDialog listDialog) {
+    super(listDialog);
+    this.rootComponent = listDialog.getRootComponent();
+    this.tableModel = tableModel;
+    this.table = listDialog.getTable();
+    this.listDialog = listDialog;
+    this.buttonNeu = listDialog.getBtnNeu();
+    this.buttonLoeschen = listDialog.getBtnLoeschen();
+    this.buttonSchliessen = listDialog.getBtnSchliessen();
+    configTable(this.table, tableModel);
+    addButtonSchliessenActionListener(e -> this.listDialog.dispose());
+  }
+
+  private static void configTable(JTable table, TableModel<?, ?> tableModel) {
+    table.setModel(tableModel);
+    setColumnCellRenderers(table, tableModel);
+    double[] columnWithsPercentages = tableModel.getColumnWidthsPercentages();
+    if (columnWithsPercentages != null && columnWithsPercentages.length > 0) {
+      setJTableColumnWidthAsPercentages(table, columnWithsPercentages);
+    }
+  }
+
+  public void configListeners(Runnable mouseListenerAction, Runnable listSelectionListenerAction) {
+    addMouseListener(createMouseListener(mouseListenerAction));
+    addListSelectionListener(createListSelectionListener(listSelectionListenerAction));
+  }
+
+  private MouseListener createMouseListener(Runnable mouseListenerAction) {
+    return new MouseAdapter() {
+      @Override
+      public void mousePressed(MouseEvent me) {
+        if (me.getClickCount() == 2) {
+          mouseListenerAction.run();
+        }
+      }
+    };
+  }
+
+  private ListSelectionListener createListSelectionListener(Runnable listSelectionListenerAction) {
+    return e -> {
+      if (e.getValueIsAdjusting()) {
+        return;
+      }
+      listSelectionListenerAction.run();
+    };
+  }
+
+  private void addListSelectionListener(ListSelectionListener listSelectionListener) {
+    table.getSelectionModel().addListSelectionListener(listSelectionListener);
+  }
+
+  private void addMouseListener(MouseListener mouseListener) {
+    table.addMouseListener(mouseListener);
+  }
+
+  public int getSelectedRow() {
+    return table.getSelectedRow();
+  }
+
+  public int convertRowIndexToModel() {
+    return table.convertRowIndexToModel(table.getSelectedRow());
+  }
+
+  public void clearSelection() {
+    table.clearSelection();
+  }
+
+  public void fireTableDataChanged() {
+    tableModel.fireTableDataChanged();
+    table.addNotify();
+  }
+
+  public void addButtonNeuActionListener(ActionListener actionListener) {
+    buttonNeu.addActionListener(actionListener);
+  }
+
+  public void addButtonLoeschenActionListener(ActionListener actionListener) {
+    buttonLoeschen.addActionListener(actionListener);
+  }
+
+  public void addButtonSchliessenActionListener(ActionListener actionListener) {
+    buttonSchliessen.addActionListener(actionListener);
+  }
+
+  public void setButtonLoeschenEnabled(boolean enabled) {
+    buttonLoeschen.setEnabled(enabled);
+  }
+
+  public void setButtonNeuFocusPainted(boolean focusPainted) {
+    buttonNeu.setFocusPainted(focusPainted);
+  }
+
+  public void setButtonLoeschenFocusPainted(boolean focusPainted) {
+    buttonLoeschen.setFocusPainted(focusPainted);
+  }
+}
