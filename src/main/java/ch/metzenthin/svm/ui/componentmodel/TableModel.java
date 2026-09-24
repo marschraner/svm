@@ -18,11 +18,25 @@ public class TableModel<T extends AbstractTableData<U>, U> extends AbstractTable
   @Serial private static final long serialVersionUID = 1L;
 
   private final transient T tableData;
+  @Getter private final boolean tableColumnWidthAccordingToCellContentAndHeader;
   @Getter private final double[] columnWidthsPercentages;
 
   public TableModel(T tableData, double... columnWidthsPercentages) {
+    this(tableData, false, columnWidthsPercentages);
+  }
+
+  public TableModel(T tableData, boolean tableColumnWidthAccordingToCellContentAndHeader) {
+    this(tableData, tableColumnWidthAccordingToCellContentAndHeader, (double[]) null);
+  }
+
+  private TableModel(
+      T tableData,
+      boolean tableColumnWidthAccordingToCellContentAndHeader,
+      double... columnWidthsPercentages) {
     super();
     this.tableData = tableData;
+    this.tableColumnWidthAccordingToCellContentAndHeader =
+        tableColumnWidthAccordingToCellContentAndHeader;
     this.columnWidthsPercentages = columnWidthsPercentages;
   }
 

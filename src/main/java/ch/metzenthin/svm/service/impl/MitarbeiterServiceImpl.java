@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.service.impl;
 
+import ch.metzenthin.svm.domain.model.searchfields.MitarbeiterSearchFields;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
@@ -8,6 +9,7 @@ import ch.metzenthin.svm.persistence.repository.AdresseRepository;
 import ch.metzenthin.svm.persistence.repository.MitarbeiterMitarbeiterCodeRepository;
 import ch.metzenthin.svm.persistence.repository.MitarbeiterRepository;
 import ch.metzenthin.svm.service.MitarbeiterService;
+import ch.metzenthin.svm.service.result.DeleteMitarbeiterResult;
 import ch.metzenthin.svm.service.result.SaveMitarbeiterResult;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,20 @@ public class MitarbeiterServiceImpl implements MitarbeiterService {
   @Transactional(readOnly = true)
   public List<Mitarbeiter> findAktiveLehrkraefte() {
     return mitarbeiterRepository.findByLehrkraftTrueAndAktivTrueOrderByNachnameVorname();
+  }
+
+  @Override
+  public List<Mitarbeiter> findMitarbeiterBySearchFields(
+      MitarbeiterSearchFields mitarbeiterSearchFields) {
+    return mitarbeiterRepository
+        .findByNachnameLikeAndVornameLikeAndLehrkraftAndAktivAndCodeIdOrderByNachnameVornameGeburtsdatumAsc(
+            mitarbeiterSearchFields.nachname(),
+            mitarbeiterSearchFields.vorname(),
+            mitarbeiterSearchFields.lehrkraftJaNeinSelected().getValue(),
+            mitarbeiterSearchFields.statusSelected().getValue(),
+            (mitarbeiterSearchFields.mitarbeiterCode() != null)
+                ? mitarbeiterSearchFields.mitarbeiterCode().getCodeId()
+                : null);
   }
 
   @Override
@@ -95,5 +111,10 @@ public class MitarbeiterServiceImpl implements MitarbeiterService {
     }
 
     return SaveMitarbeiterResult.SPEICHERN_ERFOLGREICH;
+  }
+
+  @Override
+  public DeleteMitarbeiterResult deleteMitarbeiter(Mitarbeiter mitarbeiterToBeDeleted) {
+    return null;
   }
 }

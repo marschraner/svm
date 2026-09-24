@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 /**
  * @author Hans Stamm
  */
-public class LektionsgebuehrenListView extends AbstractListPanelView {
+public class LektionsgebuehrenListView extends AbstractListPanelView<LektionsgebuehrenListPanel> {
 
   public LektionsgebuehrenListView(TableModel<?, ?> tableModel, ActionListener closeListener) {
     super(tableModel, new LektionsgebuehrenListPanel(), closeListener);

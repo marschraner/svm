@@ -9,6 +9,7 @@ import ch.metzenthin.svm.domain.model.LektionsgebuehrenListModel;
 import ch.metzenthin.svm.domain.model.MaerchenListModel;
 import ch.metzenthin.svm.domain.model.MitarbeiterCodeListModel;
 import ch.metzenthin.svm.domain.model.SchuelerCodeListModel;
+import ch.metzenthin.svm.domain.model.SearchMitarbeiterModel;
 import ch.metzenthin.svm.domain.model.SemesterListModel;
 import ch.metzenthin.svm.domain.model.SemesterrechnungCodeListModel;
 import ch.metzenthin.svm.persistence.DB;
@@ -21,6 +22,7 @@ import ch.metzenthin.svm.ui.control.LektionsgebuehrenListController;
 import ch.metzenthin.svm.ui.control.MaerchenListController;
 import ch.metzenthin.svm.ui.control.MitarbeiterCodeListController;
 import ch.metzenthin.svm.ui.control.SchuelerCodeListController;
+import ch.metzenthin.svm.ui.control.SearchMitarbeiterController;
 import ch.metzenthin.svm.ui.control.SemesterListController;
 import ch.metzenthin.svm.ui.control.SemesterrechnungCodeListController;
 import java.awt.*;
@@ -275,10 +277,16 @@ public class SvmDesktop extends JFrame implements ActionListener {
           anAbmeldestatistikPanel.$$$getRootComponent$$$(), "Monatsstatistik Schüler");
 
     } else if ("mitarbeiterSuchen".equals(e.getActionCommand())) {
-      MitarbeiterSuchenPanel mitarbeiterSuchenPanel = new MitarbeiterSuchenPanel(svmContext);
-      mitarbeiterSuchenPanel.addCloseListener(e4 -> onFrameAbbrechen());
-      mitarbeiterSuchenPanel.addNextPanelListener(e4 -> onNextPanelAvailable(e4.getSource()));
-      setAndShowActivePanel(mitarbeiterSuchenPanel.$$$getRootComponent$$$(), "Mitarbeiter suchen");
+      SearchMitarbeiterModel mitarbeiterListModel =
+          svmContext.getModelFactory().createSearchMitarbeiterModel();
+      SearchMitarbeiterController searchMitarbeiterController =
+          new SearchMitarbeiterController(
+              svmContext,
+              mitarbeiterListModel,
+              e4 -> onFrameAbbrechen(),
+              e4 -> onNextPanelAvailable(e4.getSource()));
+      setAndShowActivePanel(
+          searchMitarbeiterController.getView().getRootComponent(), "Mitarbeiter suchen");
 
     } else if ("mitarbeiterCodesVerwalten".equals(e.getActionCommand())) {
       String title = "Mitarbeiter-Codes verwalten";

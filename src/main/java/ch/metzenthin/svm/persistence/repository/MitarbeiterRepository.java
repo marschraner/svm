@@ -45,4 +45,21 @@ public interface MitarbeiterRepository extends JpaRepository<Mitarbeiter, Intege
           + "WHERE m.lehrkraft = TRUE AND m.aktiv = TRUE "
           + "ORDER BY m.nachname ASC, m.vorname ASC")
   List<Mitarbeiter> findByLehrkraftTrueAndAktivTrueOrderByNachnameVorname();
+
+  @Query(
+      "SELECT DISTINCT m FROM Mitarbeiter m "
+          + "LEFT JOIN MitarbeiterMitarbeiterCode mmc ON mmc.mitarbeiter.personId = m.personId "
+          + "WHERE (:nachname IS NULL OR LOWER(m.nachname) LIKE LOWER(CONCAT(:nachname, '%'))) "
+          + "AND (:vorname IS NULL OR LOWER(m.vorname) LIKE LOWER(CONCAT(:vorname, '%'))) "
+          + "AND (:lehrkraft IS NULL OR m.lehrkraft = :lehrkraft) "
+          + "AND (:aktiv IS NULL OR m.aktiv = :aktiv) "
+          + "AND (:codeId IS NULL OR mmc.mitarbeiterCode.codeId = :codeId) "
+          + "ORDER BY m.nachname ASC, m.vorname ASC, m.geburtsdatum ASC")
+  List<Mitarbeiter>
+      findByNachnameLikeAndVornameLikeAndLehrkraftAndAktivAndCodeIdOrderByNachnameVornameGeburtsdatumAsc(
+          @Param("nachname") String nachname,
+          @Param("vorname") String vorname,
+          @Param("lehrkraft") Boolean lehrkraft,
+          @Param("aktiv") Boolean aktiv,
+          @Param("codeId") Integer codeId);
 }

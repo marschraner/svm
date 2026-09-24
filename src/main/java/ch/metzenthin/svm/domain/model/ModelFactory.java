@@ -122,6 +122,8 @@ public interface ModelFactory {
 
   MitarbeiterSuchenModel createMitarbeitersSuchenModel();
 
+  SearchMitarbeiterModel createSearchMitarbeiterModel();
+
   EmailSchuelerListeModel createEmailSchuelerListeModel();
 
   EmailSemesterrechnungenModel createEmailSemesterrechnungenModel();

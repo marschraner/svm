@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 /**
  * @author Hans Stamm
  */
-public class KursListView extends AbstractListPanelView {
+public class KursListView extends AbstractListPanelView<KursListPanel> {
 
   private final JLabel labelTotal;
   private final JButton buttonImportieren;

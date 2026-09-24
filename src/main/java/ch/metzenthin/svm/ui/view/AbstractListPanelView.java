@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.ui.view;
 
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setColumnCellRenderers;
+import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAccordingToCellContentAndHeader;
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAsPercentages;
 
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
@@ -19,9 +20,11 @@ import lombok.Getter;
 /**
  * @author Hans Stamm
  */
-public abstract class AbstractListPanelView extends AbstractView<JComponent> {
+public abstract class AbstractListPanelView<T extends AbstractListPanel>
+    extends AbstractView<JComponent> {
 
   @Getter private final JComponent rootComponent;
+  protected final T listPanel;
   private final AbstractTableModel tableModel;
   private final JTable table;
   private final JButton buttonNeu;
@@ -30,9 +33,10 @@ public abstract class AbstractListPanelView extends AbstractView<JComponent> {
   private final JButton buttonAbbrechen;
 
   protected AbstractListPanelView(
-      TableModel<?, ?> tableModel, AbstractListPanel listPanel, ActionListener closeListener) {
+      TableModel<?, ?> tableModel, T listPanel, ActionListener closeListener) {
     super(listPanel.getRootComponent());
     this.rootComponent = listPanel.getRootComponent();
+    this.listPanel = listPanel;
     this.tableModel = tableModel;
     this.table = listPanel.getTable();
     this.buttonNeu = listPanel.getBtnNeu();
@@ -49,6 +53,8 @@ public abstract class AbstractListPanelView extends AbstractView<JComponent> {
     double[] columnWithsPercentages = tableModel.getColumnWidthsPercentages();
     if (columnWithsPercentages != null && columnWithsPercentages.length > 0) {
       setJTableColumnWidthAsPercentages(table, columnWithsPercentages);
+    } else if (tableModel.isTableColumnWidthAccordingToCellContentAndHeader()) {
+      setJTableColumnWidthAccordingToCellContentAndHeader(table);
     }
   }
 

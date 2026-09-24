@@ -108,6 +108,63 @@ class MitarbeiterRepositoryTest {
     assertEquals(0, numberFound);
   }
 
+  @Test
+  void
+      testFindByNachnameLikeAndVornameLikeAndLehrkraftAndAktivAndCodeIdOrderByNachnameVornameGeburtsdatumAsc() {
+    List<Mitarbeiter> mitarbeiterFound;
+    mitarbeiterFound =
+        mitarbeiterRepository
+            .findByNachnameLikeAndVornameLikeAndLehrkraftAndAktivAndCodeIdOrderByNachnameVornameGeburtsdatumAsc(
+                null, null, null, null, null);
+    assertEquals(4, mitarbeiterFound.size());
+    assertEquals(23, mitarbeiterFound.get(0).getPersonId());
+    assertEquals(21, mitarbeiterFound.get(1).getPersonId());
+    assertEquals(22, mitarbeiterFound.get(2).getPersonId());
+    assertEquals(20, mitarbeiterFound.get(3).getPersonId());
+
+    mitarbeiterFound =
+        mitarbeiterRepository
+            .findByNachnameLikeAndVornameLikeAndLehrkraftAndAktivAndCodeIdOrderByNachnameVornameGeburtsdatumAsc(
+                null, null, Boolean.TRUE, null, null);
+    assertEquals(3, mitarbeiterFound.size());
+
+    mitarbeiterFound =
+        mitarbeiterRepository
+            .findByNachnameLikeAndVornameLikeAndLehrkraftAndAktivAndCodeIdOrderByNachnameVornameGeburtsdatumAsc(
+                null, null, Boolean.TRUE, Boolean.TRUE, null);
+    assertEquals(2, mitarbeiterFound.size());
+
+    mitarbeiterFound =
+        mitarbeiterRepository
+            .findByNachnameLikeAndVornameLikeAndLehrkraftAndAktivAndCodeIdOrderByNachnameVornameGeburtsdatumAsc(
+                "mus", null, Boolean.TRUE, Boolean.TRUE, null);
+    assertEquals(1, mitarbeiterFound.size());
+
+    mitarbeiterFound =
+        mitarbeiterRepository
+            .findByNachnameLikeAndVornameLikeAndLehrkraftAndAktivAndCodeIdOrderByNachnameVornameGeburtsdatumAsc(
+                "mus", "Milka", Boolean.TRUE, Boolean.TRUE, null);
+    assertEquals(1, mitarbeiterFound.size());
+
+    mitarbeiterFound =
+        mitarbeiterRepository
+            .findByNachnameLikeAndVornameLikeAndLehrkraftAndAktivAndCodeIdOrderByNachnameVornameGeburtsdatumAsc(
+                "mus", "Milka", Boolean.TRUE, Boolean.TRUE, 101);
+    assertEquals(1, mitarbeiterFound.size());
+
+    mitarbeiterFound =
+        mitarbeiterRepository
+            .findByNachnameLikeAndVornameLikeAndLehrkraftAndAktivAndCodeIdOrderByNachnameVornameGeburtsdatumAsc(
+                "Kuster", "Monika", Boolean.TRUE, Boolean.FALSE, 101);
+    assertEquals(0, mitarbeiterFound.size());
+
+    mitarbeiterFound =
+        mitarbeiterRepository
+            .findByNachnameLikeAndVornameLikeAndLehrkraftAndAktivAndCodeIdOrderByNachnameVornameGeburtsdatumAsc(
+                null, null, null, null, 101);
+    assertEquals(2, mitarbeiterFound.size());
+  }
+
   private static Calendar createCalendar(String dateAsString) {
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     Date date;
