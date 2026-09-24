@@ -16,7 +16,7 @@ import lombok.Getter;
 public abstract class AbstractListController<
     T extends AbstractListModel<? extends AbstractTableData<?>, ?, ?, U>,
     U extends SubmitDialogResult,
-    V extends AbstractListPanelView> {
+    V extends AbstractListPanelView<?>> {
 
   protected final SvmContext svmContext;
   protected final T model;

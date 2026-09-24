@@ -1,6 +1,9 @@
 package ch.metzenthin.svm.service.impl;
 
+import ch.metzenthin.svm.domain.model.MitarbeiterAndMitarbeiterCode;
+import ch.metzenthin.svm.domain.model.MitarbeiterAndMitarbeiterCodes;
 import ch.metzenthin.svm.persistence.entities.Adresse;
+import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterMitarbeiterCode;
@@ -8,9 +11,13 @@ import ch.metzenthin.svm.persistence.repository.AdresseRepository;
 import ch.metzenthin.svm.persistence.repository.MitarbeiterMitarbeiterCodeRepository;
 import ch.metzenthin.svm.persistence.repository.MitarbeiterRepository;
 import ch.metzenthin.svm.service.MitarbeiterService;
+import ch.metzenthin.svm.service.result.DeleteMitarbeiterResult;
 import ch.metzenthin.svm.service.result.SaveMitarbeiterResult;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.springframework.stereotype.Service;
@@ -42,6 +49,140 @@ public class MitarbeiterServiceImpl implements MitarbeiterService {
   }
 
   @Override
+  @Transactional(readOnly = true)
+  public List<MitarbeiterAndMitarbeiterCodes> findMitarbeiterAndMitarbeiterCodes(
+      Optional<String> nachnameOptional,
+      Optional<String> vornameOptional,
+      Optional<Boolean> lehrkraftOptional,
+      Optional<Boolean> aktivOptional,
+      Optional<MitarbeiterCode> mitarbeiterCodeOptional) {
+
+    Optional<Integer> mitarbeiterCodeIdOptional = mitarbeiterCodeOptional.map(Code::getCodeId);
+
+    List<MitarbeiterAndMitarbeiterCode> mitarbeiterAndMitarbeiterCodeList =
+        findMitarbeiterAndMitarbeiterCodesOfMitarbeitersWithMitarbeiterCode(
+            nachnameOptional,
+            vornameOptional,
+            lehrkraftOptional,
+            aktivOptional,
+            mitarbeiterCodeIdOptional);
+
+    List<Mitarbeiter> mitarbeiterWithoutMitarbeiterCodeList =
+        findMitarbeitersWithoutMitarbeiterCode(
+            nachnameOptional,
+            vornameOptional,
+            lehrkraftOptional,
+            aktivOptional,
+            mitarbeiterCodeIdOptional);
+
+    List<MitarbeiterAndMitarbeiterCode>
+        mitarbeiterAndMitarbeiterCodeOfMitarbeitersWithoutMitarbeiterCodeList =
+            mitarbeiterWithoutMitarbeiterCodeList.stream()
+                .map(mitarbeiter -> new MitarbeiterAndMitarbeiterCode(mitarbeiter, null))
+                .toList();
+    mitarbeiterAndMitarbeiterCodeList.addAll(
+        mitarbeiterAndMitarbeiterCodeOfMitarbeitersWithoutMitarbeiterCodeList);
+
+    return convertToMitarbeiterAndMitarbeiterCodesList(mitarbeiterAndMitarbeiterCodeList);
+  }
+
+  private List<MitarbeiterAndMitarbeiterCode>
+      findMitarbeiterAndMitarbeiterCodesOfMitarbeitersWithMitarbeiterCode(
+          Optional<String> nachnameOptional,
+          Optional<String> vornameOptional,
+          Optional<Boolean> lehrkraftOptional,
+          Optional<Boolean> aktivOptional,
+          Optional<Integer> mitarbeiterCodeIdOptional) {
+
+    Optional<List<Integer>> mitarbeiterIdsOptional;
+    if (mitarbeiterCodeIdOptional.isPresent()) {
+      List<Integer> mitarbeiterIds =
+          mitarbeiterMitarbeiterCodeRepository.findMitarbeiterIdsByCodeId(
+              mitarbeiterCodeIdOptional.get());
+      if (mitarbeiterIds.isEmpty()) {
+        return List.of();
+      }
+      mitarbeiterIdsOptional = Optional.of(mitarbeiterIds);
+    } else {
+      mitarbeiterIdsOptional = Optional.empty();
+    }
+
+    return mitarbeiterRepository
+        .findMitarbeiterAndMitarbeiterCodesOfMitarbeitersWithMitarbeiterCode(
+            nachnameOptional,
+            vornameOptional,
+            lehrkraftOptional,
+            aktivOptional,
+            mitarbeiterIdsOptional);
+  }
+
+  private List<Mitarbeiter> findMitarbeitersWithoutMitarbeiterCode(
+      Optional<String> nachnameOptional,
+      Optional<String> vornameOptional,
+      Optional<Boolean> lehrkraftOptional,
+      Optional<Boolean> aktivOptional,
+      Optional<Integer> mitarbeiterCodeIdOptional) {
+
+    if (mitarbeiterCodeIdOptional.isPresent()) {
+      return List.of();
+    }
+
+    return mitarbeiterRepository.findMitarbeitersWithoutMitarbeiterCode(
+        nachnameOptional, vornameOptional, lehrkraftOptional, aktivOptional, Optional.empty());
+  }
+
+  private static List<MitarbeiterAndMitarbeiterCodes> convertToMitarbeiterAndMitarbeiterCodesList(
+      List<MitarbeiterAndMitarbeiterCode> mitarbeiterAndMitarbeiterCodeList) {
+
+    Map<Integer, Mitarbeiter> mitarbeiterIdAndMitarbeiterMap = new HashMap<>();
+    for (MitarbeiterAndMitarbeiterCode mitarbeiterAndMitarbeiterCode :
+        mitarbeiterAndMitarbeiterCodeList) {
+      if (!mitarbeiterIdAndMitarbeiterMap.containsKey(
+          mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId())) {
+        mitarbeiterIdAndMitarbeiterMap.put(
+            mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(),
+            mitarbeiterAndMitarbeiterCode.mitarbeiter());
+      }
+    }
+
+    Map<Integer, List<MitarbeiterCode>> mitarbeiterIdAndMitarbeiterCodesMap = new HashMap<>();
+    for (MitarbeiterAndMitarbeiterCode mitarbeiterAndMitarbeiterCode :
+        mitarbeiterAndMitarbeiterCodeList) {
+      if (mitarbeiterIdAndMitarbeiterCodesMap.containsKey(
+          mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId())) {
+        List<MitarbeiterCode> mitarbeiterCodes =
+            mitarbeiterIdAndMitarbeiterCodesMap.get(
+                mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId());
+        if (mitarbeiterAndMitarbeiterCode.mitarbeiterCode() != null) {
+          mitarbeiterCodes.add(mitarbeiterAndMitarbeiterCode.mitarbeiterCode());
+        }
+      } else {
+        List<MitarbeiterCode> mitarbeiterCodes = new ArrayList<>();
+        if (mitarbeiterAndMitarbeiterCode.mitarbeiterCode() != null) {
+          mitarbeiterCodes.add(mitarbeiterAndMitarbeiterCode.mitarbeiterCode());
+        }
+        mitarbeiterIdAndMitarbeiterCodesMap.put(
+            mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(), mitarbeiterCodes);
+      }
+    }
+
+    // Sortierung MitarbeiterCodes
+    for (List<MitarbeiterCode> mitarbeiterCodes : mitarbeiterIdAndMitarbeiterCodesMap.values()) {
+      Collections.sort(mitarbeiterCodes);
+    }
+
+    return mitarbeiterIdAndMitarbeiterCodesMap.entrySet().stream()
+        .map(
+            mitarbeiterIdAndMitarbeiterCodesMapEntry ->
+                new MitarbeiterAndMitarbeiterCodes(
+                    mitarbeiterIdAndMitarbeiterMap.get(
+                        mitarbeiterIdAndMitarbeiterCodesMapEntry.getKey()),
+                    mitarbeiterIdAndMitarbeiterCodesMapEntry.getValue()))
+        .sorted() // Sortierung Mitarbeiter
+        .toList();
+  }
+
+  @Override
   @Transactional
   public SaveMitarbeiterResult saveMitarbeiter(
       Mitarbeiter mitarbeiter,
@@ -50,7 +191,7 @@ public class MitarbeiterServiceImpl implements MitarbeiterService {
 
     int numberOfAlreadyExistingMitarbeiter =
         (mitarbeiter.getPersonId() != null)
-            ? mitarbeiterRepository.countByNachnameAndVornameAndGeburtsdatumAndPersonIdNe(
+            ? mitarbeiterRepository.countByNachnameAndVornameAndGeburtsdatumAndMitarbeiterIdNe(
                 mitarbeiter.getNachname(),
                 mitarbeiter.getVorname(),
                 mitarbeiter.getGeburtsdatum(),
@@ -95,5 +236,10 @@ public class MitarbeiterServiceImpl implements MitarbeiterService {
     }
 
     return SaveMitarbeiterResult.SPEICHERN_ERFOLGREICH;
+  }
+
+  @Override
+  public DeleteMitarbeiterResult deleteMitarbeiter(Mitarbeiter mitarbeiterToBeDeleted) {
+    return null;
   }
 }

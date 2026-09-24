@@ -351,6 +351,11 @@ public class ModelFactoryImpl implements ModelFactory {
   }
 
   @Override
+  public SearchMitarbeiterModel createSearchMitarbeiterModel() {
+    return new SearchMitarbeiterModelImpl(mitarbeiterService, mitarbeiterCodeService);
+  }
+
+  @Override
   public EmailSchuelerListeModel createEmailSchuelerListeModel() {
     return new EmailSchuelerListeModelImpl();
   }

@@ -17,7 +17,7 @@ import java.util.Optional;
  * @author Martin Schraner
  */
 public class KurseSemesterwahlController
-    extends AbstractSuchenPanelController<KurseSemesterwahlView, KursListModel> {
+    extends AbstractSearchPanelController<KurseSemesterwahlView, KursListModel> {
 
   private final SvmContext svmContext;
   private final KurseSemesterwahlModel model;

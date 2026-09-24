@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 /**
  * @author Hans Stamm
  */
-public class KurstypListView extends AbstractListPanelView {
+public class KurstypListView extends AbstractListPanelView<KurstypListPanel> {
 
   public KurstypListView(TableModel<?, ?> tableModel, ActionListener closeListener) {
     super(tableModel, new KurstypListPanel(), closeListener);

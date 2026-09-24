@@ -37,6 +37,19 @@ class MitarbeiterMitarbeiterCodeRepositoryTest {
   }
 
   @Test
+  void testFindMitarbeiterIdsByCodeId() {
+    List<Integer> mitarbeiterIds =
+        mitarbeiterMitarbeiterCodeRepository.findMitarbeiterIdsByCodeId(31);
+    assertEquals(1, mitarbeiterIds.size());
+    assertTrue(mitarbeiterIds.contains(20));
+
+    mitarbeiterIds = mitarbeiterMitarbeiterCodeRepository.findMitarbeiterIdsByCodeId(32);
+    assertEquals(2, mitarbeiterIds.size());
+    assertTrue(mitarbeiterIds.contains(20));
+    assertTrue(mitarbeiterIds.contains(21));
+  }
+
+  @Test
   void testFindMitarbeiterCodesByMitarbeiterId() {
     List<MitarbeiterCode> mitarbeiterCodes =
         mitarbeiterMitarbeiterCodeRepository.findMitarbeiterCodesByMitarbeiterId(20);

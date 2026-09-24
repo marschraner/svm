@@ -11,7 +11,7 @@ import javax.swing.SpinnerModel;
 /**
  * @author Hans Stamm
  */
-public class KurseSemesterwahlView extends AbstractSuchenPanelView<KurseSemesterwahlPanel> {
+public class KurseSemesterwahlView extends AbstractSearchPanelView<KurseSemesterwahlPanel> {
 
   private final JSpinner semesterSpinner;
 

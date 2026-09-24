@@ -1,6 +1,7 @@
 package ch.metzenthin.svm.persistence.repository;
 
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
+import ch.metzenthin.svm.persistence.repository.custom.MitarbeiterRepositoryCustom;
 import java.util.Calendar;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +13,8 @@ import org.springframework.stereotype.Repository;
  * @author Hans Stamm
  */
 @Repository
-public interface MitarbeiterRepository extends JpaRepository<Mitarbeiter, Integer> {
+public interface MitarbeiterRepository
+    extends JpaRepository<Mitarbeiter, Integer>, MitarbeiterRepositoryCustom {
 
   @Query(
       "SELECT COUNT(m) FROM Mitarbeiter m "
@@ -34,7 +36,7 @@ public interface MitarbeiterRepository extends JpaRepository<Mitarbeiter, Intege
           + "   (m.geburtsdatum IS NULL AND :geburtsdatum IS NULL) "
           + "   OR (m.geburtsdatum = :geburtsdatum)) "
           + "AND m.personId <> :personId")
-  int countByNachnameAndVornameAndGeburtsdatumAndPersonIdNe(
+  int countByNachnameAndVornameAndGeburtsdatumAndMitarbeiterIdNe(
       @Param("nachname") String nachname,
       @Param("vorname") String vorname,
       @Param("geburtsdatum") Calendar geburtsdatum,

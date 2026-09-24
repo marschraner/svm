@@ -22,6 +22,11 @@ public interface MitarbeiterMitarbeiterCodeRepository
   int countByMitarbeiterCodeId(@Param("mitarbeiterCodeId") int mitarbeiterCodeId);
 
   @Query(
+      "SELECT mmc.mitarbeiter.personId FROM MitarbeiterMitarbeiterCode mmc "
+          + "WHERE mmc.mitarbeiterCode.codeId = :codeId")
+  List<Integer> findMitarbeiterIdsByCodeId(@Param("codeId") int codeId);
+
+  @Query(
       "SELECT mmc.mitarbeiterCode FROM MitarbeiterMitarbeiterCode mmc "
           + "WHERE mmc.mitarbeiter.personId = :mitarbeiterId")
   List<MitarbeiterCode> findMitarbeiterCodesByMitarbeiterId(
