@@ -3,14 +3,14 @@ package ch.metzenthin.svm.domain.model;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 import ch.metzenthin.svm.common.datatypes.Field;
-import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import java.util.Calendar;
 import java.util.List;
 
 /**
  * @author Martin Schraner
  */
-public class MitarbeiterTableData extends AbstractTableData<Mitarbeiter> {
+public class MitarbeiterTableData
+    extends AbstractTableData<MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert> {
 
   private static final Field[] COLUMNS = {
     Field.SELEKTIERT,
@@ -32,41 +32,117 @@ public class MitarbeiterTableData extends AbstractTableData<Mitarbeiter> {
     Field.AKTIV
   };
 
-  public MitarbeiterTableData(List<Mitarbeiter> mitarbeiterList) {
-    super(COLUMNS, mitarbeiterList);
+  public MitarbeiterTableData(
+      List<MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert>
+          mitarbeiterAndMitarbeiterCodesAsStringAndSelektiertList) {
+    super(COLUMNS, mitarbeiterAndMitarbeiterCodesAsStringAndSelektiertList);
   }
 
   @SuppressWarnings("java:S3776")
   public Object getValueAt(int rowIndex, int columnIndex) {
-    Mitarbeiter mitarbeiter = data.get(rowIndex);
+    MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+        mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert = data.get(rowIndex);
     Object value = null;
     switch (COLUMNS[columnIndex]) {
-      case SELEKTIERT -> value = mitarbeiter.isSelektiert();
-      case NACHNAME -> value = mitarbeiter.getNachname();
-      case VORNAME -> value = mitarbeiter.getVorname();
+      case SELEKTIERT -> value = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.selektiert();
+      case NACHNAME ->
+          value = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getNachname();
+      case VORNAME ->
+          value = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getVorname();
       case STRASSE_HAUSNUMMER ->
           value =
-              (mitarbeiter.getAdresse() == null ? "" : mitarbeiter.getAdresse().getStrHausnummer());
+              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getAdresse()
+                      == null
+                  ? ""
+                  : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                      .mitarbeiter()
+                      .getAdresse()
+                      .getStrHausnummer());
       case PLZ ->
-          value = (mitarbeiter.getAdresse() == null ? "" : mitarbeiter.getAdresse().getPlz());
+          value =
+              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getAdresse()
+                      == null
+                  ? ""
+                  : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                      .mitarbeiter()
+                      .getAdresse()
+                      .getPlz());
       case ORT ->
-          value = (mitarbeiter.getAdresse() == null ? "" : mitarbeiter.getAdresse().getOrt());
+          value =
+              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getAdresse()
+                      == null
+                  ? ""
+                  : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                      .mitarbeiter()
+                      .getAdresse()
+                      .getOrt());
       case FESTNETZ ->
-          value = (!checkNotEmpty(mitarbeiter.getFestnetz()) ? "" : mitarbeiter.getFestnetz());
-      case NATEL -> value = (!checkNotEmpty(mitarbeiter.getNatel()) ? "" : mitarbeiter.getNatel());
-      case EMAIL -> value = (!checkNotEmpty(mitarbeiter.getEmail()) ? "" : mitarbeiter.getEmail());
-      case GEBURTSDATUM -> value = mitarbeiter.getGeburtsdatum();
+          value =
+              (!checkNotEmpty(
+                      mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                          .mitarbeiter()
+                          .getFestnetz())
+                  ? ""
+                  : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                      .mitarbeiter()
+                      .getFestnetz());
+      case NATEL ->
+          value =
+              (!checkNotEmpty(
+                      mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getNatel())
+                  ? ""
+                  : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getNatel());
+      case EMAIL ->
+          value =
+              (!checkNotEmpty(
+                      mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getEmail())
+                  ? ""
+                  : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getEmail());
+      case GEBURTSDATUM ->
+          value =
+              mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getGeburtsdatum();
       case AHV_NUMMER ->
-          value = (!checkNotEmpty(mitarbeiter.getAhvNummer()) ? "" : mitarbeiter.getAhvNummer());
+          value =
+              (!checkNotEmpty(
+                      mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                          .mitarbeiter()
+                          .getAhvNummer())
+                  ? ""
+                  : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                      .mitarbeiter()
+                      .getAhvNummer());
       case IBAN_NUMMER ->
-          value = (!checkNotEmpty(mitarbeiter.getIbanNummer()) ? "" : mitarbeiter.getIbanNummer());
-      case LEHRKRAFT -> value = (mitarbeiter.isLehrkraft() ? "ja" : "nein");
-      case AKTIV -> value = (mitarbeiter.isAktiv()) ? "ja" : "nein";
-      // case CODES -> value = mitarbeiter.getMitarbeiterCodesAsStr();
-      case CODES -> value = "TODO";
+          value =
+              (!checkNotEmpty(
+                      mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                          .mitarbeiter()
+                          .getIbanNummer())
+                  ? ""
+                  : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                      .mitarbeiter()
+                      .getIbanNummer());
+      case LEHRKRAFT ->
+          value =
+              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().isLehrkraft()
+                  ? "ja"
+                  : "nein");
+      case AKTIV ->
+          value =
+              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().isAktiv())
+                  ? "ja"
+                  : "nein";
+      case CODES ->
+          value = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiterCodesAsString();
       case VERTRETUNGSMOEGLICHKEITEN ->
-          value = mitarbeiter.getVertretungsmoeglichkeitenLineBreaksReplacedBySemicolonOrPeriod();
-      case BEMERKUNGEN -> value = mitarbeiter.getBemerkungenLineBreaksReplacedBySemicolonOrPeriod();
+          value =
+              mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                  .mitarbeiter()
+                  .getVertretungsmoeglichkeitenLineBreaksReplacedBySemicolonOrPeriod();
+      case BEMERKUNGEN ->
+          value =
+              mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                  .mitarbeiter()
+                  .getBemerkungenLineBreaksReplacedBySemicolonOrPeriod();
       default -> {
         // Nothing to do
       }

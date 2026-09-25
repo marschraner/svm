@@ -5,9 +5,9 @@ import ch.metzenthin.svm.common.datatypes.Listentyp;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateMitarbeiterModel;
 import ch.metzenthin.svm.domain.model.ListenExportModel;
 import ch.metzenthin.svm.domain.model.ListenExportModelImpl;
+import ch.metzenthin.svm.domain.model.MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert;
 import ch.metzenthin.svm.domain.model.MitarbeiterListModel;
 import ch.metzenthin.svm.domain.model.MitarbeiterTableData;
-import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.service.result.DeleteMitarbeiterResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
@@ -37,7 +37,8 @@ public class MitarbeiterListController
   }
 
   private static MitarbeiterListView createView(
-      TableModel<MitarbeiterTableData, Mitarbeiter> tableModel,
+      TableModel<MitarbeiterTableData, MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert>
+          tableModel,
       ActionListener closeListener,
       ActionListener zurueckListener) {
     return new MitarbeiterListView(tableModel, closeListener, zurueckListener);
@@ -94,13 +95,14 @@ public class MitarbeiterListController
   }
 
   private void setLblTotal() {
-    //    String lblTotalText =
-    //        "Total: "
-    //        + model.getRowCount()
-    //        + " Mitarbeiter ("
-    //        + model.getAnzSelektiert()
-    //        + " selektiert)";
-    //    view.lblTotal.setText(lblTotalText);
+    // TODO
+    //        String lblTotalText =
+    //            "Total: "
+    //            + model.getTableModel().getRowCount()
+    //            + " Mitarbeiter ("
+    //            + model.getAnzSelektiert()
+    //            + " selektiert)";
+    //      view.setLabelTotalText(lblTotalText);
   }
 
   @Override

@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.persistence.repository;
 
+import ch.metzenthin.svm.domain.model.MitarbeiterAndMitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import java.util.Calendar;
 import java.util.List;
@@ -57,6 +58,41 @@ public interface MitarbeiterRepository extends JpaRepository<Mitarbeiter, Intege
           + "ORDER BY m.nachname ASC, m.vorname ASC, m.geburtsdatum ASC")
   List<Mitarbeiter>
       findByNachnameLikeAndVornameLikeAndLehrkraftAndAktivAndCodeIdOrderByNachnameVornameGeburtsdatumAsc(
+          @Param("nachname") String nachname,
+          @Param("vorname") String vorname,
+          @Param("lehrkraft") Boolean lehrkraft,
+          @Param("aktiv") Boolean aktiv,
+          @Param("codeId") Integer codeId);
+
+  @Query(
+      "SELECT DISTINCT m FROM Mitarbeiter m "
+          + "WHERE NOT EXISTS ("
+          + "   SELECT mmc FROM MitarbeiterMitarbeiterCode mmc "
+          + "   WHERE mmc.mitarbeiter.personId = m.personId) "
+          + "AND (:nachname IS NULL OR LOWER(m.nachname) LIKE LOWER(CONCAT(:nachname, '%'))) "
+          + "AND (:vorname IS NULL OR LOWER(m.vorname) LIKE LOWER(CONCAT(:vorname, '%'))) "
+          + "AND (:lehrkraft IS NULL OR m.lehrkraft = :lehrkraft) "
+          + "AND (:aktiv IS NULL OR m.aktiv = :aktiv) "
+          + "ORDER BY m.nachname ASC, m.vorname ASC, m.geburtsdatum ASC")
+  List<Mitarbeiter>
+      findMitarbeiterWithoutCodesByNachnameNullOrLikeAndVornameNullOrLikeAndLehrkraftNullOrEqAndAktivNullOrEq(
+          @Param("nachname") String nachname,
+          @Param("vorname") String vorname,
+          @Param("lehrkraft") Boolean lehrkraft,
+          @Param("aktiv") Boolean aktiv);
+
+  @Query(
+      "SELECT new ch.metzenthin.svm.domain.model.MitarbeiterAndMitarbeiterCode("
+          + "m, mmc.mitarbeiterCode) FROM Mitarbeiter m "
+          + "JOIN MitarbeiterMitarbeiterCode mmc ON mmc.mitarbeiter.personId = m.personId "
+          + "WHERE (:nachname IS NULL OR LOWER(m.nachname) LIKE LOWER(CONCAT(:nachname, '%'))) "
+          + "AND (:vorname IS NULL OR LOWER(m.vorname) LIKE LOWER(CONCAT(:vorname, '%'))) "
+          + "AND (:lehrkraft IS NULL OR m.lehrkraft = :lehrkraft) "
+          + "AND (:aktiv IS NULL OR m.aktiv = :aktiv) "
+          + "AND (:codeId IS NULL OR mmc.mitarbeiterCode.codeId = :codeId) "
+          + "ORDER BY m.nachname ASC, m.vorname ASC, m.geburtsdatum ASC")
+  List<MitarbeiterAndMitarbeiterCode>
+      findMitarbeiterAndMitarbeiterCodeOfMitarbeiterWithCodesByNachnameNullOrLikeAndVornameNullOrLikeAndLehrkraftNullOrEqAndAktivNullOrEqAndCodeIdNullOrEq(
           @Param("nachname") String nachname,
           @Param("vorname") String vorname,
           @Param("lehrkraft") Boolean lehrkraft,

@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.service.impl;
 
+import ch.metzenthin.svm.domain.model.MitarbeiterAndMitarbeiterCode;
+import ch.metzenthin.svm.domain.model.MitarbeiterAndMitarbeiterCodes;
 import ch.metzenthin.svm.domain.model.searchfields.MitarbeiterSearchFields;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
@@ -12,7 +14,9 @@ import ch.metzenthin.svm.service.MitarbeiterService;
 import ch.metzenthin.svm.service.result.DeleteMitarbeiterResult;
 import ch.metzenthin.svm.service.result.SaveMitarbeiterResult;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.springframework.stereotype.Service;
@@ -44,17 +48,64 @@ public class MitarbeiterServiceImpl implements MitarbeiterService {
   }
 
   @Override
-  public List<Mitarbeiter> findMitarbeiterBySearchFields(
+  public List<MitarbeiterAndMitarbeiterCodes> findMitarbeiterAndMitarbeiterCodesBySearchFields(
       MitarbeiterSearchFields mitarbeiterSearchFields) {
-    return mitarbeiterRepository
-        .findByNachnameLikeAndVornameLikeAndLehrkraftAndAktivAndCodeIdOrderByNachnameVornameGeburtsdatumAsc(
-            mitarbeiterSearchFields.nachname(),
-            mitarbeiterSearchFields.vorname(),
-            mitarbeiterSearchFields.lehrkraftJaNeinSelected().getValue(),
-            mitarbeiterSearchFields.statusSelected().getValue(),
-            (mitarbeiterSearchFields.mitarbeiterCode() != null)
-                ? mitarbeiterSearchFields.mitarbeiterCode().getCodeId()
-                : null);
+
+    List<MitarbeiterAndMitarbeiterCodes> mitarbeiterAndMitarbeiterCodesAll = new ArrayList<>();
+
+    if (mitarbeiterSearchFields.mitarbeiterCode() == null) {
+      List<Mitarbeiter> mitarbeiterWithoutMitarbeiterCode =
+          mitarbeiterRepository
+              .findMitarbeiterWithoutCodesByNachnameNullOrLikeAndVornameNullOrLikeAndLehrkraftNullOrEqAndAktivNullOrEq(
+                  mitarbeiterSearchFields.nachname(),
+                  mitarbeiterSearchFields.vorname(),
+                  mitarbeiterSearchFields.lehrkraftJaNeinSelected().getValue(),
+                  mitarbeiterSearchFields.statusSelected().getValue());
+      List<MitarbeiterAndMitarbeiterCodes> mitarbeiterAndMitarbeiterCodes1 =
+          mitarbeiterWithoutMitarbeiterCode.stream()
+              .map(
+                  mitarbeiter -> new MitarbeiterAndMitarbeiterCodes(mitarbeiter, new ArrayList<>()))
+              .toList();
+      mitarbeiterAndMitarbeiterCodesAll.addAll(mitarbeiterAndMitarbeiterCodes1);
+    }
+
+    List<MitarbeiterAndMitarbeiterCode> mitarbeiterAndMitarbeiterCodes =
+        mitarbeiterRepository
+            .findMitarbeiterAndMitarbeiterCodeOfMitarbeiterWithCodesByNachnameNullOrLikeAndVornameNullOrLikeAndLehrkraftNullOrEqAndAktivNullOrEqAndCodeIdNullOrEq(
+                mitarbeiterSearchFields.nachname(),
+                mitarbeiterSearchFields.vorname(),
+                mitarbeiterSearchFields.lehrkraftJaNeinSelected().getValue(),
+                mitarbeiterSearchFields.statusSelected().getValue(),
+                (mitarbeiterSearchFields.mitarbeiterCode() != null)
+                    ? mitarbeiterSearchFields.mitarbeiterCode().getCodeId()
+                    : null);
+
+    Map<Mitarbeiter, List<MitarbeiterCode>> mitarbeiterAndMitarbeiterCodesMap = new HashMap<>();
+    for (MitarbeiterAndMitarbeiterCode mitarbeiterAndMitarbeiterCode :
+        mitarbeiterAndMitarbeiterCodes) {
+      if (mitarbeiterAndMitarbeiterCodesMap.containsKey(
+          mitarbeiterAndMitarbeiterCode.mitarbeiter())) {
+        List<MitarbeiterCode> mitarbeiterCodes =
+            mitarbeiterAndMitarbeiterCodesMap.get(mitarbeiterAndMitarbeiterCode.mitarbeiter());
+        mitarbeiterCodes.add(mitarbeiterAndMitarbeiterCode.mitarbeiterCode());
+      } else {
+        List<MitarbeiterCode> mitarbeiterCodes = new ArrayList<>();
+        mitarbeiterCodes.add(mitarbeiterAndMitarbeiterCode.mitarbeiterCode());
+        mitarbeiterAndMitarbeiterCodesMap.put(
+            mitarbeiterAndMitarbeiterCode.mitarbeiter(), mitarbeiterCodes);
+      }
+    }
+
+    List<MitarbeiterAndMitarbeiterCodes> mitarbeiterAndMitarbeiterCodes2 =
+        mitarbeiterAndMitarbeiterCodesMap.entrySet().stream()
+            .map(
+                mitarbeiterListEntry ->
+                    new MitarbeiterAndMitarbeiterCodes(
+                        mitarbeiterListEntry.getKey(), mitarbeiterListEntry.getValue()))
+            .toList();
+    mitarbeiterAndMitarbeiterCodesAll.addAll(mitarbeiterAndMitarbeiterCodes2);
+
+    return mitarbeiterAndMitarbeiterCodesAll;
   }
 
   @Override

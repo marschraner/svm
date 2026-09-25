@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.service;
 
+import ch.metzenthin.svm.domain.model.MitarbeiterAndMitarbeiterCodes;
 import ch.metzenthin.svm.domain.model.searchfields.MitarbeiterSearchFields;
 import ch.metzenthin.svm.persistence.entities.Adresse;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
@@ -18,7 +19,8 @@ public interface MitarbeiterService {
 
   List<Mitarbeiter> findAktiveLehrkraefte();
 
-  List<Mitarbeiter> findMitarbeiterBySearchFields(MitarbeiterSearchFields mitarbeiterSearchFields);
+  List<MitarbeiterAndMitarbeiterCodes> findMitarbeiterAndMitarbeiterCodesBySearchFields(
+      MitarbeiterSearchFields mitarbeiterSearchFields);
 
   SaveMitarbeiterResult saveMitarbeiter(
       Mitarbeiter mitarbeiter,
