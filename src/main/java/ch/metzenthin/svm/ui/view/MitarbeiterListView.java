@@ -1,10 +1,13 @@
 package ch.metzenthin.svm.ui.view;
 
+import ch.metzenthin.svm.ui.componentmodel.CalendarTableCellRenderer;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import ch.metzenthin.svm.ui.components.MitarbeiterListPanel;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.event.TableModelListener;
 
 /**
  * @author Hans Stamm
@@ -28,6 +31,16 @@ public class MitarbeiterListView extends AbstractListPanelView<MitarbeiterListPa
     this.buttonZurueck = listPanel.getBtnZurueck();
     this.labelTotal = listPanel.getLblTotal();
     addButtonZurueckActionListener(zurueckListener);
+    setTableDefaultRenderer();
+  }
+
+  // Table
+  public void addTableModelListener(TableModelListener tableModelListener) {
+    tableModel.addTableModelListener(tableModelListener);
+  }
+
+  private void setTableDefaultRenderer() {
+    table.setDefaultRenderer(Calendar.class, new CalendarTableCellRenderer());
   }
 
   // Button Exportieren

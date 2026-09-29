@@ -9,13 +9,15 @@ import lombok.Getter;
  * @param <U> Typ der Table-Data-Rows, z.B. Kursort
  * @param <V> Typ des CreateOrUpdate-Models, z.B. CreateOrUpdateKursortModel
  * @param <W> Typ des Resultats der Löschen-Methode, z.B. DeleteKursortResult
+ * @param <X> Typ des Table-Models, z.B. TableModel<T, U>
  * @author Hans Stamm
  */
-public abstract class AbstractListModel<T extends AbstractTableData<U>, U, V, W> {
+public abstract class AbstractListModel<
+    T extends AbstractTableData<U>, U, V, W, X extends TableModel<T, U>> {
 
-  @Getter protected final TableModel<T, U> tableModel;
+  @Getter protected final X tableModel;
 
-  protected AbstractListModel(TableModel<T, U> tableModel) {
+  protected AbstractListModel(X tableModel) {
     this.tableModel = tableModel;
   }
 

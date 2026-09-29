@@ -6,4 +6,4 @@ import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
  * @author Martin Schraner
  */
 public record MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert(
-    Mitarbeiter mitarbeiter, String mitarbeiterCodesAsString, boolean selektiert) {}
+    Mitarbeiter mitarbeiter, String mitarbeiterCodesAsString, Selection selektiert) {}

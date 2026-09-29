@@ -23,6 +23,9 @@ public class MitarbeiterListController
     extends AbstractListController<
         MitarbeiterListModel, DeleteMitarbeiterResult, MitarbeiterListView> {
 
+  private static final String EMAIL = "E-Mail";
+  private static final String GRUPPEN_EMAIL = "Gruppen-E-Mail";
+
   public MitarbeiterListController(
       SvmContext svmContext,
       MitarbeiterListModel mitarbeiterListModel,
@@ -32,7 +35,11 @@ public class MitarbeiterListController
         svmContext,
         mitarbeiterListModel,
         createView(mitarbeiterListModel.getTableModel(), closeListener, zurueckListener));
-    configBtnExport();
+    configTable();
+    configBtnAlleSelektieren();
+    configBtnAlleDeselektieren();
+    configBtnExportieren();
+    configBtnEmail();
     setOrUpdateTotalAndListButtons();
   }
 
@@ -44,11 +51,96 @@ public class MitarbeiterListController
     return new MitarbeiterListView(tableModel, closeListener, zurueckListener);
   }
 
-  private void configBtnExport() {
-    view.addButtonExportierenActionListener(e -> onExport());
+  private void configTable() {
+    view.addTableModelListener(e -> setOrUpdateTotalAndListButtons());
   }
 
-  private void onExport() {
+  private void configBtnAlleDeselektieren() {
+    view.setButtonAlleDeselektierenVisible(true);
+    view.addButtonAlleDeselektierenActionListener(e -> onAlleDeselektieren());
+  }
+
+  private void onAlleDeselektieren() {
+    model.getTableModel().alleMitarbeiterDeselektieren();
+    view.setButtonAlleDeselektierenVisible(false);
+    view.setButtonAlleSelektierenVisible(true);
+  }
+
+  private void configBtnAlleSelektieren() {
+    view.setButtonAlleSelektierenVisible(false);
+    view.addButtonAlleSelektierenActionListener(e -> onAlleSelektieren());
+  }
+
+  private void onAlleSelektieren() {
+    model.getTableModel().alleMitarbeiterSelektieren();
+    view.setButtonAlleSelektierenVisible(false);
+    view.setButtonAlleDeselektierenVisible(true);
+  }
+
+  @Override
+  protected void showOnNeuDialog() {
+    CreateOrUpdateMitarbeiterModel createOrUpdateMitarbeiterModel =
+        model.createCreateOrUpdateModel(svmContext);
+    CreateOrUpdateMitarbeiterController createOrUpdateMitarbeiterController =
+        new CreateOrUpdateMitarbeiterController(
+            svmContext, createOrUpdateMitarbeiterModel, "Neuer Mitarbeiter");
+    createOrUpdateMitarbeiterController.showDialog();
+  }
+
+  @Override
+  protected void showOnBearbeitenDialog() {
+    CreateOrUpdateMitarbeiterModel createOrUpdateMitarbeiterModel =
+        model.createCreateOrUpdateModel(svmContext, view.convertRowIndexToModel());
+    CreateOrUpdateMitarbeiterController createOrUpdateMitarbeiterController =
+        new CreateOrUpdateMitarbeiterController(
+            svmContext, createOrUpdateMitarbeiterModel, "Mitarbeiter bearbeiten");
+    createOrUpdateMitarbeiterController.showDialog();
+  }
+
+  @Override
+  protected void onLoeschenDialog() {
+    int n =
+        view.showYesNoDialog(
+            "Soll der Mitarbeiter aus der Datenbank gelöscht werden?", "Mitarbeiter löschen?");
+    // TODO
+    if (n == 0) {
+      // Löschen durchführen
+      //      int numberOfReferencedMitarbeiterrechnungen =
+      //          model.getNumberOfReferencedMitarbeiterrechnungen(view.convertRowIndexToModel());
+      //      boolean existsKurs = model.existsKurs(view.convertRowIndexToModel());
+      //      int n1 = 0;
+      //      if (!existsKurs && numberOfReferencedMitarbeiterrechnungen > 0) {
+      //        n1 =
+      //            view.showYesNoDialog(
+      //                "ACHTUNG!\n"
+      //                    + "Das zu löschende Mitarbeiter wird von "
+      //                    + numberOfReferencedMitarbeiterrechnungen
+      //                    + " Mitarbeiterrechnungen referenziert. "
+      //                    + "Diese werden beim Löschen des Mitarbeiters mitgelöscht!\n"
+      //                    + "Soll das Mitarbeiter trotzdem gelöscht werden?",
+      //                "Mitarbeiter von Mitarbeiterrechnungen referenziert");
+      //      }
+      //      if (n1 == 0) {
+      //        DeleteMitarbeiterResult deleteMitarbeiterResult =
+      //            model.eintragLoeschen(view.convertRowIndexToModel());
+      //        switch (deleteMitarbeiterResult) {
+      ////          case MITARBEITER_VON_KURS_REFERENZIERT ->
+      // showErrorMessageDialog(deleteMitarbeiterResult);
+      //          case MITARBEITER_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+      //            showErrorMessageDialog(deleteMitarbeiterResult);
+      //            reloadTableData();
+      //          }
+      //          case LOESCHEN_ERFOLGREICH -> reloadTableData();
+      //        }
+      //      }
+    }
+  }
+
+  private void configBtnExportieren() {
+    view.addButtonExportierenActionListener(e -> onExportieren());
+  }
+
+  private void onExportieren() {
     view.setButtonExportierenFocusPainted(true);
     showOnExportDialog();
     // Dialog wurde geschlossen
@@ -94,72 +186,35 @@ public class MitarbeiterListController
     }
   }
 
-  private void setLblTotal() {
+  private void configBtnEmail() {
     // TODO
-    //        String lblTotalText =
-    //            "Total: "
-    //            + model.getTableModel().getRowCount()
-    //            + " Mitarbeiter ("
-    //            + model.getAnzSelektiert()
-    //            + " selektiert)";
-    //      view.setLabelTotalText(lblTotalText);
   }
 
   @Override
-  protected void showOnNeuDialog() {
-    CreateOrUpdateMitarbeiterModel createOrUpdateMitarbeiterModel =
-        model.createCreateOrUpdateModel(svmContext);
-    CreateOrUpdateMitarbeiterController createOrUpdateMitarbeiterController =
-        new CreateOrUpdateMitarbeiterController(
-            svmContext, createOrUpdateMitarbeiterModel, "Neuer Mitarbeiter");
-    createOrUpdateMitarbeiterController.showDialog();
-  }
-
-  @Override
-  protected void showOnBearbeitenDialog() {
-    CreateOrUpdateMitarbeiterModel createOrUpdateMitarbeiterModel =
-        model.createCreateOrUpdateModel(svmContext, view.convertRowIndexToModel());
-    CreateOrUpdateMitarbeiterController createOrUpdateMitarbeiterController =
-        new CreateOrUpdateMitarbeiterController(
-            svmContext, createOrUpdateMitarbeiterModel, "Mitarbeiter bearbeiten");
-    createOrUpdateMitarbeiterController.showDialog();
-  }
-
-  @Override
-  protected void onLoeschenDialog() {
-    int n =
-        view.showYesNoDialog(
-            "Soll der Mitarbeiter aus der Datenbank gelöscht werden?", "Mitarbeiter löschen?");
-    if (n == 0) {
-      // Löschen durchführen
-      //      int numberOfReferencedMitarbeiterrechnungen =
-      //          model.getNumberOfReferencedMitarbeiterrechnungen(view.convertRowIndexToModel());
-      //      boolean existsKurs = model.existsKurs(view.convertRowIndexToModel());
-      //      int n1 = 0;
-      //      if (!existsKurs && numberOfReferencedMitarbeiterrechnungen > 0) {
-      //        n1 =
-      //            view.showYesNoDialog(
-      //                "ACHTUNG!\n"
-      //                    + "Das zu löschende Mitarbeiter wird von "
-      //                    + numberOfReferencedMitarbeiterrechnungen
-      //                    + " Mitarbeiterrechnungen referenziert. "
-      //                    + "Diese werden beim Löschen des Mitarbeiters mitgelöscht!\n"
-      //                    + "Soll das Mitarbeiter trotzdem gelöscht werden?",
-      //                "Mitarbeiter von Mitarbeiterrechnungen referenziert");
-      //      }
-      //      if (n1 == 0) {
-      //        DeleteMitarbeiterResult deleteMitarbeiterResult =
-      //            model.eintragLoeschen(view.convertRowIndexToModel());
-      //        switch (deleteMitarbeiterResult) {
-      ////          case MITARBEITER_VON_KURS_REFERENZIERT ->
-      // showErrorMessageDialog(deleteMitarbeiterResult);
-      //          case MITARBEITER_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
-      //            showErrorMessageDialog(deleteMitarbeiterResult);
-      //            reloadTableData();
-      //          }
-      //          case LOESCHEN_ERFOLGREICH -> reloadTableData();
-      //        }
-      //      }
+  protected void setOrUpdateTotalAndListButtons() {
+    int anzahlSelektiert = model.getTableModel().getAnzahlSelektiert();
+    int rowCount = model.getTableModel().getRowCount();
+    if (anzahlSelektiert > 0) {
+      view.setButtonExportierenEnabled(true);
+      view.setButtonEmailEnabled(true);
+    } else {
+      view.setButtonExportierenEnabled(false);
+      view.setButtonEmailEnabled(false);
     }
+    if (rowCount <= 1 || anzahlSelektiert == 1) {
+      view.setButtonEmailText(EMAIL);
+    } else {
+      view.setButtonEmailText(GRUPPEN_EMAIL);
+    }
+    if (anzahlSelektiert == rowCount) {
+      view.setButtonAlleSelektierenVisible(false);
+      view.setButtonAlleDeselektierenVisible(true);
+    } else {
+      view.setButtonAlleDeselektierenVisible(false);
+      view.setButtonAlleSelektierenVisible(true);
+    }
+    String lblTotalText =
+        "Total: " + rowCount + " Mitarbeiter (" + anzahlSelektiert + " selektiert)";
+    view.setLabelTotalText(lblTotalText);
   }
 }

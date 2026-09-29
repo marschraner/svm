@@ -27,7 +27,8 @@ public class KursListModel
         KursTableData,
         KursAndLehrkraefteAndNumberOfKursanmeldungen,
         CreateOrUpdateKursModel,
-        DeleteKursResult> {
+        DeleteKursResult,
+        TableModel<KursTableData, KursAndLehrkraefteAndNumberOfKursanmeldungen>> {
 
   private final KursService kursService;
   private final Semester semester;

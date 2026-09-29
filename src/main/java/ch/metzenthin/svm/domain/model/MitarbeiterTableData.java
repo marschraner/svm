@@ -44,7 +44,8 @@ public class MitarbeiterTableData
         mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert = data.get(rowIndex);
     Object value = null;
     switch (COLUMNS[columnIndex]) {
-      case SELEKTIERT -> value = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.selektiert();
+      case SELEKTIERT ->
+          value = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.selektiert().isSelected();
       case NACHNAME ->
           value = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getNachname();
       case VORNAME ->
@@ -148,6 +149,47 @@ public class MitarbeiterTableData
       }
     }
     return value;
+  }
+
+  public void setValueAt(Object value, int rowIndex, int columnIndex) {
+    if (COLUMNS[columnIndex] == Field.SELEKTIERT) {
+      MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+          mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert = data.get(rowIndex);
+      mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.selektiert().setSelected((boolean) value);
+    }
+  }
+
+  public boolean isCellEditable(int columnIndex) {
+    return COLUMNS[columnIndex] == Field.SELEKTIERT;
+  }
+
+  public int getAnzahlSelektiert() {
+    return (int)
+        data.stream()
+            .filter(
+                mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert ->
+                    mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.selektiert().isSelected())
+            .count();
+  }
+
+  public void alleMitarbeiterSelektieren() {
+    forEachRow(
+        mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert -> {
+          Selection selection = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.selektiert();
+          if (!selection.isSelected()) {
+            selection.setSelected(true);
+          }
+        });
+  }
+
+  public void alleMitarbeiterDeselektieren() {
+    forEachRow(
+        mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert -> {
+          Selection selection = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.selektiert();
+          if (selection.isSelected()) {
+            selection.setSelected(false);
+          }
+        });
   }
 
   public Class<?> getColumnClass(int columnIndex) {

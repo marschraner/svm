@@ -20,7 +20,8 @@ public class SemesterListModel
         SemesterTableData,
         SemesterAndNumberOfKurse,
         CreateOrUpdateSemesterModel,
-        DeleteSemesterResult> {
+        DeleteSemesterResult,
+        TableModel<SemesterTableData, SemesterAndNumberOfKurse>> {
 
   private final KursService kursService;
   private final SemesterService semesterService;

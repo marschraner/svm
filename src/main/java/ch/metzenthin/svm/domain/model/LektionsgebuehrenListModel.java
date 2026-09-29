@@ -18,7 +18,8 @@ public class LektionsgebuehrenListModel
         LektionsgebuehrenTableData,
         Lektionsgebuehren,
         CreateOrUpdateLektionsgebuehrenModel,
-        DeleteLektionsgebuehrenResult> {
+        DeleteLektionsgebuehrenResult,
+        TableModel<LektionsgebuehrenTableData, Lektionsgebuehren>> {
 
   private final LektionsgebuehrenService lektionsgebuehrenService;
 

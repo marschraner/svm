@@ -14,7 +14,7 @@ import lombok.Getter;
  * @author Hans Stamm
  */
 public abstract class AbstractListController<
-    T extends AbstractListModel<? extends AbstractTableData<?>, ?, ?, U>,
+    T extends AbstractListModel<? extends AbstractTableData<?>, ?, ?, U, ?>,
     U extends SubmitDialogResult,
     V extends AbstractListPanelView<?>> {
 

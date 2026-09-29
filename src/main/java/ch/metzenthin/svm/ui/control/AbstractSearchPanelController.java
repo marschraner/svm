@@ -8,7 +8,7 @@ import ch.metzenthin.svm.ui.view.AbstractSearchPanelView;
  * @author Martin Schraner
  */
 public abstract class AbstractSearchPanelController<
-        T extends AbstractSearchPanelView<?>, U extends AbstractListModel<?, ?, ?, ?>>
+        T extends AbstractSearchPanelView<?>, U extends AbstractListModel<?, ?, ?, ?, ?>>
     extends AbstractSubmitController<T> {
 
   protected AbstractSearchPanelController(T view) {

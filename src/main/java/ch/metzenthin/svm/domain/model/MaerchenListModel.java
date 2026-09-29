@@ -18,7 +18,8 @@ public class MaerchenListModel
         MaerchenTableData,
         MaerchenAndNumberOfMaercheneinteilungen,
         CreateOrUpdateMaerchenModel,
-        DeleteMaerchenResult> {
+        DeleteMaerchenResult,
+        TableModel<MaerchenTableData, MaerchenAndNumberOfMaercheneinteilungen>> {
 
   private final MaerchenService maerchenService;
 
