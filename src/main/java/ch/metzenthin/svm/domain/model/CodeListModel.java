@@ -13,7 +13,12 @@ import org.springframework.dao.OptimisticLockingFailureException;
  * @author Hans Stamm
  */
 public abstract class CodeListModel<T extends Code>
-    extends AbstractListModel<CodeTableData<T>, T, CreateOrUpdateCodeModel, DeleteCodeResult> {
+    extends AbstractListModel<
+        CodeTableData<T>,
+        T,
+        TableModel<CodeTableData<T>, T>,
+        CreateOrUpdateCodeModel,
+        DeleteCodeResult> {
 
   private final CodeService<T> service;
 

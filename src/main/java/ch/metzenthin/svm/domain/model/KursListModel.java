@@ -26,6 +26,7 @@ public class KursListModel
     extends AbstractListModel<
         KursTableData,
         KursAndLehrkraefteAndNumberOfKursanmeldungen,
+        TableModel<KursTableData, KursAndLehrkraefteAndNumberOfKursanmeldungen>,
         CreateOrUpdateKursModel,
         DeleteKursResult> {
 

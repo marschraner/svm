@@ -44,110 +44,158 @@ public class MitarbeiterTableData
         mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert = data.get(rowIndex);
     Object value = null;
     switch (COLUMNS[columnIndex]) {
-      case SELEKTIERT -> value = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.selektiert();
+      case SELEKTIERT -> value = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.isSelektiert();
       case NACHNAME ->
-          value = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getNachname();
+          value =
+              mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.getMitarbeiter().getNachname();
       case VORNAME ->
-          value = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getVorname();
+          value = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.getMitarbeiter().getVorname();
       case STRASSE_HAUSNUMMER ->
           value =
-              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getAdresse()
+              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.getMitarbeiter().getAdresse()
                       == null
                   ? ""
                   : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
-                      .mitarbeiter()
+                      .getMitarbeiter()
                       .getAdresse()
                       .getStrHausnummer());
       case PLZ ->
           value =
-              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getAdresse()
+              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.getMitarbeiter().getAdresse()
                       == null
                   ? ""
                   : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
-                      .mitarbeiter()
+                      .getMitarbeiter()
                       .getAdresse()
                       .getPlz());
       case ORT ->
           value =
-              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getAdresse()
+              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.getMitarbeiter().getAdresse()
                       == null
                   ? ""
                   : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
-                      .mitarbeiter()
+                      .getMitarbeiter()
                       .getAdresse()
                       .getOrt());
       case FESTNETZ ->
           value =
               (!checkNotEmpty(
                       mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
-                          .mitarbeiter()
+                          .getMitarbeiter()
                           .getFestnetz())
                   ? ""
                   : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
-                      .mitarbeiter()
+                      .getMitarbeiter()
                       .getFestnetz());
       case NATEL ->
           value =
               (!checkNotEmpty(
-                      mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getNatel())
+                      mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                          .getMitarbeiter()
+                          .getNatel())
                   ? ""
-                  : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getNatel());
+                  : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                      .getMitarbeiter()
+                      .getNatel());
       case EMAIL ->
           value =
               (!checkNotEmpty(
-                      mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getEmail())
+                      mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                          .getMitarbeiter()
+                          .getEmail())
                   ? ""
-                  : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getEmail());
+                  : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                      .getMitarbeiter()
+                      .getEmail());
       case GEBURTSDATUM ->
           value =
-              mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().getGeburtsdatum();
+              mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+                  .getMitarbeiter()
+                  .getGeburtsdatum();
       case AHV_NUMMER ->
           value =
               (!checkNotEmpty(
                       mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
-                          .mitarbeiter()
+                          .getMitarbeiter()
                           .getAhvNummer())
                   ? ""
                   : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
-                      .mitarbeiter()
+                      .getMitarbeiter()
                       .getAhvNummer());
       case IBAN_NUMMER ->
           value =
               (!checkNotEmpty(
                       mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
-                          .mitarbeiter()
+                          .getMitarbeiter()
                           .getIbanNummer())
                   ? ""
                   : mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
-                      .mitarbeiter()
+                      .getMitarbeiter()
                       .getIbanNummer());
       case LEHRKRAFT ->
           value =
-              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().isLehrkraft()
+              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.getMitarbeiter().isLehrkraft()
                   ? "ja"
                   : "nein");
       case AKTIV ->
           value =
-              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiter().isAktiv())
+              (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.getMitarbeiter().isAktiv())
                   ? "ja"
                   : "nein";
       case CODES ->
-          value = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.mitarbeiterCodesAsString();
+          value = mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.getMitarbeiterCodesAsString();
       case VERTRETUNGSMOEGLICHKEITEN ->
           value =
               mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
-                  .mitarbeiter()
+                  .getMitarbeiter()
                   .getVertretungsmoeglichkeitenLineBreaksReplacedBySemicolonOrPeriod();
       case BEMERKUNGEN ->
           value =
               mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
-                  .mitarbeiter()
+                  .getMitarbeiter()
                   .getBemerkungenLineBreaksReplacedBySemicolonOrPeriod();
       default -> {
         // Nothing to do
       }
     }
     return value;
+  }
+
+  public void setValueAt(Object value, int rowIndex, int columnIndex) {
+    if (COLUMNS[columnIndex] == Field.SELEKTIERT) {
+      MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+          mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert = data.get(rowIndex);
+      mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.setSelektiert((boolean) value);
+    }
+  }
+
+  public boolean isCellEditable(int columnIndex) {
+    return COLUMNS[columnIndex] == Field.SELEKTIERT;
+  }
+
+  public int getAnzahlSelektiert() {
+    return (int)
+        data.stream()
+            .filter(MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert::isSelektiert)
+            .count();
+  }
+
+  public void alleMitarbeiterSelektieren() {
+    forEachRow(
+        mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert -> {
+          if (!mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.isSelektiert()) {
+            mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.setSelektiert(true);
+          }
+        });
+  }
+
+  public void alleMitarbeiterDeselektieren() {
+    forEachRow(
+        mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert -> {
+          if (mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.isSelektiert()) {
+            mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.setSelektiert(false);
+          }
+        });
   }
 
   public Class<?> getColumnClass(int columnIndex) {

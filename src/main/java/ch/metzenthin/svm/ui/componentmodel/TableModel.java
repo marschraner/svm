@@ -17,7 +17,7 @@ public class TableModel<T extends AbstractTableData<U>, U> extends AbstractTable
 
   @Serial private static final long serialVersionUID = 1L;
 
-  private final transient T tableData;
+  protected final transient T tableData;
   @Getter private final boolean tableColumnWidthAccordingToCellContentAndHeader;
   @Getter private final double[] columnWidthsPercentages;
 

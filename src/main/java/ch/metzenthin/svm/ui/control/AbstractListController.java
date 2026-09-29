@@ -14,7 +14,7 @@ import lombok.Getter;
  * @author Hans Stamm
  */
 public abstract class AbstractListController<
-    T extends AbstractListModel<? extends AbstractTableData<?>, ?, ?, U>,
+    T extends AbstractListModel<? extends AbstractTableData<?>, ?, ?, ?, U>,
     U extends SubmitDialogResult,
     V extends AbstractListPanelView<?>> {
 
@@ -118,8 +118,8 @@ public abstract class AbstractListController<
     // TableData mit von der Datenbank upgedateten Objekten updaten
     model.reloadData();
     view.fireTableDataChanged();
-    setOrUpdateTotalAndListButtons();
+    updateButtonsAndTotalText();
   }
 
-  protected void setOrUpdateTotalAndListButtons() {}
+  protected void updateButtonsAndTotalText() {}
 }

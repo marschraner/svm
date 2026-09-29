@@ -17,6 +17,7 @@ public class MaerchenListModel
     extends AbstractListModel<
         MaerchenTableData,
         MaerchenAndNumberOfMaercheneinteilungen,
+        TableModel<MaerchenTableData, MaerchenAndNumberOfMaercheneinteilungen>,
         CreateOrUpdateMaerchenModel,
         DeleteMaerchenResult> {
 

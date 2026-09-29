@@ -17,6 +17,7 @@ public class LektionsgebuehrenListModel
     extends AbstractListModel<
         LektionsgebuehrenTableData,
         Lektionsgebuehren,
+        TableModel<LektionsgebuehrenTableData, Lektionsgebuehren>,
         CreateOrUpdateLektionsgebuehrenModel,
         DeleteLektionsgebuehrenResult> {
 

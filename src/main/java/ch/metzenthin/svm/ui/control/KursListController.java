@@ -34,7 +34,7 @@ public class KursListController
             closeListener));
     configBtnImport();
     configBtnExport();
-    setOrUpdateTotalAndListButtons();
+    updateButtonsAndTotalText();
   }
 
   private static KursListView createView(
@@ -184,7 +184,7 @@ public class KursListController
   }
 
   @Override
-  protected void setOrUpdateTotalAndListButtons() {
+  protected void updateButtonsAndTotalText() {
     view.setTotalText(model.getTableModel().getTotalText());
     view.setButtonExportierenEnabled(model.getTableModel().getRowCount() > 0);
   }

@@ -15,7 +15,11 @@ import org.springframework.dao.OptimisticLockingFailureException;
  */
 public class KurstypListModel
     extends AbstractListModel<
-        KurstypTableData, Kurstyp, CreateOrUpdateKurstypModel, DeleteKurstypResult> {
+        KurstypTableData,
+        Kurstyp,
+        TableModel<KurstypTableData, Kurstyp>,
+        CreateOrUpdateKurstypModel,
+        DeleteKurstypResult> {
 
   private final KurstypService kurstypService;
 

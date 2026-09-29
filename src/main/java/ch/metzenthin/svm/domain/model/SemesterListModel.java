@@ -19,6 +19,7 @@ public class SemesterListModel
     extends AbstractListModel<
         SemesterTableData,
         SemesterAndNumberOfKurse,
+        TableModel<SemesterTableData, SemesterAndNumberOfKurse>,
         CreateOrUpdateSemesterModel,
         DeleteSemesterResult> {
 

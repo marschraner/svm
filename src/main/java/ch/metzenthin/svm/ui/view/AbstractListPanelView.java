@@ -25,8 +25,8 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
 
   @Getter private final JComponent rootComponent;
   protected final T listPanel;
-  private final AbstractTableModel tableModel;
-  private final JTable table;
+  protected final AbstractTableModel tableModel;
+  protected final JTable table;
   private final JButton buttonNeu;
   private final JButton buttonBearbeiten;
   private final JButton buttonLoeschen;
