@@ -4,6 +4,7 @@ import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -196,6 +197,13 @@ public class MitarbeiterTableData
             mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.setSelektiert(false);
           }
         });
+  }
+
+  public Iterator<MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert>
+      getRowIteratorSelektierteMitarbeiter() {
+    return data.stream()
+        .filter(MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert::isSelektiert)
+        .iterator();
   }
 
   public Class<?> getColumnClass(int columnIndex) {

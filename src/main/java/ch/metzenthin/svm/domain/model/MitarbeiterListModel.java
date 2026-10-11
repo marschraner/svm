@@ -152,7 +152,8 @@ public class MitarbeiterListModel
   }
 
   public ExportListResult exportList(Listentyp listentyp, String listenTitel, File outputFile) {
-    return null; // TODO
+    return mitarbeiterService.exportList(
+        listentyp, listenTitel, outputFile, getTableModel().getRowIteratorSelektierteMitarbeiter());
   }
 
   @Override

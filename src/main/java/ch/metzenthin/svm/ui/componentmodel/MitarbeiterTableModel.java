@@ -2,6 +2,7 @@ package ch.metzenthin.svm.ui.componentmodel;
 
 import ch.metzenthin.svm.domain.model.MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert;
 import ch.metzenthin.svm.domain.model.MitarbeiterTableData;
+import java.util.Iterator;
 
 /**
  * @author Hans Stamm
@@ -36,5 +37,10 @@ public class MitarbeiterTableModel
 
   public int getAnzahlSelektiert() {
     return tableData.getAnzahlSelektiert();
+  }
+
+  public Iterator<MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert>
+      getRowIteratorSelektierteMitarbeiter() {
+    return tableData.getRowIteratorSelektierteMitarbeiter();
   }
 }

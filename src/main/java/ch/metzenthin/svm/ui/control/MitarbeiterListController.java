@@ -124,7 +124,7 @@ public class MitarbeiterListController
       //        DeleteMitarbeiterResult deleteMitarbeiterResult =
       //            model.eintragLoeschen(view.convertRowIndexToModel());
       //        switch (deleteMitarbeiterResult) {
-      ////          case MITARBEITER_VON_KURS_REFERENZIERT ->
+      //          case MITARBEITER_VON_KURS_REFERENZIERT ->
       // showErrorMessageDialog(deleteMitarbeiterResult);
       //          case MITARBEITER_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
       //            showErrorMessageDialog(deleteMitarbeiterResult);
@@ -148,6 +148,21 @@ public class MitarbeiterListController
   }
 
   private void showOnExportDialog() {
+
+    int anzSelektiert = model.getTableModel().getAnzahlSelektiert();
+    int rowCount = model.getTableModel().getRowCount();
+    if (anzSelektiert < rowCount) {
+      view.showInfoMessageDialog(
+          "Es "
+              + ((anzSelektiert > 1) ? "sind nur " + anzSelektiert : "ist nur einer")
+              + " der "
+              + rowCount
+              + " Einträge selektiert. Nur "
+              + ((anzSelektiert > 1) ? "diese Einträge\nwerden" : "dieser Eintrag\nwird")
+              + " beim Exportieren berücksichtigt.",
+          "Nicht alle Einträge selektiert");
+    }
+
     ListenExportModel listenExportModel = new ListenExportModelImpl();
     ListenExportController listenExportController =
         new ListenExportController(
