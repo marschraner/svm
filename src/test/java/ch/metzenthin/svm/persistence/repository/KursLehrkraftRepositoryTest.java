@@ -63,6 +63,16 @@ class KursLehrkraftRepositoryTest {
   }
 
   @Test
+  void testCountKurseByLehrkraftId() {
+    int numberOfKurseFound;
+    numberOfKurseFound = kursLehrkraftRepository.countKurseByLehrkraftId(20);
+    assertEquals(1, numberOfKurseFound);
+
+    numberOfKurseFound = kursLehrkraftRepository.countKurseByLehrkraftId(99);
+    assertEquals(0, numberOfKurseFound);
+  }
+
+  @Test
   void testFindByKursIdOrderByLehrkraefteOrder() {
     List<KursLehrkraft> kursLehrkraftList =
         kursLehrkraftRepository.findByKursIdOrderByLehrkraefteOrder(402);

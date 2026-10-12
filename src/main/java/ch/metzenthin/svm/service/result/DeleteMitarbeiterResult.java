@@ -4,6 +4,11 @@ package ch.metzenthin.svm.service.result;
  * @author Hans Stamm
  */
 public enum DeleteMitarbeiterResult implements SubmitDialogResult {
+  MITARBEITER_VON_KURS_REFERENZIERT(
+      "Der Mitarbeiter wird durch mindestens einen Kurs referenziert "
+          + "und kann nicht gelöscht werden.",
+      false,
+      true),
   MITARBEITER_DURCH_ANDEREN_BENUTZER_VERAENDERT(
       "Der Mitarbeiter kann nicht gelöscht werden, da der Eintrag unterdessen durch\n"
           + "einen anderen Benutzer verändert oder gelöscht wurde.",

@@ -101,39 +101,29 @@ public class MitarbeiterListController
   protected void onLoeschenDialog() {
     int n =
         view.showYesNoDialog(
-            "Soll der Mitarbeiter aus der Datenbank gelöscht werden?", "Mitarbeiter löschen?");
-    // TODO
+            "Durch Drücken des Ja-Buttons wird der Mitarbeiter unwiderruflich aus der Datenbank gelöscht. Fortfahren?",
+            "Mitarbeiter löschen?");
     if (n == 0) {
-      // Löschen durchführen
-      //      int numberOfReferencedMitarbeiterrechnungen =
-      //          model.getNumberOfReferencedMitarbeiterrechnungen(view.convertRowIndexToModel());
-      //      boolean existsKurs = model.existsKurs(view.convertRowIndexToModel());
-      //      int n1 = 0;
-      //      if (!existsKurs && numberOfReferencedMitarbeiterrechnungen > 0) {
-      //        n1 =
-      //            view.showYesNoDialog(
-      //                "ACHTUNG!\n"
-      //                    + "Das zu löschende Mitarbeiter wird von "
-      //                    + numberOfReferencedMitarbeiterrechnungen
-      //                    + " Mitarbeiterrechnungen referenziert. "
-      //                    + "Diese werden beim Löschen des Mitarbeiters mitgelöscht!\n"
-      //                    + "Soll das Mitarbeiter trotzdem gelöscht werden?",
-      //                "Mitarbeiter von Mitarbeiterrechnungen referenziert");
-      //      }
-      //      if (n1 == 0) {
-      //        DeleteMitarbeiterResult deleteMitarbeiterResult =
-      //            model.eintragLoeschen(view.convertRowIndexToModel());
-      //        switch (deleteMitarbeiterResult) {
-      //          case MITARBEITER_VON_KURS_REFERENZIERT ->
-      // showErrorMessageDialog(deleteMitarbeiterResult);
-      //          case MITARBEITER_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
-      //            showErrorMessageDialog(deleteMitarbeiterResult);
-      //            reloadTableData();
-      //          }
-      //          case LOESCHEN_ERFOLGREICH -> reloadTableData();
-      //        }
-      //      }
+      DeleteMitarbeiterResult deleteMitarbeiterResult =
+          model.eintragLoeschen(view.convertRowIndexToModel());
+      switch (deleteMitarbeiterResult) {
+        case MITARBEITER_VON_KURS_REFERENZIERT -> showErrorMessageDialog(deleteMitarbeiterResult);
+        case MITARBEITER_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
+          showErrorMessageDialog(deleteMitarbeiterResult);
+          reloadTableData();
+        }
+        case LOESCHEN_ERFOLGREICH -> {
+          view.showInfoMessageDialog(
+              "Der Mitarbeiter wurde erfolgreich aus der Datenbank gelöscht.",
+              "Löschen erfolgreich");
+          reloadTableData();
+        }
+      }
     }
+  }
+
+  private void showErrorMessageDialog(DeleteMitarbeiterResult deleteMitarbeiterResult) {
+    view.showErrorMessageDialog(deleteMitarbeiterResult.getMessage(), "Fehler");
   }
 
   private void configBtnExportieren() {

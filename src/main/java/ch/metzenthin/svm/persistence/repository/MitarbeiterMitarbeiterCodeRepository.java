@@ -40,4 +40,10 @@ public interface MitarbeiterMitarbeiterCodeRepository
   void deleteByMitabeiterIdEqAndMitarbeiterCodeIdIn(
       @Param("mitarbeiterId") int mitarbeiterId,
       @Param("mitarbeiterCodeIds") List<Integer> mitarbeiterCodeIds);
+
+  @Modifying
+  @Query(
+      "DELETE FROM MitarbeiterMitarbeiterCode mmc "
+          + "WHERE mmc.mitarbeiter.personId = :mitarbeiterId")
+  void deleteByMitarbeiterId(@Param("mitarbeiterId") int mitarbeiterId);
 }

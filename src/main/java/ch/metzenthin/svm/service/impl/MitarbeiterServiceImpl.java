@@ -17,6 +17,7 @@ import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterMitarbeiterCode;
 import ch.metzenthin.svm.persistence.repository.AdresseRepository;
+import ch.metzenthin.svm.persistence.repository.KursLehrkraftRepository;
 import ch.metzenthin.svm.persistence.repository.MitarbeiterMitarbeiterCodeRepository;
 import ch.metzenthin.svm.persistence.repository.MitarbeiterRepository;
 import ch.metzenthin.svm.service.MitarbeiterService;
@@ -72,6 +73,7 @@ public class MitarbeiterServiceImpl implements MitarbeiterService {
   private final MitarbeiterRepository mitarbeiterRepository;
   private final AdresseRepository adresseRepository;
   private final MitarbeiterMitarbeiterCodeRepository mitarbeiterMitarbeiterCodeRepository;
+  private final KursLehrkraftRepository kursLehrkraftRepository;
   private final WordExportService wordExportService;
   private final CsvExportService csvExportService;
   private final SvmProperties2 svmProperties2;
@@ -80,12 +82,14 @@ public class MitarbeiterServiceImpl implements MitarbeiterService {
       MitarbeiterRepository mitarbeiterRepository,
       AdresseRepository adresseRepository,
       MitarbeiterMitarbeiterCodeRepository mitarbeiterMitarbeiterCodeRepository,
+      KursLehrkraftRepository kursLehrkraftRepository,
       WordExportService wordExportService,
       CsvExportService csvExportService,
       SvmProperties2 svmProperties2) {
     this.mitarbeiterRepository = mitarbeiterRepository;
     this.adresseRepository = adresseRepository;
     this.mitarbeiterMitarbeiterCodeRepository = mitarbeiterMitarbeiterCodeRepository;
+    this.kursLehrkraftRepository = kursLehrkraftRepository;
     this.wordExportService = wordExportService;
     this.csvExportService = csvExportService;
     this.svmProperties2 = svmProperties2;
@@ -288,8 +292,20 @@ public class MitarbeiterServiceImpl implements MitarbeiterService {
   }
 
   @Override
+  @Transactional
   public DeleteMitarbeiterResult deleteMitarbeiter(Mitarbeiter mitarbeiterToBeDeleted) {
-    return null;
+
+    int numberOfKurse =
+        kursLehrkraftRepository.countKurseByLehrkraftId(mitarbeiterToBeDeleted.getPersonId());
+    if (numberOfKurse > 0) {
+      return DeleteMitarbeiterResult.MITARBEITER_VON_KURS_REFERENZIERT;
+    }
+
+    mitarbeiterMitarbeiterCodeRepository.deleteByMitarbeiterId(
+        mitarbeiterToBeDeleted.getPersonId());
+    mitarbeiterRepository.delete(mitarbeiterToBeDeleted);
+
+    return DeleteMitarbeiterResult.LOESCHEN_ERFOLGREICH;
   }
 
   @Override

@@ -72,4 +72,16 @@ class MitarbeiterMitarbeiterCodeRepositoryTest {
     List<Integer> mitarbeiterCodeIds = mitarbeiterCodes.stream().map(Code::getCodeId).toList();
     assertTrue(mitarbeiterCodeIds.contains(32));
   }
+
+  @Test
+  void testDeleteByMitarbeiterId() {
+    List<MitarbeiterCode> mitarbeiterCodes =
+        mitarbeiterMitarbeiterCodeRepository.findMitarbeiterCodesByMitarbeiterId(20);
+    assertEquals(3, mitarbeiterCodes.size());
+
+    mitarbeiterMitarbeiterCodeRepository.deleteByMitarbeiterId(20);
+
+    mitarbeiterCodes = mitarbeiterMitarbeiterCodeRepository.findMitarbeiterCodesByMitarbeiterId(20);
+    assertEquals(0, mitarbeiterCodes.size());
+  }
 }

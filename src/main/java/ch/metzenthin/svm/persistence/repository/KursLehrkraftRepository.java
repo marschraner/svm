@@ -44,6 +44,9 @@ public interface KursLehrkraftRepository extends JpaRepository<KursLehrkraft, In
       @Param("mitarbeiterIds") List<Integer> mitarbeiterIds,
       @Param("kursId") int kursId);
 
+  @Query("SELECT COUNT(kl) FROM KursLehrkraft kl WHERE kl.lehrkraft.personId = :mitarbeiterId")
+  int countKurseByLehrkraftId(@Param("mitarbeiterId") int mitarbeiterId);
+
   @Query(
       "SELECT kl FROM KursLehrkraft kl "
           + "WHERE kl.kurs.kursId = :kursId "
