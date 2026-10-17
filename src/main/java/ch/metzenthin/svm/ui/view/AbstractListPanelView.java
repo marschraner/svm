@@ -10,14 +10,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JTable;
-import javax.swing.RowSorter;
-import javax.swing.RowSorter.SortKey;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.AbstractTableModel;
 import lombok.Getter;
 
 /**
@@ -28,7 +25,7 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
 
   @Getter private final JComponent rootComponent;
   protected final T listPanel;
-  protected final AbstractTableModel tableModel;
+  protected final TableModel<?, ?> tableModel;
   protected final JTable table;
   private final JButton buttonNeu;
   private final JButton buttonBearbeiten;
@@ -62,11 +59,7 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
       setJTableColumnWidthAccordingToCellContentAndHeader(table);
     }
 
-    List<SortKey> sortKeys = tableModel.getSortKeys();
-    if (!sortKeys.isEmpty()) {
-      RowSorter<?> rowSorter = table.getRowSorter();
-      rowSorter.setSortKeys(sortKeys);
-    }
+    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
   }
 
   public void configListeners(Runnable mouseListenerAction, Runnable listSelectionListenerAction) {

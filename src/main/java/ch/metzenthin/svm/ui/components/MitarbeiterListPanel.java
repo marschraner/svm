@@ -73,9 +73,6 @@ public class MitarbeiterListPanel extends AbstractListPanel {
             return getPreferredSize().width < getParent().getWidth();
           }
         };
-    mitarbeitersTable.setAutoCreateRowSorter(true);
-    mitarbeitersTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    mitarbeitersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     final JScrollPane scrollPane = new JScrollPane(mitarbeitersTable);
     mitarbeitersTablePanel.add(scrollPane);
   }
