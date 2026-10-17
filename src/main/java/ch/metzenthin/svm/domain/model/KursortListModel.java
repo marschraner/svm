@@ -62,6 +62,16 @@ public class KursortListModel
   }
 
   @Override
+  protected Optional<Kursort> loadObjectFromDatabase(int idOfEntityToBeLoaded) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  protected Optional<Kursort> reloadObjectFromDatabase(Kursort objectToBeReloaded) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public void reloadData() {
     List<Kursort> kursorte = kursortService.findAllKursorte();
     tableModel.setData(kursorte);

@@ -15,7 +15,8 @@ import java.awt.event.*;
  * @author Hans Stamm
  */
 public abstract class CodeListController<T extends Code>
-    extends AbstractListController<CodeListModel<T>, DeleteCodeResult, CodeListView> {
+    extends AbstractListController<
+        CodeListModel<T>, CodeListView, CodeTableData<T>, T, DeleteCodeResult> {
 
   protected CodeListController(
       SvmContext svmContext,
@@ -39,6 +40,7 @@ public abstract class CodeListController<T extends Code>
     CreateOrUpdateCodeController createOrUpdateCodeController =
         new CreateOrUpdateCodeController(createOrUpdateCodeModel, getNeuDialogTitle());
     createOrUpdateCodeController.showDialog();
+    reloadTableData();
   }
 
   protected abstract String getNeuDialogTitle();
@@ -46,10 +48,11 @@ public abstract class CodeListController<T extends Code>
   @Override
   protected void showOnBearbeitenDialog() {
     CreateOrUpdateCodeModel createOrUpdateCodeModel =
-        model.createCreateOrUpdateModel(svmContext, view.getSelectedRow());
+        model.createCreateOrUpdateModel(svmContext, view.getIndexOfSelectedRow());
     CreateOrUpdateCodeController createOrUpdateCodeController =
         new CreateOrUpdateCodeController(createOrUpdateCodeModel, getBearbeitenDialogTitle());
     createOrUpdateCodeController.showDialog();
+    reloadTableData();
   }
 
   protected abstract String getBearbeitenDialogTitle();

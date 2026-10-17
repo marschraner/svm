@@ -5,6 +5,7 @@ import java.io.Serial;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
+import javax.swing.RowSorter;
 import javax.swing.table.AbstractTableModel;
 import lombok.Getter;
 
@@ -73,6 +74,18 @@ public class TableModel<T extends AbstractTableData<U>, U> extends AbstractTable
     tableData.setData(data);
   }
 
+  public int insertRow(U row) {
+    return tableData.insertRow(row);
+  }
+
+  public void replaceRowAt(int rowIndex, U row) {
+    tableData.replaceRowAt(rowIndex, row);
+  }
+
+  public void removeRowAt(int rowIndex) {
+    tableData.removeRowAt(rowIndex);
+  }
+
   public String getTotalText() {
     return "Total: " + getRowCount();
   }
@@ -83,5 +96,9 @@ public class TableModel<T extends AbstractTableData<U>, U> extends AbstractTable
 
   public Iterator<U> getRowIterator() {
     return tableData.getIterator();
+  }
+
+  public List<RowSorter.SortKey> getSortKeys() {
+    return tableData.getSortKeys();
   }
 }

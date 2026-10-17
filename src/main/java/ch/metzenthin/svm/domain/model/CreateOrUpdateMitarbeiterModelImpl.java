@@ -17,6 +17,7 @@ import ch.metzenthin.svm.service.MitarbeiterCodeService;
 import ch.metzenthin.svm.service.MitarbeiterMitarbeiterCodeService;
 import ch.metzenthin.svm.service.MitarbeiterService;
 import ch.metzenthin.svm.service.result.SaveMitarbeiterResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import jakarta.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,6 +35,7 @@ public class CreateOrUpdateMitarbeiterModelImpl extends CreateOrUpdatePersonMode
     implements CreateOrUpdateMitarbeiterModel {
 
   private final Mitarbeiter mitarbeiter;
+  private SaveSuccessfulAndEntityIdOptional saveSuccessfulAndMitarbeiterIdOptional;
   private Optional<Adresse> adresseOptional;
   private Set<MitarbeiterCode> mitarbeiterCodes;
   private final MitarbeiterService mitarbeiterService;
@@ -53,6 +55,12 @@ public class CreateOrUpdateMitarbeiterModelImpl extends CreateOrUpdatePersonMode
         false);
     this.mitarbeiterCodeService = mitarbeiterCodeService;
     this.mitarbeiter = person;
+    saveSuccessfulAndMitarbeiterIdOptional =
+        new SaveSuccessfulAndEntityIdOptional(
+            false,
+            (mitarbeiter.getPersonId() != null)
+                ? Optional.of(mitarbeiter.getPersonId())
+                : Optional.empty());
     this.adresseOptional =
         (mitarbeiter.getAdresse() != null)
             ? Optional.of(mitarbeiter.getAdresse())
@@ -66,6 +74,11 @@ public class CreateOrUpdateMitarbeiterModelImpl extends CreateOrUpdatePersonMode
                             mitarbeiterToBeModified.getPersonId())))
             .orElseGet(HashSet::new);
     this.mitarbeiterService = mitarbeiterService;
+  }
+
+  @Override
+  public SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndMitarbeiterIdOptional() {
+    return saveSuccessfulAndMitarbeiterIdOptional;
   }
 
   @Override
@@ -208,8 +221,13 @@ public class CreateOrUpdateMitarbeiterModelImpl extends CreateOrUpdatePersonMode
   private SaveMitarbeiterResult saveMitarbeiter() {
     SaveMitarbeiterResult saveMitarbeiterResult;
     try {
-      saveMitarbeiterResult =
+      SaveResultAndIdOfSavedEntity<SaveMitarbeiterResult> saveResultAndIdOfSavedEntity =
           mitarbeiterService.saveMitarbeiter(mitarbeiter, adresseOptional, mitarbeiterCodes);
+      saveMitarbeiterResult = saveResultAndIdOfSavedEntity.saveResult();
+      saveSuccessfulAndMitarbeiterIdOptional =
+          new SaveSuccessfulAndEntityIdOptional(
+              saveMitarbeiterResult.isSubmitSuccessful(),
+              Optional.of(saveResultAndIdOfSavedEntity.idOfSavedEntity()));
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveMitarbeiterResult = SaveMitarbeiterResult.MITARBEITER_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

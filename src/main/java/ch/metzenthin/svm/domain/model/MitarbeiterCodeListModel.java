@@ -39,6 +39,16 @@ public class MitarbeiterCodeListModel extends CodeListModel<MitarbeiterCode> {
   }
 
   @Override
+  protected Optional<MitarbeiterCode> loadObjectFromDatabase(int idOfEntityToBeLoaded) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  protected Optional<MitarbeiterCode> reloadObjectFromDatabase(MitarbeiterCode objectToBeReloaded) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public String getListItemName() {
     return "Mitarbeiter-Code";
   }

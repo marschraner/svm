@@ -15,7 +15,12 @@ import java.awt.event.ActionListener;
  */
 @SuppressWarnings("DuplicatedCode")
 public class SemesterListController
-    extends AbstractListController<SemesterListModel, DeleteSemesterResult, SemesterListView> {
+    extends AbstractListController<
+        SemesterListModel,
+        SemesterListView,
+        SemesterTableData,
+        SemesterAndNumberOfKurse,
+        DeleteSemesterResult> {
 
   public SemesterListController(
       SvmContext svmContext, SemesterListModel semesterListModel, ActionListener closeListener) {
@@ -38,6 +43,7 @@ public class SemesterListController
     CreateOrUpdateSemesterController createOrUpdateSemesterController =
         new CreateOrUpdateSemesterController(createOrUpdateSemesterModel, "Neues Semester");
     createOrUpdateSemesterController.showDialog();
+    reloadTableData();
   }
 
   @Override
@@ -47,6 +53,7 @@ public class SemesterListController
     CreateOrUpdateSemesterController createOrUpdateSemesterController =
         new CreateOrUpdateSemesterController(createOrUpdateSemesterModel, "Semester bearbeiten");
     createOrUpdateSemesterController.showDialog();
+    reloadTableData();
   }
 
   @Override

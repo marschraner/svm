@@ -30,7 +30,7 @@ import org.springframework.test.context.jdbc.Sql;
     executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class MitarbeiterRepositoryTest {
 
-  private record MitarbeiterIdAndCodeId(int mitarbeiterId, int codeId) {}
+  private record MitarbeiterIdAndCodeId(int mitarbeiterId, Integer codeId) {}
 
   @Autowired private MitarbeiterRepository mitarbeiterRepository;
 
@@ -246,13 +246,7 @@ class MitarbeiterRepositoryTest {
 
     assertEquals(5, mitarbeiterAndMitarbeiterCodeListFound.size());
     List<MitarbeiterIdAndCodeId> mitarbeiterIdAndCodeIdList =
-        mitarbeiterAndMitarbeiterCodeListFound.stream()
-            .map(
-                mitarbeiterAndMitarbeiterCode ->
-                    new MitarbeiterIdAndCodeId(
-                        mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(),
-                        mitarbeiterAndMitarbeiterCode.mitarbeiterCode().getCodeId()))
-            .toList();
+        getMitarbeiterIdAndCodeIds(mitarbeiterAndMitarbeiterCodeListFound);
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 100)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 101)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 102)));
@@ -272,13 +266,7 @@ class MitarbeiterRepositoryTest {
 
     assertEquals(3, mitarbeiterAndMitarbeiterCodeListFound.size());
     List<MitarbeiterIdAndCodeId> mitarbeiterIdAndCodeIdList =
-        mitarbeiterAndMitarbeiterCodeListFound.stream()
-            .map(
-                mitarbeiterAndMitarbeiterCode ->
-                    new MitarbeiterIdAndCodeId(
-                        mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(),
-                        mitarbeiterAndMitarbeiterCode.mitarbeiterCode().getCodeId()))
-            .toList();
+        getMitarbeiterIdAndCodeIds(mitarbeiterAndMitarbeiterCodeListFound);
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 100)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 101)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 102)));
@@ -292,14 +280,7 @@ class MitarbeiterRepositoryTest {
             Optional.empty());
 
     assertEquals(4, mitarbeiterAndMitarbeiterCodeListFound.size());
-    mitarbeiterIdAndCodeIdList =
-        mitarbeiterAndMitarbeiterCodeListFound.stream()
-            .map(
-                mitarbeiterAndMitarbeiterCode ->
-                    new MitarbeiterIdAndCodeId(
-                        mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(),
-                        mitarbeiterAndMitarbeiterCode.mitarbeiterCode().getCodeId()))
-            .toList();
+    mitarbeiterIdAndCodeIdList = getMitarbeiterIdAndCodeIds(mitarbeiterAndMitarbeiterCodeListFound);
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 100)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 101)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 102)));
@@ -318,13 +299,7 @@ class MitarbeiterRepositoryTest {
 
     assertEquals(3, mitarbeiterAndMitarbeiterCodeListFound.size());
     List<MitarbeiterIdAndCodeId> mitarbeiterIdAndCodeIdList =
-        mitarbeiterAndMitarbeiterCodeListFound.stream()
-            .map(
-                mitarbeiterAndMitarbeiterCode ->
-                    new MitarbeiterIdAndCodeId(
-                        mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(),
-                        mitarbeiterAndMitarbeiterCode.mitarbeiterCode().getCodeId()))
-            .toList();
+        getMitarbeiterIdAndCodeIds(mitarbeiterAndMitarbeiterCodeListFound);
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 100)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 101)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 102)));
@@ -342,13 +317,7 @@ class MitarbeiterRepositoryTest {
 
     assertEquals(4, mitarbeiterAndMitarbeiterCodeListFound.size());
     List<MitarbeiterIdAndCodeId> mitarbeiterIdAndCodeIdList =
-        mitarbeiterAndMitarbeiterCodeListFound.stream()
-            .map(
-                mitarbeiterAndMitarbeiterCode ->
-                    new MitarbeiterIdAndCodeId(
-                        mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(),
-                        mitarbeiterAndMitarbeiterCode.mitarbeiterCode().getCodeId()))
-            .toList();
+        getMitarbeiterIdAndCodeIds(mitarbeiterAndMitarbeiterCodeListFound);
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 100)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 101)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 102)));
@@ -367,13 +336,7 @@ class MitarbeiterRepositoryTest {
 
     assertEquals(4, mitarbeiterAndMitarbeiterCodeListFound.size());
     List<MitarbeiterIdAndCodeId> mitarbeiterIdAndCodeIdList =
-        mitarbeiterAndMitarbeiterCodeListFound.stream()
-            .map(
-                mitarbeiterAndMitarbeiterCode ->
-                    new MitarbeiterIdAndCodeId(
-                        mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(),
-                        mitarbeiterAndMitarbeiterCode.mitarbeiterCode().getCodeId()))
-            .toList();
+        getMitarbeiterIdAndCodeIds(mitarbeiterAndMitarbeiterCodeListFound);
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 100)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 101)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 102)));
@@ -393,13 +356,7 @@ class MitarbeiterRepositoryTest {
 
     assertEquals(4, mitarbeiterAndMitarbeiterCodeListFound.size());
     List<MitarbeiterIdAndCodeId> mitarbeiterIdAndCodeIdList =
-        mitarbeiterAndMitarbeiterCodeListFound.stream()
-            .map(
-                mitarbeiterAndMitarbeiterCode ->
-                    new MitarbeiterIdAndCodeId(
-                        mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(),
-                        mitarbeiterAndMitarbeiterCode.mitarbeiterCode().getCodeId()))
-            .toList();
+        getMitarbeiterIdAndCodeIds(mitarbeiterAndMitarbeiterCodeListFound);
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 100)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 101)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 102)));
@@ -419,16 +376,53 @@ class MitarbeiterRepositoryTest {
 
     assertEquals(3, mitarbeiterAndMitarbeiterCodeListFound.size());
     List<MitarbeiterIdAndCodeId> mitarbeiterIdAndCodeIdList =
-        mitarbeiterAndMitarbeiterCodeListFound.stream()
-            .map(
-                mitarbeiterAndMitarbeiterCode ->
-                    new MitarbeiterIdAndCodeId(
-                        mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(),
-                        mitarbeiterAndMitarbeiterCode.mitarbeiterCode().getCodeId()))
-            .toList();
+        getMitarbeiterIdAndCodeIds(mitarbeiterAndMitarbeiterCodeListFound);
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 100)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 101)));
     assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 102)));
+  }
+
+  @Test
+  void testFindByMitarbeiterAndMitarbeiterCodesByMitarbeiterId() {
+    List<MitarbeiterAndMitarbeiterCode> mitarbeiterAndMitarbeiterCodeList;
+
+    mitarbeiterAndMitarbeiterCodeList =
+        mitarbeiterRepository.findByMitarbeiterAndMitarbeiterCodesByMitarbeiterId(20);
+    assertEquals(3, mitarbeiterAndMitarbeiterCodeList.size());
+    List<MitarbeiterIdAndCodeId> mitarbeiterIdAndCodeIdList;
+    mitarbeiterIdAndCodeIdList = getMitarbeiterIdAndCodeIds(mitarbeiterAndMitarbeiterCodeList);
+    assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 100)));
+    assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 101)));
+    assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(20, 102)));
+
+    mitarbeiterAndMitarbeiterCodeList =
+        mitarbeiterRepository.findByMitarbeiterAndMitarbeiterCodesByMitarbeiterId(21);
+    assertEquals(1, mitarbeiterAndMitarbeiterCodeList.size());
+    mitarbeiterIdAndCodeIdList = getMitarbeiterIdAndCodeIds(mitarbeiterAndMitarbeiterCodeList);
+    assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(21, null)));
+
+    mitarbeiterAndMitarbeiterCodeList =
+        mitarbeiterRepository.findByMitarbeiterAndMitarbeiterCodesByMitarbeiterId(22);
+    assertEquals(1, mitarbeiterAndMitarbeiterCodeList.size());
+    mitarbeiterIdAndCodeIdList = getMitarbeiterIdAndCodeIds(mitarbeiterAndMitarbeiterCodeList);
+    assertTrue(mitarbeiterIdAndCodeIdList.contains(new MitarbeiterIdAndCodeId(22, 101)));
+
+    mitarbeiterAndMitarbeiterCodeList =
+        mitarbeiterRepository.findByMitarbeiterAndMitarbeiterCodesByMitarbeiterId(99);
+    assertTrue(mitarbeiterAndMitarbeiterCodeList.isEmpty());
+  }
+
+  private static List<MitarbeiterIdAndCodeId> getMitarbeiterIdAndCodeIds(
+      List<MitarbeiterAndMitarbeiterCode> mitarbeiterAndMitarbeiterCodeListFound) {
+    return mitarbeiterAndMitarbeiterCodeListFound.stream()
+        .map(
+            mitarbeiterAndMitarbeiterCode ->
+                new MitarbeiterIdAndCodeId(
+                    mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(),
+                    (mitarbeiterAndMitarbeiterCode.mitarbeiterCode() != null)
+                        ? mitarbeiterAndMitarbeiterCode.mitarbeiterCode().getCodeId()
+                        : null))
+        .toList();
   }
 
   private static Calendar createCalendar(String dateAsString) {

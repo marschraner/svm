@@ -10,9 +10,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.RowSorter.SortKey;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import lombok.Getter;
@@ -49,12 +52,20 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
 
   private static void configTable(JTable table, TableModel<?, ?> tableModel) {
     table.setModel(tableModel);
+
     setColumnCellRenderers(table, tableModel);
+
     double[] columnWithsPercentages = tableModel.getColumnWidthsPercentages();
     if (columnWithsPercentages != null && columnWithsPercentages.length > 0) {
       setJTableColumnWidthAsPercentages(table, columnWithsPercentages);
     } else if (tableModel.isTableColumnWidthAccordingToCellContentAndHeader()) {
       setJTableColumnWidthAccordingToCellContentAndHeader(table);
+    }
+
+    List<SortKey> sortKeys = tableModel.getSortKeys();
+    if (!sortKeys.isEmpty()) {
+      RowSorter<?> rowSorter = table.getRowSorter();
+      rowSorter.setSortKeys(sortKeys);
     }
   }
 
@@ -91,7 +102,7 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
     table.addMouseListener(mouseListener);
   }
 
-  public int getSelectedRow() {
+  public int getIndexOfSelectedRow() {
     return table.getSelectedRow();
   }
 
@@ -105,6 +116,21 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
 
   public void fireTableDataChanged() {
     tableModel.fireTableDataChanged();
+    table.addNotify();
+  }
+
+  public void fireTableRowInserted(int indexOfInsertedRow) {
+    tableModel.fireTableRowsInserted(indexOfInsertedRow, indexOfInsertedRow);
+    table.addNotify();
+  }
+
+  public void fireTableRowUpdated(int indexOfUpdatedRow) {
+    tableModel.fireTableRowsUpdated(indexOfUpdatedRow, indexOfUpdatedRow);
+    table.addNotify();
+  }
+
+  public void fireTableRowDeleted(int indexOfDeletedRow) {
+    tableModel.fireTableRowsDeleted(indexOfDeletedRow, indexOfDeletedRow);
     table.addNotify();
   }
 

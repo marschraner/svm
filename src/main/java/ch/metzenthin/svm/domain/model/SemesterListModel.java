@@ -59,6 +59,23 @@ public class SemesterListModel
   }
 
   @Override
+  protected Optional<SemesterAndNumberOfKurse> loadObjectFromDatabase(int idOfEntityToBeLoaded) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  protected Optional<SemesterAndNumberOfKurse> reloadObjectFromDatabase(
+      SemesterAndNumberOfKurse objectToBeReloaded) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void reloadData() {
+    List<SemesterAndNumberOfKurse> semesterList = semesterService.findAllSemesterAndNumberOfKurse();
+    tableModel.setData(semesterList);
+  }
+
+  @Override
   public DeleteSemesterResult eintragLoeschen(int indexSemesterToBeDeleted) {
     Semester semesterToBeDeleted = getSelectedRow(indexSemesterToBeDeleted).semester();
     DeleteSemesterResult deleteSemesterResult;
@@ -69,12 +86,6 @@ public class SemesterListModel
       deleteSemesterResult = DeleteSemesterResult.SEMESTER_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }
     return deleteSemesterResult;
-  }
-
-  @Override
-  public void reloadData() {
-    List<SemesterAndNumberOfKurse> semesterList = semesterService.findAllSemesterAndNumberOfKurse();
-    tableModel.setData(semesterList);
   }
 
   @Override

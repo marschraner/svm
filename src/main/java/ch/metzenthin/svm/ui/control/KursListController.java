@@ -21,7 +21,12 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class KursListController
-    extends AbstractListController<KursListModel, DeleteKursResult, KursListView> {
+    extends AbstractListController<
+        KursListModel,
+        KursListView,
+        KursTableData,
+        KursAndLehrkraefteAndNumberOfKursanmeldungen,
+        DeleteKursResult> {
 
   public KursListController(
       SvmContext svmContext, KursListModel kursListModel, ActionListener closeListener) {
@@ -60,6 +65,7 @@ public class KursListController
     CreateOrUpdateKursController createOrUpdateKursController =
         new CreateOrUpdateKursController(createOrUpdateKursModel, "Neuer Kurs");
     createOrUpdateKursController.showDialog();
+    reloadTableData();
   }
 
   @Override
@@ -69,6 +75,7 @@ public class KursListController
     CreateOrUpdateKursController createOrUpdateKursController =
         new CreateOrUpdateKursController(createOrUpdateKursModel, "Kurs bearbeiten");
     createOrUpdateKursController.showDialog();
+    reloadTableData();
   }
 
   @Override

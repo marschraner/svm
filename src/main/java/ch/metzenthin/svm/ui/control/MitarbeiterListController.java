@@ -8,6 +8,7 @@ import ch.metzenthin.svm.domain.model.ListenExportModelImpl;
 import ch.metzenthin.svm.domain.model.MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert;
 import ch.metzenthin.svm.domain.model.MitarbeiterListModel;
 import ch.metzenthin.svm.domain.model.MitarbeiterTableData;
+import ch.metzenthin.svm.domain.model.SaveSuccessfulAndEntityIdOptional;
 import ch.metzenthin.svm.service.result.DeleteMitarbeiterResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
@@ -21,7 +22,11 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("DuplicatedCode")
 public class MitarbeiterListController
     extends AbstractListController<
-        MitarbeiterListModel, DeleteMitarbeiterResult, MitarbeiterListView> {
+        MitarbeiterListModel,
+        MitarbeiterListView,
+        MitarbeiterTableData,
+        MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert,
+        DeleteMitarbeiterResult> {
 
   private static final String EMAIL = "E-Mail";
   private static final String GRUPPEN_EMAIL = "Gruppen-E-Mail";
@@ -78,6 +83,7 @@ public class MitarbeiterListController
   }
 
   @Override
+  @SuppressWarnings("java:S3655")
   protected void showOnNeuDialog() {
     CreateOrUpdateMitarbeiterModel createOrUpdateMitarbeiterModel =
         model.createCreateOrUpdateModel(svmContext);
@@ -85,6 +91,13 @@ public class MitarbeiterListController
         new CreateOrUpdateMitarbeiterController(
             svmContext, createOrUpdateMitarbeiterModel, "Neuer Mitarbeiter");
     createOrUpdateMitarbeiterController.showDialog();
+    SaveSuccessfulAndEntityIdOptional saveOrUpdateSuccessfulAndMitarbeiterIdOptional =
+        createOrUpdateMitarbeiterModel.getSaveSuccessfulAndMitarbeiterIdOptional();
+    if (saveOrUpdateSuccessfulAndMitarbeiterIdOptional.saveSuccessful()
+        && saveOrUpdateSuccessfulAndMitarbeiterIdOptional.entityIdOptional().isPresent()) {
+      insertCreatedObjectToList(
+          saveOrUpdateSuccessfulAndMitarbeiterIdOptional.entityIdOptional().get());
+    }
   }
 
   @Override
@@ -95,6 +108,12 @@ public class MitarbeiterListController
         new CreateOrUpdateMitarbeiterController(
             svmContext, createOrUpdateMitarbeiterModel, "Mitarbeiter bearbeiten");
     createOrUpdateMitarbeiterController.showDialog();
+    SaveSuccessfulAndEntityIdOptional saveOrUpdateSuccessfulAndMitarbeiterIdOptional =
+        createOrUpdateMitarbeiterModel.getSaveSuccessfulAndMitarbeiterIdOptional();
+    if (saveOrUpdateSuccessfulAndMitarbeiterIdOptional.saveSuccessful()
+        && saveOrUpdateSuccessfulAndMitarbeiterIdOptional.entityIdOptional().isPresent()) {
+      reloadSelectedRow();
+    }
   }
 
   @Override
@@ -110,13 +129,13 @@ public class MitarbeiterListController
         case MITARBEITER_VON_KURS_REFERENZIERT -> showErrorMessageDialog(deleteMitarbeiterResult);
         case MITARBEITER_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
           showErrorMessageDialog(deleteMitarbeiterResult);
-          reloadTableData();
+          reloadSelectedRow();
         }
         case LOESCHEN_ERFOLGREICH -> {
           view.showInfoMessageDialog(
               "Der Mitarbeiter wurde erfolgreich aus der Datenbank gelöscht.",
               "Löschen erfolgreich");
-          reloadTableData();
+          removeSelectedRow();
         }
       }
     }

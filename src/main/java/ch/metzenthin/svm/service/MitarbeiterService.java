@@ -9,6 +9,7 @@ import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.service.result.DeleteMitarbeiterResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
 import ch.metzenthin.svm.service.result.SaveMitarbeiterResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
@@ -23,6 +24,8 @@ public interface MitarbeiterService {
 
   List<Mitarbeiter> findAktiveLehrkraefte();
 
+  Optional<MitarbeiterAndMitarbeiterCodes> findMitarbeiterAndMitarbeiterCodes(int mitarbeiterId);
+
   List<MitarbeiterAndMitarbeiterCodes> findMitarbeiterAndMitarbeiterCodes(
       Optional<String> nachnameOptional,
       Optional<String> vornameOptional,
@@ -30,7 +33,7 @@ public interface MitarbeiterService {
       Optional<Boolean> aktivOptional,
       Optional<MitarbeiterCode> mitarbeiterCodeOptional);
 
-  SaveMitarbeiterResult saveMitarbeiter(
+  SaveResultAndIdOfSavedEntity<SaveMitarbeiterResult> saveMitarbeiter(
       Mitarbeiter mitarbeiter,
       Optional<Adresse> adresseOptional,
       Set<MitarbeiterCode> mitabeiterCodes);

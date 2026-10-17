@@ -3,9 +3,13 @@ package ch.metzenthin.svm.domain.model;
 import static ch.metzenthin.svm.common.utils.SimpleValidator.checkNotEmpty;
 
 import ch.metzenthin.svm.common.datatypes.Field;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.RowSorter;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.SortOrder;
 
 /**
  * @author Martin Schraner
@@ -212,5 +216,14 @@ public class MitarbeiterTableData
       case SELEKTIERT -> Boolean.class;
       default -> String.class;
     };
+  }
+
+  @Override
+  public List<SortKey> getSortKeys() {
+    List<Field> columnsList = Arrays.asList(COLUMNS);
+    return List.of(
+        new RowSorter.SortKey(columnsList.indexOf(Field.NACHNAME), SortOrder.ASCENDING),
+        new RowSorter.SortKey(columnsList.indexOf(Field.VORNAME), SortOrder.ASCENDING),
+        new RowSorter.SortKey(columnsList.indexOf(Field.GEBURTSDATUM), SortOrder.ASCENDING));
   }
 }

@@ -10,6 +10,8 @@ import java.util.Set;
  */
 public interface CreateOrUpdateMitarbeiterModel extends CreateOrUpdatePersonModel {
 
+  SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndMitarbeiterIdOptional();
+
   MitarbeiterFieldsAndAdresseFields getMitarbeiterFieldsAndAdresseFields();
 
   String getMitarbeiterCodesAsStr();

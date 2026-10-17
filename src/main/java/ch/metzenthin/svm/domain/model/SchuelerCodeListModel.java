@@ -38,6 +38,16 @@ public class SchuelerCodeListModel extends CodeListModel<SchuelerCode> {
   }
 
   @Override
+  protected Optional<SchuelerCode> loadObjectFromDatabase(int idOfEntityToBeLoaded) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  protected Optional<SchuelerCode> reloadObjectFromDatabase(SchuelerCode objectToBeReloaded) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public String getListItemName() {
     return "Schüler-Code";
   }

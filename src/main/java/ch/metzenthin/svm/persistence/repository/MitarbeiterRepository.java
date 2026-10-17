@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.persistence.repository;
 
+import ch.metzenthin.svm.domain.model.MitarbeiterAndMitarbeiterCode;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.repository.custom.MitarbeiterRepositoryCustom;
 import java.util.Calendar;
@@ -47,4 +48,13 @@ public interface MitarbeiterRepository
           + "WHERE m.lehrkraft = TRUE AND m.aktiv = TRUE "
           + "ORDER BY m.nachname ASC, m.vorname ASC")
   List<Mitarbeiter> findByLehrkraftTrueAndAktivTrueOrderByNachnameVorname();
+
+  @Query(
+      "SELECT new ch.metzenthin.svm.domain.model.MitarbeiterAndMitarbeiterCode(m, mc) "
+          + "FROM Mitarbeiter m "
+          + "LEFT JOIN MitarbeiterMitarbeiterCode mmc ON mmc.mitarbeiter = m "
+          + "LEFT JOIN MitarbeiterCode mc ON mc = mmc.mitarbeiterCode "
+          + "WHERE m.personId = :personId")
+  List<MitarbeiterAndMitarbeiterCode> findByMitarbeiterAndMitarbeiterCodesByMitarbeiterId(
+      @Param("personId") int personId);
 }

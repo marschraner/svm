@@ -3,7 +3,11 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
+import javax.swing.RowSorter;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.SortOrder;
 
 /**
  * @author Martin Schraner
@@ -54,5 +58,12 @@ public class LektionsgebuehrenTableData extends AbstractTableData<Lektionsgebueh
           BigDecimal.class;
       default -> String.class;
     };
+  }
+
+  @Override
+  public List<SortKey> getSortKeys() {
+    List<Field> columnsList = Arrays.asList(COLUMNS);
+    return List.of(
+        new RowSorter.SortKey(columnsList.indexOf(Field.LEKTIONSLAENGE), SortOrder.ASCENDING));
   }
 }

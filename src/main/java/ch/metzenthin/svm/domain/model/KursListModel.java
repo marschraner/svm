@@ -64,8 +64,29 @@ public class KursListModel
         .createCreateOrUpdateKursModel(Optional.of(kursToBeUpdated), semester);
   }
 
+  @Override
+  protected Optional<KursAndLehrkraefteAndNumberOfKursanmeldungen> loadObjectFromDatabase(
+      int idOfEntityToBeLoaded) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  protected Optional<KursAndLehrkraefteAndNumberOfKursanmeldungen> reloadObjectFromDatabase(
+      KursAndLehrkraefteAndNumberOfKursanmeldungen objectToBeReloaded) {
+    throw new UnsupportedOperationException();
+  }
+
   public boolean isSemesterErstesSemester() {
     return semester.getSemesterbezeichnung() == Semesterbezeichnung.ERSTES_SEMESTER;
+  }
+
+  @Override
+  public void reloadData() {
+    List<KursAndLehrkraefteAndNumberOfKursanmeldungen>
+        kursAndLehrkraefteAndNumberOfKursanmeldungenList =
+            kursService.findAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester(
+                semester.getSemesterId());
+    tableModel.setData(kursAndLehrkraefteAndNumberOfKursanmeldungenList);
   }
 
   @Override
@@ -78,15 +99,6 @@ public class KursListModel
       deleteKursResult = DeleteKursResult.KURS_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }
     return deleteKursResult;
-  }
-
-  @Override
-  public void reloadData() {
-    List<KursAndLehrkraefteAndNumberOfKursanmeldungen>
-        kursAndLehrkraefteAndNumberOfKursanmeldungenList =
-            kursService.findAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester(
-                semester.getSemesterId());
-    tableModel.setData(kursAndLehrkraefteAndNumberOfKursanmeldungenList);
   }
 
   @Override

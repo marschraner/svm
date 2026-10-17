@@ -28,6 +28,7 @@ import ch.metzenthin.svm.service.export.word.WordTableLayout;
 import ch.metzenthin.svm.service.result.DeleteMitarbeiterResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
 import ch.metzenthin.svm.service.result.SaveMitarbeiterResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,6 +100,79 @@ public class MitarbeiterServiceImpl implements MitarbeiterService {
   @Transactional(readOnly = true)
   public List<Mitarbeiter> findAktiveLehrkraefte() {
     return mitarbeiterRepository.findByLehrkraftTrueAndAktivTrueOrderByNachnameVorname();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Optional<MitarbeiterAndMitarbeiterCodes> findMitarbeiterAndMitarbeiterCodes(
+      int mitarbeiterId) {
+
+    List<MitarbeiterAndMitarbeiterCode> mitarbeiterAndMitarbeiterCodeList =
+        mitarbeiterRepository.findByMitarbeiterAndMitarbeiterCodesByMitarbeiterId(mitarbeiterId);
+
+    if (mitarbeiterAndMitarbeiterCodeList.isEmpty()) {
+      return Optional.empty();
+    }
+
+    List<MitarbeiterAndMitarbeiterCodes> mitarbeiterAndMitarbeiterCodesList =
+        convertToMitarbeiterAndMitarbeiterCodesList(mitarbeiterAndMitarbeiterCodeList);
+
+    if (mitarbeiterAndMitarbeiterCodesList.size() > 1) {
+      throw new IllegalStateException();
+    }
+
+    return Optional.of(mitarbeiterAndMitarbeiterCodesList.get(0));
+  }
+
+  private static List<MitarbeiterAndMitarbeiterCodes> convertToMitarbeiterAndMitarbeiterCodesList(
+      List<MitarbeiterAndMitarbeiterCode> mitarbeiterAndMitarbeiterCodeList) {
+
+    Map<Integer, Mitarbeiter> mitarbeiterIdAndMitarbeiterMap = new HashMap<>();
+    for (MitarbeiterAndMitarbeiterCode mitarbeiterAndMitarbeiterCode :
+        mitarbeiterAndMitarbeiterCodeList) {
+      if (!mitarbeiterIdAndMitarbeiterMap.containsKey(
+          mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId())) {
+        mitarbeiterIdAndMitarbeiterMap.put(
+            mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(),
+            mitarbeiterAndMitarbeiterCode.mitarbeiter());
+      }
+    }
+
+    Map<Integer, List<MitarbeiterCode>> mitarbeiterIdAndMitarbeiterCodesMap = new HashMap<>();
+    for (MitarbeiterAndMitarbeiterCode mitarbeiterAndMitarbeiterCode :
+        mitarbeiterAndMitarbeiterCodeList) {
+      if (mitarbeiterIdAndMitarbeiterCodesMap.containsKey(
+          mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId())) {
+        List<MitarbeiterCode> mitarbeiterCodes =
+            mitarbeiterIdAndMitarbeiterCodesMap.get(
+                mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId());
+        if (mitarbeiterAndMitarbeiterCode.mitarbeiterCode() != null) {
+          mitarbeiterCodes.add(mitarbeiterAndMitarbeiterCode.mitarbeiterCode());
+        }
+      } else {
+        List<MitarbeiterCode> mitarbeiterCodes = new ArrayList<>();
+        if (mitarbeiterAndMitarbeiterCode.mitarbeiterCode() != null) {
+          mitarbeiterCodes.add(mitarbeiterAndMitarbeiterCode.mitarbeiterCode());
+        }
+        mitarbeiterIdAndMitarbeiterCodesMap.put(
+            mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(), mitarbeiterCodes);
+      }
+    }
+
+    // Sortierung MitarbeiterCodes
+    for (List<MitarbeiterCode> mitarbeiterCodes : mitarbeiterIdAndMitarbeiterCodesMap.values()) {
+      Collections.sort(mitarbeiterCodes);
+    }
+
+    return mitarbeiterIdAndMitarbeiterCodesMap.entrySet().stream()
+        .map(
+            mitarbeiterIdAndMitarbeiterCodesMapEntry ->
+                new MitarbeiterAndMitarbeiterCodes(
+                    mitarbeiterIdAndMitarbeiterMap.get(
+                        mitarbeiterIdAndMitarbeiterCodesMapEntry.getKey()),
+                    mitarbeiterIdAndMitarbeiterCodesMapEntry.getValue()))
+        .sorted() // Sortierung Mitarbeiter
+        .toList();
   }
 
   @Override
@@ -184,60 +258,9 @@ public class MitarbeiterServiceImpl implements MitarbeiterService {
         nachnameOptional, vornameOptional, lehrkraftOptional, aktivOptional, Optional.empty());
   }
 
-  private static List<MitarbeiterAndMitarbeiterCodes> convertToMitarbeiterAndMitarbeiterCodesList(
-      List<MitarbeiterAndMitarbeiterCode> mitarbeiterAndMitarbeiterCodeList) {
-
-    Map<Integer, Mitarbeiter> mitarbeiterIdAndMitarbeiterMap = new HashMap<>();
-    for (MitarbeiterAndMitarbeiterCode mitarbeiterAndMitarbeiterCode :
-        mitarbeiterAndMitarbeiterCodeList) {
-      if (!mitarbeiterIdAndMitarbeiterMap.containsKey(
-          mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId())) {
-        mitarbeiterIdAndMitarbeiterMap.put(
-            mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(),
-            mitarbeiterAndMitarbeiterCode.mitarbeiter());
-      }
-    }
-
-    Map<Integer, List<MitarbeiterCode>> mitarbeiterIdAndMitarbeiterCodesMap = new HashMap<>();
-    for (MitarbeiterAndMitarbeiterCode mitarbeiterAndMitarbeiterCode :
-        mitarbeiterAndMitarbeiterCodeList) {
-      if (mitarbeiterIdAndMitarbeiterCodesMap.containsKey(
-          mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId())) {
-        List<MitarbeiterCode> mitarbeiterCodes =
-            mitarbeiterIdAndMitarbeiterCodesMap.get(
-                mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId());
-        if (mitarbeiterAndMitarbeiterCode.mitarbeiterCode() != null) {
-          mitarbeiterCodes.add(mitarbeiterAndMitarbeiterCode.mitarbeiterCode());
-        }
-      } else {
-        List<MitarbeiterCode> mitarbeiterCodes = new ArrayList<>();
-        if (mitarbeiterAndMitarbeiterCode.mitarbeiterCode() != null) {
-          mitarbeiterCodes.add(mitarbeiterAndMitarbeiterCode.mitarbeiterCode());
-        }
-        mitarbeiterIdAndMitarbeiterCodesMap.put(
-            mitarbeiterAndMitarbeiterCode.mitarbeiter().getPersonId(), mitarbeiterCodes);
-      }
-    }
-
-    // Sortierung MitarbeiterCodes
-    for (List<MitarbeiterCode> mitarbeiterCodes : mitarbeiterIdAndMitarbeiterCodesMap.values()) {
-      Collections.sort(mitarbeiterCodes);
-    }
-
-    return mitarbeiterIdAndMitarbeiterCodesMap.entrySet().stream()
-        .map(
-            mitarbeiterIdAndMitarbeiterCodesMapEntry ->
-                new MitarbeiterAndMitarbeiterCodes(
-                    mitarbeiterIdAndMitarbeiterMap.get(
-                        mitarbeiterIdAndMitarbeiterCodesMapEntry.getKey()),
-                    mitarbeiterIdAndMitarbeiterCodesMapEntry.getValue()))
-        .sorted() // Sortierung Mitarbeiter
-        .toList();
-  }
-
   @Override
   @Transactional
-  public SaveMitarbeiterResult saveMitarbeiter(
+  public SaveResultAndIdOfSavedEntity<SaveMitarbeiterResult> saveMitarbeiter(
       Mitarbeiter mitarbeiter,
       Optional<Adresse> adresseOptional,
       Set<MitarbeiterCode> mitarbeiterCodes) {
@@ -252,7 +275,8 @@ public class MitarbeiterServiceImpl implements MitarbeiterService {
             : mitarbeiterRepository.countByNachnameAndVornameAndGeburtsdatum(
                 mitarbeiter.getNachname(), mitarbeiter.getVorname(), mitarbeiter.getGeburtsdatum());
     if (numberOfAlreadyExistingMitarbeiter > 0) {
-      return SaveMitarbeiterResult.MITARBEITER_BEREITS_ERFASST;
+      return new SaveResultAndIdOfSavedEntity<>(
+          SaveMitarbeiterResult.MITARBEITER_BEREITS_ERFASST, -1);
     }
 
     Adresse adresse = adresseOptional.map(adresseRepository::save).orElse(null);
@@ -288,7 +312,8 @@ public class MitarbeiterServiceImpl implements MitarbeiterService {
       }
     }
 
-    return SaveMitarbeiterResult.SPEICHERN_ERFOLGREICH;
+    return new SaveResultAndIdOfSavedEntity<>(
+        SaveMitarbeiterResult.SPEICHERN_ERFOLGREICH, mitarbeiter.getPersonId());
   }
 
   @Override

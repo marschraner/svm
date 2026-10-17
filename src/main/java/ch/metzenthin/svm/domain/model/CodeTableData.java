@@ -2,7 +2,11 @@ package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.persistence.entities.Code;
+import java.util.Arrays;
 import java.util.List;
+import javax.swing.RowSorter;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.SortOrder;
 import lombok.Setter;
 
 /**
@@ -42,5 +46,11 @@ public class CodeTableData<T extends Code> extends AbstractTableData<T> {
   @Override
   public Class<?> getColumnClass(int columnIndex) {
     return String.class;
+  }
+
+  @Override
+  public List<SortKey> getSortKeys() {
+    List<Field> columnsList = Arrays.asList(COLUMNS);
+    return List.of(new RowSorter.SortKey(columnsList.indexOf(Field.KUERZEL), SortOrder.ASCENDING));
   }
 }

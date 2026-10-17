@@ -1,9 +1,11 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Field;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
+import javax.swing.RowSorter.SortKey;
 import lombok.Setter;
 
 /**
@@ -17,7 +19,7 @@ public abstract class AbstractTableData<T> {
 
   protected AbstractTableData(Field[] columns, List<T> data) {
     this.columns = columns;
-    this.data = data;
+    this.data = new ArrayList<>(data); // Damit die Liste modifiziert werden kann
   }
 
   public int getColumnCount() {
@@ -40,6 +42,20 @@ public abstract class AbstractTableData<T> {
     return data.get(rowIndex);
   }
 
+  public int insertRow(T row) {
+    int indexOfInsertedRow = data.size();
+    data.add(row);
+    return indexOfInsertedRow;
+  }
+
+  public void replaceRowAt(int rowIndex, T row) {
+    data.set(rowIndex, row);
+  }
+
+  public void removeRowAt(int rowIndex) {
+    data.remove(rowIndex);
+  }
+
   public void forEachRow(Consumer<T> action) {
     data.forEach(action);
   }
@@ -47,4 +63,6 @@ public abstract class AbstractTableData<T> {
   public Iterator<T> getIterator() {
     return data.iterator();
   }
+
+  public abstract List<SortKey> getSortKeys();
 }

@@ -42,6 +42,17 @@ public class SemesterrechnungCodeListModel extends CodeListModel<Semesterrechnun
   }
 
   @Override
+  protected Optional<SemesterrechnungCode> loadObjectFromDatabase(int idOfEntityToBeLoaded) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  protected Optional<SemesterrechnungCode> reloadObjectFromDatabase(
+      SemesterrechnungCode objectToBeReloaded) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public String getListItemName() {
     return "Semesterrechnung-Code";
   }

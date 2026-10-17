@@ -15,7 +15,11 @@ import java.awt.event.ActionListener;
  */
 public class LektionsgebuehrenListController
     extends AbstractListController<
-        LektionsgebuehrenListModel, DeleteLektionsgebuehrenResult, LektionsgebuehrenListView> {
+        LektionsgebuehrenListModel,
+        LektionsgebuehrenListView,
+        LektionsgebuehrenTableData,
+        Lektionsgebuehren,
+        DeleteLektionsgebuehrenResult> {
 
   public LektionsgebuehrenListController(
       SvmContext svmContext,
@@ -41,15 +45,17 @@ public class LektionsgebuehrenListController
         new CreateOrUpdateLektionsgebuehrenController(
             createOrUpdateLektionsgebuehrenModel, "Neue Lektionsgebühren");
     createOrUpdateLektionsgebuehrenController.showDialog();
+    reloadTableData();
   }
 
   @Override
   protected void showOnBearbeitenDialog() {
     CreateOrUpdateLektionsgebuehrenModel createOrUpdateLektionsgebuehrenModel =
-        model.createCreateOrUpdateModel(svmContext, view.getSelectedRow());
+        model.createCreateOrUpdateModel(svmContext, view.getIndexOfSelectedRow());
     CreateOrUpdateLektionsgebuehrenController createOrUpdateLektionsgebuehrenController =
         new CreateOrUpdateLektionsgebuehrenController(
             createOrUpdateLektionsgebuehrenModel, "Lektionsgebühren bearbeiten");
     createOrUpdateLektionsgebuehrenController.showDialog();
+    reloadTableData();
   }
 }

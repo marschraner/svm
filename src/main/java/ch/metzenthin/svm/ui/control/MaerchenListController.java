@@ -14,7 +14,12 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class MaerchenListController
-    extends AbstractListController<MaerchenListModel, DeleteMaerchenResult, MaerchenListView> {
+    extends AbstractListController<
+        MaerchenListModel,
+        MaerchenListView,
+        MaerchenTableData,
+        MaerchenAndNumberOfMaercheneinteilungen,
+        DeleteMaerchenResult> {
 
   public MaerchenListController(
       SvmContext svmContext, MaerchenListModel maerchenListModel, ActionListener closeListener) {
@@ -37,14 +42,16 @@ public class MaerchenListController
     CreateOrUpdateMaerchenController createOrUpdateMaerchenController =
         new CreateOrUpdateMaerchenController(createOrUpdateMaerchenModel, "Neues Märchen");
     createOrUpdateMaerchenController.showDialog();
+    reloadTableData();
   }
 
   @Override
   protected void showOnBearbeitenDialog() {
     CreateOrUpdateMaerchenModel createOrUpdateMaerchenModel =
-        model.createCreateOrUpdateModel(svmContext, view.getSelectedRow());
+        model.createCreateOrUpdateModel(svmContext, view.getIndexOfSelectedRow());
     CreateOrUpdateMaerchenController createOrUpdateMaerchenController =
         new CreateOrUpdateMaerchenController(createOrUpdateMaerchenModel, "Märchen bearbeiten");
     createOrUpdateMaerchenController.showDialog();
+    reloadTableData();
   }
 }

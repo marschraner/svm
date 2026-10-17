@@ -1,7 +1,11 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.datatypes.Field;
+import java.util.Arrays;
 import java.util.List;
+import javax.swing.RowSorter;
+import javax.swing.RowSorter.SortKey;
+import javax.swing.SortOrder;
 
 /**
  * @author Martin Schraner
@@ -41,5 +45,12 @@ public class MaerchenTableData extends AbstractTableData<MaerchenAndNumberOfMaer
       case ANZAHL_VORSTELLUNGEN, ANZAHL_KINDER -> Integer.class;
       default -> String.class;
     };
+  }
+
+  @Override
+  public List<SortKey> getSortKeys() {
+    List<Field> columnsList = Arrays.asList(COLUMNS);
+    return List.of(
+        new RowSorter.SortKey(columnsList.indexOf(Field.SCHULJAHR), SortOrder.ASCENDING));
   }
 }

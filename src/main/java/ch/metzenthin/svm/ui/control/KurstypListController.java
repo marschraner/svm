@@ -14,7 +14,8 @@ import java.awt.event.ActionListener;
  * @author Martin Schraner
  */
 public class KurstypListController
-    extends AbstractListController<KurstypListModel, DeleteKurstypResult, KurstypListView> {
+    extends AbstractListController<
+        KurstypListModel, KurstypListView, KurstypTableData, Kurstyp, DeleteKurstypResult> {
 
   public KurstypListController(
       SvmContext svmContext, KurstypListModel kurstypListModel, ActionListener closeListener) {
@@ -34,14 +35,16 @@ public class KurstypListController
     CreateOrUpdateKurstypController createOrUpdateKurstypController =
         new CreateOrUpdateKurstypController(createOrUpdateKurstypModel, "Neuer Kurstyp");
     createOrUpdateKurstypController.showDialog();
+    reloadTableData();
   }
 
   @Override
   protected void showOnBearbeitenDialog() {
     CreateOrUpdateKurstypModel createOrUpdateKurstypModel =
-        model.createCreateOrUpdateModel(svmContext, view.getSelectedRow());
+        model.createCreateOrUpdateModel(svmContext, view.getIndexOfSelectedRow());
     CreateOrUpdateKurstypController createOrUpdateKurstypController =
         new CreateOrUpdateKurstypController(createOrUpdateKurstypModel, "Kurstyp bearbeiten");
     createOrUpdateKurstypController.showDialog();
+    reloadTableData();
   }
 }

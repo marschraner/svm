@@ -151,6 +151,33 @@ public class MitarbeiterListModel
     tableModel.setData(mitarbeiterAndMitarbeiterCodesAsStringAndSelektiertList);
   }
 
+  @Override
+  protected Optional<MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert> loadObjectFromDatabase(
+      int idOfEntityToBeLoaded) {
+    Optional<MitarbeiterAndMitarbeiterCodes> mitarbeiterAndMitarbeiterCodesOptional =
+        mitarbeiterService.findMitarbeiterAndMitarbeiterCodes(idOfEntityToBeLoaded);
+    return mitarbeiterAndMitarbeiterCodesOptional.map(
+        mitarbeiterAndMitarbeiterCodes ->
+            new MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert(
+                mitarbeiterAndMitarbeiterCodes.mitarbeiter(),
+                getMitarbeiterCodesAsString(mitarbeiterAndMitarbeiterCodes),
+                true));
+  }
+
+  @Override
+  protected Optional<MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert> reloadObjectFromDatabase(
+      MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert objectToBeReloaded) {
+    Optional<MitarbeiterAndMitarbeiterCodes> mitarbeiterAndMitarbeiterCodesOptional =
+        mitarbeiterService.findMitarbeiterAndMitarbeiterCodes(
+            objectToBeReloaded.getMitarbeiter().getPersonId());
+    return mitarbeiterAndMitarbeiterCodesOptional.map(
+        mitarbeiterAndMitarbeiterCodes ->
+            new MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert(
+                mitarbeiterAndMitarbeiterCodes.mitarbeiter(),
+                getMitarbeiterCodesAsString(mitarbeiterAndMitarbeiterCodes),
+                objectToBeReloaded.isSelektiert()));
+  }
+
   public ExportListResult exportList(Listentyp listentyp, String listenTitel, File outputFile) {
     return mitarbeiterService.exportList(
         listentyp, listenTitel, outputFile, getTableModel().getRowIteratorSelektierteMitarbeiter());
