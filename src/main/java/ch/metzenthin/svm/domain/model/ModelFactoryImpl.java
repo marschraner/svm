@@ -12,6 +12,7 @@ import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
 import ch.metzenthin.svm.service.ElternmithilfeCodeService;
+import ch.metzenthin.svm.service.EmailService;
 import ch.metzenthin.svm.service.KursLehrkraftService;
 import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.KursortService;
@@ -49,6 +50,7 @@ public class ModelFactoryImpl implements ModelFactory {
   private final MitarbeiterService mitarbeiterService;
   private final KursLehrkraftService kursLehrkraftService;
   private final MitarbeiterMitarbeiterCodeService mitarbeiterMitarbeiterCodeService;
+  private final EmailService emailService;
 
   public ModelFactoryImpl(
       KursService kursService,
@@ -64,7 +66,8 @@ public class ModelFactoryImpl implements ModelFactory {
       SemesterrechnungService semesterrechnungService,
       MitarbeiterService mitarbeiterService,
       KursLehrkraftService kursLehrkraftService,
-      MitarbeiterMitarbeiterCodeService mitarbeiterMitarbeiterCodeService) {
+      MitarbeiterMitarbeiterCodeService mitarbeiterMitarbeiterCodeService,
+      EmailService emailService) {
     this.kursService = kursService;
     this.kursortService = kursortService;
     this.kurstypService = kurstypService;
@@ -79,6 +82,7 @@ public class ModelFactoryImpl implements ModelFactory {
     this.mitarbeiterService = mitarbeiterService;
     this.kursLehrkraftService = kursLehrkraftService;
     this.mitarbeiterMitarbeiterCodeService = mitarbeiterMitarbeiterCodeService;
+    this.emailService = emailService;
   }
 
   @Override
@@ -352,7 +356,7 @@ public class ModelFactoryImpl implements ModelFactory {
 
   @Override
   public SearchMitarbeiterModel createSearchMitarbeiterModel() {
-    return new SearchMitarbeiterModelImpl(mitarbeiterService, mitarbeiterCodeService);
+    return new SearchMitarbeiterModelImpl(mitarbeiterService, mitarbeiterCodeService, emailService);
   }
 
   @Override

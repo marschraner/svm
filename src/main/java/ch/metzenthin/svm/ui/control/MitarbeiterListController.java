@@ -9,6 +9,7 @@ import ch.metzenthin.svm.domain.model.MitarbeiterAndMitarbeiterCodesAsStringAndS
 import ch.metzenthin.svm.domain.model.MitarbeiterListModel;
 import ch.metzenthin.svm.domain.model.MitarbeiterTableData;
 import ch.metzenthin.svm.domain.model.SaveSuccessfulAndEntityIdOptional;
+import ch.metzenthin.svm.service.result.CallEmailClientResult;
 import ch.metzenthin.svm.service.result.DeleteMitarbeiterResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
@@ -211,7 +212,45 @@ public class MitarbeiterListController
   }
 
   private void configBtnEmail() {
-    // TODO
+    view.addButtonEmailActionListener(e -> onEmail());
+  }
+
+  private void onEmail() {
+    view.setButtonEmailFocusPainted(true);
+
+    int anzSelektiert = model.getTableModel().getAnzahlSelektiert();
+    int rowCount = model.getTableModel().getRowCount();
+    if (anzSelektiert > 1 && anzSelektiert < rowCount) {
+      view.showInfoMessageDialog(
+          "Es sind nur "
+              + anzSelektiert
+              + " der "
+              + rowCount
+              + " Einträge selektiert. "
+              + "Nur diese Einträge\nwerden für die Gruppen-E-Mail berücksichtigt.",
+          "Nicht alle Einträge selektiert");
+    }
+
+    CallEmailClientResult callEmailClientResult = model.callEmailClient();
+    if (!callEmailClientResult.isSuccessful()) {
+      view.showErrorMessageDialog(callEmailClientResult.getMessage(), "Fehler");
+    }
+
+    if (!callEmailClientResult.fehlendeEmailAdressen().isEmpty()) {
+      view.showWarningMessageDialog(
+          "Für folgende Mitarbeiter ist keine E-Mail-Adresse erfasst:\n"
+              + String.join("\n", callEmailClientResult.fehlendeEmailAdressen()),
+          "Warnung");
+    }
+
+    if (!callEmailClientResult.ungueltigeEmailAdressen().isEmpty()) {
+      view.showWarningMessageDialog(
+          "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig und wurde(n) ignoriert:\n"
+              + String.join("\n", callEmailClientResult.ungueltigeEmailAdressen()),
+          "Warnung");
+    }
+
+    view.setButtonEmailFocusPainted(false);
   }
 
   @Override

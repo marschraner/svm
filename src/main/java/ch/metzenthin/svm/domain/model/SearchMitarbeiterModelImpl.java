@@ -3,6 +3,7 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.domain.model.searchfields.MitarbeiterSearchFields;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndListModel;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
+import ch.metzenthin.svm.service.EmailService;
 import ch.metzenthin.svm.service.MitarbeiterCodeService;
 import ch.metzenthin.svm.service.MitarbeiterService;
 import java.util.List;
@@ -15,11 +16,15 @@ public class SearchMitarbeiterModelImpl extends SearchPersonModelImpl
 
   private final MitarbeiterService mitarbeiterService;
   private final MitarbeiterCodeService mitarbeiterCodeService;
+  private final EmailService emailService;
 
   public SearchMitarbeiterModelImpl(
-      MitarbeiterService mitarbeiterService, MitarbeiterCodeService mitarbeiterCodeService) {
+      MitarbeiterService mitarbeiterService,
+      MitarbeiterCodeService mitarbeiterCodeService,
+      EmailService emailService) {
     this.mitarbeiterService = mitarbeiterService;
     this.mitarbeiterCodeService = mitarbeiterCodeService;
+    this.emailService = emailService;
   }
 
   @Override
@@ -35,7 +40,7 @@ public class SearchMitarbeiterModelImpl extends SearchPersonModelImpl
       MitarbeiterSearchFields mitarbeiterSearchFields) {
     // TODO validate
     MitarbeiterListModel mitarbeiterListModel =
-        new MitarbeiterListModel(mitarbeiterService, mitarbeiterSearchFields);
+        new MitarbeiterListModel(mitarbeiterService, emailService, mitarbeiterSearchFields);
     return new ValidationResultsAndListModel<>(mitarbeiterListModel);
   }
 }

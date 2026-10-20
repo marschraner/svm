@@ -22,6 +22,10 @@ public abstract class AbstractView<T extends Component> {
     JOptionPane.showMessageDialog(component, message, title, JOptionPane.INFORMATION_MESSAGE);
   }
 
+  public void showWarningMessageDialog(String message, String title) {
+    JOptionPane.showMessageDialog(component, message, title, JOptionPane.WARNING_MESSAGE);
+  }
+
   public void showErrorMessageDialog(String message, String title) {
     JOptionPane.showMessageDialog(component, message, title, JOptionPane.ERROR_MESSAGE);
   }

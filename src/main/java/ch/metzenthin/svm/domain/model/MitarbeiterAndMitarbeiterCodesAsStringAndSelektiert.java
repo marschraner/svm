@@ -9,7 +9,8 @@ import lombok.Setter;
  * @author Martin Schraner
  */
 @Getter
-public final class MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert {
+public final class MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+    implements EmailAndNachnameAndVornameIfc {
 
   private final Mitarbeiter mitarbeiter;
   private final String mitarbeiterCodesAsString;
@@ -35,5 +36,20 @@ public final class MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert {
   @Override
   public int hashCode() {
     return Objects.hash(mitarbeiter, mitarbeiterCodesAsString, selektiert);
+  }
+
+  @Override
+  public String getEmail() {
+    return mitarbeiter.getEmail();
+  }
+
+  @Override
+  public String getNachname() {
+    return mitarbeiter.getNachname();
+  }
+
+  @Override
+  public String getVorname() {
+    return mitarbeiter.getVorname();
   }
 }

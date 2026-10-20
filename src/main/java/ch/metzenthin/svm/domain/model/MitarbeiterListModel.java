@@ -5,7 +5,9 @@ import ch.metzenthin.svm.common.datatypes.Listentyp;
 import ch.metzenthin.svm.domain.model.searchfields.MitarbeiterSearchFields;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
+import ch.metzenthin.svm.service.EmailService;
 import ch.metzenthin.svm.service.MitarbeiterService;
+import ch.metzenthin.svm.service.result.CallEmailClientResult;
 import ch.metzenthin.svm.service.result.DeleteMitarbeiterResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeiterTableModel;
@@ -32,12 +34,16 @@ public class MitarbeiterListModel
         DeleteMitarbeiterResult> {
 
   private final MitarbeiterService mitarbeiterService;
+  private final EmailService emailService;
   private final MitarbeiterSearchFields mitarbeiterSearchFields;
 
   public MitarbeiterListModel(
-      MitarbeiterService mitarbeiterService, MitarbeiterSearchFields mitarbeiterSearchFields) {
+      MitarbeiterService mitarbeiterService,
+      EmailService emailService,
+      MitarbeiterSearchFields mitarbeiterSearchFields) {
     super(createTableModel(mitarbeiterService, mitarbeiterSearchFields));
     this.mitarbeiterService = mitarbeiterService;
+    this.emailService = emailService;
     this.mitarbeiterSearchFields = mitarbeiterSearchFields;
   }
 
@@ -181,6 +187,11 @@ public class MitarbeiterListModel
   public ExportListResult exportList(Listentyp listentyp, String listenTitel, File outputFile) {
     return mitarbeiterService.exportList(
         listentyp, listenTitel, outputFile, getTableModel().getRowIteratorSelektierteMitarbeiter());
+  }
+
+  public CallEmailClientResult callEmailClient() {
+    return emailService.callDefaultEmailClient(
+        getTableModel().getRowIteratorSelektierteMitarbeiter(), false);
   }
 
   @Override
