@@ -1,5 +1,7 @@
 package ch.metzenthin.svm.ui.control;
 
+import static ch.metzenthin.svm.common.utils.SimpleValidator.checkEmpty;
+
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.domain.model.MitarbeiterListModel;
@@ -105,55 +107,6 @@ public class SearchMitarbeiterController
     view.setRadioButtonGroupStatusSelected(AktivJaNeinSelected.AKTIV);
   }
 
-  //  private void onSuchen() {
-  //    LOGGER.trace("SearchMitarbeiterPanel Suchen gedrückt");
-  //    if (!validateOnSpeichern()) {
-  //      btnSuchen.setFocusPainted(false);
-  //      return;
-  //    }
-  //    setWaitCursorAllComponents();
-  //    MitarbeitersTableData mitarbeitersTableData = model.suchen();
-  //    MitarbeitersTableModel mitarbeitersTableModel =
-  //        new MitarbeitersTableModel(mitarbeitersTableData);
-  //    // Auch bei einem Suchresultat Liste anzeigen, da nur von dort gelöscht werden kann
-  //    if (mitarbeitersTableData.size() > 0 || !model.isSuchkriterienSelected()) {
-  //      MitarbeitersPanel mitarbeitersPanel =
-  //          new MitarbeitersPanel(svmContext, mitarbeitersTableModel);
-  //      mitarbeitersPanel.addCloseListener(closeListener);
-  //      mitarbeitersPanel.addZurueckListener(zurueckListener);
-  //      resetCursorAllComponents();
-  //      nextPanelListener.actionPerformed(
-  //          new ActionEvent(
-  //              new Object[] {mitarbeitersPanel.$$$getRootComponent$$$(), "Suchresultat"},
-  //              ActionEvent.ACTION_PERFORMED,
-  //              "Suchresultat verfügbar"));
-  //    } else {
-  //      resetCursorAllComponents();
-  //      JOptionPane.showMessageDialog(
-  //          null,
-  //          "Es wurden keine Mitarbeiter gefunden, welche auf die Suchabfrage passen.",
-  //          "Keine Mitarbeiter gefunden",
-  //          JOptionPane.INFORMATION_MESSAGE);
-  //      btnSuchen.setFocusPainted(false);
-  //    }
-  //  }
-
-  //  private void setWaitCursorAllComponents() {
-  //    Cursor waitCursor = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
-  //    mainPanel.setCursor(waitCursor);
-  //    // TextFields müssen separat gesetzt werden
-  //    txtNachname.setCursor(waitCursor);
-  //    txtVorname.setCursor(waitCursor);
-  //  }
-  //
-  //  private void resetCursorAllComponents() {
-  //    mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-  //    // TextFields müssen separat gesetzt werden
-  //    Cursor textCursor = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
-  //    txtNachname.setCursor(textCursor);
-  //    txtVorname.setCursor(textCursor);
-  //  }
-
   @Override
   protected ValidationResultsAndListModel<MitarbeiterListModel> suchen() {
     view.setWaitCursorAllComponents();
@@ -171,7 +124,10 @@ public class SearchMitarbeiterController
 
   @Override
   protected void showNextPanel(MitarbeiterListModel mitarbeiterListModel) {
-    if (mitarbeiterListModel.getTableModel().getRowCount() == 0) {
+    // Wenn keine Mitarbeiter gefunden wurden und eine Suche ohne Einschränkungen gemacht wurde -
+    // d.h. die Datenbank enthält keine Mitarbeiter - muss die leere Mitarbeiter-Liste angezeigt
+    // werden, damit ein neuer Mitarbeiter erfasst werden kann.
+    if (mitarbeiterListModel.getTableModel().getRowCount() == 0 && !isFullSearch()) {
       view.showInfoMessageDialog(
           "Es wurden keine Mitarbeiter gefunden, welche auf die Suchabfrage passen.",
           "Keine Mitarbeiter gefunden");
@@ -185,6 +141,14 @@ public class SearchMitarbeiterController
               ActionEvent.ACTION_PERFORMED,
               "Suchresultat verfügbar"));
     }
+  }
+
+  private boolean isFullSearch() {
+    return checkEmpty(view.getTxtNachnameText())
+        && checkEmpty(view.getTxtVornameText())
+        && view.getComboBoxMitarbeiterCodeSelectedItem() == null
+        && view.getRadioButtonGroupLehrkraftSelected() == LehrkraftJaNeinSelected.ALLE
+        && view.getRadioButtonGroupStatusSelected() == AktivJaNeinSelected.AKTIV;
   }
 
   private void onZurueck() {

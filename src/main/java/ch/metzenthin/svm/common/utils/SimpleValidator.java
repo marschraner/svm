@@ -17,8 +17,12 @@ public class SimpleValidator {
     return (o != null);
   }
 
+  public static boolean checkEmpty(String s) {
+    return s == null || s.isBlank();
+  }
+
   public static boolean checkNotEmpty(String s) {
-    return checkNotNull(s) && !s.isEmpty();
+    return checkNotNull(s) && !s.isBlank();
   }
 
   public static boolean checkNumber(String s) {
