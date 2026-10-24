@@ -143,7 +143,7 @@ public abstract class AbstractListController<
     int modelRowIndex = view.convertRowIndexToModel();
     boolean success = model.replaceUpdatedObjectInTableModel(modelRowIndex);
     if (success) {
-      view.fireTableDataChanged();
+      view.fireTableRowUpdated(modelRowIndex);
       updateButtonsAndTotalText();
     } else {
       view.showErrorMessageDialog(
@@ -157,7 +157,7 @@ public abstract class AbstractListController<
   protected void removeSelectedRow() {
     int modelRowIndex = view.convertRowIndexToModel();
     model.removeDeletedObjectFromTableModel(modelRowIndex);
-    view.fireTableDataChanged();
+    view.fireTableRowDeleted(modelRowIndex);
     updateButtonsAndTotalText();
   }
 
