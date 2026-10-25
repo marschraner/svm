@@ -11,6 +11,8 @@ public interface CreateOrUpdateCodeModel {
 
   boolean isNeu();
 
+  SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndCodeIdOptional();
+
   CodeFields getCodeFields();
 
   ValidationResult validateKuerzel(String kuerzel);

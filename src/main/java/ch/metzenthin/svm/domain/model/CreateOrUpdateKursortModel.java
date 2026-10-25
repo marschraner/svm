@@ -11,6 +11,8 @@ public interface CreateOrUpdateKursortModel {
 
   boolean isNeu();
 
+  SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndKursortIdOptional();
+
   KursortFields getKursortFields();
 
   ValidationResult validateBezeichnung(String bezeichnung);

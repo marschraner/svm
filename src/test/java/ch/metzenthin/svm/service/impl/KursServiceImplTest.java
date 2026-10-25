@@ -25,6 +25,7 @@ import ch.metzenthin.svm.persistence.repository.SemesterRepository;
 import ch.metzenthin.svm.service.ServiceTestConfiguration;
 import ch.metzenthin.svm.service.result.ImportKurseResult;
 import ch.metzenthin.svm.service.result.SaveKursResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.io.File;
@@ -78,6 +79,23 @@ class KursServiceImplTest {
   }
 
   @Test
+  void testFindKursAndLehrkraefteAndNumberOfKursanmeldungenById() {
+    Optional<KursAndLehrkraefteAndNumberOfKursanmeldungen> kursOptional;
+    kursOptional = kursService.findKursAndLehrkraefteAndNumberOfKursanmeldungenById(401);
+    assertTrue(kursOptional.isPresent());
+    assertEquals(1, kursOptional.get().numberOfKursanmeldungen());
+    assertEquals(1, kursOptional.get().lehrkraefte().size());
+
+    kursOptional = kursService.findKursAndLehrkraefteAndNumberOfKursanmeldungenById(403);
+    assertTrue(kursOptional.isPresent());
+    assertEquals(2, kursOptional.get().numberOfKursanmeldungen());
+    assertEquals(2, kursOptional.get().lehrkraefte().size());
+
+    kursOptional = kursService.findKursAndLehrkraefteAndNumberOfKursanmeldungenById(999);
+    assertTrue(kursOptional.isEmpty());
+  }
+
+  @Test
   void testFindAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester() {
     List<KursAndLehrkraefteAndNumberOfKursanmeldungen>
         kurseAndLehrkraefteAndNumberOfSchuelerForSemester101 =
@@ -116,26 +134,26 @@ class KursServiceImplTest {
     Kurs kurs = createKurs(kurstyp, kursort, semester);
     kurs.setZeitEnde(createTime("14:45:00"));
 
-    SaveKursResult saveKursResult;
+    SaveResultAndIdOfSavedEntity<SaveKursResult> saveResultAndId;
     entityManager.clear();
-    saveKursResult = kursService.saveKurs(kurs, null, null);
-    assertEquals(SaveKursResult.KEINE_LEHRKRAEFTE_ERFASST, saveKursResult);
+    saveResultAndId = kursService.saveKurs(kurs, null, null);
+    checkSaveResultFailed(SaveKursResult.KEINE_LEHRKRAEFTE_ERFASST, saveResultAndId);
 
     Mitarbeiter lehrkraft1 = mitarbeiterRepository.findById(507).orElse(null);
     assertNotNull(lehrkraft1);
     entityManager.clear();
-    saveKursResult = kursService.saveKurs(kurs, lehrkraft1, null);
-    assertEquals(SaveKursResult.KURS_BEREITS_ERFASST, saveKursResult);
+    saveResultAndId = kursService.saveKurs(kurs, lehrkraft1, null);
+    checkSaveResultFailed(SaveKursResult.KURS_BEREITS_ERFASST, saveResultAndId);
 
     entityManager.clear();
     kurs.setWochentag(Wochentag.DONNERSTAG);
-    saveKursResult = kursService.saveKurs(kurs, lehrkraft1, null);
-    assertEquals(SaveKursResult.LEKTIONSGEBUEHREN_NICHT_ERFASST, saveKursResult);
+    saveResultAndId = kursService.saveKurs(kurs, lehrkraft1, null);
+    checkSaveResultFailed(SaveKursResult.LEKTIONSGEBUEHREN_NICHT_ERFASST, saveResultAndId);
 
     entityManager.clear();
     kurs.setZeitEnde(createTime("14:50:00"));
-    saveKursResult = kursService.saveKurs(kurs, lehrkraft1, null);
-    assertEquals(SaveKursResult.SPEICHERN_ERFOLGREICH, saveKursResult);
+    saveResultAndId = kursService.saveKurs(kurs, lehrkraft1, null);
+    checkSaveResultSuccessful(saveResultAndId, kurs);
 
     entityManager.flush();
     entityManager.clear();
@@ -148,16 +166,16 @@ class KursServiceImplTest {
 
     // Update
     kurs.setWochentag(Wochentag.MITTWOCH);
-    saveKursResult = kursService.saveKurs(kurs, lehrkraft1, null);
-    assertEquals(SaveKursResult.KURS_BEREITS_ERFASST, saveKursResult);
+    saveResultAndId = kursService.saveKurs(kurs, lehrkraft1, null);
+    checkSaveResultFailed(SaveKursResult.KURS_BEREITS_ERFASST, saveResultAndId);
 
     Mitarbeiter lehrkraft2;
     lehrkraft2 = mitarbeiterRepository.findById(508).orElse(null);
     assertNotNull(lehrkraft2);
     entityManager.clear();
     kurs.setWochentag(Wochentag.DONNERSTAG);
-    saveKursResult = kursService.saveKurs(kurs, lehrkraft1, lehrkraft2);
-    assertEquals(SaveKursResult.SPEICHERN_ERFOLGREICH, saveKursResult);
+    saveResultAndId = kursService.saveKurs(kurs, lehrkraft1, lehrkraft2);
+    checkSaveResultSuccessful(saveResultAndId, kurs);
 
     entityManager.flush();
     entityManager.clear();
@@ -170,8 +188,8 @@ class KursServiceImplTest {
     entityManager.clear();
 
     lehrkraft2 = mitarbeiterRepository.findById(509).orElse(null);
-    saveKursResult = kursService.saveKurs(kurs, lehrkraft1, lehrkraft2);
-    assertEquals(SaveKursResult.SPEICHERN_ERFOLGREICH, saveKursResult);
+    saveResultAndId = kursService.saveKurs(kurs, lehrkraft1, lehrkraft2);
+    checkSaveResultSuccessful(saveResultAndId, kurs);
 
     entityManager.flush();
     entityManager.clear();
@@ -179,11 +197,24 @@ class KursServiceImplTest {
     assertNotNull(kurs);
     entityManager.clear();
 
-    saveKursResult = kursService.saveKurs(kurs, lehrkraft1, null);
-    assertEquals(SaveKursResult.SPEICHERN_ERFOLGREICH, saveKursResult);
+    saveResultAndId = kursService.saveKurs(kurs, lehrkraft1, null);
+    assertEquals(SaveKursResult.SPEICHERN_ERFOLGREICH, saveResultAndId.saveResult());
     lehrkraefte = kursLehrkraftRepository.findByKursIdOrderByLehrkraefteOrder(kurs.getKursId());
     assertEquals(1, lehrkraefte.size());
     assertEquals(lehrkraft1.getPersonId(), lehrkraefte.get(0).getLehrkraft().getPersonId());
+  }
+
+  private static void checkSaveResultSuccessful(
+      SaveResultAndIdOfSavedEntity<SaveKursResult> saveResultAndId, Kurs kurs) {
+    assertEquals(SaveKursResult.SPEICHERN_ERFOLGREICH, saveResultAndId.saveResult());
+    assertEquals(kurs.getKursId(), saveResultAndId.idOfSavedEntity());
+  }
+
+  private static void checkSaveResultFailed(
+      SaveKursResult expectedSaveResult,
+      SaveResultAndIdOfSavedEntity<SaveKursResult> actualSaveResultAndId) {
+    assertEquals(expectedSaveResult, actualSaveResultAndId.saveResult());
+    assertEquals(-1, actualSaveResultAndId.idOfSavedEntity());
   }
 
   @Test
@@ -204,12 +235,13 @@ class KursServiceImplTest {
     entityManager.flush();
     entityManager.clear();
 
-    SaveKursResult saveKursResult;
+    SaveResultAndIdOfSavedEntity<SaveKursResult> saveResultAndId;
     Mitarbeiter lehrkraft1 = mitarbeiterRepository.findById(507).orElse(null);
     assertNotNull(lehrkraft1);
     entityManager.clear();
-    saveKursResult = kursService.saveKurs(kurs, lehrkraft1, null);
-    assertEquals(SaveKursResult.SEMESTER_DURCH_ANDEREN_BENUTZER_GELOESCHT, saveKursResult);
+    saveResultAndId = kursService.saveKurs(kurs, lehrkraft1, null);
+    checkSaveResultFailed(
+        SaveKursResult.SEMESTER_DURCH_ANDEREN_BENUTZER_GELOESCHT, saveResultAndId);
   }
 
   @Test
@@ -230,12 +262,12 @@ class KursServiceImplTest {
     entityManager.flush();
     entityManager.clear();
 
-    SaveKursResult saveKursResult;
+    SaveResultAndIdOfSavedEntity<SaveKursResult> saveResultAndId;
     Mitarbeiter lehrkraft1 = mitarbeiterRepository.findById(507).orElse(null);
     assertNotNull(lehrkraft1);
     entityManager.clear();
-    saveKursResult = kursService.saveKurs(kurs, lehrkraft1, null);
-    assertEquals(SaveKursResult.KURSTYP_DURCH_ANDEREN_BENUTZER_GELOESCHT, saveKursResult);
+    saveResultAndId = kursService.saveKurs(kurs, lehrkraft1, null);
+    checkSaveResultFailed(SaveKursResult.KURSTYP_DURCH_ANDEREN_BENUTZER_GELOESCHT, saveResultAndId);
   }
 
   @Test
@@ -256,12 +288,12 @@ class KursServiceImplTest {
     entityManager.flush();
     entityManager.clear();
 
-    SaveKursResult saveKursResult;
+    SaveResultAndIdOfSavedEntity<SaveKursResult> saveResultAndId;
     Mitarbeiter lehrkraft1 = mitarbeiterRepository.findById(507).orElse(null);
     assertNotNull(lehrkraft1);
     entityManager.clear();
-    saveKursResult = kursService.saveKurs(kurs, lehrkraft1, null);
-    assertEquals(SaveKursResult.KURSORT_DURCH_ANDEREN_BENUTZER_GELOESCHT, saveKursResult);
+    saveResultAndId = kursService.saveKurs(kurs, lehrkraft1, null);
+    checkSaveResultFailed(SaveKursResult.KURSORT_DURCH_ANDEREN_BENUTZER_GELOESCHT, saveResultAndId);
   }
 
   @Test
@@ -283,10 +315,11 @@ class KursServiceImplTest {
     entityManager.flush();
     entityManager.clear();
 
-    SaveKursResult saveKursResult;
+    SaveResultAndIdOfSavedEntity<SaveKursResult> saveResultAndId;
     entityManager.clear();
-    saveKursResult = kursService.saveKurs(kurs, lehrkraft1, null);
-    assertEquals(SaveKursResult.LEHRKRAFT_DURCH_ANDEREN_BENUTZER_GELOESCHT, saveKursResult);
+    saveResultAndId = kursService.saveKurs(kurs, lehrkraft1, null);
+    checkSaveResultFailed(
+        SaveKursResult.LEHRKRAFT_DURCH_ANDEREN_BENUTZER_GELOESCHT, saveResultAndId);
   }
 
   @Test
@@ -308,12 +341,13 @@ class KursServiceImplTest {
     entityManager.flush();
     entityManager.clear();
 
-    SaveKursResult saveKursResult;
+    SaveResultAndIdOfSavedEntity<SaveKursResult> saveResultAndId;
     Mitarbeiter lehrkraft1 = mitarbeiterRepository.findById(507).orElse(null);
     assertNotNull(lehrkraft1);
     entityManager.clear();
-    saveKursResult = kursService.saveKurs(kurs, lehrkraft1, lehrkraft2);
-    assertEquals(SaveKursResult.LEHRKRAFT_DURCH_ANDEREN_BENUTZER_GELOESCHT, saveKursResult);
+    saveResultAndId = kursService.saveKurs(kurs, lehrkraft1, lehrkraft2);
+    checkSaveResultFailed(
+        SaveKursResult.LEHRKRAFT_DURCH_ANDEREN_BENUTZER_GELOESCHT, saveResultAndId);
   }
 
   @Test

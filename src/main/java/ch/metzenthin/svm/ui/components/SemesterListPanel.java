@@ -13,7 +13,7 @@ import lombok.Getter;
 /**
  * @author Martin Schraner
  */
-@SuppressWarnings({"java:S100", "java:S1450"})
+@SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
 public class SemesterListPanel extends AbstractListPanel {
 
   private JPanel panel1;
@@ -27,11 +27,6 @@ public class SemesterListPanel extends AbstractListPanel {
   @Getter private JButton btnLoeschen;
   @Getter private JButton btnAbbrechen;
 
-  public SemesterListPanel() {
-    $$$setupUI$$$();
-    createUIComponents();
-  }
-
   @Override
   public JComponent getRootComponent() {
     return $$$getRootComponent$$$();
@@ -40,6 +35,11 @@ public class SemesterListPanel extends AbstractListPanel {
   @Override
   public JTable getTable() {
     return semestersTable;
+  }
+
+  public SemesterListPanel() {
+    $$$setupUI$$$();
+    createUIComponents();
   }
 
   @SuppressWarnings("DuplicatedCode")
@@ -53,9 +53,6 @@ public class SemesterListPanel extends AbstractListPanel {
             return getPreferredSize().width < getParent().getWidth();
           }
         };
-    semestersTable.setAutoCreateRowSorter(true);
-    semestersTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-    semestersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     final JScrollPane scrollPane = new JScrollPane(semestersTable);
     semestersTablePanel.add(scrollPane);
   }

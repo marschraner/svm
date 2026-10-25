@@ -6,7 +6,9 @@ import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.result.DeleteKursortResult;
 import ch.metzenthin.svm.service.result.SaveKursortResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +42,12 @@ public class KursortServiceImpl implements KursortService {
 
   @Override
   @Transactional(readOnly = true)
+  public Optional<Kursort> findKursortById(int kursortId) {
+    return kursortRepository.findById(kursortId);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public List<Kursort> findAllKursorte() {
     return kursortRepository.findAllOrderByBezeichnung();
   }
@@ -52,15 +60,16 @@ public class KursortServiceImpl implements KursortService {
 
   @Override
   @Transactional
-  public SaveKursortResult saveKursort(Kursort kursort) {
+  public SaveResultAndIdOfSavedEntity<SaveKursortResult> saveKursort(Kursort kursort) {
     long numberOfAlreadyExistingKursorte =
         getNumberOfAlreadyExistingKursorte(kursort.getKursortId(), kursort.getBezeichnung());
     if (numberOfAlreadyExistingKursorte > 0) {
-      return SaveKursortResult.KURSORT_BEREITS_ERFASST;
+      return new SaveResultAndIdOfSavedEntity<>(SaveKursortResult.KURSORT_BEREITS_ERFASST, -1);
     }
 
-    kursortRepository.save(kursort);
-    return SaveKursortResult.SPEICHERN_ERFOLGREICH;
+    kursort = kursortRepository.save(kursort);
+    return new SaveResultAndIdOfSavedEntity<>(
+        SaveKursortResult.SPEICHERN_ERFOLGREICH, kursort.getKursortId());
   }
 
   @Override

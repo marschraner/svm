@@ -9,6 +9,7 @@ import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResul
 import ch.metzenthin.svm.persistence.entities.Kurstyp;
 import ch.metzenthin.svm.service.KurstypService;
 import ch.metzenthin.svm.service.result.SaveKurstypResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import jakarta.persistence.OptimisticLockException;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ public class CreateOrUpdateKurstypModelImpl implements CreateOrUpdateKurstypMode
 
   private final boolean neu;
   private final Kurstyp kurstyp;
+  private SaveSuccessfulAndEntityIdOptional saveSuccessfulAndKurstypIdOptional;
   private final KurstypService kurstypService;
 
   @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
@@ -32,12 +34,23 @@ public class CreateOrUpdateKurstypModelImpl implements CreateOrUpdateKurstypMode
       Optional<Kurstyp> kurstypToBeModifiedOptional, KurstypService kurstypService) {
     this.neu = kurstypToBeModifiedOptional.isEmpty();
     this.kurstyp = kurstypToBeModifiedOptional.orElseGet(Kurstyp::new);
+    saveSuccessfulAndKurstypIdOptional =
+        new SaveSuccessfulAndEntityIdOptional(
+            false,
+            (kurstyp.getKurstypId() != null)
+                ? Optional.of(kurstyp.getKurstypId())
+                : Optional.empty());
     this.kurstypService = kurstypService;
   }
 
   @Override
   public boolean isNeu() {
     return neu;
+  }
+
+  @Override
+  public SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndKurstypIdOptional() {
+    return saveSuccessfulAndKurstypIdOptional;
   }
 
   @Override
@@ -86,7 +99,13 @@ public class CreateOrUpdateKurstypModelImpl implements CreateOrUpdateKurstypMode
   private SaveKurstypResult saveKurstyp() {
     SaveKurstypResult saveKurstypResult;
     try {
-      saveKurstypResult = kurstypService.saveKurstyp(kurstyp);
+      SaveResultAndIdOfSavedEntity<SaveKurstypResult> saveResultAndIdOfSavedEntity =
+          kurstypService.saveKurstyp(kurstyp);
+      saveKurstypResult = saveResultAndIdOfSavedEntity.saveResult();
+      saveSuccessfulAndKurstypIdOptional =
+          new SaveSuccessfulAndEntityIdOptional(
+              saveKurstypResult.isSubmitSuccessful(),
+              Optional.of(saveResultAndIdOfSavedEntity.idOfSavedEntity()));
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveKurstypResult = SaveKurstypResult.KURSTYP_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

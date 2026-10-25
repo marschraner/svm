@@ -41,17 +41,6 @@ public class ElternmithilfeCodeListModel extends CodeListModel<ElternmithilfeCod
   }
 
   @Override
-  protected Optional<ElternmithilfeCode> loadObjectFromDatabase(int idOfEntityToBeLoaded) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  protected Optional<ElternmithilfeCode> reloadObjectFromDatabase(
-      ElternmithilfeCode objectToBeReloaded) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public String getListItemName() {
     return "Eltern-Mithilfe-Code";
   }

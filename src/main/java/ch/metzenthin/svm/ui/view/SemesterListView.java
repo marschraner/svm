@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 /**
  * @author Hans Stamm
  */
-public class SemesterListView extends AbstractListPanelView<SemesterListPanel> {
+public class SemesterListView extends AbstractSortableListPanelView<SemesterListPanel> {
 
   public SemesterListView(TableModel<?, ?> tableModel, ActionListener closeListener) {
     super(tableModel, new SemesterListPanel(), closeListener);

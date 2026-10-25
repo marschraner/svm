@@ -56,6 +56,7 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
     if (columnWithsPercentages != null && columnWithsPercentages.length > 0) {
       setJTableColumnWidthAsPercentages(table, columnWithsPercentages);
     } else if (tableModel.isTableColumnWidthAccordingToCellContentAndHeader()) {
+      table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
       setJTableColumnWidthAccordingToCellContentAndHeader(table);
     }
 
@@ -114,6 +115,8 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
 
   public void fireTableRowInserted(int indexOfInsertedRow) {
     tableModel.fireTableRowsInserted(indexOfInsertedRow, indexOfInsertedRow);
+    int rowIndexToView = table.convertRowIndexToView(indexOfInsertedRow);
+    table.changeSelection(rowIndexToView, 0, false, false);
     table.addNotify();
   }
 

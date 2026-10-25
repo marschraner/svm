@@ -9,8 +9,10 @@ import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResul
 import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.service.CodeService;
 import ch.metzenthin.svm.service.result.SaveCodeResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import jakarta.persistence.OptimisticLockException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.springframework.dao.OptimisticLockingFailureException;
 
@@ -22,17 +24,26 @@ public abstract class CreateOrUpdateCodeModelImpl<T extends Code>
 
   private final boolean neu;
   private final T code;
+  private SaveSuccessfulAndEntityIdOptional saveSuccessfulAndCodeIdOptional;
   private final CodeService<T> codeService;
 
   protected CreateOrUpdateCodeModelImpl(boolean neu, T code, CodeService<T> codeService) {
     this.neu = neu;
     this.code = code;
+    saveSuccessfulAndCodeIdOptional =
+        new SaveSuccessfulAndEntityIdOptional(
+            false, (code.getCodeId() != null) ? Optional.of(code.getCodeId()) : Optional.empty());
     this.codeService = codeService;
   }
 
   @Override
   public boolean isNeu() {
     return neu;
+  }
+
+  @Override
+  public SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndCodeIdOptional() {
+    return saveSuccessfulAndCodeIdOptional;
   }
 
   @Override
@@ -85,7 +96,13 @@ public abstract class CreateOrUpdateCodeModelImpl<T extends Code>
   public SaveCodeResult saveCode() {
     SaveCodeResult saveCodeResult;
     try {
-      saveCodeResult = codeService.saveCode(code);
+      SaveResultAndIdOfSavedEntity<SaveCodeResult> saveResultAndIdOfSavedEntity =
+          codeService.saveCode(code);
+      saveCodeResult = saveResultAndIdOfSavedEntity.saveResult();
+      saveSuccessfulAndCodeIdOptional =
+          new SaveSuccessfulAndEntityIdOptional(
+              saveCodeResult.isSubmitSuccessful(),
+              Optional.of(saveResultAndIdOfSavedEntity.idOfSavedEntity()));
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveCodeResult = SaveCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

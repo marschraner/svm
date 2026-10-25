@@ -6,6 +6,7 @@ import ch.metzenthin.svm.service.result.DeleteCodeResult;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import jakarta.persistence.OptimisticLockException;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
@@ -37,6 +38,16 @@ public abstract class CodeListModel<T extends Code>
       deleteCodeResult = DeleteCodeResult.CODE_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }
     return deleteCodeResult;
+  }
+
+  @Override
+  protected Optional<T> loadObjectFromDatabase(int codeId) {
+    return service.findCodeById(codeId);
+  }
+
+  @Override
+  protected Optional<T> reloadObjectFromDatabase(T code) {
+    return service.findCodeById(code.getCodeId());
   }
 
   @Override

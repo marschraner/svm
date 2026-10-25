@@ -53,7 +53,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="1efab" class="javax.swing.JTable" binding="lektionsgebuehrenTable" custom-create="true">
+                  <component id="1efab" class="javax.swing.JTable" binding="lektionsgebuehrenTable">
                     <constraints/>
                     <properties>
                       <opaque value="false"/>

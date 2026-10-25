@@ -6,7 +6,9 @@ import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.KurstypService;
 import ch.metzenthin.svm.service.result.DeleteKurstypResult;
 import ch.metzenthin.svm.service.result.SaveKurstypResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +42,12 @@ public class KurstypServiceImpl implements KurstypService {
 
   @Override
   @Transactional(readOnly = true)
+  public Optional<Kurstyp> findKurstypById(int kurstypId) {
+    return kurstypRepository.findById(kurstypId);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public List<Kurstyp> findAllKurstypen() {
     return kurstypRepository.findAllOrderByBezeichnung();
   }
@@ -52,15 +60,16 @@ public class KurstypServiceImpl implements KurstypService {
 
   @Override
   @Transactional
-  public SaveKurstypResult saveKurstyp(Kurstyp kurstyp) {
+  public SaveResultAndIdOfSavedEntity<SaveKurstypResult> saveKurstyp(Kurstyp kurstyp) {
     long numberOfAlreadyExistingKurstypen =
         getNumberOfAlreadyExistingKurstypen(kurstyp.getKurstypId(), kurstyp.getBezeichnung());
     if (numberOfAlreadyExistingKurstypen > 0) {
-      return SaveKurstypResult.KURSTYP_BEREITS_ERFASST;
+      return new SaveResultAndIdOfSavedEntity<>(SaveKurstypResult.KURSTYP_BEREITS_ERFASST, -1);
     }
 
-    kurstypRepository.save(kurstyp);
-    return SaveKurstypResult.SPEICHERN_ERFOLGREICH;
+    kurstyp = kurstypRepository.save(kurstyp);
+    return new SaveResultAndIdOfSavedEntity<>(
+        SaveKurstypResult.SPEICHERN_ERFOLGREICH, kurstyp.getKurstypId());
   }
 
   @Override

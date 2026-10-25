@@ -16,6 +16,7 @@ import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import ch.metzenthin.svm.ui.components.SwingWorkerWithBusyDialog;
 import ch.metzenthin.svm.ui.view.MitarbeiterListView;
 import java.awt.event.ActionListener;
+import java.util.Optional;
 
 /**
  * @author Martin Schraner
@@ -84,7 +85,6 @@ public class MitarbeiterListController
   }
 
   @Override
-  @SuppressWarnings("java:S3655")
   protected void showOnNeuDialog() {
     CreateOrUpdateMitarbeiterModel createOrUpdateMitarbeiterModel =
         model.createCreateOrUpdateModel(svmContext);
@@ -94,10 +94,11 @@ public class MitarbeiterListController
     createOrUpdateMitarbeiterController.showDialog();
     SaveSuccessfulAndEntityIdOptional saveOrUpdateSuccessfulAndMitarbeiterIdOptional =
         createOrUpdateMitarbeiterModel.getSaveSuccessfulAndMitarbeiterIdOptional();
+    Optional<Integer> mitarbeiterIdOptional =
+        saveOrUpdateSuccessfulAndMitarbeiterIdOptional.entityIdOptional();
     if (saveOrUpdateSuccessfulAndMitarbeiterIdOptional.saveSuccessful()
-        && saveOrUpdateSuccessfulAndMitarbeiterIdOptional.entityIdOptional().isPresent()) {
-      insertCreatedObjectToList(
-          saveOrUpdateSuccessfulAndMitarbeiterIdOptional.entityIdOptional().get());
+        && mitarbeiterIdOptional.isPresent()) {
+      insertCreatedObjectToList(mitarbeiterIdOptional.get());
     }
   }
 

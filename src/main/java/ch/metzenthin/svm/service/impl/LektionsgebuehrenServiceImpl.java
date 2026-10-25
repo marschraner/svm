@@ -6,7 +6,9 @@ import ch.metzenthin.svm.service.KursService;
 import ch.metzenthin.svm.service.LektionsgebuehrenService;
 import ch.metzenthin.svm.service.result.DeleteLektionsgebuehrenResult;
 import ch.metzenthin.svm.service.result.SaveLektionsgebuehrenResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,13 +29,20 @@ public class LektionsgebuehrenServiceImpl implements LektionsgebuehrenService {
 
   @Override
   @Transactional(readOnly = true)
+  public Optional<Lektionsgebuehren> findLektionsgebuehrenById(int lektionsgebuehrenId) {
+    return lektionsgebuehrenRepository.findById(lektionsgebuehrenId);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public List<Lektionsgebuehren> findAllLektionsgebuehren() {
     return lektionsgebuehrenRepository.findAllOrderByLektionslaenge();
   }
 
   @Override
   @Transactional
-  public SaveLektionsgebuehrenResult saveLektionsgebuehren(Lektionsgebuehren lektionsgebuehren) {
+  public SaveResultAndIdOfSavedEntity<SaveLektionsgebuehrenResult> saveLektionsgebuehren(
+      Lektionsgebuehren lektionsgebuehren) {
     long numberOfAlreadyExistingLektionsgebuehren =
         (lektionsgebuehren.getId() != null)
             ? lektionsgebuehrenRepository.countByLektionslaengeAndIdNe(
@@ -41,11 +50,13 @@ public class LektionsgebuehrenServiceImpl implements LektionsgebuehrenService {
             : lektionsgebuehrenRepository.countByLektionslaenge(
                 lektionsgebuehren.getLektionslaenge());
     if (numberOfAlreadyExistingLektionsgebuehren > 0) {
-      return SaveLektionsgebuehrenResult.LEKTIONSGEBUEHREN_BEREITS_ERFASST;
+      return new SaveResultAndIdOfSavedEntity<>(
+          SaveLektionsgebuehrenResult.LEKTIONSGEBUEHREN_BEREITS_ERFASST, -1);
     }
 
-    lektionsgebuehrenRepository.save(lektionsgebuehren);
-    return SaveLektionsgebuehrenResult.SPEICHERN_ERFOLGREICH;
+    lektionsgebuehren = lektionsgebuehrenRepository.save(lektionsgebuehren);
+    return new SaveResultAndIdOfSavedEntity<>(
+        SaveLektionsgebuehrenResult.SPEICHERN_ERFOLGREICH, lektionsgebuehren.getId());
   }
 
   @Override

@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 /**
  * @author Hans Stamm
  */
-public class MaerchenListView extends AbstractListPanelView<MaerchenListPanel> {
+public class MaerchenListView extends AbstractSortableListPanelView<MaerchenListPanel> {
 
   public MaerchenListView(TableModel<?, ?> tableModel, ActionListener closeListener) {
     super(tableModel, new MaerchenListPanel(), closeListener);

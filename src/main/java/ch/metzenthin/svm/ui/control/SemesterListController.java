@@ -2,6 +2,7 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateSemesterModel;
+import ch.metzenthin.svm.domain.model.SaveSuccessfulAndEntityIdOptional;
 import ch.metzenthin.svm.domain.model.SemesterAndNumberOfKurse;
 import ch.metzenthin.svm.domain.model.SemesterListModel;
 import ch.metzenthin.svm.domain.model.SemesterTableData;
@@ -9,6 +10,7 @@ import ch.metzenthin.svm.service.result.DeleteSemesterResult;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import ch.metzenthin.svm.ui.view.SemesterListView;
 import java.awt.event.ActionListener;
+import java.util.Optional;
 
 /**
  * @author Martin Schraner
@@ -43,7 +45,14 @@ public class SemesterListController
     CreateOrUpdateSemesterController createOrUpdateSemesterController =
         new CreateOrUpdateSemesterController(createOrUpdateSemesterModel, "Neues Semester");
     createOrUpdateSemesterController.showDialog();
-    reloadTableData();
+    SaveSuccessfulAndEntityIdOptional saveOrUpdateSuccessfulAndSemesterIdOptional =
+        createOrUpdateSemesterModel.getSaveSuccessfulAndSemesterIdOptional();
+    Optional<Integer> semesterIdOptional =
+        saveOrUpdateSuccessfulAndSemesterIdOptional.entityIdOptional();
+    if (saveOrUpdateSuccessfulAndSemesterIdOptional.saveSuccessful()
+        && semesterIdOptional.isPresent()) {
+      insertCreatedObjectToList(semesterIdOptional.get());
+    }
   }
 
   @Override
@@ -53,7 +62,12 @@ public class SemesterListController
     CreateOrUpdateSemesterController createOrUpdateSemesterController =
         new CreateOrUpdateSemesterController(createOrUpdateSemesterModel, "Semester bearbeiten");
     createOrUpdateSemesterController.showDialog();
-    reloadTableData();
+    SaveSuccessfulAndEntityIdOptional saveOrUpdateSuccessfulAndSemesterIdOptional =
+        createOrUpdateSemesterModel.getSaveSuccessfulAndSemesterIdOptional();
+    if (saveOrUpdateSuccessfulAndSemesterIdOptional.saveSuccessful()
+        && saveOrUpdateSuccessfulAndSemesterIdOptional.entityIdOptional().isPresent()) {
+      reloadSelectedRow();
+    }
   }
 
   @Override
@@ -85,9 +99,9 @@ public class SemesterListController
           case SEMESTER_VON_KURS_REFERENZIERT -> showErrorMessageDialog(deleteSemesterResult);
           case SEMESTER_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
             showErrorMessageDialog(deleteSemesterResult);
-            reloadTableData();
+            reloadSelectedRow();
           }
-          case LOESCHEN_ERFOLGREICH -> reloadTableData();
+          case LOESCHEN_ERFOLGREICH -> removeSelectedRow();
         }
       }
     }

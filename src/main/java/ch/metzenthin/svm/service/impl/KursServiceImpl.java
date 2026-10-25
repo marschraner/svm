@@ -38,6 +38,7 @@ import ch.metzenthin.svm.service.result.DeleteKursResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
 import ch.metzenthin.svm.service.result.ImportKurseResult;
 import ch.metzenthin.svm.service.result.SaveKursResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -141,6 +142,26 @@ public class KursServiceImpl implements KursService {
 
   @Override
   @Transactional(readOnly = true)
+  public Optional<KursAndLehrkraefteAndNumberOfKursanmeldungen>
+      findKursAndLehrkraefteAndNumberOfKursanmeldungenById(int kursId) {
+
+    Optional<Kurs> kursOptional = kursRepository.findById(kursId);
+
+    List<KursLehrkraft> kursAndLehrkraftList =
+        kursLehrkraftRepository.findByKursIdOrderByLehrkraefteOrder(kursId);
+    List<Mitarbeiter> lehrkraefte =
+        kursAndLehrkraftList.stream().map(KursLehrkraft::getLehrkraft).toList();
+
+    int numberOfKursanmeldungen = kursanmeldungRepository.countByKursId(kursId);
+
+    return kursOptional.map(
+        kurs ->
+            new KursAndLehrkraefteAndNumberOfKursanmeldungen(
+                kurs, lehrkraefte, numberOfKursanmeldungen));
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public List<KursAndLehrkraefteAndNumberOfKursanmeldungen>
       findAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester(int semesterId) {
 
@@ -181,10 +202,11 @@ public class KursServiceImpl implements KursService {
 
   @Override
   @Transactional
-  public SaveKursResult saveKurs(Kurs kurs, Mitarbeiter lehrkraft1, Mitarbeiter lehrkraft2) {
+  public SaveResultAndIdOfSavedEntity<SaveKursResult> saveKurs(
+      Kurs kurs, Mitarbeiter lehrkraft1, Mitarbeiter lehrkraft2) {
 
     if (lehrkraft1 == null) {
-      return SaveKursResult.KEINE_LEHRKRAEFTE_ERFASST;
+      return new SaveResultAndIdOfSavedEntity<>(SaveKursResult.KEINE_LEHRKRAEFTE_ERFASST, -1);
     }
 
     List<Integer> lehrkraefteIds = new ArrayList<>();
@@ -209,31 +231,35 @@ public class KursServiceImpl implements KursService {
                     lehrkraefteIds,
                     kurs.getKursId());
     if (numberOfKurse > 0) {
-      return SaveKursResult.KURS_BEREITS_ERFASST;
+      return new SaveResultAndIdOfSavedEntity<>(SaveKursResult.KURS_BEREITS_ERFASST, -1);
     }
 
     int numberOfLektionsgebuehren =
         lektionsgebuehrenRepository.countByLektionslaenge(kurs.getKurslaenge());
     if (numberOfLektionsgebuehren == 0) {
-      return SaveKursResult.LEKTIONSGEBUEHREN_NICHT_ERFASST;
+      return new SaveResultAndIdOfSavedEntity<>(SaveKursResult.LEKTIONSGEBUEHREN_NICHT_ERFASST, -1);
     }
 
     if (semesterRepository.countBySemesterId(kurs.getSemester().getSemesterId()) == 0) {
-      return SaveKursResult.SEMESTER_DURCH_ANDEREN_BENUTZER_GELOESCHT;
+      return new SaveResultAndIdOfSavedEntity<>(
+          SaveKursResult.SEMESTER_DURCH_ANDEREN_BENUTZER_GELOESCHT, -1);
     }
 
     if (kurstypRepository.countByKurstypId(kurs.getKurstyp().getKurstypId()) == 0) {
-      return SaveKursResult.KURSTYP_DURCH_ANDEREN_BENUTZER_GELOESCHT;
+      return new SaveResultAndIdOfSavedEntity<>(
+          SaveKursResult.KURSTYP_DURCH_ANDEREN_BENUTZER_GELOESCHT, -1);
     }
 
     if (kursortRepository.countByKursortId(kurs.getKursort().getKursortId()) == 0) {
-      return SaveKursResult.KURSORT_DURCH_ANDEREN_BENUTZER_GELOESCHT;
+      return new SaveResultAndIdOfSavedEntity<>(
+          SaveKursResult.KURSORT_DURCH_ANDEREN_BENUTZER_GELOESCHT, -1);
     }
 
     Optional<Mitarbeiter> lehrkraft1Optional =
         mitarbeiterRepository.findById(lehrkraft1.getPersonId());
     if (lehrkraft1Optional.isEmpty()) {
-      return SaveKursResult.LEHRKRAFT_DURCH_ANDEREN_BENUTZER_GELOESCHT;
+      return new SaveResultAndIdOfSavedEntity<>(
+          SaveKursResult.LEHRKRAFT_DURCH_ANDEREN_BENUTZER_GELOESCHT, -1);
     }
     lehrkraft1 = lehrkraft1Optional.get();
 
@@ -241,7 +267,8 @@ public class KursServiceImpl implements KursService {
       Optional<Mitarbeiter> lehrkraft2Optional =
           mitarbeiterRepository.findById(lehrkraft2.getPersonId());
       if (lehrkraft2Optional.isEmpty()) {
-        return SaveKursResult.LEHRKRAFT_DURCH_ANDEREN_BENUTZER_GELOESCHT;
+        return new SaveResultAndIdOfSavedEntity<>(
+            SaveKursResult.LEHRKRAFT_DURCH_ANDEREN_BENUTZER_GELOESCHT, -1);
       }
       lehrkraft2 = lehrkraft2Optional.get();
     }
@@ -250,7 +277,8 @@ public class KursServiceImpl implements KursService {
 
     createOrUpdateKursLehrkraefte(kurs, lehrkraft1, lehrkraft2);
 
-    return SaveKursResult.SPEICHERN_ERFOLGREICH;
+    return new SaveResultAndIdOfSavedEntity<>(
+        SaveKursResult.SPEICHERN_ERFOLGREICH, kurs.getKursId());
   }
 
   private void createOrUpdateKursLehrkraefte(

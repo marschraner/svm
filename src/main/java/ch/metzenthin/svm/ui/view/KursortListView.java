@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 /**
  * @author Hans Stamm
  */
-public class KursortListView extends AbstractListPanelView<KursortListPanel> {
+public class KursortListView extends AbstractSortableListPanelView<KursortListPanel> {
 
   public KursortListView(TableModel<?, ?> tableModel, ActionListener closeListener) {
     super(tableModel, new KursortListPanel(), closeListener);

@@ -21,6 +21,7 @@ import ch.metzenthin.svm.domain.model.validation.ValidationResult;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResult;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.service.SemesterService;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import ch.metzenthin.svm.service.result.SaveSemesterResult;
 import jakarta.persistence.OptimisticLockException;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
 
   private final boolean neu;
   private final Semester semester;
+  private SaveSuccessfulAndEntityIdOptional saveSuccessfulAndSemesterIdOptional;
   private final SemesterService semesterService;
 
   @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
@@ -45,12 +47,23 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
       Optional<Semester> semesterToBeModifiedOptional, SemesterService semesterService) {
     this.neu = semesterToBeModifiedOptional.isEmpty();
     this.semester = semesterToBeModifiedOptional.orElseGet(Semester::new);
+    saveSuccessfulAndSemesterIdOptional =
+        new SaveSuccessfulAndEntityIdOptional(
+            false,
+            (semester.getSemesterId() != null)
+                ? Optional.of(semester.getSemesterId())
+                : Optional.empty());
     this.semesterService = semesterService;
   }
 
   @Override
   public boolean isNeu() {
     return neu;
+  }
+
+  @Override
+  public SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndSemesterIdOptional() {
+    return saveSuccessfulAndSemesterIdOptional;
   }
 
   @Override
@@ -352,9 +365,14 @@ public class CreateOrUpdateSemesterModelImpl implements CreateOrUpdateSemesterMo
   private SaveSemesterResult saveSemester(boolean updateSemesterrechnungen) {
     SaveSemesterResult saveSemesterResult;
     try {
-      saveSemesterResult =
+      SaveResultAndIdOfSavedEntity<SaveSemesterResult> saveResultAndIdOfSavedEntity =
           semesterService.saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(
               semester, updateSemesterrechnungen);
+      saveSemesterResult = saveResultAndIdOfSavedEntity.saveResult();
+      saveSuccessfulAndSemesterIdOptional =
+          new SaveSuccessfulAndEntityIdOptional(
+              saveSemesterResult.isSubmitSuccessful(),
+              Optional.of(saveResultAndIdOfSavedEntity.idOfSavedEntity()));
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveSemesterResult = SaveSemesterResult.SEMESTER_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

@@ -16,6 +16,8 @@ public interface CreateOrUpdateKursModel {
 
   boolean isNeu();
 
+  SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndKursIdOptional();
+
   KursFields getKursFields();
 
   Kurstyp getKurstyp();

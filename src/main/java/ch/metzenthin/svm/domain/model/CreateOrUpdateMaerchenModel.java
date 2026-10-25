@@ -12,6 +12,8 @@ public interface CreateOrUpdateMaerchenModel {
 
   boolean isNeu();
 
+  SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndMaerchenIdOptional();
+
   MaerchenFields getMaerchenFields();
 
   String getNaechstesNochNichtErfasstesSchuljahr();

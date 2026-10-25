@@ -62,13 +62,13 @@ public class KurstypListModel
   }
 
   @Override
-  protected Optional<Kurstyp> loadObjectFromDatabase(int idOfEntityToBeLoaded) {
-    throw new UnsupportedOperationException();
+  protected Optional<Kurstyp> loadObjectFromDatabase(int kurstypId) {
+    return kurstypService.findKurstypById(kurstypId);
   }
 
   @Override
-  protected Optional<Kurstyp> reloadObjectFromDatabase(Kurstyp objectToBeReloaded) {
-    throw new UnsupportedOperationException();
+  protected Optional<Kurstyp> reloadObjectFromDatabase(Kurstyp kurstyp) {
+    return kurstypService.findKurstypById(kurstyp.getKurstypId());
   }
 
   @Override

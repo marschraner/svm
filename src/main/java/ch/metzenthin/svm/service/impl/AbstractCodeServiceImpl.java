@@ -6,7 +6,9 @@ import ch.metzenthin.svm.service.CodeService;
 import ch.metzenthin.svm.service.ReferencedCodeService;
 import ch.metzenthin.svm.service.result.DeleteCodeResult;
 import ch.metzenthin.svm.service.result.SaveCodeResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -38,6 +40,12 @@ public abstract class AbstractCodeServiceImpl<T extends Code> implements CodeSer
 
   @Override
   @Transactional(readOnly = true)
+  public Optional<T> findCodeById(int codeId) {
+    return codeRepository.findById(codeId);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public List<T> findAllCodes() {
     return codeRepository.findAllOrderByKuerzel();
   }
@@ -50,15 +58,16 @@ public abstract class AbstractCodeServiceImpl<T extends Code> implements CodeSer
 
   @Override
   @Transactional
-  public SaveCodeResult saveCode(T code) {
+  public SaveResultAndIdOfSavedEntity<SaveCodeResult> saveCode(T code) {
     long numberOfAlreadyExistingCodes =
         getNumberOfAlreadyExistingKuerzel(code.getCodeId(), code.getKuerzel());
     if (numberOfAlreadyExistingCodes > 0) {
-      return SaveCodeResult.CODE_BEREITS_ERFASST;
+      return new SaveResultAndIdOfSavedEntity<>(SaveCodeResult.CODE_BEREITS_ERFASST, -1);
     }
 
-    codeRepository.save(code);
-    return SaveCodeResult.SPEICHERN_ERFOLGREICH;
+    code = codeRepository.save(code);
+    return new SaveResultAndIdOfSavedEntity<>(
+        SaveCodeResult.SPEICHERN_ERFOLGREICH, code.getCodeId());
   }
 
   @Override

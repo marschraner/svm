@@ -159,9 +159,9 @@ public class MitarbeiterListModel
 
   @Override
   protected Optional<MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert> loadObjectFromDatabase(
-      int idOfEntityToBeLoaded) {
+      int mitarbeiterId) {
     Optional<MitarbeiterAndMitarbeiterCodes> mitarbeiterAndMitarbeiterCodesOptional =
-        mitarbeiterService.findMitarbeiterAndMitarbeiterCodes(idOfEntityToBeLoaded);
+        mitarbeiterService.findMitarbeiterAndMitarbeiterCodes(mitarbeiterId);
     return mitarbeiterAndMitarbeiterCodesOptional.map(
         mitarbeiterAndMitarbeiterCodes ->
             new MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert(
@@ -172,16 +172,17 @@ public class MitarbeiterListModel
 
   @Override
   protected Optional<MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert> reloadObjectFromDatabase(
-      MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert objectToBeReloaded) {
+      MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert
+          mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert) {
     Optional<MitarbeiterAndMitarbeiterCodes> mitarbeiterAndMitarbeiterCodesOptional =
         mitarbeiterService.findMitarbeiterAndMitarbeiterCodes(
-            objectToBeReloaded.getMitarbeiter().getPersonId());
+            mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.getMitarbeiter().getPersonId());
     return mitarbeiterAndMitarbeiterCodesOptional.map(
         mitarbeiterAndMitarbeiterCodes ->
             new MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert(
                 mitarbeiterAndMitarbeiterCodes.mitarbeiter(),
                 getMitarbeiterCodesAsString(mitarbeiterAndMitarbeiterCodes),
-                objectToBeReloaded.isSelektiert()));
+                mitarbeiterAndMitarbeiterCodesAsStringAndSelektiert.isSelektiert()));
   }
 
   public ExportListResult exportList(Listentyp listentyp, String listenTitel, File outputFile) {

@@ -9,9 +9,11 @@ import ch.metzenthin.svm.service.result.DeleteKursResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
 import ch.metzenthin.svm.service.result.ImportKurseResult;
 import ch.metzenthin.svm.service.result.SaveKursResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Martin Schraner
@@ -28,10 +30,14 @@ public interface KursService {
 
   int countKursanmeldungenByKursId(int kursId);
 
+  Optional<KursAndLehrkraefteAndNumberOfKursanmeldungen>
+      findKursAndLehrkraefteAndNumberOfKursanmeldungenById(int kursId);
+
   List<KursAndLehrkraefteAndNumberOfKursanmeldungen>
       findAllKurseAndLehrkraefteAndNumberOfKursanmeldungenForSemester(int semesterId);
 
-  SaveKursResult saveKurs(Kurs kurs, Mitarbeiter lehrkraft1, Mitarbeiter lehrkraft2);
+  SaveResultAndIdOfSavedEntity<SaveKursResult> saveKurs(
+      Kurs kurs, Mitarbeiter lehrkraft1, Mitarbeiter lehrkraft2);
 
   DeleteKursResult deleteKurs(int kursId);
 

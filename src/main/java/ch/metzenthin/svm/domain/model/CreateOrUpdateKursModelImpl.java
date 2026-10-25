@@ -21,6 +21,7 @@ import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.KurstypService;
 import ch.metzenthin.svm.service.MitarbeiterService;
 import ch.metzenthin.svm.service.result.SaveKursResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import jakarta.persistence.OptimisticLockException;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
   private final Semester semester;
   private Mitarbeiter lehrkraft1;
   private Mitarbeiter lehrkraft2;
+  private SaveSuccessfulAndEntityIdOptional saveSuccessfulAndKursIdOptional;
   private final KursService kursService;
   private final KurstypService kurstypService;
   private final KursortService kursortService;
@@ -57,6 +59,9 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
     this.neu = kursToBeModifiedOptional.isEmpty();
     this.kurs = kursToBeModifiedOptional.orElseGet(Kurs::new);
     this.semester = semester;
+    saveSuccessfulAndKursIdOptional =
+        new SaveSuccessfulAndEntityIdOptional(
+            false, (kurs.getKursId() != null) ? Optional.of(kurs.getKursId()) : Optional.empty());
     this.kurstypService = kurstypService;
     this.kursortService = kursortService;
     this.mitarbeiterService = mitarbeiterService;
@@ -81,6 +86,11 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
   @Override
   public boolean isNeu() {
     return neu;
+  }
+
+  @Override
+  public SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndKursIdOptional() {
+    return saveSuccessfulAndKursIdOptional;
   }
 
   @Override
@@ -325,7 +335,13 @@ public class CreateOrUpdateKursModelImpl implements CreateOrUpdateKursModel {
   private SaveKursResult saveKurs() {
     SaveKursResult saveKursResult;
     try {
-      saveKursResult = kursService.saveKurs(kurs, lehrkraft1, lehrkraft2);
+      SaveResultAndIdOfSavedEntity<SaveKursResult> saveResultAndIdOfSavedEntity =
+          kursService.saveKurs(kurs, lehrkraft1, lehrkraft2);
+      saveKursResult = saveResultAndIdOfSavedEntity.saveResult();
+      saveSuccessfulAndKursIdOptional =
+          new SaveSuccessfulAndEntityIdOptional(
+              saveKursResult.isSubmitSuccessful(),
+              Optional.of(saveResultAndIdOfSavedEntity.idOfSavedEntity()));
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveKursResult = SaveKursResult.KURS_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

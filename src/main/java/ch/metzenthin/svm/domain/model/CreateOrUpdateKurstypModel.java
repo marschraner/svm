@@ -11,6 +11,8 @@ public interface CreateOrUpdateKurstypModel {
 
   boolean isNeu();
 
+  SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndKurstypIdOptional();
+
   KurstypFields getKurstypFields();
 
   ValidationResult validateBezeichnung(String bezeichnung);

@@ -65,14 +65,15 @@ public class MaerchenListModel
 
   @Override
   protected Optional<MaerchenAndNumberOfMaercheneinteilungen> loadObjectFromDatabase(
-      int idOfEntityToBeLoaded) {
-    throw new UnsupportedOperationException();
+      int maerchenId) {
+    return maerchenService.findMaerchenAndNumberOfMaercheneinteilungenById(maerchenId);
   }
 
   @Override
   protected Optional<MaerchenAndNumberOfMaercheneinteilungen> reloadObjectFromDatabase(
-      MaerchenAndNumberOfMaercheneinteilungen objectToBeReloaded) {
-    throw new UnsupportedOperationException();
+      MaerchenAndNumberOfMaercheneinteilungen maerchenAndNumberOfMaercheneinteilungen) {
+    return maerchenService.findMaerchenAndNumberOfMaercheneinteilungenById(
+        maerchenAndNumberOfMaercheneinteilungen.maerchen().getMaerchenId());
   }
 
   @Override

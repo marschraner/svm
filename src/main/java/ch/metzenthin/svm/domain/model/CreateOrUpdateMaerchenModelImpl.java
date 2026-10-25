@@ -12,6 +12,7 @@ import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResul
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.service.MaerchenService;
 import ch.metzenthin.svm.service.result.SaveMaerchenResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import jakarta.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +29,7 @@ public class CreateOrUpdateMaerchenModelImpl implements CreateOrUpdateMaerchenMo
 
   private final boolean neu;
   private final Maerchen maerchen;
+  private SaveSuccessfulAndEntityIdOptional saveSuccessfulAndMaerchenIdOptional;
   private final MaerchenService maerchenService;
 
   @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
@@ -35,12 +37,23 @@ public class CreateOrUpdateMaerchenModelImpl implements CreateOrUpdateMaerchenMo
       Optional<Maerchen> maerchenToBeModifiedOptional, MaerchenService maerchenService) {
     this.neu = maerchenToBeModifiedOptional.isEmpty();
     this.maerchen = maerchenToBeModifiedOptional.orElseGet(Maerchen::new);
+    saveSuccessfulAndMaerchenIdOptional =
+        new SaveSuccessfulAndEntityIdOptional(
+            false,
+            (maerchen.getMaerchenId() != null)
+                ? Optional.of(maerchen.getMaerchenId())
+                : Optional.empty());
     this.maerchenService = maerchenService;
   }
 
   @Override
   public boolean isNeu() {
     return neu;
+  }
+
+  @Override
+  public SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndMaerchenIdOptional() {
+    return saveSuccessfulAndMaerchenIdOptional;
   }
 
   @Override
@@ -164,7 +177,13 @@ public class CreateOrUpdateMaerchenModelImpl implements CreateOrUpdateMaerchenMo
   private SaveMaerchenResult saveMaerchen() {
     SaveMaerchenResult saveMaerchenResult;
     try {
-      saveMaerchenResult = maerchenService.saveMaerchen(maerchen);
+      SaveResultAndIdOfSavedEntity<SaveMaerchenResult> saveResultAndIdOfSavedEntity =
+          maerchenService.saveMaerchen(maerchen);
+      saveMaerchenResult = saveResultAndIdOfSavedEntity.saveResult();
+      saveSuccessfulAndMaerchenIdOptional =
+          new SaveSuccessfulAndEntityIdOptional(
+              saveMaerchenResult.isSubmitSuccessful(),
+              Optional.of(saveResultAndIdOfSavedEntity.idOfSavedEntity()));
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveMaerchenResult = SaveMaerchenResult.MAERCHEN_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

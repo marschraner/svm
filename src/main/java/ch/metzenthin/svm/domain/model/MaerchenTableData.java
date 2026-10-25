@@ -51,6 +51,6 @@ public class MaerchenTableData extends AbstractTableData<MaerchenAndNumberOfMaer
   public List<SortKey> getSortKeys() {
     List<Field> columnsList = Arrays.asList(COLUMNS);
     return List.of(
-        new RowSorter.SortKey(columnsList.indexOf(Field.SCHULJAHR), SortOrder.ASCENDING));
+        new RowSorter.SortKey(columnsList.indexOf(Field.SCHULJAHR), SortOrder.DESCENDING));
   }
 }

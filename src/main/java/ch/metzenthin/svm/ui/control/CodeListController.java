@@ -4,11 +4,13 @@ import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.CodeListModel;
 import ch.metzenthin.svm.domain.model.CodeTableData;
 import ch.metzenthin.svm.domain.model.CreateOrUpdateCodeModel;
+import ch.metzenthin.svm.domain.model.SaveSuccessfulAndEntityIdOptional;
 import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.service.result.DeleteCodeResult;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import ch.metzenthin.svm.ui.view.CodeListView;
 import java.awt.event.*;
+import java.util.Optional;
 
 /**
  * @param <T> Code-Typ, z.B. SchuelerCode
@@ -40,7 +42,12 @@ public abstract class CodeListController<T extends Code>
     CreateOrUpdateCodeController createOrUpdateCodeController =
         new CreateOrUpdateCodeController(createOrUpdateCodeModel, getNeuDialogTitle());
     createOrUpdateCodeController.showDialog();
-    reloadTableData();
+    SaveSuccessfulAndEntityIdOptional saveOrUpdateSuccessfulAndCodeIdOptional =
+        createOrUpdateCodeModel.getSaveSuccessfulAndCodeIdOptional();
+    Optional<Integer> codeIdOptional = saveOrUpdateSuccessfulAndCodeIdOptional.entityIdOptional();
+    if (saveOrUpdateSuccessfulAndCodeIdOptional.saveSuccessful() && codeIdOptional.isPresent()) {
+      insertCreatedObjectToList(codeIdOptional.get());
+    }
   }
 
   protected abstract String getNeuDialogTitle();
@@ -48,11 +55,16 @@ public abstract class CodeListController<T extends Code>
   @Override
   protected void showOnBearbeitenDialog() {
     CreateOrUpdateCodeModel createOrUpdateCodeModel =
-        model.createCreateOrUpdateModel(svmContext, view.getIndexOfSelectedRow());
+        model.createCreateOrUpdateModel(svmContext, view.convertRowIndexToModel());
     CreateOrUpdateCodeController createOrUpdateCodeController =
         new CreateOrUpdateCodeController(createOrUpdateCodeModel, getBearbeitenDialogTitle());
     createOrUpdateCodeController.showDialog();
-    reloadTableData();
+    SaveSuccessfulAndEntityIdOptional saveOrUpdateSuccessfulAndCodeIdOptional =
+        createOrUpdateCodeModel.getSaveSuccessfulAndCodeIdOptional();
+    if (saveOrUpdateSuccessfulAndCodeIdOptional.saveSuccessful()
+        && saveOrUpdateSuccessfulAndCodeIdOptional.entityIdOptional().isPresent()) {
+      reloadSelectedRow();
+    }
   }
 
   protected abstract String getBearbeitenDialogTitle();

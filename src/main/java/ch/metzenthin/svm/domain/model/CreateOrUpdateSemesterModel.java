@@ -13,6 +13,8 @@ public interface CreateOrUpdateSemesterModel {
 
   boolean isNeu();
 
+  SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndSemesterIdOptional();
+
   SemesterFields getSemesterFields();
 
   SemesterFields getNaechstesNochNichtErfasstesSemester();

@@ -56,7 +56,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="1f27d" class="javax.swing.JTable" binding="maerchenListTable" custom-create="true">
+                  <component id="1f27d" class="javax.swing.JTable" binding="maerchenListTable">
                     <constraints/>
                     <properties>
                       <preferredScrollableViewportSize width="750" height="400"/>

@@ -59,14 +59,15 @@ public class SemesterListModel
   }
 
   @Override
-  protected Optional<SemesterAndNumberOfKurse> loadObjectFromDatabase(int idOfEntityToBeLoaded) {
-    throw new UnsupportedOperationException();
+  protected Optional<SemesterAndNumberOfKurse> loadObjectFromDatabase(int semesterId) {
+    return semesterService.findSemesterAndNumberOfKurseById(semesterId);
   }
 
   @Override
   protected Optional<SemesterAndNumberOfKurse> reloadObjectFromDatabase(
-      SemesterAndNumberOfKurse objectToBeReloaded) {
-    throw new UnsupportedOperationException();
+      SemesterAndNumberOfKurse semesterAndNumberOfKurse) {
+    return semesterService.findSemesterAndNumberOfKurseById(
+        semesterAndNumberOfKurse.semester().getSemesterId());
   }
 
   @Override

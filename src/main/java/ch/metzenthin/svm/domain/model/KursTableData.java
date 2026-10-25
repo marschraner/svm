@@ -89,7 +89,7 @@ public class KursTableData extends AbstractTableData<KursAndLehrkraefteAndNumber
     return List.of(
         new RowSorter.SortKey(columnsList.indexOf(Field.KURSTYP_BEZEICHNUNG), SortOrder.ASCENDING),
         new RowSorter.SortKey(columnsList.indexOf(Field.STUFE), SortOrder.ASCENDING),
-        new RowSorter.SortKey(columnsList.indexOf(Field.WOCHENTAG), SortOrder.ASCENDING),
+        new RowSorter.SortKey(columnsList.indexOf(Field.TAG), SortOrder.ASCENDING),
         new RowSorter.SortKey(columnsList.indexOf(Field.ZEIT_BEGINN), SortOrder.ASCENDING),
         new RowSorter.SortKey(columnsList.indexOf(Field.ZEIT_ENDE), SortOrder.ASCENDING));
   }

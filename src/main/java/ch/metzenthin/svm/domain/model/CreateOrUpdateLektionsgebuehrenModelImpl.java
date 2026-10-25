@@ -12,6 +12,7 @@ import ch.metzenthin.svm.domain.model.validation.ValidationUtils;
 import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import ch.metzenthin.svm.service.LektionsgebuehrenService;
 import ch.metzenthin.svm.service.result.SaveLektionsgebuehrenResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import jakarta.persistence.OptimisticLockException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class CreateOrUpdateLektionsgebuehrenModelImpl
 
   private final boolean neu;
   private final Lektionsgebuehren lektionsgebuehren;
+  private SaveSuccessfulAndEntityIdOptional saveSuccessfulAndLektionsgebuehrenIdOptional;
   private final LektionsgebuehrenService lektionsgebuehrenService;
 
   public CreateOrUpdateLektionsgebuehrenModelImpl(
@@ -39,12 +41,23 @@ public class CreateOrUpdateLektionsgebuehrenModelImpl
     this.neu = lektionsgebuehrenToBeModifiedOptional.isEmpty();
     this.lektionsgebuehren =
         lektionsgebuehrenToBeModifiedOptional.orElseGet(Lektionsgebuehren::new);
+    saveSuccessfulAndLektionsgebuehrenIdOptional =
+        new SaveSuccessfulAndEntityIdOptional(
+            false,
+            (lektionsgebuehren.getId() != null)
+                ? Optional.of(lektionsgebuehren.getId())
+                : Optional.empty());
     this.lektionsgebuehrenService = lektionsgebuehrenService;
   }
 
   @Override
   public boolean isNeu() {
     return neu;
+  }
+
+  @Override
+  public SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndLektionsgebuehrenIdOptional() {
+    return saveSuccessfulAndLektionsgebuehrenIdOptional;
   }
 
   @Override
@@ -150,8 +163,13 @@ public class CreateOrUpdateLektionsgebuehrenModelImpl
   private SaveLektionsgebuehrenResult saveLektionsgebuehren() {
     SaveLektionsgebuehrenResult saveLektionsgebuehrenResult;
     try {
-      saveLektionsgebuehrenResult =
+      SaveResultAndIdOfSavedEntity<SaveLektionsgebuehrenResult> saveResultAndIdOfSavedEntity =
           lektionsgebuehrenService.saveLektionsgebuehren(lektionsgebuehren);
+      saveLektionsgebuehrenResult = saveResultAndIdOfSavedEntity.saveResult();
+      saveSuccessfulAndLektionsgebuehrenIdOptional =
+          new SaveSuccessfulAndEntityIdOptional(
+              saveLektionsgebuehrenResult.isSubmitSuccessful(),
+              Optional.of(saveResultAndIdOfSavedEntity.idOfSavedEntity()));
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveLektionsgebuehrenResult =
           SaveLektionsgebuehrenResult.LEKTIONSGEBUEHREN_DURCH_ANDEREN_BENUTZER_VERAENDERT;

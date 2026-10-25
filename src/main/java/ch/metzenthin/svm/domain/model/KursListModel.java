@@ -66,14 +66,15 @@ public class KursListModel
 
   @Override
   protected Optional<KursAndLehrkraefteAndNumberOfKursanmeldungen> loadObjectFromDatabase(
-      int idOfEntityToBeLoaded) {
-    throw new UnsupportedOperationException();
+      int kursId) {
+    return kursService.findKursAndLehrkraefteAndNumberOfKursanmeldungenById(kursId);
   }
 
   @Override
   protected Optional<KursAndLehrkraefteAndNumberOfKursanmeldungen> reloadObjectFromDatabase(
-      KursAndLehrkraefteAndNumberOfKursanmeldungen objectToBeReloaded) {
-    throw new UnsupportedOperationException();
+      KursAndLehrkraefteAndNumberOfKursanmeldungen kursAndLehrkraefteAndNumberOfKursanmeldungen) {
+    return kursService.findKursAndLehrkraefteAndNumberOfKursanmeldungenById(
+        kursAndLehrkraefteAndNumberOfKursanmeldungen.kurs().getKursId());
   }
 
   public boolean isSemesterErstesSemester() {

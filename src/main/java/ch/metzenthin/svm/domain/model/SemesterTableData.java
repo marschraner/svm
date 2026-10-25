@@ -67,7 +67,7 @@ public class SemesterTableData extends AbstractTableData<SemesterAndNumberOfKurs
   public List<SortKey> getSortKeys() {
     List<Field> columnsList = Arrays.asList(COLUMNS);
     return List.of(
-        new RowSorter.SortKey(columnsList.indexOf(Field.SEMESTERBEGINN), SortOrder.ASCENDING),
-        new RowSorter.SortKey(columnsList.indexOf(Field.SEMESTERENDE), SortOrder.ASCENDING));
+        new RowSorter.SortKey(columnsList.indexOf(Field.SEMESTERBEGINN), SortOrder.DESCENDING),
+        new RowSorter.SortKey(columnsList.indexOf(Field.SEMESTERENDE), SortOrder.DESCENDING));
   }
 }

@@ -9,6 +9,7 @@ import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndSubmitResul
 import ch.metzenthin.svm.persistence.entities.Kursort;
 import ch.metzenthin.svm.service.KursortService;
 import ch.metzenthin.svm.service.result.SaveKursortResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import jakarta.persistence.OptimisticLockException;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
 
   private final boolean neu;
   private final Kursort kursort;
+  private SaveSuccessfulAndEntityIdOptional saveSuccessfulAndKursortIdOptional;
   private final KursortService kursortService;
 
   @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
@@ -32,12 +34,23 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
       Optional<Kursort> kursortToBeModifiedOptional, KursortService kursortService) {
     this.neu = kursortToBeModifiedOptional.isEmpty();
     this.kursort = kursortToBeModifiedOptional.orElseGet(Kursort::new);
+    saveSuccessfulAndKursortIdOptional =
+        new SaveSuccessfulAndEntityIdOptional(
+            false,
+            (kursort.getKursortId() != null)
+                ? Optional.of(kursort.getKursortId())
+                : Optional.empty());
     this.kursortService = kursortService;
   }
 
   @Override
   public boolean isNeu() {
     return neu;
+  }
+
+  @Override
+  public SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndKursortIdOptional() {
+    return saveSuccessfulAndKursortIdOptional;
   }
 
   @Override
@@ -86,7 +99,13 @@ public class CreateOrUpdateKursortModelImpl implements CreateOrUpdateKursortMode
   private SaveKursortResult saveKursort() {
     SaveKursortResult saveKursortResult;
     try {
-      saveKursortResult = kursortService.saveKursort(kursort);
+      SaveResultAndIdOfSavedEntity<SaveKursortResult> saveResultAndIdOfSavedEntity =
+          kursortService.saveKursort(kursort);
+      saveKursortResult = saveResultAndIdOfSavedEntity.saveResult();
+      saveSuccessfulAndKursortIdOptional =
+          new SaveSuccessfulAndEntityIdOptional(
+              saveKursortResult.isSubmitSuccessful(),
+              Optional.of(saveResultAndIdOfSavedEntity.idOfSavedEntity()));
     } catch (OptimisticLockException | OptimisticLockingFailureException e) {
       saveKursortResult = SaveKursortResult.KURSORT_DURCH_ANDEREN_BENUTZER_VERAENDERT;
     }

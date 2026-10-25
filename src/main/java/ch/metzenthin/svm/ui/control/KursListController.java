@@ -8,6 +8,7 @@ import ch.metzenthin.svm.domain.model.KursListModel;
 import ch.metzenthin.svm.domain.model.KursTableData;
 import ch.metzenthin.svm.domain.model.ListenExportModel;
 import ch.metzenthin.svm.domain.model.ListenExportModelImpl;
+import ch.metzenthin.svm.domain.model.SaveSuccessfulAndEntityIdOptional;
 import ch.metzenthin.svm.service.result.DeleteKursResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
 import ch.metzenthin.svm.service.result.ImportKurseResult;
@@ -16,6 +17,7 @@ import ch.metzenthin.svm.ui.components.KursListPanel;
 import ch.metzenthin.svm.ui.components.SwingWorkerWithBusyDialog;
 import ch.metzenthin.svm.ui.view.KursListView;
 import java.awt.event.ActionListener;
+import java.util.Optional;
 
 /**
  * @author Martin Schraner
@@ -65,7 +67,12 @@ public class KursListController
     CreateOrUpdateKursController createOrUpdateKursController =
         new CreateOrUpdateKursController(createOrUpdateKursModel, "Neuer Kurs");
     createOrUpdateKursController.showDialog();
-    reloadTableData();
+    SaveSuccessfulAndEntityIdOptional saveOrUpdateSuccessfulAndKursIdOptional =
+        createOrUpdateKursModel.getSaveSuccessfulAndKursIdOptional();
+    Optional<Integer> kursIdOptional = saveOrUpdateSuccessfulAndKursIdOptional.entityIdOptional();
+    if (saveOrUpdateSuccessfulAndKursIdOptional.saveSuccessful() && kursIdOptional.isPresent()) {
+      insertCreatedObjectToList(kursIdOptional.get());
+    }
   }
 
   @Override
@@ -75,7 +82,12 @@ public class KursListController
     CreateOrUpdateKursController createOrUpdateKursController =
         new CreateOrUpdateKursController(createOrUpdateKursModel, "Kurs bearbeiten");
     createOrUpdateKursController.showDialog();
-    reloadTableData();
+    SaveSuccessfulAndEntityIdOptional saveOrUpdateSuccessfulAndKursIdOptional =
+        createOrUpdateKursModel.getSaveSuccessfulAndKursIdOptional();
+    if (saveOrUpdateSuccessfulAndKursIdOptional.saveSuccessful()
+        && saveOrUpdateSuccessfulAndKursIdOptional.entityIdOptional().isPresent()) {
+      reloadSelectedRow();
+    }
   }
 
   @Override
@@ -100,9 +112,9 @@ public class KursListController
           case KURS_VON_KURSANMELDUNGEN_REFERENZIERT -> showErrorMessageDialog(deleteKursResult);
           case KURS_DURCH_ANDEREN_BENUTZER_VERAENDERT -> {
             showErrorMessageDialog(deleteKursResult);
-            reloadTableData();
+            reloadSelectedRow();
           }
-          case LOESCHEN_ERFOLGREICH -> reloadTableData();
+          case LOESCHEN_ERFOLGREICH -> removeSelectedRow();
         }
       }
     }

@@ -5,10 +5,12 @@ import ch.metzenthin.svm.domain.model.CreateOrUpdateMaerchenModel;
 import ch.metzenthin.svm.domain.model.MaerchenAndNumberOfMaercheneinteilungen;
 import ch.metzenthin.svm.domain.model.MaerchenListModel;
 import ch.metzenthin.svm.domain.model.MaerchenTableData;
+import ch.metzenthin.svm.domain.model.SaveSuccessfulAndEntityIdOptional;
 import ch.metzenthin.svm.service.result.DeleteMaerchenResult;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import ch.metzenthin.svm.ui.view.MaerchenListView;
 import java.awt.event.ActionListener;
+import java.util.Optional;
 
 /**
  * @author Martin Schraner
@@ -42,16 +44,28 @@ public class MaerchenListController
     CreateOrUpdateMaerchenController createOrUpdateMaerchenController =
         new CreateOrUpdateMaerchenController(createOrUpdateMaerchenModel, "Neues Märchen");
     createOrUpdateMaerchenController.showDialog();
-    reloadTableData();
+    SaveSuccessfulAndEntityIdOptional saveOrUpdateSuccessfulAndMaerchenIdOptional =
+        createOrUpdateMaerchenModel.getSaveSuccessfulAndMaerchenIdOptional();
+    Optional<Integer> maerchenIdOptional =
+        saveOrUpdateSuccessfulAndMaerchenIdOptional.entityIdOptional();
+    if (saveOrUpdateSuccessfulAndMaerchenIdOptional.saveSuccessful()
+        && maerchenIdOptional.isPresent()) {
+      insertCreatedObjectToList(maerchenIdOptional.get());
+    }
   }
 
   @Override
   protected void showOnBearbeitenDialog() {
     CreateOrUpdateMaerchenModel createOrUpdateMaerchenModel =
-        model.createCreateOrUpdateModel(svmContext, view.getIndexOfSelectedRow());
+        model.createCreateOrUpdateModel(svmContext, view.convertRowIndexToModel());
     CreateOrUpdateMaerchenController createOrUpdateMaerchenController =
         new CreateOrUpdateMaerchenController(createOrUpdateMaerchenModel, "Märchen bearbeiten");
     createOrUpdateMaerchenController.showDialog();
-    reloadTableData();
+    SaveSuccessfulAndEntityIdOptional saveOrUpdateSuccessfulAndMaerchenIdOptional =
+        createOrUpdateMaerchenModel.getSaveSuccessfulAndMaerchenIdOptional();
+    if (saveOrUpdateSuccessfulAndMaerchenIdOptional.saveSuccessful()
+        && saveOrUpdateSuccessfulAndMaerchenIdOptional.entityIdOptional().isPresent()) {
+      reloadSelectedRow();
+    }
   }
 }

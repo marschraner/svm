@@ -70,14 +70,14 @@ public class LektionsgebuehrenListModel
   }
 
   @Override
-  protected Optional<Lektionsgebuehren> loadObjectFromDatabase(int idOfEntityToBeLoaded) {
-    throw new UnsupportedOperationException();
+  protected Optional<Lektionsgebuehren> loadObjectFromDatabase(int lektionsgebuehrenId) {
+    return lektionsgebuehrenService.findLektionsgebuehrenById(lektionsgebuehrenId);
   }
 
   @Override
   protected Optional<Lektionsgebuehren> reloadObjectFromDatabase(
-      Lektionsgebuehren objectToBeReloaded) {
-    throw new UnsupportedOperationException();
+      Lektionsgebuehren lektionsgebuehren) {
+    return lektionsgebuehrenService.findLektionsgebuehrenById(lektionsgebuehren.getId());
   }
 
   @Override

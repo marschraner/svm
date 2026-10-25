@@ -75,7 +75,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="e4160" class="javax.swing.JTable" binding="kurstypTable" custom-create="true">
+                  <component id="e4160" class="javax.swing.JTable" binding="kurstypTable">
                     <constraints/>
                     <properties>
                       <preferredScrollableViewportSize width="400" height="300"/>

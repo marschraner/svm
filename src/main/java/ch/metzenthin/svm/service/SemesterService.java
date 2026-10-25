@@ -4,6 +4,7 @@ import ch.metzenthin.svm.domain.model.PreviousCurrentNextSemester;
 import ch.metzenthin.svm.domain.model.SemesterAndNumberOfKurse;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.service.result.DeleteSemesterResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import ch.metzenthin.svm.service.result.SaveSemesterResult;
 import java.util.Calendar;
 import java.util.List;
@@ -23,6 +24,8 @@ public interface SemesterService {
       Calendar ferienbeginn2,
       Calendar ferienende2);
 
+  Optional<SemesterAndNumberOfKurse> findSemesterAndNumberOfKurseById(int semesterId);
+
   Optional<Semester> findNextSemester(Semester semester);
 
   Optional<Semester> findSemesterOneYearBefore(Semester semester);
@@ -41,8 +44,9 @@ public interface SemesterService {
 
   List<SemesterAndNumberOfKurse> findAllSemesterAndNumberOfKurse();
 
-  SaveSemesterResult saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(
-      Semester semester, boolean updateSemesterrechnungen);
+  SaveResultAndIdOfSavedEntity<SaveSemesterResult>
+      saveSemesterAndUpdateAnzahlWochenOfSemesterrechnungen(
+          Semester semester, boolean updateSemesterrechnungen);
 
   DeleteSemesterResult deleteSemesterrechnungenAndSemester(Semester semester);
 }

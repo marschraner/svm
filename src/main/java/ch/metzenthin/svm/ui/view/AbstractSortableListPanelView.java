@@ -4,7 +4,6 @@ import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import ch.metzenthin.svm.ui.components.AbstractListPanel;
 import java.awt.event.ActionListener;
 import java.util.List;
-import javax.swing.JTable;
 import javax.swing.RowSorter;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.table.TableRowSorter;
@@ -23,7 +22,6 @@ public abstract class AbstractSortableListPanelView<T extends AbstractListPanel>
 
   private void configTableColumnsSort() {
     table.setAutoCreateRowSorter(true);
-    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
     // Das Setzen der SortKeys muss initial gemacht werden, damit eingefügte Rows am richtigen Ort
     // einsortiert werden.

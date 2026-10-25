@@ -12,6 +12,8 @@ public interface CreateOrUpdateLektionsgebuehrenModel {
 
   boolean isNeu();
 
+  SaveSuccessfulAndEntityIdOptional getSaveSuccessfulAndLektionsgebuehrenIdOptional();
+
   LektionsgebuehrenFields getLektionsgebuehrenFields();
 
   ValidationResult validateLektionslaenge(int lektionslaenge);

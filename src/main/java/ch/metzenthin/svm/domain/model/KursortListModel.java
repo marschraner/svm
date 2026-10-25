@@ -62,13 +62,13 @@ public class KursortListModel
   }
 
   @Override
-  protected Optional<Kursort> loadObjectFromDatabase(int idOfEntityToBeLoaded) {
-    throw new UnsupportedOperationException();
+  protected Optional<Kursort> loadObjectFromDatabase(int kursortId) {
+    return kursortService.findKursortById(kursortId);
   }
 
   @Override
-  protected Optional<Kursort> reloadObjectFromDatabase(Kursort objectToBeReloaded) {
-    throw new UnsupportedOperationException();
+  protected Optional<Kursort> reloadObjectFromDatabase(Kursort kursort) {
+    return kursortService.findKursortById(kursort.getKursortId());
   }
 
   @Override

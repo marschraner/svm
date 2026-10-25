@@ -10,11 +10,13 @@ import ch.metzenthin.svm.service.MaerchenService;
 import ch.metzenthin.svm.service.MaercheneinteilungService;
 import ch.metzenthin.svm.service.result.DeleteMaerchenResult;
 import ch.metzenthin.svm.service.result.SaveMaerchenResult;
+import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,20 @@ public class MaerchenServiceImpl implements MaerchenService {
     this.maercheneinteilungService = maercheneinteilungService;
     this.maerchenRepository = maerchenRepository;
     this.maercheneinteilungRepository = maercheneinteilungRepository;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public Optional<MaerchenAndNumberOfMaercheneinteilungen>
+      findMaerchenAndNumberOfMaercheneinteilungenById(int maerchenId) {
+
+    Optional<Maerchen> maerchenOptional = maerchenRepository.findById(maerchenId);
+
+    int numberOfMaercheneinteilungen = maercheneinteilungRepository.countByMaerchenId(maerchenId);
+
+    return maerchenOptional.map(
+        maerchen ->
+            new MaerchenAndNumberOfMaercheneinteilungen(maerchen, numberOfMaercheneinteilungen));
   }
 
   @Override
@@ -90,6 +106,12 @@ public class MaerchenServiceImpl implements MaerchenService {
     return naechstesSchuljahr;
   }
 
+  private static boolean isMaerchenBereitsErfasst(
+      String naechstesSchuljahr, List<Maerchen> erfassteMaerchen) {
+    return erfassteMaerchen.stream()
+        .anyMatch(maerchen -> maerchen.getSchuljahr().equals(naechstesSchuljahr));
+  }
+
   @Override
   @Transactional(readOnly = true)
   public boolean existsMaerchenForSchuljahr(Integer maerchenId, String schuljahr) {
@@ -104,24 +126,19 @@ public class MaerchenServiceImpl implements MaerchenService {
         : maerchenRepository.countBySchuljahr(schuljahr);
   }
 
-  private static boolean isMaerchenBereitsErfasst(
-      String naechstesSchuljahr, List<Maerchen> erfassteMaerchen) {
-    return erfassteMaerchen.stream()
-        .anyMatch(maerchen -> maerchen.getSchuljahr().equals(naechstesSchuljahr));
-  }
-
   @Override
   @Transactional
-  public SaveMaerchenResult saveMaerchen(Maerchen maerchen) {
+  public SaveResultAndIdOfSavedEntity<SaveMaerchenResult> saveMaerchen(Maerchen maerchen) {
     long numberOfAlreadyExistingMaerchen =
         getNumberOfAlreadyExistingMaerchenInSchuljahr(
             maerchen.getMaerchenId(), maerchen.getSchuljahr());
     if (numberOfAlreadyExistingMaerchen > 0) {
-      return SaveMaerchenResult.MAERCHEN_BEREITS_ERFASST;
+      return new SaveResultAndIdOfSavedEntity<>(SaveMaerchenResult.MAERCHEN_BEREITS_ERFASST, -1);
     }
 
-    maerchenRepository.save(maerchen);
-    return SaveMaerchenResult.SPEICHERN_ERFOLGREICH;
+    maerchen = maerchenRepository.save(maerchen);
+    return new SaveResultAndIdOfSavedEntity<>(
+        SaveMaerchenResult.SPEICHERN_ERFOLGREICH, maerchen.getMaerchenId());
   }
 
   @Override

@@ -102,7 +102,7 @@ public abstract class AbstractListController<
       if (!saveDialogResult.isSubmitSuccessful()) {
         showErrorMessageDialog(saveDialogResult.getMessage());
         if (saveDialogResult.isDialogToBeClosed()) {
-          reloadTableData();
+          reloadSelectedRow();
         }
       } else {
         removeSelectedRow();
