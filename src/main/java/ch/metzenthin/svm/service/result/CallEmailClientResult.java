@@ -1,20 +1,18 @@
 package ch.metzenthin.svm.service.result;
 
-import java.util.Set;
 import lombok.Getter;
 
 /**
  * @author Hans Stamm
  */
-public record CallEmailClientResult(
-    CallResult callResult, Set<String> fehlendeEmailAdressen, Set<String> ungueltigeEmailAdressen) {
+public record CallEmailClientResult(CallResult callResult, CheckEmailResult checkResult) {
 
   @Getter
   public enum CallResult {
     EMAIL_CLIENT_ERFOLGREICH_AUFGERUFEN("E-Mail-Client erfolgreich aufgerufen.", true),
     KEINE_GUELTIGEN_EMAIL_ADRESSEN("Es sind keine gültigen E-Mail-Adresse vorhanden.", false),
-    FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT(
-        "Beim Aufruf des Email-Client ist ein Fehler aufgetreten.", false);
+    FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENTS(
+        "Beim Aufruf des E-Mail-Clients ist ein Fehler aufgetreten.", false);
 
     private final String message;
     private final boolean successful;

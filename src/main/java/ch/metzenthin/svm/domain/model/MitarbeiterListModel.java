@@ -8,6 +8,7 @@ import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
 import ch.metzenthin.svm.service.EmailService;
 import ch.metzenthin.svm.service.MitarbeiterService;
 import ch.metzenthin.svm.service.result.CallEmailClientResult;
+import ch.metzenthin.svm.service.result.CheckEmailResult;
 import ch.metzenthin.svm.service.result.DeleteMitarbeiterResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
 import ch.metzenthin.svm.ui.componentmodel.MitarbeiterTableModel;
@@ -188,6 +189,10 @@ public class MitarbeiterListModel
   public ExportListResult exportList(Listentyp listentyp, String listenTitel, File outputFile) {
     return mitarbeiterService.exportList(
         listentyp, listenTitel, outputFile, getTableModel().getRowIteratorSelektierteMitarbeiter());
+  }
+
+  public CheckEmailResult validateEmailAdressen() {
+    return emailService.checkEmailAdressen(getTableModel().getRowIteratorSelektierteMitarbeiter());
   }
 
   public CallEmailClientResult callEmailClient() {

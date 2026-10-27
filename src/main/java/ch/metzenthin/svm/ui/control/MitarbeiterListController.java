@@ -10,6 +10,7 @@ import ch.metzenthin.svm.domain.model.MitarbeiterListModel;
 import ch.metzenthin.svm.domain.model.MitarbeiterTableData;
 import ch.metzenthin.svm.domain.model.SaveSuccessfulAndEntityIdOptional;
 import ch.metzenthin.svm.service.result.CallEmailClientResult;
+import ch.metzenthin.svm.service.result.CheckEmailResult;
 import ch.metzenthin.svm.service.result.DeleteMitarbeiterResult;
 import ch.metzenthin.svm.service.result.ExportListResult;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
@@ -17,6 +18,7 @@ import ch.metzenthin.svm.ui.components.SwingWorkerWithBusyDialog;
 import ch.metzenthin.svm.ui.view.MitarbeiterListView;
 import java.awt.event.ActionListener;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Martin Schraner
@@ -232,26 +234,77 @@ public class MitarbeiterListController
           "Nicht alle Einträge selektiert");
     }
 
+    CheckEmailResult checkEmailResult = model.validateEmailAdressen();
+    if (!checkEmailResult.isSuccessful()) {
+      StringBuilder message = new StringBuilder();
+
+      appendCheckMessage(checkEmailResult, message);
+
+      if (checkEmailResult.gueltigeEmailAdressen().isEmpty()) {
+        message.append(
+            "Die Verarbeitung wird abgebrochen, da keine gültigen E-Mail-Adressen "
+                + "selektiert worden sind.");
+        view.showErrorMessageDialog(message.toString(), "Verarbeitung wird abgebrochen");
+        return;
+      }
+
+      int numberOfValidEmailAdressen = checkEmailResult.gueltigeEmailAdressen().size();
+      if (numberOfValidEmailAdressen > 1) {
+        message
+            .append("Soll ein Gruppen-E-Mail für die ")
+            .append(numberOfValidEmailAdressen)
+            .append(" gültigen E-Mail-Adressen erstellt werden?");
+      } else {
+        message.append("Soll ein E-Mail für die gültige E-Mail-Adresse erstellt werden?");
+      }
+      int result = view.showYesNoDialog(message.toString(), "Fortfahren?");
+      if (result != 0) {
+        return;
+      }
+    }
+
     CallEmailClientResult callEmailClientResult = model.callEmailClient();
+
     if (!callEmailClientResult.isSuccessful()) {
       view.showErrorMessageDialog(callEmailClientResult.getMessage(), "Fehler");
     }
 
-    if (!callEmailClientResult.fehlendeEmailAdressen().isEmpty()) {
-      view.showWarningMessageDialog(
-          "Für folgende Mitarbeiter ist keine E-Mail-Adresse erfasst:\n"
-              + String.join("\n", callEmailClientResult.fehlendeEmailAdressen()),
-          "Warnung");
-    }
-
-    if (!callEmailClientResult.ungueltigeEmailAdressen().isEmpty()) {
-      view.showWarningMessageDialog(
-          "Die folgende(n) E-Mail-Adresse(n) ist/sind ungültig und wurde(n) ignoriert:\n"
-              + String.join("\n", callEmailClientResult.ungueltigeEmailAdressen()),
-          "Warnung");
-    }
-
     view.setButtonEmailFocusPainted(false);
+  }
+
+  private static void appendCheckMessage(CheckEmailResult checkEmailResult, StringBuilder message) {
+    if (checkEmailResult.gueltigeEmailAdressen().isEmpty()) {
+      message.append("Es sind keine gültigen E-Mail-Adressen selektiert worden!\n\n");
+    }
+
+    appendInvalidEmailAdressenToMessage(
+        checkEmailResult.fehlendeEmailAdressen(),
+        checkEmailResult.ungueltigeEmailAdressen(),
+        message);
+  }
+
+  private static void appendInvalidEmailAdressenToMessage(
+      Set<String> fehlendeEmailAdressen,
+      Set<String> ungueltigeEmailAdressen,
+      StringBuilder message) {
+
+    if (!fehlendeEmailAdressen.isEmpty()) {
+      message
+          .append("Für ")
+          .append(fehlendeEmailAdressen.size())
+          .append(" Mitarbeiter ist keine E-Mail-Adresse erfasst:\n")
+          .append(String.join("\n", fehlendeEmailAdressen))
+          .append("\n\n");
+    }
+
+    if (!ungueltigeEmailAdressen.isEmpty()) {
+      message
+          .append("Für ")
+          .append(ungueltigeEmailAdressen.size())
+          .append(" Mitarbeiter ist eine ungültige E-Mail-Adresse erfasst: \n")
+          .append(String.join("\n", ungueltigeEmailAdressen))
+          .append("\n\n");
+    }
   }
 
   @Override

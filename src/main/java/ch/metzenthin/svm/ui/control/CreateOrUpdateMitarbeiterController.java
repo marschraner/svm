@@ -505,6 +505,8 @@ public class CreateOrUpdateMitarbeiterController
               validationResult, field, view::setErrorLabelFestnetzVisible);
       case NATEL ->
           setErrorLabelVisibleIfRequired(validationResult, field, view::setErrorLabelNatelVisible);
+      case EMAIL ->
+          setErrorLabelVisibleIfRequired(validationResult, field, view::setErrorLabelEmailVisible);
       case GEBURTSDATUM ->
           setErrorLabelVisibleIfRequired(
               validationResult, field, view::setErrorLabelGeburtsdatumVisible);

@@ -6,6 +6,7 @@ import ch.metzenthin.svm.domain.model.EmailAndNachnameAndVornameIfc;
 import ch.metzenthin.svm.service.EmailService;
 import ch.metzenthin.svm.service.result.CallEmailClientResult;
 import ch.metzenthin.svm.service.result.CallEmailClientResult.CallResult;
+import ch.metzenthin.svm.service.result.CheckEmailResult;
 import java.awt.Desktop;
 import java.net.URI;
 import java.util.Iterator;
@@ -32,13 +33,13 @@ public class EmailServiceImpl implements EmailService {
   }
 
   @Override
-  public CallEmailClientResult callDefaultEmailClient(
-      Iterator<? extends EmailAndNachnameAndVornameIfc> emailAndNachnameAndVornameIterator,
-      boolean blindkopien) {
+  public CheckEmailResult checkEmailAdressen(
+      Iterator<? extends EmailAndNachnameAndVornameIfc> emailAndNachnameAndVornameIterator) {
 
     Set<String> gueltigeEmailAdressen = new LinkedHashSet<>();
     Set<String> fehlendeEmailAdressen = new LinkedHashSet<>();
     Set<String> ungueltigeEmailAdressen = new LinkedHashSet<>();
+
     while (emailAndNachnameAndVornameIterator.hasNext()) {
       EmailAndNachnameAndVornameIfc next = emailAndNachnameAndVornameIterator.next();
       String emailOfMitarbeiter = next.getEmail();
@@ -58,14 +59,25 @@ public class EmailServiceImpl implements EmailService {
       }
     }
 
+    return new CheckEmailResult(
+        gueltigeEmailAdressen, fehlendeEmailAdressen, ungueltigeEmailAdressen);
+  }
+
+  @Override
+  public CallEmailClientResult callDefaultEmailClient(
+      Iterator<? extends EmailAndNachnameAndVornameIfc> emailAndNachnameAndVornameIterator,
+      boolean blindkopien) {
+
+    CheckEmailResult checkEmailResult = checkEmailAdressen(emailAndNachnameAndVornameIterator);
+
     CallResult callResult;
-    if (gueltigeEmailAdressen.isEmpty()) {
+    if (checkEmailResult.gueltigeEmailAdressen().isEmpty()) {
       callResult = CallResult.KEINE_GUELTIGEN_EMAIL_ADRESSEN;
     } else {
-      callResult = callDefaultEmailClient(gueltigeEmailAdressen, blindkopien);
+      callResult = callDefaultEmailClient(checkEmailResult.gueltigeEmailAdressen(), blindkopien);
     }
 
-    return new CallEmailClientResult(callResult, fehlendeEmailAdressen, ungueltigeEmailAdressen);
+    return new CallEmailClientResult(callResult, checkEmailResult);
   }
 
   @SuppressWarnings("java:S125")
@@ -92,7 +104,7 @@ public class EmailServiceImpl implements EmailService {
       desktop.mail(uri);
     } catch (Exception e) {
       LOGGER.trace("CallDefaultEmailClientCommand IO-Exception: {}", e.getMessage());
-      return CallResult.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENT;
+      return CallResult.FEHLER_BEIM_AUFRUF_DES_EMAIL_CLIENTS;
     }
 
     return CallResult.EMAIL_CLIENT_ERFOLGREICH_AUFGERUFEN;
