@@ -61,10 +61,6 @@ public interface ModelFactory {
 
   CodeSpecificHinzufuegenModel createCodeSchuelerHinzufuegenModel();
 
-  MitarbeitersModel createLehrkraefteModel();
-
-  MitarbeiterErfassenModel createMitarbeiterErfassenModel();
-
   CreateOrUpdateMitarbeiterModel createCreateOrUpdateMitarbeiterModel(
       Optional<Mitarbeiter> mitarbeiterToBeModifiedOptional);
 
@@ -119,8 +115,6 @@ public interface ModelFactory {
   SemesterrechnungBearbeitenModel createSemesterrechnungBearbeitenModel();
 
   RechnungsdatumErfassenModel createRechnungsdatumErfassenModel();
-
-  MitarbeiterSuchenModel createMitarbeitersSuchenModel();
 
   SearchMitarbeiterModel createSearchMitarbeiterModel();
 

@@ -3,9 +3,6 @@ package ch.metzenthin.svm.domain.model;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.service.ElternmithilfeCodeService;
-import ch.metzenthin.svm.service.KursortService;
-import ch.metzenthin.svm.service.KurstypService;
-import ch.metzenthin.svm.service.LektionsgebuehrenService;
 import ch.metzenthin.svm.service.MitarbeiterCodeService;
 import ch.metzenthin.svm.service.SchuelerCodeService;
 import ch.metzenthin.svm.service.SemesterService;
@@ -20,32 +17,23 @@ public class SvmModelImpl implements SvmModel {
 
   private final CommandInvoker commandInvoker = new CommandInvokerImpl();
 
-  private final KursortService kursortService;
-  private final KurstypService kurstypService;
   private final SchuelerCodeService schuelerCodeService;
   private final MitarbeiterCodeService mitarbeiterCodeService;
   private final ElternmithilfeCodeService elternmithilfeCodeService;
   private final SemesterrechnungCodeService semesterrechnungCodeService;
-  private final LektionsgebuehrenService lektionsgebuehrenService;
   private final SemesterService semesterService;
 
   @SuppressWarnings("java:S107")
   public SvmModelImpl(
-      KursortService kursortService,
-      KurstypService kurstypService,
       SchuelerCodeService schuelerCodeService,
       MitarbeiterCodeService mitarbeiterCodeService,
       ElternmithilfeCodeService elternmithilfeCodeService,
       SemesterrechnungCodeService semesterrechnungCodeService,
-      LektionsgebuehrenService lektionsgebuehrenService,
       SemesterService semesterService) {
-    this.kursortService = kursortService;
-    this.kurstypService = kurstypService;
     this.schuelerCodeService = schuelerCodeService;
     this.mitarbeiterCodeService = mitarbeiterCodeService;
     this.elternmithilfeCodeService = elternmithilfeCodeService;
     this.semesterrechnungCodeService = semesterrechnungCodeService;
-    this.lektionsgebuehrenService = lektionsgebuehrenService;
     this.semesterService = semesterService;
   }
 
@@ -132,45 +120,8 @@ public class SvmModelImpl implements SvmModel {
   }
 
   @Override
-  public List<Kursort> getKursorteAll() {
-    return kursortService.findAllKursorte();
-  }
-
-  @Override
-  public List<Kursort> getSelektierbareKursorteAll() {
-    List<Kursort> selektierbareKursorteAll = new ArrayList<>();
-    for (Kursort kursort : getKursorteAll()) {
-      if (kursort.isSelektierbar()) {
-        selektierbareKursorteAll.add(kursort);
-      }
-    }
-    return selektierbareKursorteAll;
-  }
-
-  @Override
-  public List<Kurstyp> getKurstypenAll() {
-    return kurstypService.findAllKurstypen();
-  }
-
-  @Override
-  public List<Kurstyp> getSelektierbareKurstypenAll() {
-    List<Kurstyp> selektierbareKurstypenAll = new ArrayList<>();
-    for (Kurstyp kurstyp : getKurstypenAll()) {
-      if (kurstyp.isSelektierbar()) {
-        selektierbareKurstypenAll.add(kurstyp);
-      }
-    }
-    return selektierbareKurstypenAll;
-  }
-
-  @Override
   public List<Semester> getSemestersAll() {
     return semesterService.findAllSemesters();
-  }
-
-  @Override
-  public List<SemesterAndNumberOfKurse> getSemestersAndNumberOfKurseAll() {
-    return semesterService.findAllSemesterAndNumberOfKurse();
   }
 
   @Override
@@ -178,10 +129,5 @@ public class SvmModelImpl implements SvmModel {
     FindAllMaerchensCommand findAllMaerchensCommand = new FindAllMaerchensCommand();
     commandInvoker.executeCommand(findAllMaerchensCommand);
     return findAllMaerchensCommand.getMaerchensAll();
-  }
-
-  @Override
-  public List<Lektionsgebuehren> getLektionsgebuehrenAllList() {
-    return lektionsgebuehrenService.findAllLektionsgebuehren();
   }
 }

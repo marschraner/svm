@@ -88,13 +88,10 @@ public class ModelFactoryImpl implements ModelFactory {
   @Override
   public SvmModel createSvmModel() {
     return new SvmModelImpl(
-        kursortService,
-        kurstypService,
         schuelerCodeService,
         mitarbeiterCodeService,
         elternmithilfeCodeService,
         semesterrechnungCodeService,
-        lektionsgebuehrenService,
         semesterService);
   }
 
@@ -198,16 +195,6 @@ public class ModelFactoryImpl implements ModelFactory {
   @Override
   public CodeSpecificHinzufuegenModel createCodeSchuelerHinzufuegenModel() {
     return new CodeSpecificHinzufuegenModelImpl();
-  }
-
-  @Override
-  public MitarbeitersModel createLehrkraefteModel() {
-    return new MitarbeitersModelImpl();
-  }
-
-  @Override
-  public MitarbeiterErfassenModel createMitarbeiterErfassenModel() {
-    return new MitarbeiterErfassenModelImpl();
   }
 
   @Override
@@ -347,11 +334,6 @@ public class ModelFactoryImpl implements ModelFactory {
   @Override
   public RechnungsdatumErfassenModel createRechnungsdatumErfassenModel() {
     return new RechnungsdatumErfassenModelImpl();
-  }
-
-  @Override
-  public MitarbeiterSuchenModel createMitarbeitersSuchenModel() {
-    return new MitarbeiterSuchenModelImpl();
   }
 
   @Override

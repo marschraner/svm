@@ -28,19 +28,7 @@ public interface SvmModel {
 
   List<Mitarbeiter> getAktiveLehrkraefteAll();
 
-  List<Kursort> getKursorteAll();
-
-  List<Kursort> getSelektierbareKursorteAll();
-
-  List<Kurstyp> getKurstypenAll();
-
-  List<Kurstyp> getSelektierbareKurstypenAll();
-
   List<Semester> getSemestersAll();
 
-  List<SemesterAndNumberOfKurse> getSemestersAndNumberOfKurseAll();
-
   List<Maerchen> getMaerchensAll();
-
-  List<Lektionsgebuehren> getLektionsgebuehrenAllList();
 }
