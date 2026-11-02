@@ -13,7 +13,7 @@ import lombok.Getter;
  * @author Martin Schraner
  */
 @SuppressWarnings({"java:S100", "java:S1450"})
-public class SearchMitarbeiterPanel extends AbstractSearchPanel {
+public class SearchMitarbeiterPanel extends AbstractSubmitPanel {
 
   private JPanel mainPanel;
   private JPanel datenPanel;

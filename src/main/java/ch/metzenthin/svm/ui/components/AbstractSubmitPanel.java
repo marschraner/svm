@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 /**
  * @author Hans Stamm
  */
-public abstract class AbstractSearchPanel extends JPanel {
+public abstract class AbstractSubmitPanel extends JPanel {
 
   public abstract JComponent getRootComponent();
 

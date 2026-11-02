@@ -15,7 +15,7 @@ import javax.swing.JComboBox;
 /**
  * @author Hans Stamm
  */
-public class SearchMitarbeiterView extends AbstractSearchPanelView<SearchMitarbeiterPanel> {
+public class SearchMitarbeiterView extends AbstractSubmitPanelView<SearchMitarbeiterPanel> {
 
   private final TextFieldWithErrorLabelComponent nachnameWithErrorLabel;
   private final TextFieldWithErrorLabelComponent vornameWithErrorLabel;

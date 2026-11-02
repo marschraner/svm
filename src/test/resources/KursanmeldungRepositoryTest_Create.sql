@@ -10,6 +10,12 @@ INSERT INTO svmtest.Semester(semester_id, version, schuljahr, semesterbezeichnun
     VALUES (102, 0, '2025/2026', 'ZWEITES_SEMESTER', '2026-02-23',
             '2026-07-18', '2026-04-20', '2026-05-02', null, null,
             '2026-02-01', '2026-02-01');
+INSERT INTO svmtest.Semester(semester_id, version, schuljahr, semesterbezeichnung, semesterbeginn,
+                             semesterende, ferienbeginn1, ferienende1, ferienbeginn2, ferienende2,
+                             creation_date, last_modified)
+    VALUES (103, 0, '2026/2027', 'ERSTES_SEMESTER', '2026-08-18',
+           '2027-02-07', '2026-10-06', '2026-10-18', '2026-12-22', '2027-01-03',
+            '2026-10-01', '2026-10-01');
 
 INSERT INTO svmtest.Kurstyp(kurstyp_id, version, bezeichnung, selektierbar, creation_date,
                             last_modified)
@@ -35,6 +41,12 @@ INSERT INTO svmtest.Kurs(kurs_id, version, semester_id, kurstyp_id, altersbereic
                          zeit_beginn, zeit_ende, kursort_id, bemerkungen, creation_date,
                          last_modified)
     VALUES (403, 0, 102, 201, '5 - 6 J', 'Kindergarten',
+            'DIENSTAG', '10:00:00', '11:00:00', 301, NULL,
+            '2026-02-01', '2026-02-01');
+INSERT INTO svmtest.Kurs(kurs_id, version, semester_id, kurstyp_id, altersbereich, stufe, wochentag,
+                         zeit_beginn, zeit_ende, kursort_id, bemerkungen, creation_date,
+                         last_modified)
+    VALUES (404, 0, 103, 201, '10 - 12 J', 'Artistik',
             'DIENSTAG', '10:00:00', '11:00:00', 301, NULL,
             '2026-02-01', '2026-02-01');
 
@@ -100,5 +112,9 @@ INSERT INTO svmtest.Kursanmeldung(person_id, kurs_id, version, anmeldedatum, abm
             '2026-02-01','2026-02-01');
 INSERT INTO svmtest.Kursanmeldung(person_id, kurs_id, version, anmeldedatum, abmeldedatum,
                                   bemerkungen, creation_date, last_modified)
-    VALUES (506, 403, 0, '2026-01-01', null, '',
+    VALUES (506, 403, 0, '2026-01-01', '2026-03-31', '',
+            '2026-02-01','2026-02-01');
+INSERT INTO svmtest.Kursanmeldung(person_id, kurs_id, version, anmeldedatum, abmeldedatum,
+                                  bemerkungen, creation_date, last_modified)
+    VALUES (506, 404, 0, '2026-02-01', '2026-04-30', '',
             '2026-02-01','2026-02-01');

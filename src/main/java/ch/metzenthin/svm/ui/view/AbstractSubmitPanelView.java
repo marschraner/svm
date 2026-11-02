@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.view;
 
-import ch.metzenthin.svm.ui.components.AbstractSearchPanel;
+import ch.metzenthin.svm.ui.components.AbstractSubmitPanel;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +11,7 @@ import javax.swing.JComponent;
  * @param <T> Panel-Typ, z.B. KurseSemesterwahlPanel
  * @author Hans Stamm
  */
-public abstract class AbstractSearchPanelView<T extends AbstractSearchPanel>
+public abstract class AbstractSubmitPanelView<T extends AbstractSubmitPanel>
     extends AbstractView<T> {
 
   protected final T panel;
@@ -19,7 +19,7 @@ public abstract class AbstractSearchPanelView<T extends AbstractSearchPanel>
   private final JButton buttonAbbrechen;
   private final ActionListener closeListener;
 
-  protected AbstractSearchPanelView(T panel, ActionListener closeListener) {
+  protected AbstractSubmitPanelView(T panel, ActionListener closeListener) {
     super(panel);
     this.panel = panel;
     this.buttonSubmit = panel.getSuchenButton();

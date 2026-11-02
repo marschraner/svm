@@ -185,7 +185,7 @@ public class SemesterServiceImpl implements SemesterService {
       return new PreviousCurrentNextSemester(Optional.empty(), Optional.empty(), Optional.empty());
     }
 
-    Collections.sort(semesterList); // ältestes Semester zuerst
+    Collections.sort(semesterList); // Neustes Semester zuerst
 
     Optional<Semester> previousSemesterOptional;
     Optional<Semester> currentSemesterOptional;

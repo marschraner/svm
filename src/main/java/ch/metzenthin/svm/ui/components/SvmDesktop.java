@@ -8,6 +8,7 @@ import ch.metzenthin.svm.domain.model.KurstypListModel;
 import ch.metzenthin.svm.domain.model.LektionsgebuehrenListModel;
 import ch.metzenthin.svm.domain.model.MaerchenListModel;
 import ch.metzenthin.svm.domain.model.MitarbeiterCodeListModel;
+import ch.metzenthin.svm.domain.model.MonatsstatistikKurseModel;
 import ch.metzenthin.svm.domain.model.SchuelerCodeListModel;
 import ch.metzenthin.svm.domain.model.SearchMitarbeiterModel;
 import ch.metzenthin.svm.domain.model.SemesterListModel;
@@ -21,6 +22,7 @@ import ch.metzenthin.svm.ui.control.KurstypListController;
 import ch.metzenthin.svm.ui.control.LektionsgebuehrenListController;
 import ch.metzenthin.svm.ui.control.MaerchenListController;
 import ch.metzenthin.svm.ui.control.MitarbeiterCodeListController;
+import ch.metzenthin.svm.ui.control.MonatsstatistikKurseController;
 import ch.metzenthin.svm.ui.control.SchuelerCodeListController;
 import ch.metzenthin.svm.ui.control.SearchMitarbeiterController;
 import ch.metzenthin.svm.ui.control.SemesterListController;
@@ -325,11 +327,12 @@ public class SvmDesktop extends JFrame implements ActionListener {
           kursortListController.getView().getRootComponent(), "Kursorte verwalten");
 
     } else if ("monatsstatistikKurse".equals(e.getActionCommand())) {
-      MonatsstatistikKursePanel monatsstatistikKursePanel =
-          new MonatsstatistikKursePanel(svmContext);
-      monatsstatistikKursePanel.addCloseListener(e9 -> onFrameAbbrechen());
+      MonatsstatistikKurseModel monatsstatistikKurseModel =
+          svmContext.getModelFactory().createMonatsstatistikKurseModel();
+      MonatsstatistikKurseController monatsstatistikKurseController =
+          new MonatsstatistikKurseController(monatsstatistikKurseModel, e9 -> onFrameAbbrechen());
       setAndShowActivePanel(
-          monatsstatistikKursePanel.$$$getRootComponent$$$(), "Monatsstatistik Kurse");
+          monatsstatistikKurseController.getView().getRootComponent(), "Monatsstatistik Kurse");
 
     } else if ("semesterVerwalten".equals(e.getActionCommand())) {
       SemesterListModel semesterListModel = svmContext.getModelFactory().createSemesterListModel();

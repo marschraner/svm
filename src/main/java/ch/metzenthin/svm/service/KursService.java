@@ -2,6 +2,7 @@ package ch.metzenthin.svm.service;
 
 import ch.metzenthin.svm.common.datatypes.Listentyp;
 import ch.metzenthin.svm.domain.model.KursAndLehrkraefteAndNumberOfKursanmeldungen;
+import ch.metzenthin.svm.domain.model.MonatsstatistikKurse;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.Semester;
@@ -11,6 +12,7 @@ import ch.metzenthin.svm.service.result.ImportKurseResult;
 import ch.metzenthin.svm.service.result.SaveKursResult;
 import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import java.io.File;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -49,4 +51,6 @@ public interface KursService {
       File outputFile,
       Iterator<KursAndLehrkraefteAndNumberOfKursanmeldungen> rows,
       Semester semester);
+
+  MonatsstatistikKurse calculateMonatsstatistik(Calendar monatJahr);
 }

@@ -10,6 +10,8 @@ import ch.metzenthin.svm.config.SvmProperties2;
 import ch.metzenthin.svm.domain.model.IdAndCount;
 import ch.metzenthin.svm.domain.model.KursAndLehrkraefteAndNumberOfKursanmeldungen;
 import ch.metzenthin.svm.domain.model.KursIdAndLehrkraft;
+import ch.metzenthin.svm.domain.model.MonatsstatistikKurse;
+import ch.metzenthin.svm.domain.model.PreviousCurrentNextSemester;
 import ch.metzenthin.svm.persistence.entities.Angehoeriger;
 import ch.metzenthin.svm.persistence.entities.Anmeldung;
 import ch.metzenthin.svm.persistence.entities.Kurs;
@@ -41,7 +43,10 @@ import ch.metzenthin.svm.service.result.SaveKursResult;
 import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +62,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class KursServiceImpl implements KursService {
+
+  record NumberOfAnmeldungenAndAbmeldungen(long anmeldungen, long abmeldungen) {}
 
   private final SemesterService semesterService;
   private final SemesterrechnungService semesterrechnungService;
@@ -602,5 +609,182 @@ public class KursServiceImpl implements KursService {
                 new CellLayout(false, 0, new int[] {16, 17, 18, 19, 20, 22})));
 
     return new WordTableLayout(columnWidths, datasetRowCellLayouts);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public MonatsstatistikKurse calculateMonatsstatistik(Calendar monatJahr) {
+
+    Calendar beginOfMonth = determineStatistikMonatBeginn(monatJahr);
+    Calendar endOfMonth = determineStatistikMonatEnde(monatJahr);
+
+    List<Semester> allSemesters = semesterService.findAllSemesters();
+    PreviousCurrentNextSemester previousCurrentNextSemester =
+        semesterService.determinePreviousCurrentNextSemesterFor(endOfMonth, allSemesters);
+    Optional<Semester> relevantesSemesterOptional =
+        getRelevantesSemester(previousCurrentNextSemester);
+
+    int numberOfLektionen = 0;
+    if (relevantesSemesterOptional.isPresent()) {
+      numberOfLektionen =
+          kursanmeldungRepository
+              .countKursanmeldungenBySemesterIdAndAnmeldedatumLeDatumAndAbmeldedatumGeDatum(
+                  relevantesSemesterOptional.get().getSemesterId(), endOfMonth);
+    }
+
+    Map<Integer, Long> mapOfSchuelerIdAndNumberOfAnmeldungen =
+        calculateNumberOfAnmeldungenGroupBySchueler(beginOfMonth, endOfMonth);
+
+    Map<Integer, Long> mapOfSchuelerIdAndNumberOfAbmeldungen =
+        calculateNumberOfAbmeldungenGroupBySchueler(beginOfMonth, endOfMonth);
+
+    Map<Integer, Long> mapOfSchuelerIdAndNumberOfImpliziteAbmeldungen =
+        calculateNumberOfImpliziteAbmeldungenGroupBySchueler(
+            previousCurrentNextSemester,
+            beginOfMonth,
+            endOfMonth,
+            mapOfSchuelerIdAndNumberOfAnmeldungen);
+
+    Map<Integer, Long> mapOfSchuelerIdAndNumberOfAbmeldungenTotal =
+        calculateNumberOfAbmeldungenTotalGroupBySchueler(
+            mapOfSchuelerIdAndNumberOfAbmeldungen, mapOfSchuelerIdAndNumberOfImpliziteAbmeldungen);
+
+    NumberOfAnmeldungenAndAbmeldungen numberOfAnmeldungenAndAbmeldungen =
+        calculateNumberOfAnmeldungenAndAbmeldungen(
+            mapOfSchuelerIdAndNumberOfAnmeldungen, mapOfSchuelerIdAndNumberOfAbmeldungenTotal);
+
+    return new MonatsstatistikKurse(
+        (int) numberOfAnmeldungenAndAbmeldungen.anmeldungen,
+        (int) numberOfAnmeldungenAndAbmeldungen.abmeldungen,
+        numberOfLektionen);
+  }
+
+  private static Calendar determineStatistikMonatBeginn(Calendar monatJahr) {
+    return new GregorianCalendar(monatJahr.get(Calendar.YEAR), monatJahr.get(Calendar.MONTH), 1);
+  }
+
+  @SuppressWarnings("DuplicatedCode")
+  private static Calendar determineStatistikMonatEnde(Calendar monatJahr) {
+    Calendar statistikMonatEnde;
+    if (monatJahr.get(Calendar.MONTH) == Calendar.DECEMBER) {
+      statistikMonatEnde =
+          new GregorianCalendar(monatJahr.get(Calendar.YEAR) + 1, Calendar.JANUARY, 1);
+    } else {
+      //noinspection MagicConstant
+      statistikMonatEnde =
+          new GregorianCalendar(monatJahr.get(Calendar.YEAR), monatJahr.get(Calendar.MONTH) + 1, 1);
+    }
+    statistikMonatEnde.add(Calendar.DAY_OF_YEAR, -1);
+    return statistikMonatEnde;
+  }
+
+  private static Optional<Semester> getRelevantesSemester(
+      PreviousCurrentNextSemester previousCurrentNextSemester) {
+    Optional<Semester> currentSemesterOptional =
+        previousCurrentNextSemester.currentSemesterOptional();
+    if (currentSemesterOptional.isPresent()) {
+      // Innerhalb Semester
+      return currentSemesterOptional;
+    } else {
+      // Semesterferien (-> vorhergehendes Semester)
+      return previousCurrentNextSemester.previousSemesterOptional();
+    }
+  }
+
+  private Map<Integer, Long> calculateNumberOfAnmeldungenGroupBySchueler(
+      Calendar beginOfMonth, Calendar endOfMonth) {
+    return convertToMapOfIdAndCount(
+        kursanmeldungRepository
+            .countKursanmeldungenByAnmeldedatumGeBeginDatumAndAnmeldedatumLeEndDatumGroupBySchuelerId(
+                beginOfMonth, endOfMonth));
+  }
+
+  private Map<Integer, Long> calculateNumberOfAbmeldungenGroupBySchueler(
+      Calendar beginOfMonth, Calendar endOfMonth) {
+    return convertToMapOfIdAndCount(
+        kursanmeldungRepository
+            .countKursanmeldungenByAbmeldedatumGeBeginDatumAndAbmeldedatumLeEndDatumGroupBySchuelerId(
+                beginOfMonth, endOfMonth));
+  }
+
+  private static Map<Integer, Long> calculateNumberOfAbmeldungenTotalGroupBySchueler(
+      Map<Integer, Long> mapOfSchuelerIdAndNumberOfAbmeldungen,
+      Map<Integer, Long> mapOfSchuelerIdAndNumberOfImpliziteAbmeldungen) {
+    return mergeMaps(
+        mapOfSchuelerIdAndNumberOfAbmeldungen, mapOfSchuelerIdAndNumberOfImpliziteAbmeldungen);
+  }
+
+  private static Map<Integer, Long> convertToMapOfIdAndCount(List<IdAndCount> idAndCountList) {
+    return idAndCountList.stream().collect(Collectors.toMap(IdAndCount::id, IdAndCount::count));
+  }
+
+  private Map<Integer, Long> calculateNumberOfImpliziteAbmeldungenGroupBySchueler(
+      PreviousCurrentNextSemester previousCurrentNextSemester,
+      Calendar beginOfMonth,
+      Calendar endOfMonth,
+      Map<Integer, Long> mapOfSchuelerIdAndNumberOfAnmeldungen) {
+
+    // Implizite Abmeldungen nur berücksichtigen, falls bereits Schüler fürs nächste Semester
+    // erfasst wurden
+    boolean monatContainsSemesterbeginn =
+        checkIfMonatContainsSemesterbeginn(previousCurrentNextSemester, beginOfMonth, endOfMonth);
+    Optional<Semester> previousSemesterOptional =
+        previousCurrentNextSemester.previousSemesterOptional();
+    Map<Integer, Long> mapOfSchuelerIdAndNumberOfImplicitAbmeldungen;
+    if (monatContainsSemesterbeginn
+        && !mapOfSchuelerIdAndNumberOfAnmeldungen.isEmpty()
+        && previousSemesterOptional.isPresent()) {
+      mapOfSchuelerIdAndNumberOfImplicitAbmeldungen =
+          convertToMapOfIdAndCount(
+              kursanmeldungRepository
+                  .countKursanmeldungenBySemesterIdAndAbmeldedatumIsNullGroupBySchuelerId(
+                      previousSemesterOptional.get().getSemesterId()));
+    } else {
+      mapOfSchuelerIdAndNumberOfImplicitAbmeldungen = Map.of();
+    }
+    return mapOfSchuelerIdAndNumberOfImplicitAbmeldungen;
+  }
+
+  private static boolean checkIfMonatContainsSemesterbeginn(
+      PreviousCurrentNextSemester previousCurrentNextSemester,
+      Calendar beginOfMonth,
+      Calendar endOfMonth) {
+    Optional<Semester> previousSemesterOptional =
+        previousCurrentNextSemester.previousSemesterOptional();
+    return previousSemesterOptional
+        .filter(
+            semester ->
+                !semester.getSemesterbeginn().before(beginOfMonth)
+                    && !semester.getSemesterbeginn().after(endOfMonth))
+        .isPresent();
+  }
+
+  static NumberOfAnmeldungenAndAbmeldungen calculateNumberOfAnmeldungenAndAbmeldungen(
+      Map<Integer, Long> anmeldungen, Map<Integer, Long> abmeldungen) {
+
+    Map<Integer, Long> saldo = new HashMap<>(anmeldungen);
+    abmeldungen.forEach((schuelerId, count) -> saldo.merge(schuelerId, -count, Long::sum));
+
+    long numberOfAnmeldungen = 0;
+    long numberOfAbmeldungen = 0;
+
+    for (long diff : saldo.values()) {
+      if (diff > 0) {
+        numberOfAnmeldungen += diff;
+      } else if (diff < 0) {
+        numberOfAbmeldungen -= diff;
+      }
+    }
+
+    return new NumberOfAnmeldungenAndAbmeldungen(numberOfAnmeldungen, numberOfAbmeldungen);
+  }
+
+  static Map<Integer, Long> mergeMaps(Map<Integer, Long> leftMap, Map<Integer, Long> rightMap) {
+    Map<Integer, Long> result = new HashMap<>(leftMap);
+
+    for (Map.Entry<Integer, Long> entry : rightMap.entrySet()) {
+      result.merge(entry.getKey(), entry.getValue(), Long::sum);
+    }
+    return result;
   }
 }

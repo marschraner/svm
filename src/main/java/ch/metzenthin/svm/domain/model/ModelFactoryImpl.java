@@ -125,7 +125,7 @@ public class ModelFactoryImpl implements ModelFactory {
 
   @Override
   public MonatsstatistikKurseModel createMonatsstatistikKurseModel() {
-    return new MonatsstatistikKurseModelImpl();
+    return new MonatsstatistikKurseModelImpl(kursService);
   }
 
   @Override

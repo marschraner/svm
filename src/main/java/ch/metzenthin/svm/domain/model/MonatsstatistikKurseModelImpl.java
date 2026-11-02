@@ -1,74 +1,66 @@
 package ch.metzenthin.svm.domain.model;
 
-import static ch.metzenthin.svm.common.utils.Converter.getNMonthsAfterNow;
+import static ch.metzenthin.svm.common.utils.DateAndTimeUtils.getNMonthsAfterNow;
 
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.datatypes.Schuljahre;
-import ch.metzenthin.svm.domain.SvmValidationException;
-import ch.metzenthin.svm.domain.commands.CalculateMonatsstatistikKurseCommand;
-import ch.metzenthin.svm.domain.commands.CommandInvoker;
+import ch.metzenthin.svm.domain.model.conversion.CalendarConverter;
+import ch.metzenthin.svm.domain.model.conversion.ConvertedValueAndConversionResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResult;
+import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndServiceReturnValue;
+import ch.metzenthin.svm.domain.model.validation.ValidationUtils;
+import ch.metzenthin.svm.service.KursService;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Martin Schraner
  */
-public class MonatsstatistikKurseModelImpl extends AbstractModel
-    implements MonatsstatistikKurseModel {
+public class MonatsstatistikKurseModelImpl implements MonatsstatistikKurseModel {
 
-  private Calendar monatJahr;
+  private final KursService kursService;
 
-  private final CalendarModelAttribute monatJahrModelAttribute =
-      new CalendarModelAttribute(
-          this,
-          Field.MONAT_JAHR,
-          new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1),
-          getNMonthsAfterNow(12),
-          new AttributeAccessor<>() {
-            @Override
-            public Calendar getValue() {
-              return monatJahr;
-            }
+  private final Calendar earliestValidDate =
+      new GregorianCalendar(Schuljahre.SCHULJAHR_VALID_MIN, Calendar.JANUARY, 1);
+  private final Calendar latestValidDate = getNMonthsAfterNow(12);
 
-            @Override
-            public void setValue(Calendar value) {
-              monatJahr = value;
-            }
-          });
-
-  @Override
-  public Calendar getMonatJahr() {
-    return monatJahrModelAttribute.getValue();
+  public MonatsstatistikKurseModelImpl(KursService kursService) {
+    this.kursService = kursService;
   }
 
   @Override
-  public void setMonatJahr(String monatJahr) throws SvmValidationException {
-    monatJahrModelAttribute.setNewValue(
-        true, monatJahr, MONAT_JAHR_DATE_FORMAT_STRING, isBulkUpdate());
+  public ValidationResult validateMonatJahr(Calendar monatJahr) {
+    return ValidationUtils.validateNotNullAndWithinPeriod(
+        monatJahr, earliestValidDate, latestValidDate, Field.MONAT_JAHR);
   }
 
   @Override
-  public int[] calculateMonatsstatistik() {
-    CommandInvoker commandInvoker = getCommandInvoker();
-    CalculateMonatsstatistikKurseCommand calculateMonatsstatistikKurseCommand =
-        new CalculateMonatsstatistikKurseCommand(monatJahr);
-    commandInvoker.executeCommand(calculateMonatsstatistikKurseCommand);
-    return new int[] {
-      calculateMonatsstatistikKurseCommand.getAnzahlAnmeldungen(),
-      calculateMonatsstatistikKurseCommand.getAnzahlAbmeldungen(),
-      calculateMonatsstatistikKurseCommand.getAnzahlLektionen()
-    };
-  }
+  public ValidationResultsAndServiceReturnValue<MonatsstatistikKurse> calculateMonatsstatistik(
+      String monatJahr) {
 
-  @Override
-  public boolean isCompleted() {
-    return monatJahr != null;
-  }
-
-  @Override
-  void doValidate() throws SvmValidationException {
-    if (monatJahr == null) {
-      throw new SvmValidationException(2000, "Monat/Jahr obligatorisch", Field.MONAT_JAHR);
+    ConvertedValueAndConversionResult<Calendar> calendarConvertedValueAndConversionResult =
+        CalendarConverter.toCalendar(monatJahr, MONAT_JAHR_DATE_FORMAT_STRING);
+    if (!calendarConvertedValueAndConversionResult.isValid()) {
+      return new ValidationResultsAndServiceReturnValue<>(
+          List.of(
+              new ValidationResult(
+                  calendarConvertedValueAndConversionResult.errorMessage(),
+                  Set.of(Field.MONAT_JAHR))));
     }
+
+    ValidationResult validationResult =
+        validateMonatJahr(calendarConvertedValueAndConversionResult.convertedValue());
+    if (!validationResult.isValid()) {
+      return new ValidationResultsAndServiceReturnValue<>(List.of(validationResult));
+    }
+
+    MonatsstatistikKurse monatsstatistikKurse =
+        kursService.calculateMonatsstatistik(
+            calendarConvertedValueAndConversionResult.convertedValue());
+
+    return new ValidationResultsAndServiceReturnValue<>(
+        List.of(validationResult), monatsstatistikKurse);
   }
 }

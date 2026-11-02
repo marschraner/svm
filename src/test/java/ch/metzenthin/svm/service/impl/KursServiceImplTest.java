@@ -23,6 +23,7 @@ import ch.metzenthin.svm.persistence.repository.KurstypRepository;
 import ch.metzenthin.svm.persistence.repository.MitarbeiterRepository;
 import ch.metzenthin.svm.persistence.repository.SemesterRepository;
 import ch.metzenthin.svm.service.ServiceTestConfiguration;
+import ch.metzenthin.svm.service.impl.KursServiceImpl.NumberOfAnmeldungenAndAbmeldungen;
 import ch.metzenthin.svm.service.result.ImportKurseResult;
 import ch.metzenthin.svm.service.result.SaveKursResult;
 import ch.metzenthin.svm.service.result.SaveResultAndIdOfSavedEntity;
@@ -41,6 +42,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -528,6 +530,53 @@ class KursServiceImplTest {
         semester);
     String fileContent = Files.readString(file, StandardCharsets.ISO_8859_1);
     assertFalse(fileContent.isEmpty());
+  }
+
+  /**
+   * Die Zwischenwerte sind 1 = 5, 2 = 2, 3 = -2 und 4 = -2:
+   *
+   * <p>1 (nur Anmeldung): 5 Anmeldungen<br>
+   * 2 (beide, Differenz +2): 2 Anmeldungen<br>
+   * 3 (nur Abmeldung): 2 Abmeldungen<br>
+   * 4 (beide, Differenz -2): 2 Abmeldungen
+   *
+   * <p>Summe: 7 Anmeldungen und 4 Abmeldungen.
+   */
+  @Test
+  void testCalculateNumberOfAnmeldungenAndAbmeldungen() {
+    Map<Integer, Long> anmeldungen = Map.of(1, 5L, 2, 3L, 4, 2L);
+    Map<Integer, Long> abmeldungen = Map.of(2, 1L, 3, 2L, 4, 4L);
+
+    NumberOfAnmeldungenAndAbmeldungen numberOfAnmeldungenAndAbmeldungen =
+        KursServiceImpl.calculateNumberOfAnmeldungenAndAbmeldungen(anmeldungen, abmeldungen);
+    assertEquals(7, numberOfAnmeldungenAndAbmeldungen.anmeldungen());
+    assertEquals(4, numberOfAnmeldungenAndAbmeldungen.abmeldungen());
+  }
+
+  @Test
+  void testMerge() {
+    Map<Integer, Long> leftMap = Map.of(1, 5L, 2, 3L, 4, 2L);
+    Map<Integer, Long> rightMap = Map.of(2, 1L, 3, 2L, 4, 4L);
+
+    Map<Integer, Long> mergedMap;
+    mergedMap = KursServiceImpl.mergeMaps(leftMap, rightMap);
+    assertEquals(4, mergedMap.size());
+    assertEquals(5, mergedMap.get(1));
+    assertEquals(4, mergedMap.get(2));
+    assertEquals(2, mergedMap.get(3));
+    assertEquals(6, mergedMap.get(4));
+
+    mergedMap = KursServiceImpl.mergeMaps(leftMap, Map.of());
+    assertEquals(3, mergedMap.size());
+    assertEquals(5, mergedMap.get(1));
+    assertEquals(3, mergedMap.get(2));
+    assertEquals(2, mergedMap.get(4));
+
+    mergedMap = KursServiceImpl.mergeMaps(Map.of(), rightMap);
+    assertEquals(3, mergedMap.size());
+    assertEquals(1, mergedMap.get(2));
+    assertEquals(2, mergedMap.get(3));
+    assertEquals(4, mergedMap.get(4));
   }
 
   private static Kurs createKurs(Kurstyp kurstyp, Kursort kursort, Semester semester) {

@@ -1,6 +1,9 @@
 package ch.metzenthin.svm.ui.control;
 
+import static ch.metzenthin.svm.common.utils.Converter.asString;
+
 import ch.metzenthin.svm.common.datatypes.Field;
+import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.domain.model.conversion.BigDecimalConverter;
 import ch.metzenthin.svm.domain.model.conversion.CalendarConverter;
 import ch.metzenthin.svm.domain.model.conversion.ConvertedValueAndConversionResult;
@@ -111,10 +114,33 @@ public abstract class AbstractSubmitController<T extends AbstractView<?>> {
       Consumer<String> setFieldConsumer,
       Consumer<String> setErrorLabelVisibleConsumer,
       Runnable setErrorLabelInvisibleRunnable) {
+    formatConvertAndValidateDate(
+        fieldValue,
+        Converter.DD_MM_YYYY_DATE_FORMAT_STRING,
+        validateFieldFunction,
+        setFieldConsumer,
+        setErrorLabelVisibleConsumer,
+        setErrorLabelInvisibleRunnable);
+  }
+
+  protected static void formatConvertAndValidateDate(
+      String fieldValue,
+      String dateFormatString,
+      Function<Calendar, ValidationResult> validateFieldFunction,
+      Consumer<String> setFieldConsumer,
+      Consumer<String> setErrorLabelVisibleConsumer,
+      Runnable setErrorLabelInvisibleRunnable) {
+    // Formatierung z.B. Jahr zweistellig auf vierstellig
     String formattedFieldValue = FormattingUtils.formatAsDate(fieldValue);
-    setFieldConsumer.accept(formattedFieldValue);
     ConvertedValueAndConversionResult<Calendar> convertedFieldValueAndConversionResult =
-        CalendarConverter.toCalendar(formattedFieldValue);
+        CalendarConverter.toCalendar(formattedFieldValue, dateFormatString);
+    if (convertedFieldValueAndConversionResult.isValid()) {
+      // Weitere Formatierung z.B. Monat einstellig auf zweistellig
+      setFieldConsumer.accept(
+          asString(convertedFieldValueAndConversionResult.convertedValue(), dateFormatString));
+    } else {
+      setFieldConsumer.accept(formattedFieldValue);
+    }
     validate(
         validateFieldFunction,
         setErrorLabelVisibleConsumer,
