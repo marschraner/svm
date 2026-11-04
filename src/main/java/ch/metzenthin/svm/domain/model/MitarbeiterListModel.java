@@ -28,10 +28,8 @@ import org.springframework.dao.OptimisticLockingFailureException;
  */
 public class MitarbeiterListModel
     extends AbstractListModel<
-        MitarbeiterTableData,
         MitarbeiterAndMitarbeiterCodesAsStringAndSelektiert,
         MitarbeiterTableModel,
-        CreateOrUpdateMitarbeiterModel,
         DeleteMitarbeiterResult> {
 
   private final MitarbeiterService mitarbeiterService;

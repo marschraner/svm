@@ -17,10 +17,8 @@ import org.springframework.dao.OptimisticLockingFailureException;
  */
 public class SemesterListModel
     extends AbstractListModel<
-        SemesterTableData,
         SemesterAndNumberOfKurse,
         TableModel<SemesterTableData, SemesterAndNumberOfKurse>,
-        CreateOrUpdateSemesterModel,
         DeleteSemesterResult> {
 
   private final KursService kursService;

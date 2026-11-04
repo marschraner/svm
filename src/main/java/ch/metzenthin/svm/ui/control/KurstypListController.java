@@ -16,8 +16,7 @@ import java.util.Optional;
  * @author Martin Schraner
  */
 public class KurstypListController
-    extends AbstractListController<
-        KurstypListModel, KurstypListView, KurstypTableData, Kurstyp, DeleteKurstypResult> {
+    extends AbstractListController<KurstypListModel, KurstypListView, DeleteKurstypResult> {
 
   public KurstypListController(
       SvmContext svmContext, KurstypListModel kurstypListModel, ActionListener closeListener) {

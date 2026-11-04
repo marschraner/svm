@@ -17,12 +17,7 @@ import java.util.Optional;
  */
 @SuppressWarnings("DuplicatedCode")
 public class SemesterListController
-    extends AbstractListController<
-        SemesterListModel,
-        SemesterListView,
-        SemesterTableData,
-        SemesterAndNumberOfKurse,
-        DeleteSemesterResult> {
+    extends AbstractListController<SemesterListModel, SemesterListView, DeleteSemesterResult> {
 
   public SemesterListController(
       SvmContext svmContext, SemesterListModel semesterListModel, ActionListener closeListener) {

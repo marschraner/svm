@@ -17,8 +17,7 @@ import java.util.Optional;
  * @author Hans Stamm
  */
 public abstract class CodeListController<T extends Code>
-    extends AbstractListController<
-        CodeListModel<T>, CodeListView, CodeTableData<T>, T, DeleteCodeResult> {
+    extends AbstractListController<CodeListModel<T>, CodeListView, DeleteCodeResult> {
 
   protected CodeListController(
       SvmContext svmContext,
@@ -38,7 +37,8 @@ public abstract class CodeListController<T extends Code>
 
   @Override
   protected void showOnNeuDialog() {
-    CreateOrUpdateCodeModel createOrUpdateCodeModel = model.createCreateOrUpdateModel(svmContext);
+    CreateOrUpdateCodeModel createOrUpdateCodeModel =
+        (CreateOrUpdateCodeModel) model.createCreateOrUpdateModel(svmContext);
     CreateOrUpdateCodeController createOrUpdateCodeController =
         new CreateOrUpdateCodeController(createOrUpdateCodeModel, getNeuDialogTitle());
     createOrUpdateCodeController.showDialog();
@@ -55,7 +55,8 @@ public abstract class CodeListController<T extends Code>
   @Override
   protected void showOnBearbeitenDialog() {
     CreateOrUpdateCodeModel createOrUpdateCodeModel =
-        model.createCreateOrUpdateModel(svmContext, view.convertRowIndexToModel());
+        (CreateOrUpdateCodeModel)
+            model.createCreateOrUpdateModel(svmContext, view.convertRowIndexToModel());
     CreateOrUpdateCodeController createOrUpdateCodeController =
         new CreateOrUpdateCodeController(createOrUpdateCodeModel, getBearbeitenDialogTitle());
     createOrUpdateCodeController.showDialog();

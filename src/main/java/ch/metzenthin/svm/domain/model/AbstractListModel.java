@@ -1,32 +1,31 @@
 package ch.metzenthin.svm.domain.model;
 
 import ch.metzenthin.svm.common.SvmContext;
+import ch.metzenthin.svm.service.result.SubmitDialogResult;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import java.util.Optional;
 import lombok.Getter;
 
 /**
- * @param <T> Table-Data-Typ, z.B. KursortTableData
- * @param <U> Typ der Table-Data-Rows, z.B. Kursort
- * @param <V> Typ des Table-Models, z.B. TableModel<T, U>
- * @param <W> Typ des CreateOrUpdate-Models, z.B. CreateOrUpdateKursortModel
- * @param <X> Typ des Resultats der Löschen-Methode, z.B. DeleteKursortResult
+ * @param <T> Typ der Table-Data-Rows, z.B. Kursort
+ * @param <U> Typ des Table-Models, z.B. TableModel<T>
+ * @param <V> Typ des Resultats der Löschen-Methode, z.B. DeleteKursortResult
  * @author Hans Stamm
  */
 public abstract class AbstractListModel<
-    T extends AbstractTableData<U>, U, V extends TableModel<T, U>, W, X> {
+    T, U extends TableModel<? extends AbstractTableData<T>, T>, V extends SubmitDialogResult> {
 
-  @Getter protected final V tableModel;
+  @Getter protected final U tableModel;
 
-  protected AbstractListModel(V tableModel) {
+  protected AbstractListModel(U tableModel) {
     this.tableModel = tableModel;
   }
 
-  public abstract W createCreateOrUpdateModel(SvmContext svmContext);
+  public abstract Object createCreateOrUpdateModel(SvmContext svmContext);
 
-  public abstract W createCreateOrUpdateModel(SvmContext svmContext, int indexToBeUpdated);
+  public abstract Object createCreateOrUpdateModel(SvmContext svmContext, int indexToBeUpdated);
 
-  protected U getSelectedRow(int selectedIndex) {
+  protected T getSelectedRow(int selectedIndex) {
     return tableModel.getRowAt(selectedIndex);
   }
 
@@ -35,7 +34,7 @@ public abstract class AbstractListModel<
    * @return Listen-Index (Position in der Model-Liste) der Entity, die eingefügt wurde
    */
   public Optional<Integer> insertCreatedObjectToTableModel(int idOfCreatedEntity) {
-    Optional<U> entityOptional = loadObjectFromDatabase(idOfCreatedEntity);
+    Optional<T> entityOptional = loadObjectFromDatabase(idOfCreatedEntity);
     return entityOptional.map(tableModel::insertRow);
   }
 
@@ -45,8 +44,8 @@ public abstract class AbstractListModel<
    * @return true, wenn das neu zu ladende Objekt gefunden und ausgetauscht wurde, sonst false
    */
   public boolean replaceUpdatedObjectInTableModel(int modelIndexOfRowOfUpdatedObject) {
-    U rowToBeReloaded = tableModel.getRowAt(modelIndexOfRowOfUpdatedObject);
-    Optional<U> reloadedObjectOptional = reloadObjectFromDatabase(rowToBeReloaded);
+    T rowToBeReloaded = tableModel.getRowAt(modelIndexOfRowOfUpdatedObject);
+    Optional<T> reloadedObjectOptional = reloadObjectFromDatabase(rowToBeReloaded);
     if (reloadedObjectOptional.isPresent()) {
       tableModel.replaceRowAt(modelIndexOfRowOfUpdatedObject, reloadedObjectOptional.get());
       return true;
@@ -66,17 +65,17 @@ public abstract class AbstractListModel<
    * @param idOfEntityToBeLoaded ID der Entity, die geladen werden muss
    * @return Optional des geladenen Objekts
    */
-  protected abstract Optional<U> loadObjectFromDatabase(int idOfEntityToBeLoaded);
+  protected abstract Optional<T> loadObjectFromDatabase(int idOfEntityToBeLoaded);
 
   /**
    * @param objectToBeReloaded Listen-Element, das neu geladen werden muss
    * @return Optional des neu geladenen Objekts
    */
-  protected abstract Optional<U> reloadObjectFromDatabase(U objectToBeReloaded);
+  protected abstract Optional<T> reloadObjectFromDatabase(T objectToBeReloaded);
 
   public abstract void reloadData();
 
-  public abstract X eintragLoeschen(int indexToBeDeleted);
+  public abstract V eintragLoeschen(int indexToBeDeleted);
 
   public abstract String getListItemName();
 }

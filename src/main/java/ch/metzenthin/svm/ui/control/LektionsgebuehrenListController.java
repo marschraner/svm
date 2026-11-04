@@ -17,11 +17,7 @@ import java.util.Optional;
  */
 public class LektionsgebuehrenListController
     extends AbstractListController<
-        LektionsgebuehrenListModel,
-        LektionsgebuehrenListView,
-        LektionsgebuehrenTableData,
-        Lektionsgebuehren,
-        DeleteLektionsgebuehrenResult> {
+        LektionsgebuehrenListModel, LektionsgebuehrenListView, DeleteLektionsgebuehrenResult> {
 
   public LektionsgebuehrenListController(
       SvmContext svmContext,

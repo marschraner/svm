@@ -2,9 +2,7 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.AbstractListModel;
-import ch.metzenthin.svm.domain.model.AbstractTableData;
 import ch.metzenthin.svm.service.result.SubmitDialogResult;
-import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import ch.metzenthin.svm.ui.view.AbstractListPanelView;
 import java.util.Optional;
 import lombok.Getter;
@@ -12,17 +10,13 @@ import lombok.Getter;
 /**
  * @param <T> List-Model-Typ, z.B. KursortListModel
  * @param <U> List-Panel-View-Typ, z.B. KursortListView
- * @param <V> Table-Data-Typ, z.B. KursortTableData
- * @param <W> Typ der Table-Data-Rows, z.B. Kursort
- * @param <X> Delete-Result-Typ, z.B. DeleteKursortResult
+ * @param <V> Delete-Result-Typ, z.B. DeleteKursortResult
  * @author Hans Stamm
  */
 public abstract class AbstractListController<
-    T extends AbstractListModel<V, W, ? extends TableModel<V, W>, ?, X>,
+    T extends AbstractListModel<?, ?, V>,
     U extends AbstractListPanelView<?>,
-    V extends AbstractTableData<W>,
-    W,
-    X extends SubmitDialogResult> {
+    V extends SubmitDialogResult> {
 
   protected final SvmContext svmContext;
   protected final T model;
@@ -98,7 +92,7 @@ public abstract class AbstractListController<
             "Soll der Eintrag aus der Datenbank gelöscht werden?",
             model.getListItemName() + " löschen");
     if (n == 0) {
-      X saveDialogResult = model.eintragLoeschen(view.convertRowIndexToModel());
+      V saveDialogResult = model.eintragLoeschen(view.convertRowIndexToModel());
       if (!saveDialogResult.isSubmitSuccessful()) {
         showErrorMessageDialog(saveDialogResult.getMessage());
         if (saveDialogResult.isDialogToBeClosed()) {
