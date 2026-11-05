@@ -17,7 +17,7 @@ import ch.metzenthin.svm.service.result.DeleteCodeResult;
 import ch.metzenthin.svm.ui.componentmodel.CodesTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.CodeSpecificHinzufuegenDialog;
-import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
+import ch.metzenthin.svm.ui.components.SchuelerDatenblattOldPanel;
 import java.awt.event.*;
 import java.util.List;
 import javax.swing.*;
@@ -592,8 +592,8 @@ public class CodesController {
 
   @SuppressWarnings("DuplicatedCode")
   private void onZurueck() {
-    SchuelerDatenblattPanel schuelerDatenblattPanel =
-        new SchuelerDatenblattPanel(
+    SchuelerDatenblattOldPanel schuelerDatenblattPanel =
+        new SchuelerDatenblattOldPanel(
             svmContext,
             schuelerSuchenTableModel,
             schuelerSuchenResultTable,

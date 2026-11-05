@@ -10,7 +10,7 @@ import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
 import ch.metzenthin.svm.ui.componentmodel.KursanmeldungenTableModel;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.KursanmeldungErfassenDialog;
-import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
+import ch.metzenthin.svm.ui.components.SchuelerDatenblattOldPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -221,8 +221,8 @@ public class KursanmeldungenController {
 
   @SuppressWarnings("DuplicatedCode")
   private void onZurueck() {
-    SchuelerDatenblattPanel schuelerDatenblattPanel =
-        new SchuelerDatenblattPanel(
+    SchuelerDatenblattOldPanel schuelerDatenblattPanel =
+        new SchuelerDatenblattOldPanel(
             svmContext,
             schuelerSuchenTableModel,
             schuelerSuchenResultTable,

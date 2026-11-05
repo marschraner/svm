@@ -14,7 +14,7 @@ import ch.metzenthin.svm.domain.model.SchuelerSuchenModel;
 import ch.metzenthin.svm.domain.model.SchuelerSuchenTableData;
 import ch.metzenthin.svm.persistence.entities.*;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
-import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
+import ch.metzenthin.svm.ui.components.SchuelerDatenblattOldPanel;
 import ch.metzenthin.svm.ui.components.SchuelerSuchenResultPanel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -828,8 +828,8 @@ public class SchuelerSuchenController extends PersonController {
     } else if (schuelerSuchenTableData.size() == 1) {
       // Direkt zum Datenblatt, falls nur ein Suchresultat und nicht nach einem spezifischen Kurs
       // gesucht wurde
-      SchuelerDatenblattPanel schuelerDatenblattPanel =
-          new SchuelerDatenblattPanel(svmContext, schuelerSuchenTableModel, null, 0, true);
+      SchuelerDatenblattOldPanel schuelerDatenblattPanel =
+          new SchuelerDatenblattOldPanel(svmContext, schuelerSuchenTableModel, null, 0, true);
       schuelerDatenblattPanel.addCloseListener(closeListener);
       schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);
       schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckListener);

@@ -48,9 +48,9 @@ public class SchuelerController extends PersonController {
   public void setComboBoxGeschlecht(JComboBox<Geschlecht> comboBoxGeschlecht) {
     this.comboBoxGeschlecht = comboBoxGeschlecht;
     comboBoxGeschlecht.setModel(new DefaultComboBoxModel<>(Geschlecht.values()));
-    comboBoxGeschlecht.addActionListener(e -> onGeschlechtSelected());
     // Leeren ComboBox-Wert anzeigen
     comboBoxGeschlecht.setSelectedItem(null);
+    comboBoxGeschlecht.addActionListener(e -> onGeschlechtSelected());
   }
 
   public void setTxtAnmeldedatum(JTextField txtAnmeldedatum) {

@@ -1,201 +1,112 @@
 package ch.metzenthin.svm.ui.components;
 
-import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
-import ch.metzenthin.svm.ui.control.SchuelerDatenblattController;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.Locale;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
+import lombok.Getter;
 
 /**
  * @author Hans Stamm
  */
-@SuppressWarnings({"java:S100", "java:S1171", "java:S1192", "java:S1450"})
-public class SchuelerDatenblattPanel {
+@SuppressWarnings({"java:S100", "java:S1171", "java:S1192", "java:S1450", "FieldCanBeLocal"})
+public class SchuelerDatenblattPanel extends JPanel {
 
+  // Main-Panel
   private JPanel panel;
-  private JLabel lblSchuelerValue;
-  private JLabel lblMutterValue;
-  private JLabel lblVaterValue;
-  private JPanel stammdatenPanel;
-  private JPanel leftPanel;
-  private JPanel rightPanel;
-  private JLabel lblRechnungsempfaengerValue;
-  private JLabel lblGeschwisterValue;
-  private JButton btnStammdatenBearbeiten;
+
   private JPanel titelPanel;
-  private JLabel lblAnmeldedatumValue;
-  private JPanel dispensationenPanel;
-  private JButton btnDispensationenBearbeiten;
-  private JPanel codesPanel;
-  private JButton btnCodesBearbeiten;
-  private JPanel rightButtonPanel;
-  private JPanel leftButtonPanel;
-  private JButton btnErster;
-  private JButton btnVorheriger;
-  private JButton btnNachfolgender;
-  private JButton btnLetzter;
-  private JButton btnZurueck;
-  private JButton btnAbbrechen;
-  private JLabel lblSchuelerGleicherRechnungsempfaenger1;
-  private JLabel lblSchuelerGleicherRechnungsempfaengerValue;
-  private JLabel lblVornameNachname;
-  private JLabel lblSchuelerGleicherRechnungsempfaenger2;
-  private JLabel lblGeburtsdatumValue;
-  private JLabel lblSchueler;
-  private JLabel lblRechnungsempfaenger;
-  private JLabel lblAbmeldedatum;
-  private JLabel lblAbmeldedatumValue;
-  private JLabel lblFruehereAnmeldungen;
-  private JLabel lblFruehereAnmeldungenValue;
-  private JLabel lblBemerkungenValue;
-  private JLabel lblNichtDispensiert;
-  private JLabel lblDispensationsdauer;
-  private JLabel lblDispensationsdauerValue;
-  private JLabel lblDispensationsgrund;
-  private JLabel lblDispensationsgrundValue;
-  private JLabel lblFruehereDispensationenValue;
-  private JLabel lblSchuelerCodesValue;
-  private JLabel lblScrollPosition;
+  @Getter private JLabel lblVornameNachname;
+
   private JPanel datenPanel;
-  private JPanel buttonPanel;
+
+  private JPanel stammdatenPanel;
+  @Getter private JLabel lblSchueler;
+  @Getter private JLabel lblSchuelerValue;
+  @Getter private JLabel lblMutterValue;
+  @Getter private JLabel lblVaterValue;
+  @Getter private JLabel lblRechnungsempfaenger;
+  @Getter private JLabel lblRechnungsempfaengerValue;
+  @Getter private JLabel lblGeschwisterValue;
+  @Getter private JLabel lblSchuelerGleicherRechnungsempfaenger1;
+  @Getter private JLabel lblSchuelerGleicherRechnungsempfaengerValue;
+  @Getter private JLabel lblSchuelerGleicherRechnungsempfaenger2;
+  @Getter private JLabel lblGeburtsdatumValue;
+  @Getter private JLabel lblAnmeldedatumValue;
+  @Getter private JLabel lblAbmeldedatum;
+  @Getter private JLabel lblAbmeldedatumValue;
+  @Getter private JLabel lblFruehereAnmeldungen;
+  @Getter private JLabel lblFruehereAnmeldungenValue;
+  @Getter private JLabel lblBemerkungenValue;
+  @Getter private JButton btnEmail;
+  @Getter private JButton btnStammdatenBearbeiten;
+
+  private JPanel leftPanel;
+
+  private JPanel dispensationenPanel;
+  @Getter private JLabel lblNichtDispensiert;
+  @Getter private JLabel lblDispensationsdauer;
+  @Getter private JLabel lblDispensationsdauerValue;
+  @Getter private JLabel lblDispensationsgrund;
+  @Getter private JLabel lblDispensationsgrundValue;
+  @Getter private JLabel lblFruehereDispensationenValue;
+  @Getter private JButton btnDispensationenBearbeiten;
+
+  private JPanel rightPanel;
+
+  private JPanel codesPanel;
+  @Getter private JLabel lblSchuelerCodesValue;
+  @Getter private JButton btnCodesBearbeiten;
+
   private JPanel kursePanel;
-  private JLabel lblSemesterKurseValue;
-  private JLabel lblKurseValue;
-  private JButton btnKurseBearbeiten;
+  @Getter private JLabel lblSemesterKurseValue;
+  @Getter private JLabel lblKurseValue;
+  @Getter private JButton btnKurseBearbeiten;
+
   private JPanel maerchenPanel;
-  private JLabel lblMaerchenValue;
-  private JLabel lblGruppeValue;
-  private JLabel lblRolle1Value;
-  private JLabel lblBilderRolle1Value;
-  private JLabel lblRolle2Value;
-  private JLabel lblRolle3Value;
-  private JLabel lblElternmithilfeValue;
-  private JLabel lblElternmithilfeCodeValue;
-  private JLabel lblVorstellungenKuchenValue;
-  private JLabel lblZusatzattributValue;
-  private JLabel lblBemerkungenMaerchenValue;
-  private JButton btnMaerchenBearbeiten;
-  private JLabel lblBilderRolle2Value;
-  private JLabel lblBilderRolle3Value;
-  private JLabel lblRolle1;
-  private JLabel lblRolle2;
-  private JLabel lblRolle3;
-  private JLabel lblElternmithilfe;
-  private JLabel lblElternmithilfeCode;
-  private JLabel lblVorstellungenKuchen;
-  private JLabel lblGruppe;
-  private JLabel lblBilderRolle1;
-  private JLabel lblBilderRolle2;
-  private JLabel lblBilderRolle3;
-  private JLabel lblZusatzattribut;
-  private JLabel lblBemerkungenMaerchen;
-  private JButton btnEmail;
+  @Getter private JLabel lblMaerchenValue;
+  @Getter private JLabel lblRolle1;
+  @Getter private JLabel lblRolle1Value;
+  @Getter private JLabel lblRolle2;
+  @Getter private JLabel lblRolle2Value;
+  @Getter private JLabel lblRolle3;
+  @Getter private JLabel lblRolle3Value;
+  @Getter private JLabel lblElternmithilfe;
+  @Getter private JLabel lblElternmithilfeValue;
+  @Getter private JLabel lblVorstellungenKuchen;
+  @Getter private JLabel lblVorstellungenKuchenValue;
+  @Getter private JLabel lblBemerkungenMaerchen;
+  @Getter private JLabel lblBemerkungenMaerchenValue;
+  @Getter private JLabel lblGruppe;
+  @Getter private JLabel lblGruppeValue;
+  @Getter private JLabel lblBilderRolle1;
+  @Getter private JLabel lblBilderRolle1Value;
+  @Getter private JLabel lblBilderRolle2;
+  @Getter private JLabel lblBilderRolle2Value;
+  @Getter private JLabel lblBilderRolle3;
+  @Getter private JLabel lblBilderRolle3Value;
+  @Getter private JLabel lblElternmithilfeCode;
+  @Getter private JLabel lblElternmithilfeCodeValue;
+  @Getter private JLabel lblZusatzattribut;
+  @Getter private JLabel lblZusatzattributValue;
+  @Getter private JButton btnMaerchenBearbeiten;
 
-  private final SchuelerDatenblattController schuelerDatenblattController;
+  private JPanel buttonPanel;
 
-  public SchuelerDatenblattPanel(
-      SvmContext svmContext,
-      SchuelerSuchenTableModel schuelerSuchenTableModel,
-      JTable schuelerSuchenResultTable,
-      int selectedRow,
-      boolean isFromSchuelerSuchenResult) {
-    schuelerDatenblattController =
-        new SchuelerDatenblattController(
-            svmContext,
-            schuelerSuchenTableModel,
-            schuelerSuchenResultTable,
-            selectedRow,
-            isFromSchuelerSuchenResult);
-    schuelerDatenblattController.setLabelVornameNachname(lblVornameNachname);
-    schuelerDatenblattController.setLabelSchueler(lblSchueler);
-    schuelerDatenblattController.setLabelSchuelerValue(lblSchuelerValue);
-    schuelerDatenblattController.setLabelMutterValue(lblMutterValue);
-    schuelerDatenblattController.setLabelVaterValue(lblVaterValue);
-    schuelerDatenblattController.setLabelRechnungsempfaenger(lblRechnungsempfaenger);
-    schuelerDatenblattController.setLabelRechnungsempfaengerValue(lblRechnungsempfaengerValue);
-    schuelerDatenblattController.setLabelGeschwisterValue(lblGeschwisterValue);
-    schuelerDatenblattController.setLabelSchuelerGleicherRechnungsempfaenger1(
-        lblSchuelerGleicherRechnungsempfaenger1);
-    schuelerDatenblattController.setLabelSchuelerGleicherRechnungsempfaenger2(
-        lblSchuelerGleicherRechnungsempfaenger2);
-    schuelerDatenblattController.setLabelSchuelerGleicherRechnungsempfaengerValue(
-        lblSchuelerGleicherRechnungsempfaengerValue);
-    schuelerDatenblattController.setLabelGeburtsdatumValue(lblGeburtsdatumValue);
-    schuelerDatenblattController.setLabelAnmeldedatumValue(lblAnmeldedatumValue);
-    schuelerDatenblattController.setLabelAbmeldedatum(lblAbmeldedatum);
-    schuelerDatenblattController.setLabelAbmeldedatumValue(lblAbmeldedatumValue);
-    schuelerDatenblattController.setLabelFruehereAnmeldungen(lblFruehereAnmeldungen);
-    schuelerDatenblattController.setLabelFruehereAnmeldungenValue(lblFruehereAnmeldungenValue);
-    schuelerDatenblattController.setLabelBemerkungenValue(lblBemerkungenValue);
-    schuelerDatenblattController.setLabelNichtDispensiert(lblNichtDispensiert);
-    schuelerDatenblattController.setLabelDispensationsdauer(lblDispensationsdauer);
-    schuelerDatenblattController.setLabelDispensationsdauerValue(lblDispensationsdauerValue);
-    schuelerDatenblattController.setLabelDispensationsgrund(lblDispensationsgrund);
-    schuelerDatenblattController.setLabelDispensationsgrundValue(lblDispensationsgrundValue);
-    schuelerDatenblattController.setLabelFruehereDispensationenValue(
-        lblFruehereDispensationenValue);
-    schuelerDatenblattController.setLabelSchuelerCodesValue(lblSchuelerCodesValue);
-    schuelerDatenblattController.setLabelSemesterKurseValue(lblSemesterKurseValue);
-    schuelerDatenblattController.setLabelKurseValue(lblKurseValue);
-    schuelerDatenblattController.setLabelMaerchenValue(lblMaerchenValue);
-    schuelerDatenblattController.setLabelGruppe(lblGruppe);
-    schuelerDatenblattController.setLabelGruppeValue(lblGruppeValue);
-    schuelerDatenblattController.setLabelRolle1(lblRolle1);
-    schuelerDatenblattController.setLabelRolle1Value(lblRolle1Value);
-    schuelerDatenblattController.setLabelBilderRolle1(lblBilderRolle1);
-    schuelerDatenblattController.setLabelBilderRolle1Value(lblBilderRolle1Value);
-    schuelerDatenblattController.setLabelRolle2(lblRolle2);
-    schuelerDatenblattController.setLabelRolle2Value(lblRolle2Value);
-    schuelerDatenblattController.setLabelBilderRolle2(lblBilderRolle2);
-    schuelerDatenblattController.setLabelBilderRolle2Value(lblBilderRolle2Value);
-    schuelerDatenblattController.setLabelRolle3(lblRolle3);
-    schuelerDatenblattController.setLabelRolle3Value(lblRolle3Value);
-    schuelerDatenblattController.setLabelBilderRolle3(lblBilderRolle3);
-    schuelerDatenblattController.setLabelBilderRolle3Value(lblBilderRolle3Value);
-    schuelerDatenblattController.setLabelElternmithilfe(lblElternmithilfe);
-    schuelerDatenblattController.setLabelElternmithilfeValue(lblElternmithilfeValue);
-    schuelerDatenblattController.setLabelElternmithilfeCode(lblElternmithilfeCode);
-    schuelerDatenblattController.setLabelElternmithilfeCodeValue(lblElternmithilfeCodeValue);
-    schuelerDatenblattController.setLabelVorstellungenKuchen(lblVorstellungenKuchen);
-    schuelerDatenblattController.setLabelVorstellungenKuchenValue(lblVorstellungenKuchenValue);
-    schuelerDatenblattController.setLabelZusatzattribut(lblZusatzattribut);
-    schuelerDatenblattController.setLabelZusatzattributValue(lblZusatzattributValue);
-    schuelerDatenblattController.setLabelBemerkungenMaerchen(lblBemerkungenMaerchen);
-    schuelerDatenblattController.setLabelBemerkungenMaerchenValue(lblBemerkungenMaerchenValue);
-    schuelerDatenblattController.setBtnZurueck(btnZurueck);
-    schuelerDatenblattController.setBtnAbbrechen(btnAbbrechen);
-    schuelerDatenblattController.setBtnErster(btnErster);
-    schuelerDatenblattController.setBtnLetzter(btnLetzter);
-    schuelerDatenblattController.setBtnNachfolgender(btnNachfolgender);
-    schuelerDatenblattController.setBtnVorheriger(btnVorheriger);
-    schuelerDatenblattController.setBtnStammdatenBearbeiten(btnStammdatenBearbeiten);
-    schuelerDatenblattController.setBtnEmail(btnEmail);
-    schuelerDatenblattController.setBtnDispensationenBearbeiten(btnDispensationenBearbeiten);
-    schuelerDatenblattController.setBtnCodesBearbeiten(btnCodesBearbeiten);
-    schuelerDatenblattController.setBtnKurseBearbeiten(btnKurseBearbeiten);
-    schuelerDatenblattController.setBtnMaerchenBearbeiten(btnMaerchenBearbeiten);
-    schuelerDatenblattController.setLabelScrollPosition(lblScrollPosition);
-  }
+  private JPanel leftButtonPanel;
+  @Getter private JLabel lblScrollPosition;
+  @Getter private JButton btnErster;
+  @Getter private JButton btnVorheriger;
 
-  public void addNextPanelListener(ActionListener nextPanelListener) {
-    schuelerDatenblattController.addNextPanelListener(nextPanelListener);
-  }
-
-  public void addCloseListener(ActionListener closeListener) {
-    schuelerDatenblattController.addCloseListener(closeListener);
-  }
-
-  public void addZurueckZuSchuelerSuchenListener(ActionListener zurueckZuSchuelerSuchenListener) {
-    schuelerDatenblattController.addZurueckZuSchuelerSuchenListener(
-        zurueckZuSchuelerSuchenListener);
-  }
+  private JPanel rightButtonPanel;
+  @Getter private JButton btnNachfolgender;
+  @Getter private JButton btnLetzter;
+  @Getter private JButton btnZurueck;
+  @Getter private JButton btnAbbrechen;
 
   {
 // GUI initializer generated by IntelliJ IDEA GUI Designer

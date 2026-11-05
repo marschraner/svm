@@ -9,7 +9,7 @@ import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import ch.metzenthin.svm.ui.components.EmailSchuelerListeDialog;
 import ch.metzenthin.svm.ui.components.ListenExportDialogOld;
-import ch.metzenthin.svm.ui.components.SchuelerDatenblattPanel;
+import ch.metzenthin.svm.ui.components.SchuelerDatenblattOldPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -176,8 +176,8 @@ public class SchuelerSuchenResultController {
   }
 
   private void onDatenblatt() {
-    SchuelerDatenblattPanel schuelerDatenblattPanel =
-        new SchuelerDatenblattPanel(
+    SchuelerDatenblattOldPanel schuelerDatenblattPanel =
+        new SchuelerDatenblattOldPanel(
             svmContext,
             schuelerSuchenTableModel,
             schuelerSuchenResultTable,

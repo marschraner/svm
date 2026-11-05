@@ -906,8 +906,8 @@ public class SchuelerDatenblattController {
 
   private void onSaveSuccessful() {
     schuelerSuchenTableModel.fireTableRowsUpdated(selectedRow, selectedRow);
-    SchuelerDatenblattPanel schuelerDatenblattPanel =
-        new SchuelerDatenblattPanel(
+    SchuelerDatenblattOldPanel schuelerDatenblattPanel =
+        new SchuelerDatenblattOldPanel(
             svmContext,
             schuelerSuchenTableModel,
             schuelerSuchenResultTable,
