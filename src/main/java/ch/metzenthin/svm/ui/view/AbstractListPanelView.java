@@ -28,23 +28,17 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
   protected final TableModel<?, ?> tableModel;
   protected final JTable table;
   private final JButton buttonNeu;
-  private final JButton buttonBearbeiten;
   private final JButton buttonLoeschen;
-  private final JButton buttonAbbrechen;
 
-  protected AbstractListPanelView(
-      TableModel<?, ?> tableModel, T listPanel, ActionListener closeListener) {
+  protected AbstractListPanelView(TableModel<?, ?> tableModel, T listPanel) {
     super(listPanel.getRootComponent());
     this.rootComponent = listPanel.getRootComponent();
     this.listPanel = listPanel;
     this.tableModel = tableModel;
     this.table = listPanel.getTable();
     this.buttonNeu = listPanel.getBtnNeu();
-    this.buttonBearbeiten = listPanel.getBtnBearbeiten();
     this.buttonLoeschen = listPanel.getBtnLoeschen();
-    this.buttonAbbrechen = listPanel.getBtnAbbrechen();
     configTable(this.table, tableModel);
-    addButtonAbbrechenActionListener(closeListener);
   }
 
   private static void configTable(JTable table, TableModel<?, ?> tableModel) {
@@ -134,20 +128,8 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
     buttonNeu.addActionListener(actionListener);
   }
 
-  public void addButtonBearbeitenActionListener(ActionListener actionListener) {
-    buttonBearbeiten.addActionListener(actionListener);
-  }
-
   public void addButtonLoeschenActionListener(ActionListener actionListener) {
     buttonLoeschen.addActionListener(actionListener);
-  }
-
-  public void addButtonAbbrechenActionListener(ActionListener actionListener) {
-    buttonAbbrechen.addActionListener(actionListener);
-  }
-
-  public void setButtonBearbeitenEnabled(boolean enabled) {
-    buttonBearbeiten.setEnabled(enabled);
   }
 
   public void setButtonLoeschenEnabled(boolean enabled) {
@@ -156,10 +138,6 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
 
   public void setButtonNeuFocusPainted(boolean focusPainted) {
     buttonNeu.setFocusPainted(focusPainted);
-  }
-
-  public void setButtonBearbeitenFocusPainted(boolean focusPainted) {
-    buttonBearbeiten.setFocusPainted(focusPainted);
   }
 
   public void setButtonLoeschenFocusPainted(boolean focusPainted) {

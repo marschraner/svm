@@ -15,9 +15,5 @@ public abstract class AbstractListPanel {
 
   public abstract JButton getBtnNeu();
 
-  public abstract JButton getBtnBearbeiten();
-
   public abstract JButton getBtnLoeschen();
-
-  public abstract JButton getBtnAbbrechen();
 }

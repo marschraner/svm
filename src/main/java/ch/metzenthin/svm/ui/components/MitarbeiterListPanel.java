@@ -17,7 +17,7 @@ import lombok.Getter;
  * @author Martin Schraner
  */
 @SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
-public class MitarbeiterListPanel extends AbstractListPanel {
+public class MitarbeiterListPanel extends AbstractBearbeitenAbbrechenListPanel {
 
   private JPanel panel1;
   private JPanel datenPanel;

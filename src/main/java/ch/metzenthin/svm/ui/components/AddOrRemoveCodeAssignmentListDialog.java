@@ -9,7 +9,7 @@ import javax.swing.text.StyleContext;
 import lombok.Getter;
 
 @SuppressWarnings({"java:S100", "java:S1450"})
-public class CodeListDialog extends AbstractListDialog {
+public class AddOrRemoveCodeAssignmentListDialog extends AbstractListDialog {
 
   private JPanel contentPane;
   private JPanel datenPanel;
@@ -28,7 +28,7 @@ public class CodeListDialog extends AbstractListDialog {
     return codesTable;
   }
 
-  public CodeListDialog(String title) {
+  public AddOrRemoveCodeAssignmentListDialog(String title) {
     $$$setupUI$$$();
     setContentPane(contentPane);
     setModal(true);

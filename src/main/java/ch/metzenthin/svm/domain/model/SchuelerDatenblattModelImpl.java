@@ -12,6 +12,7 @@ import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.service.SchuelerCodeService;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import java.sql.Time;
 import java.util.*;
@@ -23,14 +24,21 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
   private final Schueler schueler;
   private final Maercheneinteilung aktuelleMaercheneinteilung;
+  private final SchuelerCodeService schuelerCodeService;
   private final boolean neusteZuoberst;
 
-  public SchuelerDatenblattModelImpl(Schueler schueler) {
+  public SchuelerDatenblattModelImpl(Schueler schueler, SchuelerCodeService schuelerCodeService) {
     this.schueler = schueler;
     this.aktuelleMaercheneinteilung =
         determineAktuelleMaercheneinteilung(schueler.getSortedMaercheneinteilungen());
+    this.schuelerCodeService = schuelerCodeService;
     Properties svmProperties = SvmProperties.getSvmProperties();
     neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
+  }
+
+  @Override
+  public AddOrRemoveSchuelerCodeAssignmentListModel createAddOrRemoveSchuelerCodeAssignmentListModel() {
+    return new AddOrRemoveSchuelerCodeAssignmentListModel(schuelerCodeService, schueler.getSchuelerCodes());
   }
 
   @Override

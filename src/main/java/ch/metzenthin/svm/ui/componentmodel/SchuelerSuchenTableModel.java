@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.ui.componentmodel;
 
+import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Gruppe;
 import ch.metzenthin.svm.common.datatypes.Wochentag;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
@@ -19,10 +20,12 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
   @Serial private static final long serialVersionUID = 1L;
 
   private final transient SchuelerSuchenTableData schuelerSuchenTableData;
+  private final SvmContext svmContext;
 
-  public SchuelerSuchenTableModel(SchuelerSuchenTableData schuelerSuchenTableData) {
+  public SchuelerSuchenTableModel(SvmContext svmContext, SchuelerSuchenTableData schuelerSuchenTableData) {
     super();
     this.schuelerSuchenTableData = schuelerSuchenTableData;
+    this.svmContext = svmContext;
   }
 
   @Override
@@ -57,7 +60,7 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
   }
 
   public SchuelerDatenblattModel getSchuelerDatenblattModel(int rowIndex) {
-    return schuelerSuchenTableData.getSchuelerDatenblattModel(rowIndex);
+    return schuelerSuchenTableData.getSchuelerDatenblattModel(rowIndex, svmContext);
   }
 
   @Override

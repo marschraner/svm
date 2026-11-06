@@ -8,6 +8,7 @@ import ch.metzenthin.svm.persistence.entities.Lektionsgebuehren;
 import ch.metzenthin.svm.persistence.entities.Maerchen;
 import ch.metzenthin.svm.persistence.entities.Mitarbeiter;
 import ch.metzenthin.svm.persistence.entities.MitarbeiterCode;
+import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
@@ -98,6 +99,11 @@ public class ModelFactoryImpl implements ModelFactory {
   @Override
   public SchuelerModel createSchuelerModel() {
     return new SchuelerModelImpl();
+  }
+
+  @Override
+  public SchuelerDatenblattModel createSchuelerDatenblattModel(Schueler schueler) {
+    return new SchuelerDatenblattModelImpl(schueler, schuelerCodeService);
   }
 
   @Override
