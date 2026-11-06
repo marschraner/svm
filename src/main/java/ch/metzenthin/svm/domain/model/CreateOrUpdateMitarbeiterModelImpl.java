@@ -107,7 +107,8 @@ public class CreateOrUpdateMitarbeiterModelImpl extends CreateOrUpdatePersonMode
   }
 
   @Override
-  public AddOrRemoveMitarbeiterCodeAssignmentListModel createMitarbeiterCodeAssignmentListModel() {
+  public AddOrRemoveMitarbeiterCodeAssignmentListModel
+      createAddOrRemoveMitarbeiterCodeAssignmentListModel() {
     return new AddOrRemoveMitarbeiterCodeAssignmentListModel(
         mitarbeiterCodeService, getMitarbeiterCodesAsSortedList());
   }

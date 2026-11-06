@@ -1,7 +1,7 @@
 package ch.metzenthin.svm.ui.view;
 
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
-import ch.metzenthin.svm.ui.components.AbstractListPanel;
+import ch.metzenthin.svm.ui.components.AbstractBearbeitenAbbrechenListPanel;
 import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.RowSorter;
@@ -11,8 +11,8 @@ import javax.swing.table.TableRowSorter;
 /**
  * @author Hans Stamm
  */
-public abstract class AbstractSortableListPanelView<T extends AbstractListPanel>
-    extends AbstractListPanelView<T> {
+public abstract class AbstractSortableListPanelView<T extends AbstractBearbeitenAbbrechenListPanel>
+    extends AbstractBearbeitenAbbrechenListPanelView<T> {
 
   protected AbstractSortableListPanelView(
       TableModel<?, ?> tableModel, T listPanel, ActionListener closeListener) {

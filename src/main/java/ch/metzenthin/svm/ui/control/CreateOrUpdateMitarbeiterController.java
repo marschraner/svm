@@ -397,15 +397,15 @@ public class CreateOrUpdateMitarbeiterController
 
   private void onCodesBearbeiten() {
     AddOrRemoveMitarbeiterCodeAssignmentListModel addOrRemoveMitarbeiterCodeAssignmentListModel =
-        model.createMitarbeiterCodeAssignmentListModel();
+        model.createAddOrRemoveMitarbeiterCodeAssignmentListModel();
     String mitarbeiterNameVorname = model.getPersonVornameNachname();
     String dialogTitel = "Mitarbeiter-Codes";
     if (!mitarbeiterNameVorname.isEmpty()) {
       dialogTitel = dialogTitel + " " + mitarbeiterNameVorname;
     }
-    AddOrRemoveMitarbeiterCodeAssignmentListController
+    AddOrRemoveMitarbeiterCodeAssignmentListDialogController
         addOrRemoveMitarbeiterCodeAssignmentListController =
-            new AddOrRemoveMitarbeiterCodeAssignmentListController(
+            new AddOrRemoveMitarbeiterCodeAssignmentListDialogController(
                 svmContext, addOrRemoveMitarbeiterCodeAssignmentListModel, dialogTitel);
     addOrRemoveMitarbeiterCodeAssignmentListController.showDialog();
     List<MitarbeiterCode> assignedCodes =
