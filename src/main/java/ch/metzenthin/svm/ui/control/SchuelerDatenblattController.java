@@ -967,7 +967,7 @@ public class SchuelerDatenblattController implements SchuelerCodesZurueckListene
     AddOrRemoveSchuelerCodeAssignmentListController
         addOrRemoveSchuelerCodeAssignmentListController =
             new AddOrRemoveSchuelerCodeAssignmentListController(
-                addOrRemoveSchuelerCodeAssignmentListModel, title, this, closeListener);
+                addOrRemoveSchuelerCodeAssignmentListModel, title, this);
     nextPanelListener.actionPerformed(
         new ActionEvent(
             new Object[] {
@@ -1073,10 +1073,11 @@ public class SchuelerDatenblattController implements SchuelerCodesZurueckListene
 
   @Override
   public void onSchuelerCodesZurueck() {
+    setLabelSchuelerCodesValue();
     nextPanelListener.actionPerformed(
         new ActionEvent(
             new Object[] {datenblattRootComponent, "Datenblatt"},
             ActionEvent.ACTION_PERFORMED,
-            "Datenblatt"));
+            "Zurück von Schüler-Codes zu Datenblatt"));
   }
 }

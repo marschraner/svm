@@ -13,11 +13,9 @@ public abstract class AbstractZurueckListPanelView<T extends AbstractZurueckList
 
   private final JButton buttonZurueck;
 
-  protected AbstractZurueckListPanelView(
-      TableModel<?, ?> tableModel, T listPanel, ActionListener closeListener) {
+  protected AbstractZurueckListPanelView(TableModel<?, ?> tableModel, T listPanel) {
     super(tableModel, listPanel);
     this.buttonZurueck = listPanel.getBtnZurueck();
-    addButtonZurueckActionListener(closeListener);
   }
 
   public void addButtonZurueckActionListener(ActionListener actionListener) {

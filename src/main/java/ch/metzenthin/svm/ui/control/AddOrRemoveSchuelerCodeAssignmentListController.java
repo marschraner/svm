@@ -9,7 +9,6 @@ import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import ch.metzenthin.svm.ui.view.AddOrRemoveCodeAssignmentListPanelView;
 import ch.metzenthin.svm.ui.view.CodeSelectionView;
-import java.awt.event.ActionListener;
 import lombok.Getter;
 
 /**
@@ -24,18 +23,17 @@ public class AddOrRemoveSchuelerCodeAssignmentListController {
   protected AddOrRemoveSchuelerCodeAssignmentListController(
       AbstractAddOrRemoveCodeAssignmentListModel<SchuelerCode> model,
       String title,
-      SchuelerCodesZurueckListener schuelerCodesZurueckListener,
-      ActionListener closeListener) {
+      SchuelerCodesZurueckListener schuelerCodesZurueckListener) {
     this.model = model;
     this.schuelerCodesZurueckListener = schuelerCodesZurueckListener;
-    this.view = createView(model.getTableModel(), title, closeListener);
+    this.view = createView(model.getTableModel(), title);
     configView();
     configButtons();
   }
 
   private static <T extends Code> AddOrRemoveCodeAssignmentListPanelView createView(
-      TableModel<CodeTableData<T>, T> tableModel, String title, ActionListener closeListener) {
-    return new AddOrRemoveCodeAssignmentListPanelView(tableModel, title, closeListener);
+      TableModel<CodeTableData<T>, T> tableModel, String title) {
+    return new AddOrRemoveCodeAssignmentListPanelView(tableModel, title);
   }
 
   private void configView() {
