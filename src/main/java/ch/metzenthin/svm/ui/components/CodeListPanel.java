@@ -16,16 +16,12 @@ import lombok.Getter;
 @SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
 public class CodeListPanel extends AbstractBearbeitenAbbrechenListPanel {
 
-  private JPanel panel1;
-  private JPanel datenPanel;
-  private JPanel buttonPanel;
-  private JPanel titelPanel;
+  private JPanel mainPanel;
   private JLabel lblTitle;
   private JTable codesTable;
   @Getter private JButton btnNeu;
   @Getter private JButton btnBearbeiten;
   @Getter private JButton btnLoeschen;
-  private JButton btnZurueck;
   @Getter private JButton btnAbbrechen;
 
   @Override
@@ -40,7 +36,6 @@ public class CodeListPanel extends AbstractBearbeitenAbbrechenListPanel {
 
   public CodeListPanel(String title) {
     lblTitle.setText(title);
-    btnZurueck.setVisible(false);
   }
 
   {
@@ -56,13 +51,13 @@ public class CodeListPanel extends AbstractBearbeitenAbbrechenListPanel {
    * @noinspection ALL
    */
   private void $$$setupUI$$$() {
-    panel1 = new JPanel();
-    panel1.setLayout(new BorderLayout(0, 0));
-    datenPanel = new JPanel();
-    datenPanel.setLayout(new GridBagLayout());
-    panel1.add(datenPanel, BorderLayout.CENTER);
-    titelPanel = new JPanel();
-    titelPanel.setLayout(new GridBagLayout());
+    mainPanel = new JPanel();
+    mainPanel.setLayout(new BorderLayout(0, 0));
+    final JPanel panel1 = new JPanel();
+    panel1.setLayout(new GridBagLayout());
+    mainPanel.add(panel1, BorderLayout.CENTER);
+    final JPanel panel2 = new JPanel();
+    panel2.setLayout(new GridBagLayout());
     GridBagConstraints gbc;
     gbc = new GridBagConstraints();
     gbc.gridx = 0;
@@ -71,7 +66,7 @@ public class CodeListPanel extends AbstractBearbeitenAbbrechenListPanel {
     gbc.anchor = GridBagConstraints.NORTH;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.insets = new Insets(10, 10, 20, 10);
-    datenPanel.add(titelPanel, gbc);
+    panel1.add(panel2, gbc);
     lblTitle = new JLabel();
     Font lblTitleFont = this.$$$getFont$$$(null, -1, 36, lblTitle.getFont());
     if (lblTitleFont != null)
@@ -81,48 +76,48 @@ public class CodeListPanel extends AbstractBearbeitenAbbrechenListPanel {
     gbc.gridx = 0;
     gbc.gridy = 0;
     gbc.anchor = GridBagConstraints.WEST;
-    titelPanel.add(lblTitle, gbc);
+    panel2.add(lblTitle, gbc);
     final JPanel spacer1 = new JPanel();
     gbc = new GridBagConstraints();
     gbc.gridx = 1;
     gbc.gridy = 0;
     gbc.weightx = 1.0;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    titelPanel.add(spacer1, gbc);
+    panel2.add(spacer1, gbc);
     final JPanel spacer2 = new JPanel();
     gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 1;
     gbc.weighty = 0.5;
     gbc.fill = GridBagConstraints.VERTICAL;
-    datenPanel.add(spacer2, gbc);
-    final JPanel panel2 = new JPanel();
-    panel2.setLayout(new GridBagLayout());
+    panel1.add(spacer2, gbc);
+    final JPanel panel3 = new JPanel();
+    panel3.setLayout(new GridBagLayout());
     gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 2;
-    datenPanel.add(panel2, gbc);
-    panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Codes",
+    panel1.add(panel3, gbc);
+    panel3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Codes",
         TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION,
-        this.$$$getFont$$$(null, Font.BOLD, -1, panel2.getFont()), null));
+        this.$$$getFont$$$(null, Font.BOLD, -1, panel3.getFont()), null));
     final JPanel spacer3 = new JPanel();
     gbc = new GridBagConstraints();
     gbc.gridx = 2;
     gbc.gridy = 1;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    panel2.add(spacer3, gbc);
+    panel3.add(spacer3, gbc);
     final JPanel spacer4 = new JPanel();
     gbc = new GridBagConstraints();
     gbc.gridx = 1;
     gbc.gridy = 2;
     gbc.fill = GridBagConstraints.VERTICAL;
-    panel2.add(spacer4, gbc);
+    panel3.add(spacer4, gbc);
     final JScrollPane scrollPane1 = new JScrollPane();
     gbc = new GridBagConstraints();
     gbc.gridx = 1;
     gbc.gridy = 1;
     gbc.fill = GridBagConstraints.BOTH;
-    panel2.add(scrollPane1, gbc);
+    panel3.add(scrollPane1, gbc);
     codesTable = new JTable();
     codesTable.setPreferredScrollableViewportSize(new Dimension(470, 200));
     scrollPane1.setViewportView(codesTable);
@@ -131,31 +126,31 @@ public class CodeListPanel extends AbstractBearbeitenAbbrechenListPanel {
     gbc.gridx = 1;
     gbc.gridy = 0;
     gbc.fill = GridBagConstraints.VERTICAL;
-    panel2.add(spacer5, gbc);
+    panel3.add(spacer5, gbc);
     final JPanel spacer6 = new JPanel();
     gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 1;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    panel2.add(spacer6, gbc);
+    panel3.add(spacer6, gbc);
     final JPanel spacer7 = new JPanel();
     gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 3;
     gbc.weighty = 0.5;
     gbc.fill = GridBagConstraints.VERTICAL;
-    datenPanel.add(spacer7, gbc);
-    buttonPanel = new JPanel();
-    buttonPanel.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1, true, false));
-    panel1.add(buttonPanel, BorderLayout.SOUTH);
-    final JPanel panel3 = new JPanel();
-    panel3.setLayout(new GridBagLayout());
-    buttonPanel.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+    panel1.add(spacer7, gbc);
+    final JPanel panel4 = new JPanel();
+    panel4.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1, true, false));
+    mainPanel.add(panel4, BorderLayout.SOUTH);
+    final JPanel panel5 = new JPanel();
+    panel5.setLayout(new GridBagLayout());
+    panel4.add(panel5, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-    final JPanel panel4 = new JPanel();
-    panel4.setLayout(new GridBagLayout());
-    buttonPanel.add(panel4, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+    final JPanel panel6 = new JPanel();
+    panel6.setLayout(new GridBagLayout());
+    panel4.add(panel6, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
     final JPanel spacer8 = new JPanel();
@@ -164,7 +159,7 @@ public class CodeListPanel extends AbstractBearbeitenAbbrechenListPanel {
     gbc.gridy = 1;
     gbc.weightx = 1.0;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    panel4.add(spacer8, gbc);
+    panel6.add(spacer8, gbc);
     btnAbbrechen = new JButton();
     btnAbbrechen.setMaximumSize(new Dimension(114, 29));
     btnAbbrechen.setMinimumSize(new Dimension(114, 29));
@@ -177,22 +172,22 @@ public class CodeListPanel extends AbstractBearbeitenAbbrechenListPanel {
     gbc.gridy = 1;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.insets = new Insets(0, 0, 0, 10);
-    panel4.add(btnAbbrechen, gbc);
+    panel6.add(btnAbbrechen, gbc);
     final JPanel spacer9 = new JPanel();
     gbc = new GridBagConstraints();
     gbc.gridx = 1;
     gbc.gridy = 0;
     gbc.fill = GridBagConstraints.VERTICAL;
-    panel4.add(spacer9, gbc);
+    panel6.add(spacer9, gbc);
     final JPanel spacer10 = new JPanel();
     gbc = new GridBagConstraints();
     gbc.gridx = 1;
     gbc.gridy = 2;
     gbc.fill = GridBagConstraints.VERTICAL;
-    panel4.add(spacer10, gbc);
-    final JPanel panel5 = new JPanel();
-    panel5.setLayout(new GridBagLayout());
-    buttonPanel.add(panel5, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+    panel6.add(spacer10, gbc);
+    final JPanel panel7 = new JPanel();
+    panel7.setLayout(new GridBagLayout());
+    panel4.add(panel7, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
     btnLoeschen = new JButton();
@@ -207,7 +202,7 @@ public class CodeListPanel extends AbstractBearbeitenAbbrechenListPanel {
     gbc.gridy = 1;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.insets = new Insets(0, 5, 0, 0);
-    panel5.add(btnLoeschen, gbc);
+    panel7.add(btnLoeschen, gbc);
     btnBearbeiten = new JButton();
     btnBearbeiten.setInheritsPopupMenu(true);
     btnBearbeiten.setMaximumSize(new Dimension(114, 29));
@@ -221,7 +216,7 @@ public class CodeListPanel extends AbstractBearbeitenAbbrechenListPanel {
     gbc.gridy = 1;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.insets = new Insets(0, 5, 0, 5);
-    panel5.add(btnBearbeiten, gbc);
+    panel7.add(btnBearbeiten, gbc);
     btnNeu = new JButton();
     btnNeu.setMaximumSize(new Dimension(114, 29));
     btnNeu.setMinimumSize(new Dimension(114, 29));
@@ -234,19 +229,19 @@ public class CodeListPanel extends AbstractBearbeitenAbbrechenListPanel {
     gbc.gridy = 1;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.insets = new Insets(0, 0, 0, 5);
-    panel5.add(btnNeu, gbc);
+    panel7.add(btnNeu, gbc);
     final JPanel spacer11 = new JPanel();
     gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 0;
     gbc.fill = GridBagConstraints.VERTICAL;
-    panel5.add(spacer11, gbc);
+    panel7.add(spacer11, gbc);
     final JPanel spacer12 = new JPanel();
     gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 2;
     gbc.fill = GridBagConstraints.VERTICAL;
-    panel5.add(spacer12, gbc);
+    panel7.add(spacer12, gbc);
   }
 
   /** @noinspection ALL */
@@ -274,7 +269,7 @@ public class CodeListPanel extends AbstractBearbeitenAbbrechenListPanel {
 
   /** @noinspection ALL */
   public JComponent $$$getRootComponent$$$() {
-    return panel1;
+    return mainPanel;
   }
 
 }
