@@ -12,6 +12,7 @@ import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.service.DispensationService;
 import ch.metzenthin.svm.service.SchuelerSchuelerCodeService;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import java.sql.Time;
@@ -27,16 +28,19 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
   private final boolean neusteZuoberst;
   private final ModelFactory modelFactory;
   private final SchuelerSchuelerCodeService schuelerSchuelerCodeService;
+  private final DispensationService dispensationService;
 
   public SchuelerDatenblattModelImpl(
       Schueler schueler,
       ModelFactory modelFactory,
-      SchuelerSchuelerCodeService schuelerSchuelerCodeService) {
+      SchuelerSchuelerCodeService schuelerSchuelerCodeService,
+      DispensationService dispensationService) {
     this.schueler = schueler;
     this.aktuelleMaercheneinteilung =
         determineAktuelleMaercheneinteilung(schueler.getSortedMaercheneinteilungen());
     this.modelFactory = modelFactory;
     this.schuelerSchuelerCodeService = schuelerSchuelerCodeService;
+    this.dispensationService = dispensationService;
     Properties svmProperties = SvmProperties.getSvmProperties();
     neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
   }
@@ -44,6 +48,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
   @Override
   public SchuelerCodeAssignmentListModel createSchuelerCodeAssignmentListModel() {
     return modelFactory.createSchuelerCodeAssignmentListModel(schueler.getPersonId());
+  }
+
+  @Override
+  public DispensationListModel createDispensationListModel() {
+    return modelFactory.createDispensationListModel(schueler);
   }
 
   @Override
@@ -264,10 +273,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
   @SuppressWarnings("java:S3776")
   @Override
   public String getDispensationsdauerAsString() {
-    List<Dispensation> dispensationen = schueler.getDispensationen();
+    List<Dispensation> dispensationen =
+        dispensationService.findDispensationenBySchuelerId(schueler.getPersonId());
     if (!dispensationen.isEmpty()) {
       Dispensation dispensation =
-          (neusteZuoberst ? dispensationen.get(0) : dispensationen.get(dispensationen.size() - 1));
+          (dispensationen.get(neusteZuoberst ? 0 : dispensationen.size() - 1));
       if (isDispensationAktuell(dispensation)) {
         String dauer;
         if (dispensation.getDispensationsende() == null) {
@@ -294,10 +304,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
   @Override
   public String getDispensationsgrund() {
-    List<Dispensation> dispensationen = schueler.getDispensationen();
+    List<Dispensation> dispensationen =
+        dispensationService.findDispensationenBySchuelerId(schueler.getPersonId());
     if (!dispensationen.isEmpty()) {
       Dispensation dispensation =
-          (neusteZuoberst ? dispensationen.get(0) : dispensationen.get(dispensationen.size() - 1));
+          (dispensationen.get(neusteZuoberst ? 0 : dispensationen.size() - 1));
       if (isDispensationAktuell(dispensation)) {
         return dispensation.getGrund();
       }
@@ -307,7 +318,8 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
   @Override
   public String getFruehereDispensationenAsString() {
-    List<Dispensation> dispensationen = schueler.getDispensationen();
+    List<Dispensation> dispensationen =
+        dispensationService.findDispensationenBySchuelerId(schueler.getPersonId());
     StringBuilder fruehereDispensationen = new StringBuilder("<html>");
     for (Dispensation dispensation : dispensationen) {
       if (!isDispensationAktuell(dispensation) && isDispensationToBeDisplayed(dispensation)) {
@@ -590,18 +602,6 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
       }
     }
     return null;
-  }
-
-  @Override
-  public DispensationenTableData getDispensationenTableData() {
-    return new DispensationenTableData(schueler.getDispensationen());
-  }
-
-  @Override
-  public CodesTableData getCodesTableData() {
-    List<SchuelerCode> schuelerCodes = new ArrayList<>(schueler.getSchuelerCodes());
-    Collections.sort(schuelerCodes);
-    return new CodesTableData(schuelerCodes, true);
   }
 
   @Override

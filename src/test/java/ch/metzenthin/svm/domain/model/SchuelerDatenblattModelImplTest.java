@@ -59,7 +59,7 @@ class SchuelerDatenblattModelImplTest {
             true);
     schueler.setMutter(mutter);
     schueler.setRechnungsempfaenger(mutter);
-    schuelerDatenblattModel = new SchuelerDatenblattModelImpl(schueler, null, null);
+    schuelerDatenblattModel = new SchuelerDatenblattModelImpl(schueler, null, null, null);
   }
 
   @Test

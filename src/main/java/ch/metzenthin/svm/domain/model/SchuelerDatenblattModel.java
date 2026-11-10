@@ -11,6 +11,8 @@ public interface SchuelerDatenblattModel {
 
   SchuelerCodeAssignmentListModel createSchuelerCodeAssignmentListModel();
 
+  DispensationListModel createDispensationListModel();
+
   String getSchuelerNachname();
 
   String getSchuelerVorname();
@@ -82,10 +84,6 @@ public interface SchuelerDatenblattModel {
   String getZusatzattribut();
 
   String getBemerkungenMaerchen();
-
-  DispensationenTableData getDispensationenTableData();
-
-  CodesTableData getCodesTableData();
 
   KursanmeldungenTableData getKurseinteilungenTableData();
 

@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.persistence.entities.Dispensation;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Kursort;
@@ -12,6 +13,7 @@ import ch.metzenthin.svm.persistence.entities.Schueler;
 import ch.metzenthin.svm.persistence.entities.SchuelerCode;
 import ch.metzenthin.svm.persistence.entities.Semester;
 import ch.metzenthin.svm.persistence.entities.SemesterrechnungCode;
+import ch.metzenthin.svm.service.DispensationService;
 import ch.metzenthin.svm.service.ElternmithilfeCodeService;
 import ch.metzenthin.svm.service.EmailService;
 import ch.metzenthin.svm.service.KursLehrkraftService;
@@ -54,6 +56,7 @@ public class ModelFactoryImpl implements ModelFactory {
   private final KursLehrkraftService kursLehrkraftService;
   private final MitarbeiterMitarbeiterCodeService mitarbeiterMitarbeiterCodeService;
   private final EmailService emailService;
+  private final DispensationService dispensationService;
 
   public ModelFactoryImpl(
       SchuelerSchuelerCodeService schuelerSchuelerCodeService,
@@ -71,7 +74,8 @@ public class ModelFactoryImpl implements ModelFactory {
       MitarbeiterService mitarbeiterService,
       KursLehrkraftService kursLehrkraftService,
       MitarbeiterMitarbeiterCodeService mitarbeiterMitarbeiterCodeService,
-      EmailService emailService) {
+      EmailService emailService,
+      DispensationService dispensationService) {
     this.schuelerSchuelerCodeService = schuelerSchuelerCodeService;
     this.kursService = kursService;
     this.kursortService = kursortService;
@@ -88,6 +92,7 @@ public class ModelFactoryImpl implements ModelFactory {
     this.kursLehrkraftService = kursLehrkraftService;
     this.mitarbeiterMitarbeiterCodeService = mitarbeiterMitarbeiterCodeService;
     this.emailService = emailService;
+    this.dispensationService = dispensationService;
   }
 
   @Override
@@ -102,7 +107,8 @@ public class ModelFactoryImpl implements ModelFactory {
 
   @Override
   public SchuelerDatenblattModel createSchuelerDatenblattModel(Schueler schueler) {
-    return new SchuelerDatenblattModelImpl(schueler, this, schuelerSchuelerCodeService);
+    return new SchuelerDatenblattModelImpl(
+        schueler, this, schuelerSchuelerCodeService, dispensationService);
   }
 
   @Override
@@ -143,6 +149,18 @@ public class ModelFactoryImpl implements ModelFactory {
   @Override
   public DispensationErfassenModel createDispensationErfassenModel() {
     return new DispensationErfassenModelImpl();
+  }
+
+  @Override
+  public DispensationListModel createDispensationListModel(Schueler schueler) {
+    return new DispensationListModel(schueler, dispensationService);
+  }
+
+  @Override
+  public CreateOrUpdateDispensationModel createCreateOrUpdateDispensationModel(
+      Schueler schueler, Optional<Dispensation> dispensationOptional) {
+    return new CreateOrUpdateDispensationModelImpl(
+        schueler, dispensationOptional, dispensationService);
   }
 
   @Override
@@ -263,11 +281,6 @@ public class ModelFactoryImpl implements ModelFactory {
   @Override
   public KurseSemesterwahlModel createKurseSemesterwahlModel() {
     return new KurseSemesterwahlModelImpl(kursService, semesterService);
-  }
-
-  @Override
-  public KursListModel createKursListModel(Semester semester) {
-    return new KursListModel(kursService, semester);
   }
 
   @Override
