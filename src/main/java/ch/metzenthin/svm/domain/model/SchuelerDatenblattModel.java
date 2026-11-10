@@ -11,6 +11,8 @@ public interface SchuelerDatenblattModel {
 
   AddOrRemoveSchuelerCodeAssignmentListModel createAddOrRemoveSchuelerCodeAssignmentListModel();
 
+  DispensationListModel createDispensationListModel();
+
   String getSchuelerNachname();
 
   String getSchuelerVorname();

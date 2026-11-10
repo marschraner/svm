@@ -2,7 +2,9 @@ package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.AddOrRemoveSchuelerCodeAssignmentListModel;
+import ch.metzenthin.svm.domain.model.DispensationListModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
+import ch.metzenthin.svm.listener.DispensationenZurueckListener;
 import ch.metzenthin.svm.listener.SchuelerCodesZurueckListener;
 import ch.metzenthin.svm.ui.componentmodel.*;
 import ch.metzenthin.svm.ui.components.*;
@@ -14,7 +16,11 @@ import lombok.Setter;
 /**
  * @author Hans Stamm
  */
-public class SchuelerDatenblattController implements SchuelerCodesZurueckListener {
+public class SchuelerDatenblattController
+    implements SchuelerCodesZurueckListener, DispensationenZurueckListener {
+
+  public static final String DATENBLATT = "Datenblatt";
+
   private final SvmContext svmContext;
   private final SchuelerSuchenTableModel schuelerSuchenTableModel;
   private final JTable schuelerSuchenResultTable;
@@ -921,7 +927,7 @@ public class SchuelerDatenblattController implements SchuelerCodesZurueckListene
     schuelerDatenblattPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
     nextPanelListener.actionPerformed(
         new ActionEvent(
-            new Object[] {schuelerDatenblattPanel.$$$getRootComponent$$$(), "Datenblatt"},
+            new Object[] {schuelerDatenblattPanel.$$$getRootComponent$$$(), DATENBLATT},
             ActionEvent.ACTION_PERFORMED,
             "Schüler gespeichert"));
   }
@@ -931,25 +937,24 @@ public class SchuelerDatenblattController implements SchuelerCodesZurueckListene
   }
 
   private void onDispensationenBearbeiten() {
-    DispensationenTableModel dispensationenTableModel =
-        new DispensationenTableModel(schuelerDatenblattModel.getDispensationenTableData());
-    DispensationenPanel dispensationenPanel =
-        new DispensationenPanel(
-            svmContext,
-            dispensationenTableModel,
-            schuelerDatenblattModel,
-            schuelerSuchenTableModel,
-            schuelerSuchenResultTable,
-            selectedRow,
-            isFromSchuelerSuchenResult);
-    dispensationenPanel.addNextPanelListener(nextPanelListener);
-    dispensationenPanel.addCloseListener(closeListener);
-    dispensationenPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
+    String title = "Dispensationen " + getSchuelerVornameNachname();
+    DispensationListModel dispensationListModel =
+        schuelerDatenblattModel.createDispensationListModel();
+    DispensationListController dispensationListController =
+        new DispensationListController(svmContext, dispensationListModel, title, this);
     nextPanelListener.actionPerformed(
         new ActionEvent(
-            new Object[] {dispensationenPanel.$$$getRootComponent$$$(), "Dispensationen"},
+            new Object[] {
+              dispensationListController.getView().getRootComponent(), "Dispensationen"
+            },
             ActionEvent.ACTION_PERFORMED,
             "Dispensationen"));
+  }
+
+  private String getSchuelerVornameNachname() {
+    return schuelerDatenblattModel.getSchuelerVorname()
+        + " "
+        + schuelerDatenblattModel.getSchuelerNachname();
   }
 
   public void setBtnCodesBearbeiten(JButton btnCodesBearbeiten) {
@@ -957,11 +962,7 @@ public class SchuelerDatenblattController implements SchuelerCodesZurueckListene
   }
 
   private void onCodesBearbeiten() {
-    String title =
-        "Schüler-Codes "
-            + schuelerDatenblattModel.getSchuelerVorname()
-            + " "
-            + schuelerDatenblattModel.getSchuelerNachname();
+    String title = "Schüler-Codes " + getSchuelerVornameNachname();
     AddOrRemoveSchuelerCodeAssignmentListModel addOrRemoveSchuelerCodeAssignmentListModel =
         schuelerDatenblattModel.createAddOrRemoveSchuelerCodeAssignmentListModel();
     AddOrRemoveSchuelerCodeAssignmentListController
@@ -1076,8 +1077,19 @@ public class SchuelerDatenblattController implements SchuelerCodesZurueckListene
     setLabelSchuelerCodesValue();
     nextPanelListener.actionPerformed(
         new ActionEvent(
-            new Object[] {datenblattRootComponent, "Datenblatt"},
+            new Object[] {datenblattRootComponent, DATENBLATT},
             ActionEvent.ACTION_PERFORMED,
             "Zurück von Schüler-Codes zu Datenblatt"));
+  }
+
+  @Override
+  public void onDispensationenZurueck() {
+    setLabelDispensationsdauerValue();
+    setLabelDispensationsgrundValue();
+    nextPanelListener.actionPerformed(
+        new ActionEvent(
+            new Object[] {datenblattRootComponent, DATENBLATT},
+            ActionEvent.ACTION_PERFORMED,
+            "Zurück von Dispensationen zu Datenblatt"));
   }
 }
