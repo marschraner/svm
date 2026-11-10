@@ -22,8 +22,12 @@ public abstract class AbstractView<T extends Component> {
     JOptionPane.showMessageDialog(component, message, title, JOptionPane.INFORMATION_MESSAGE);
   }
 
-  public void showWarningMessageDialog(String message, String title) {
-    JOptionPane.showMessageDialog(component, message, title, JOptionPane.WARNING_MESSAGE);
+  public void showInfoMessageDialog(String message, String title, int optionPaneWidth) {
+    String html =
+        String.format("<html><body style='width: %spx'>", optionPaneWidth)
+            + message.replace("\n", "<br>")
+            + "</body></html>";
+    JOptionPane.showMessageDialog(component, html, title, JOptionPane.INFORMATION_MESSAGE);
   }
 
   public void showErrorMessageDialog(String message, String title) {

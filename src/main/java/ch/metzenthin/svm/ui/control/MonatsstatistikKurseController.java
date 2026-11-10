@@ -89,7 +89,7 @@ public class MonatsstatistikKurseController
             + monatsstatistikKurse.numberOfAbmeldungen()
             + "\nBesuchte Lektionen: "
             + monatsstatistikKurse.numberOfLektionen();
-    view.showInfoMessageDialog(statistik, "Statistik per Ende Monat");
+    view.showInfoMessageDialog(statistik, "Statistik per Ende Monat", 200);
   }
 
   private void configBtnAbbrechen() {
