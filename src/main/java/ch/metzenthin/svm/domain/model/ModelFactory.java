@@ -1,5 +1,6 @@
 package ch.metzenthin.svm.domain.model;
 
+import ch.metzenthin.svm.persistence.entities.Dispensation;
 import ch.metzenthin.svm.persistence.entities.ElternmithilfeCode;
 import ch.metzenthin.svm.persistence.entities.Kurs;
 import ch.metzenthin.svm.persistence.entities.Kursort;
@@ -36,6 +37,11 @@ public interface ModelFactory {
   DispensationenModel createDispensationenModel();
 
   DispensationErfassenModel createDispensationErfassenModel();
+
+  DispensationListModel createDispensationListModel(Schueler schueler);
+
+  CreateOrUpdateDispensationModel createCreateOrUpdateDispensationModel(
+      Schueler schueler, Optional<Dispensation> dispensationOptional);
 
   SchuelerCodeAssignmentListModel createSchuelerCodeAssignmentListModel(int schuelerId);
 

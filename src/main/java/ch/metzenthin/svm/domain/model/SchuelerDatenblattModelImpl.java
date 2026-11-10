@@ -12,6 +12,8 @@ import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.service.DispensationService;
+import ch.metzenthin.svm.service.SchuelerCodeService;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import java.sql.Time;
 import java.util.*;
@@ -23,14 +25,21 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
   private final Schueler schueler;
   private final Maercheneinteilung aktuelleMaercheneinteilung;
+  private final SchuelerCodeService schuelerCodeService;
+  private final DispensationService dispensationService;
   private final boolean neusteZuoberst;
   private final SvmContext svmContext;
 
+  public SchuelerDatenblattModelImpl(
+      Schueler schueler,
+      SchuelerCodeService schuelerCodeService,
+      DispensationService dispensationService) {
   public SchuelerDatenblattModelImpl(Schueler schueler, SvmContext svmContext) {
     this.schueler = schueler;
     this.aktuelleMaercheneinteilung =
         determineAktuelleMaercheneinteilung(schueler.getSortedMaercheneinteilungen());
     this.svmContext = svmContext;
+    this.dispensationService = dispensationService;
     Properties svmProperties = SvmProperties.getSvmProperties();
     neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
   }
@@ -40,6 +49,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
     return svmContext
         .getModelFactory()
         .createSchuelerCodeAssignmentListModel(schueler.getPersonId());
+  }
+
+  @Override
+  public DispensationListModel createDispensationListModel() {
+    return new DispensationListModel(dispensationService, schueler);
   }
 
   @Override

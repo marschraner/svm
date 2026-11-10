@@ -151,6 +151,16 @@ public class ValidationUtils {
         : new ValidationResult();
   }
 
+  public static ValidationResult validateOpenPeriod(
+      Calendar beginn, Calendar ende, Field beginnField, Field endeField) {
+    ValidationResult validationResult = validatePeriodNotWithoutBeginn(beginn, ende, endeField);
+    if (!validationResult.isValid()) {
+      return validationResult;
+    }
+
+    return validateNotAfter(beginn, ende, beginnField);
+  }
+
   public static ValidationResult validateWithinPeriod(
       Calendar calendar, Calendar earliestValidDate, Calendar latestValidDate, Field field) {
     ValidationResult validationResult = validateNotBefore(calendar, earliestValidDate, field);
