@@ -393,6 +393,19 @@ public class KursServiceImpl implements KursService {
         lehrkraefteOfTargetKurs.add(lehrkraftOfSourceKurs.getLehrkraft());
       }
 
+      // TODO: Folgende Query ist nicht eindeutig genug. Hat es einen Grund, dass nur nach
+      // Semester-Id, Wochentag und Zeitbeginn abgefragt wird und dann die Lehrkräfte?
+      /*
+      Beispiel Semester: 2. Semester 2018/2019
+      MariaDB [svm]> select k1_0.kurs_id,k1_0.altersbereich,k1_0.bemerkungen,k1_0.creation_date,k1_0.kursort_id,k1_0.kurstyp_id,k1_0.last_modified,k1_0.semester_id,k1_0.stufe,k1_0.version,k1_0.wochentag,k1_0.zeit_beginn,k1_0.zeit_ende from Kurs k1_0 where k1_0.semester_id=10 and k1_0.wochentag='DIENSTAG' and k1_0.zeit_beginn='15:50:00.000' order by k1_0.kurs_id;
+      +---------+---------------+-------------+---------------------+------------+------------+---------------------+-------------+--------------+---------+-----------+-------------+-----------+
+      | kurs_id | altersbereich | bemerkungen | creation_date       | kursort_id | kurstyp_id | last_modified       | semester_id | stufe        | version | wochentag | zeit_beginn | zeit_ende |
+      +---------+---------------+-------------+---------------------+------------+------------+---------------------+-------------+--------------+---------+-----------+-------------+-----------+
+      |     631 | 8 - 10  J.    | NULL        | 2018-11-28 09:20:38 |          3 |          5 | 2018-11-28 09:20:38 |          10 | 1 - 3        |       0 | DIENSTAG  | 15:50:00    | 16:40:00  |
+      |     686 | 6 1/2 - 8 J.  | NULL        | 2018-11-28 09:21:53 |          1 |          2 | 2018-11-28 09:21:53 |          10 | 1./2. Klasse |       0 | DIENSTAG  | 15:50:00    | 16:40:00  |
+      +---------+---------------+-------------+---------------------+------------+------------+---------------------+-------------+--------------+---------+-----------+-------------+-----------+
+      2 rows in set (0.002 sec)
+      */
       // Existiert der Kurs im jetzigen Semester bereits? Wenn ja, unverändert lassen.
       Optional<Kurs> existingTargetKursOptional =
           kursRepository.findBySemesterIdAndWochentagAndZeitBeginn(
