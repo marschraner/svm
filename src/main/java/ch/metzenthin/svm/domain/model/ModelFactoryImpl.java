@@ -23,6 +23,7 @@ import ch.metzenthin.svm.service.MitarbeiterCodeService;
 import ch.metzenthin.svm.service.MitarbeiterMitarbeiterCodeService;
 import ch.metzenthin.svm.service.MitarbeiterService;
 import ch.metzenthin.svm.service.SchuelerCodeService;
+import ch.metzenthin.svm.service.SchuelerSchuelerCodeService;
 import ch.metzenthin.svm.service.SemesterService;
 import ch.metzenthin.svm.service.SemesterrechnungCodeService;
 import ch.metzenthin.svm.service.SemesterrechnungService;
@@ -36,6 +37,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ModelFactoryImpl implements ModelFactory {
 
+  private final SchuelerSchuelerCodeService schuelerSchuelerCodeService;
   private final KursService kursService;
   private final KursortService kursortService;
   private final KurstypService kurstypService;
@@ -53,6 +55,7 @@ public class ModelFactoryImpl implements ModelFactory {
   private final EmailService emailService;
 
   public ModelFactoryImpl(
+      SchuelerSchuelerCodeService schuelerSchuelerCodeService,
       KursService kursService,
       KursortService kursortService,
       KurstypService kurstypService,
@@ -68,6 +71,7 @@ public class ModelFactoryImpl implements ModelFactory {
       KursLehrkraftService kursLehrkraftService,
       MitarbeiterMitarbeiterCodeService mitarbeiterMitarbeiterCodeService,
       EmailService emailService) {
+    this.schuelerSchuelerCodeService = schuelerSchuelerCodeService;
     this.kursService = kursService;
     this.kursortService = kursortService;
     this.kurstypService = kurstypService;
@@ -133,6 +137,16 @@ public class ModelFactoryImpl implements ModelFactory {
   @Override
   public DispensationErfassenModel createDispensationErfassenModel() {
     return new DispensationErfassenModelImpl();
+  }
+
+  @Override
+  public SchuelerCodeAssignmentListModel createSchuelerCodeAssignmentListModel(int schuelerId) {
+    return new SchuelerCodeAssignmentListModel(schuelerId, schuelerSchuelerCodeService);
+  }
+
+  @Override
+  public CreateCodeAssignmentModel<SchuelerCode> createSchuelerCodeAssignmentModel(int schuelerId) {
+    return new CreateSchuelerCodeAssignmentModelImpl(schuelerId, schuelerSchuelerCodeService);
   }
 
   @Override

@@ -37,6 +37,10 @@ public interface ModelFactory {
 
   DispensationErfassenModel createDispensationErfassenModel();
 
+  SchuelerCodeAssignmentListModel createSchuelerCodeAssignmentListModel(int schuelerId);
+
+  CreateCodeAssignmentModel<SchuelerCode> createSchuelerCodeAssignmentModel(int schuelerId);
+
   ElternmithilfeCodeListModel createElternmithilfeCodeListModel();
 
   MitarbeiterCodeListModel createMitarbeiterCodeListModel();

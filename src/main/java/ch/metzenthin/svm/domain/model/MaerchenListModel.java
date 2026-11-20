@@ -14,7 +14,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
  * @author Martin Schraner
  */
 public class MaerchenListModel
-    extends AbstractListModel<
+    extends AbstractCreateOrUpdateOrDeleteListModel<
         MaerchenAndNumberOfMaercheneinteilungen,
         TableModel<MaerchenTableData, MaerchenAndNumberOfMaercheneinteilungen>,
         DeleteMaerchenResult> {

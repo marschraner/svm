@@ -5,7 +5,7 @@ import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnW
 import static ch.metzenthin.svm.ui.components.UiComponentsUtils.setJTableColumnWidthAsPercentages;
 
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
-import ch.metzenthin.svm.ui.components.AbstractListPanel;
+import ch.metzenthin.svm.ui.components.AbstractCreateOrDeleteListPanel;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -20,7 +20,7 @@ import lombok.Getter;
 /**
  * @author Hans Stamm
  */
-public abstract class AbstractListPanelView<T extends AbstractListPanel>
+public abstract class AbstractCreateOrDeleteListPanelView<T extends AbstractCreateOrDeleteListPanel>
     extends AbstractView<JComponent> {
 
   @Getter private final JComponent rootComponent;
@@ -28,11 +28,10 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
   protected final TableModel<?, ?> tableModel;
   protected final JTable table;
   private final JButton buttonNeu;
-  private final JButton buttonBearbeiten;
   private final JButton buttonLoeschen;
   private final JButton buttonAbbrechen;
 
-  protected AbstractListPanelView(
+  protected AbstractCreateOrDeleteListPanelView(
       TableModel<?, ?> tableModel, T listPanel, ActionListener closeListener) {
     super(listPanel.getRootComponent());
     this.rootComponent = listPanel.getRootComponent();
@@ -40,7 +39,6 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
     this.tableModel = tableModel;
     this.table = listPanel.getTable();
     this.buttonNeu = listPanel.getBtnNeu();
-    this.buttonBearbeiten = listPanel.getBtnBearbeiten();
     this.buttonLoeschen = listPanel.getBtnLoeschen();
     this.buttonAbbrechen = listPanel.getBtnAbbrechen();
     configTable(this.table, tableModel);
@@ -134,10 +132,6 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
     buttonNeu.addActionListener(actionListener);
   }
 
-  public void addButtonBearbeitenActionListener(ActionListener actionListener) {
-    buttonBearbeiten.addActionListener(actionListener);
-  }
-
   public void addButtonLoeschenActionListener(ActionListener actionListener) {
     buttonLoeschen.addActionListener(actionListener);
   }
@@ -146,20 +140,12 @@ public abstract class AbstractListPanelView<T extends AbstractListPanel>
     buttonAbbrechen.addActionListener(actionListener);
   }
 
-  public void setButtonBearbeitenEnabled(boolean enabled) {
-    buttonBearbeiten.setEnabled(enabled);
-  }
-
   public void setButtonLoeschenEnabled(boolean enabled) {
     buttonLoeschen.setEnabled(enabled);
   }
 
   public void setButtonNeuFocusPainted(boolean focusPainted) {
     buttonNeu.setFocusPainted(focusPainted);
-  }
-
-  public void setButtonBearbeitenFocusPainted(boolean focusPainted) {
-    buttonBearbeiten.setFocusPainted(focusPainted);
   }
 
   public void setButtonLoeschenFocusPainted(boolean focusPainted) {

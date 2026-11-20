@@ -6,21 +6,21 @@ import ch.metzenthin.svm.domain.model.CodeTableData;
 import ch.metzenthin.svm.domain.model.DialogClosingListener;
 import ch.metzenthin.svm.persistence.entities.Code;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
-import ch.metzenthin.svm.ui.view.CodeListDialogView;
+import ch.metzenthin.svm.ui.view.AddOrRemoveCodeAssignmentListDialogView;
 import lombok.Getter;
 
 /**
  * @param <T> Code-Typ, z.B. MitarbeiterCode
  * @author Hans Stamm
  */
-public abstract class AbstractAddOrRemoveCodeAssignmentListController<T extends Code>
+public abstract class AbstractAddOrRemoveCodeAssignmentListDialogController<T extends Code>
     implements DialogClosingListener {
 
   protected final SvmContext svmContext;
   protected final AbstractAddOrRemoveCodeAssignmentListModel<T> model;
-  @Getter public final CodeListDialogView view;
+  @Getter public final AddOrRemoveCodeAssignmentListDialogView view;
 
-  protected AbstractAddOrRemoveCodeAssignmentListController(
+  protected AbstractAddOrRemoveCodeAssignmentListDialogController(
       SvmContext svmContext,
       AbstractAddOrRemoveCodeAssignmentListModel<T> model,
       String dialogTitle) {
@@ -32,9 +32,9 @@ public abstract class AbstractAddOrRemoveCodeAssignmentListController<T extends 
     configButtons();
   }
 
-  private static <T extends Code> CodeListDialogView createView(
+  private static <T extends Code> AddOrRemoveCodeAssignmentListDialogView createView(
       TableModel<CodeTableData<T>, T> tableModel, String dialogTitle) {
-    return new CodeListDialogView(tableModel, dialogTitle);
+    return new AddOrRemoveCodeAssignmentListDialogView(tableModel, dialogTitle);
   }
 
   private void configView() {
@@ -75,7 +75,7 @@ public abstract class AbstractAddOrRemoveCodeAssignmentListController<T extends 
     int n =
         view.showYesNoDialog(
             String.format("Soll der %s entfernt werden?", model.getListItemName()),
-            String.format("%s entfernen", model.getListItemName()));
+            model.getListItemName() + " entfernen");
     if (n == 0) {
       T codeToBeRemoved = model.getSelectedRow(view.convertRowIndexToModel());
       model.removeCode(codeToBeRemoved);

@@ -12,7 +12,8 @@ import javax.swing.event.TableModelListener;
 /**
  * @author Hans Stamm
  */
-public class MitarbeiterListView extends AbstractSortableListPanelView<MitarbeiterListPanel> {
+public class MitarbeiterListView
+    extends AbstractSortableCreateOrUpdateOrDeleteListPanelView<MitarbeiterListPanel> {
 
   private final JButton buttonExportieren;
   private final JButton buttonEmail;

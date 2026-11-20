@@ -3,7 +3,7 @@ package ch.metzenthin.svm.ui.control;
 import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.domain.model.AbstractListModel;
 import ch.metzenthin.svm.service.result.SubmitDialogResult;
-import ch.metzenthin.svm.ui.view.AbstractListPanelView;
+import ch.metzenthin.svm.ui.view.AbstractCreateOrDeleteListPanelView;
 import java.util.Optional;
 import lombok.Getter;
 
@@ -15,7 +15,7 @@ import lombok.Getter;
  */
 public abstract class AbstractListController<
     T extends AbstractListModel<?, ?, V>,
-    U extends AbstractListPanelView<?>,
+    U extends AbstractCreateOrDeleteListPanelView<?>,
     V extends SubmitDialogResult> {
 
   protected final SvmContext svmContext;
@@ -30,27 +30,11 @@ public abstract class AbstractListController<
     configButtons();
   }
 
-  private void configView() {
-    view.configListeners(this::onBearbeiten, this::onListSelection);
-  }
+  protected abstract void configView();
 
-  private void onListSelection() {
-    int selectedRowIndex = view.getIndexOfSelectedRow();
-    view.setButtonBearbeitenEnabled(selectedRowIndex >= 0);
-    view.setButtonLoeschenEnabled(selectedRowIndex >= 0);
-  }
+  protected abstract void configButtons();
 
-  private void configButtons() {
-    configBtnNeu();
-    configBtnBearbeiten();
-    configBtnLoeschen();
-  }
-
-  private void configBtnNeu() {
-    view.addButtonNeuActionListener(e -> onNeu());
-  }
-
-  private void onNeu() {
+  protected void onNeu() {
     view.setButtonNeuFocusPainted(true);
     showOnNeuDialog();
     // Dialog wurde geschlossen
@@ -59,21 +43,7 @@ public abstract class AbstractListController<
 
   protected abstract void showOnNeuDialog();
 
-  private void configBtnBearbeiten() {
-    view.setButtonBearbeitenEnabled(false);
-    view.addButtonBearbeitenActionListener(e -> onBearbeiten());
-  }
-
-  private void onBearbeiten() {
-    view.setButtonBearbeitenFocusPainted(true);
-    showOnBearbeitenDialog();
-    // Dialog wurde geschlossen
-    view.setButtonBearbeitenFocusPainted(false);
-  }
-
-  protected abstract void showOnBearbeitenDialog();
-
-  private void configBtnLoeschen() {
+  protected void configBtnLoeschen() {
     view.setButtonLoeschenEnabled(false);
     view.addButtonLoeschenActionListener(e -> onLoeschen());
   }
@@ -86,27 +56,7 @@ public abstract class AbstractListController<
     view.clearSelection();
   }
 
-  protected void onLoeschenDialog() {
-    int n =
-        view.showYesNoDialog(
-            "Soll der Eintrag aus der Datenbank gelöscht werden?",
-            model.getListItemName() + " löschen");
-    if (n == 0) {
-      V saveDialogResult = model.eintragLoeschen(view.convertRowIndexToModel());
-      if (!saveDialogResult.isSubmitSuccessful()) {
-        showErrorMessageDialog(saveDialogResult.getMessage());
-        if (saveDialogResult.isDialogToBeClosed()) {
-          reloadSelectedRow();
-        }
-      } else {
-        removeSelectedRow();
-      }
-    }
-  }
-
-  private void showErrorMessageDialog(String message) {
-    view.showErrorMessageDialog(message, "Fehler");
-  }
+  protected abstract void onLoeschenDialog();
 
   protected void reloadTableData() {
     // TableData mit von der Datenbank upgedateten Objekten updaten
@@ -129,21 +79,6 @@ public abstract class AbstractListController<
           "Beim Laden des erstellten Eintrags ist ein Fehler aufgetreten.\n"
               + "Die Liste wird neu geladen!",
           "Fehler beim Laden des neu erstellten Eintrags");
-      reloadTableData();
-    }
-  }
-
-  protected void reloadSelectedRow() {
-    int modelRowIndex = view.convertRowIndexToModel();
-    boolean success = model.replaceUpdatedObjectInTableModel(modelRowIndex);
-    if (success) {
-      view.fireTableRowUpdated(modelRowIndex);
-      updateButtonsAndTotalText();
-    } else {
-      view.showErrorMessageDialog(
-          "Beim Laden des geänderten Eintrags ist ein Fehler aufgetreten.\n"
-              + "Die Liste wird neu geladen!",
-          "Fehler beim Laden des geänderten Eintrags");
       reloadTableData();
     }
   }

@@ -1,6 +1,6 @@
 package ch.metzenthin.svm.ui.control;
 
-import ch.metzenthin.svm.domain.model.AbstractListModel;
+import ch.metzenthin.svm.domain.model.AbstractCreateOrUpdateOrDeleteListModel;
 import ch.metzenthin.svm.domain.model.validation.ValidationResultsAndListModel;
 import ch.metzenthin.svm.ui.view.AbstractSubmitPanelView;
 
@@ -8,7 +8,8 @@ import ch.metzenthin.svm.ui.view.AbstractSubmitPanelView;
  * @author Martin Schraner
  */
 public abstract class AbstractSearchPanelController<
-        T extends AbstractSubmitPanelView<?>, U extends AbstractListModel<?, ?, ?>>
+        T extends AbstractSubmitPanelView<?>,
+        U extends AbstractCreateOrUpdateOrDeleteListModel<?, ?, ?>>
     extends AbstractSubmitController<T> {
 
   protected AbstractSearchPanelController(T view) {

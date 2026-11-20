@@ -1,12 +1,13 @@
 package ch.metzenthin.svm.domain.model.validation;
 
-import ch.metzenthin.svm.domain.model.AbstractListModel;
+import ch.metzenthin.svm.domain.model.AbstractCreateOrUpdateOrDeleteListModel;
 import java.util.List;
 
 /**
  * @author Martin Schraner
  */
-public record ValidationResultsAndListModel<T extends AbstractListModel<?, ?, ?>>(
+public record ValidationResultsAndListModel<
+    T extends AbstractCreateOrUpdateOrDeleteListModel<?, ?, ?>>(
     List<ValidationResult> validationResults, T listModel) {
 
   public ValidationResultsAndListModel(T listModel) {

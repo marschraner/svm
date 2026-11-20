@@ -792,7 +792,7 @@ public class SchuelerSuchenController extends PersonController {
     SchuelerSuchenTableData schuelerSuchenTableData =
         schuelerSuchenModel.suchen(svmContext.getSvmModel());
     SchuelerSuchenTableModel schuelerSuchenTableModel =
-        new SchuelerSuchenTableModel(schuelerSuchenTableData);
+        new SchuelerSuchenTableModel(svmContext, schuelerSuchenTableData);
 
     int maxResults = SchuelerSuchenCommand.MAX_RESULTS;
     if (schuelerSuchenTableData.size() == maxResults) {

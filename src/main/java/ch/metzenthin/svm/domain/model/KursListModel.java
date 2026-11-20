@@ -23,7 +23,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
  * @author Martin Schraner
  */
 public class KursListModel
-    extends AbstractListModel<
+    extends AbstractCreateOrUpdateOrDeleteListModel<
         KursAndLehrkraefteAndNumberOfKursanmeldungen,
         TableModel<KursTableData, KursAndLehrkraefteAndNumberOfKursanmeldungen>,
         DeleteKursResult> {

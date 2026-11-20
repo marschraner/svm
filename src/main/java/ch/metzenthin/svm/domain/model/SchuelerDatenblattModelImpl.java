@@ -24,13 +24,22 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
   private final Schueler schueler;
   private final Maercheneinteilung aktuelleMaercheneinteilung;
   private final boolean neusteZuoberst;
+  private final SvmContext svmContext;
 
-  public SchuelerDatenblattModelImpl(Schueler schueler) {
+  public SchuelerDatenblattModelImpl(Schueler schueler, SvmContext svmContext) {
     this.schueler = schueler;
     this.aktuelleMaercheneinteilung =
         determineAktuelleMaercheneinteilung(schueler.getSortedMaercheneinteilungen());
+    this.svmContext = svmContext;
     Properties svmProperties = SvmProperties.getSvmProperties();
     neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
+  }
+
+  @Override
+  public SchuelerCodeAssignmentListModel createSchuelerCodeAssignmentListModel() {
+    return svmContext
+        .getModelFactory()
+        .createSchuelerCodeAssignmentListModel(schueler.getPersonId());
   }
 
   @Override

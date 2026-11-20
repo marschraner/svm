@@ -213,7 +213,7 @@ public class MonatsstatistikSchuelerController extends AbstractController {
     SchuelerSuchenTableData schuelerSuchenTableData =
         monatsstatistikSchuelerModel.suchen(svmContext.getSvmModel());
     SchuelerSuchenTableModel schuelerSuchenTableModel =
-        new SchuelerSuchenTableModel(schuelerSuchenTableData);
+        new SchuelerSuchenTableModel(svmContext, schuelerSuchenTableData);
     if (schuelerSuchenTableData.size() >= 1) {
       SchuelerSuchenResultPanel schuelerSuchenResultPanel =
           new SchuelerSuchenResultPanel(svmContext, schuelerSuchenTableModel);

@@ -9,6 +9,8 @@ import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
  */
 public interface SchuelerDatenblattModel {
 
+  SchuelerCodeAssignmentListModel createSchuelerCodeAssignmentListModel();
+
   String getSchuelerNachname();
 
   String getSchuelerVorname();

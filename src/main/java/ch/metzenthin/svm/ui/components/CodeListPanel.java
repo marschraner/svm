@@ -14,7 +14,7 @@ import lombok.Getter;
  * @author Hans Stamm
  */
 @SuppressWarnings({"java:S100", "java:S1171", "java:S1450"})
-public class CodeListPanel extends AbstractListPanel {
+public class CodeListPanel extends AbstractCreateOrUpdateOrDeleteListPanel {
 
   private JPanel panel1;
   private JPanel datenPanel;
@@ -25,7 +25,6 @@ public class CodeListPanel extends AbstractListPanel {
   @Getter private JButton btnNeu;
   @Getter private JButton btnBearbeiten;
   @Getter private JButton btnLoeschen;
-  private JButton btnZurueck;
   @Getter private JButton btnAbbrechen;
 
   @Override
@@ -40,7 +39,6 @@ public class CodeListPanel extends AbstractListPanel {
 
   public CodeListPanel(String title) {
     lblTitle.setText(title);
-    btnZurueck.setVisible(false);
   }
 
   {
@@ -178,19 +176,6 @@ public class CodeListPanel extends AbstractListPanel {
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.insets = new Insets(0, 0, 0, 10);
     panel4.add(btnAbbrechen, gbc);
-    btnZurueck = new JButton();
-    btnZurueck.setMaximumSize(new Dimension(114, 29));
-    btnZurueck.setMinimumSize(new Dimension(114, 29));
-    btnZurueck.setPreferredSize(new Dimension(114, 29));
-    btnZurueck.setText("Zurück");
-    btnZurueck.setMnemonic('Z');
-    btnZurueck.setDisplayedMnemonicIndex(0);
-    gbc = new GridBagConstraints();
-    gbc.gridx = 1;
-    gbc.gridy = 1;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.insets = new Insets(0, 0, 0, 10);
-    panel4.add(btnZurueck, gbc);
     final JPanel spacer9 = new JPanel();
     gbc = new GridBagConstraints();
     gbc.gridx = 1;

@@ -7,15 +7,13 @@ import javax.swing.JTable;
 /**
  * @author Hans Stamm
  */
-public abstract class AbstractListPanel {
+public abstract class AbstractCreateOrDeleteListPanel {
 
   public abstract JComponent getRootComponent();
 
   public abstract JTable getTable();
 
   public abstract JButton getBtnNeu();
-
-  public abstract JButton getBtnBearbeiten();
 
   public abstract JButton getBtnLoeschen();
 

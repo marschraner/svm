@@ -16,7 +16,8 @@ import java.util.Optional;
  * @author Martin Schraner
  */
 public class MaerchenListController
-    extends AbstractListController<MaerchenListModel, MaerchenListView, DeleteMaerchenResult> {
+    extends AbstractCreateOrUpdateOrDeleteListController<
+        MaerchenListModel, MaerchenListView, DeleteMaerchenResult> {
 
   public MaerchenListController(
       SvmContext svmContext, MaerchenListModel maerchenListModel, ActionListener closeListener) {

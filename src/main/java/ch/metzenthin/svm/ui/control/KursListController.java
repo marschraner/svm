@@ -23,7 +23,8 @@ import java.util.Optional;
  * @author Martin Schraner
  */
 public class KursListController
-    extends AbstractListController<KursListModel, KursListView, DeleteKursResult> {
+    extends AbstractCreateOrUpdateOrDeleteListController<
+        KursListModel, KursListView, DeleteKursResult> {
 
   public KursListController(
       SvmContext svmContext, KursListModel kursListModel, ActionListener closeListener) {

@@ -9,7 +9,8 @@ import javax.swing.JLabel;
 /**
  * @author Hans Stamm
  */
-public class KursListView extends AbstractSortableListPanelView<KursListPanel> {
+public class KursListView
+    extends AbstractSortableCreateOrUpdateOrDeleteListPanelView<KursListPanel> {
 
   private final JLabel labelTotal;
   private final JButton buttonImportieren;

@@ -290,7 +290,7 @@ public class SchuelerErfassenController extends AbstractController {
         SchuelerSuchenTableData schuelerSuchenTableData =
             schuelerErfassenModel.getSchuelerSuchenTableData();
         SchuelerSuchenTableModel schuelerSuchenTableModel =
-            new SchuelerSuchenTableModel(schuelerSuchenTableData);
+            new SchuelerSuchenTableModel(svmContext, schuelerSuchenTableData);
         SchuelerDatenblattOldPanel schuelerDatenblattPanel =
             new SchuelerDatenblattOldPanel(svmContext, schuelerSuchenTableModel, null, 0, false);
         schuelerDatenblattPanel.addNextPanelListener(nextPanelListener);

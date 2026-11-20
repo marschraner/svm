@@ -18,7 +18,8 @@ public interface CreateOrUpdateMitarbeiterModel extends CreateOrUpdatePersonMode
 
   void setMitarbeiterCodes(Set<MitarbeiterCode> mitarbeiterCodes);
 
-  AddOrRemoveMitarbeiterCodeAssignmentListModel createMitarbeiterCodeAssignmentListModel();
+  AddOrRemoveMitarbeiterCodeAssignmentListModel
+      createAddOrRemoveMitarbeiterCodeAssignmentListModel();
 
   ValidationResult validateAhvNummer(String ahvNummer);
 

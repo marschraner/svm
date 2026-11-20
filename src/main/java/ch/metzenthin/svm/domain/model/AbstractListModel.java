@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.service.result.SubmitDialogResult;
 import ch.metzenthin.svm.ui.componentmodel.TableModel;
 import java.util.Optional;
@@ -21,10 +20,6 @@ public abstract class AbstractListModel<
     this.tableModel = tableModel;
   }
 
-  public abstract Object createCreateOrUpdateModel(SvmContext svmContext);
-
-  public abstract Object createCreateOrUpdateModel(SvmContext svmContext, int indexToBeUpdated);
-
   protected T getSelectedRow(int selectedIndex) {
     return tableModel.getRowAt(selectedIndex);
   }
@@ -36,21 +31,6 @@ public abstract class AbstractListModel<
   public Optional<Integer> insertCreatedObjectToTableModel(int idOfCreatedEntity) {
     Optional<T> entityOptional = loadObjectFromDatabase(idOfCreatedEntity);
     return entityOptional.map(tableModel::insertRow);
-  }
-
-  /**
-   * @param modelIndexOfRowOfUpdatedObject Listen-Index des Objekts, das neu geladen werden und in
-   *     der Model-Liste ausgetauscht werden muss
-   * @return true, wenn das neu zu ladende Objekt gefunden und ausgetauscht wurde, sonst false
-   */
-  public boolean replaceUpdatedObjectInTableModel(int modelIndexOfRowOfUpdatedObject) {
-    T rowToBeReloaded = tableModel.getRowAt(modelIndexOfRowOfUpdatedObject);
-    Optional<T> reloadedObjectOptional = reloadObjectFromDatabase(rowToBeReloaded);
-    if (reloadedObjectOptional.isPresent()) {
-      tableModel.replaceRowAt(modelIndexOfRowOfUpdatedObject, reloadedObjectOptional.get());
-      return true;
-    }
-    return false;
   }
 
   /**
@@ -66,12 +46,6 @@ public abstract class AbstractListModel<
    * @return Optional des geladenen Objekts
    */
   protected abstract Optional<T> loadObjectFromDatabase(int idOfEntityToBeLoaded);
-
-  /**
-   * @param objectToBeReloaded Listen-Element, das neu geladen werden muss
-   * @return Optional des neu geladenen Objekts
-   */
-  protected abstract Optional<T> reloadObjectFromDatabase(T objectToBeReloaded);
 
   public abstract void reloadData();
 

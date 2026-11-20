@@ -113,6 +113,7 @@ public class SchuelerDatenblattOldPanel {
             schuelerSuchenResultTable,
             selectedRow,
             isFromSchuelerSuchenResult);
+    schuelerDatenblattController.setDatenblattRootComponent($$$getRootComponent$$$());
     schuelerDatenblattController.setLabelVornameNachname(lblVornameNachname);
     schuelerDatenblattController.setLabelSchueler(lblSchueler);
     schuelerDatenblattController.setLabelSchuelerValue(lblSchuelerValue);

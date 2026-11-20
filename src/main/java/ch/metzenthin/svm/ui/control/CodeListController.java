@@ -17,7 +17,8 @@ import java.util.Optional;
  * @author Hans Stamm
  */
 public abstract class CodeListController<T extends Code>
-    extends AbstractListController<CodeListModel<T>, CodeListView, DeleteCodeResult> {
+    extends AbstractCreateOrUpdateOrDeleteListController<
+        CodeListModel<T>, CodeListView, DeleteCodeResult> {
 
   protected CodeListController(
       SvmContext svmContext,

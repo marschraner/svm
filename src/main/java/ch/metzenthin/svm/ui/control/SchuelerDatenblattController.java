@@ -1,18 +1,20 @@
 package ch.metzenthin.svm.ui.control;
 
 import ch.metzenthin.svm.common.SvmContext;
-import ch.metzenthin.svm.common.datatypes.Codetyp;
+import ch.metzenthin.svm.domain.model.SchuelerCodeAssignmentListModel;
 import ch.metzenthin.svm.domain.model.SchuelerDatenblattModel;
+import ch.metzenthin.svm.listener.SchuelerCodesZurueckListener;
 import ch.metzenthin.svm.ui.componentmodel.*;
 import ch.metzenthin.svm.ui.components.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import lombok.Setter;
 
 /**
  * @author Hans Stamm
  */
-public class SchuelerDatenblattController {
+public class SchuelerDatenblattController implements SchuelerCodesZurueckListener {
   private final SvmContext svmContext;
   private final SchuelerSuchenTableModel schuelerSuchenTableModel;
   private final JTable schuelerSuchenResultTable;
@@ -83,6 +85,7 @@ public class SchuelerDatenblattController {
   private ActionListener closeListener;
   private ActionListener zurueckZuSchuelerSuchenListener;
   private final boolean isFromSchuelerSuchenResult;
+  @Setter private JComponent datenblattRootComponent;
 
   public SchuelerDatenblattController(
       SvmContext svmContext,
@@ -954,25 +957,21 @@ public class SchuelerDatenblattController {
   }
 
   private void onCodesBearbeiten() {
-    CodesTableModel codesTableModel =
-        new CodesTableModel(schuelerDatenblattModel.getCodesTableData());
-    CodesPanel codesPanel =
-        new CodesPanel(
-            svmContext,
-            codesTableModel,
-            schuelerDatenblattModel,
-            schuelerSuchenTableModel,
-            schuelerSuchenResultTable,
-            selectedRow,
-            true,
-            isFromSchuelerSuchenResult,
-            Codetyp.SCHUELER);
-    codesPanel.addNextPanelListener(nextPanelListener);
-    codesPanel.addCloseListener(closeListener);
-    codesPanel.addZurueckZuSchuelerSuchenListener(zurueckZuSchuelerSuchenListener);
+    String title =
+        "Schüler-Codes "
+            + schuelerDatenblattModel.getSchuelerVorname()
+            + " "
+            + schuelerDatenblattModel.getSchuelerNachname();
+    SchuelerCodeAssignmentListModel schuelerCodeAssignmentListModel =
+        schuelerDatenblattModel.createSchuelerCodeAssignmentListModel();
+    SchuelerCodeAssignmentListController schuelerCodeAssignmentListController =
+        new SchuelerCodeAssignmentListController(
+            svmContext, schuelerCodeAssignmentListModel, title, this);
     nextPanelListener.actionPerformed(
         new ActionEvent(
-            new Object[] {codesPanel.$$$getRootComponent$$$(), "Codes"},
+            new Object[] {
+              schuelerCodeAssignmentListController.getView().getRootComponent(), "Codes"
+            },
             ActionEvent.ACTION_PERFORMED,
             "Codes"));
   }
@@ -1069,5 +1068,14 @@ public class SchuelerDatenblattController {
 
   public void addZurueckZuSchuelerSuchenListener(ActionListener zurueckZuSchuelerSuchenListener) {
     this.zurueckZuSchuelerSuchenListener = zurueckZuSchuelerSuchenListener;
+  }
+
+  @Override
+  public void onSchuelerCodesZurueck() {
+    nextPanelListener.actionPerformed(
+        new ActionEvent(
+            new Object[] {datenblattRootComponent, "Datenblatt"},
+            ActionEvent.ACTION_PERFORMED,
+            "Datenblatt"));
   }
 }

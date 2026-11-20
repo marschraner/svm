@@ -16,7 +16,8 @@ import java.util.Optional;
  * @author Martin Schraner
  */
 public class KursortListController
-    extends AbstractListController<KursortListModel, KursortListView, DeleteKursortResult> {
+    extends AbstractCreateOrUpdateOrDeleteListController<
+        KursortListModel, KursortListView, DeleteKursortResult> {
 
   public KursortListController(
       SvmContext svmContext, KursortListModel kursortListModel, ActionListener closeListener) {

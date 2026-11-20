@@ -14,7 +14,8 @@ import org.springframework.dao.OptimisticLockingFailureException;
  * @author Martin Schraner
  */
 public class KursortListModel
-    extends AbstractListModel<Kursort, TableModel<KursortTableData, Kursort>, DeleteKursortResult> {
+    extends AbstractCreateOrUpdateOrDeleteListModel<
+        Kursort, TableModel<KursortTableData, Kursort>, DeleteKursortResult> {
 
   private final KursortService kursortService;
 

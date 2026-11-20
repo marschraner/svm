@@ -9,10 +9,10 @@ import ch.metzenthin.svm.ui.view.CodeSelectionView;
 /**
  * @author Hans Stamm
  */
-public class AddOrRemoveMitarbeiterCodeAssignmentListController
-    extends AbstractAddOrRemoveCodeAssignmentListController<MitarbeiterCode> {
+public class AddOrRemoveMitarbeiterCodeAssignmentListDialogController
+    extends AbstractAddOrRemoveCodeAssignmentListDialogController<MitarbeiterCode> {
 
-  protected AddOrRemoveMitarbeiterCodeAssignmentListController(
+  protected AddOrRemoveMitarbeiterCodeAssignmentListDialogController(
       SvmContext svmContext,
       AbstractAddOrRemoveCodeAssignmentListModel<MitarbeiterCode> model,
       String title) {

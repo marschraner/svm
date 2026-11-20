@@ -25,7 +25,7 @@ import java.util.Set;
  */
 @SuppressWarnings("DuplicatedCode")
 public class MitarbeiterListController
-    extends AbstractListController<
+    extends AbstractCreateOrUpdateOrDeleteListController<
         MitarbeiterListModel, MitarbeiterListView, DeleteMitarbeiterResult> {
 
   private static final String EMAIL = "E-Mail";

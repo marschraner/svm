@@ -14,7 +14,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
  * @author Martin Schraner
  */
 public class LektionsgebuehrenListModel
-    extends AbstractListModel<
+    extends AbstractCreateOrUpdateOrDeleteListModel<
         Lektionsgebuehren,
         TableModel<LektionsgebuehrenTableData, Lektionsgebuehren>,
         DeleteLektionsgebuehrenResult> {

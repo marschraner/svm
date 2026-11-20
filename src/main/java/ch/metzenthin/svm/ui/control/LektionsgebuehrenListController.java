@@ -16,7 +16,7 @@ import java.util.Optional;
  * @author Martin Schraner
  */
 public class LektionsgebuehrenListController
-    extends AbstractListController<
+    extends AbstractCreateOrUpdateOrDeleteListController<
         LektionsgebuehrenListModel, LektionsgebuehrenListView, DeleteLektionsgebuehrenResult> {
 
   public LektionsgebuehrenListController(
