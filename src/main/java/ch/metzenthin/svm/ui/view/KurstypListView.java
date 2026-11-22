@@ -7,10 +7,9 @@ import java.awt.event.ActionListener;
 /**
  * @author Hans Stamm
  */
-public class KurstypListView
-    extends AbstractSortableCreateOrUpdateOrDeleteListPanelView<KurstypListPanel> {
+public class KurstypListView extends AbstractCreateOrUpdateOrDeleteListPanelView<KurstypListPanel> {
 
   public KurstypListView(TableModel<?, ?> tableModel, ActionListener closeListener) {
-    super(tableModel, new KurstypListPanel(), closeListener);
+    super(tableModel, new KurstypListPanel(), true, closeListener);
   }
 }

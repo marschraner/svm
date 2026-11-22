@@ -15,8 +15,8 @@ public abstract class AbstractCreateOrUpdateOrDeleteListPanelView<
   private final JButton buttonBearbeiten;
 
   protected AbstractCreateOrUpdateOrDeleteListPanelView(
-      TableModel<?, ?> tableModel, T listPanel, ActionListener closeListener) {
-    super(tableModel, listPanel, closeListener);
+      TableModel<?, ?> tableModel, T listPanel, boolean sortable, ActionListener closeListener) {
+    super(tableModel, listPanel, sortable, closeListener);
     this.buttonBearbeiten = listPanel.getBtnBearbeiten();
   }
 

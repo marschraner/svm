@@ -12,6 +12,6 @@ public class DispensationListView
 
   public DispensationListView(
       TableModel<?, ?> tableModel, String title, ActionListener zurueckListener) {
-    super(tableModel, new DispensationListPanel(title), zurueckListener);
+    super(tableModel, new DispensationListPanel(title), false, zurueckListener);
   }
 }

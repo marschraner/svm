@@ -9,8 +9,7 @@ import javax.swing.JLabel;
 /**
  * @author Hans Stamm
  */
-public class KursListView
-    extends AbstractSortableCreateOrUpdateOrDeleteListPanelView<KursListPanel> {
+public class KursListView extends AbstractCreateOrUpdateOrDeleteListPanelView<KursListPanel> {
 
   private final JLabel labelTotal;
   private final JButton buttonImportieren;
@@ -18,7 +17,7 @@ public class KursListView
 
   public KursListView(
       KursListPanel kursListPanel, TableModel<?, ?> tableModel, ActionListener closeListener) {
-    super(tableModel, kursListPanel, closeListener);
+    super(tableModel, kursListPanel, true, closeListener);
     labelTotal = kursListPanel.getLblTotal();
     buttonExportieren = kursListPanel.getBtnExportieren();
     buttonImportieren = kursListPanel.getBtnImportieren();

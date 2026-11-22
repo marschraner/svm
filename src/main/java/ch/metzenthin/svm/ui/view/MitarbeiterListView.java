@@ -13,7 +13,7 @@ import javax.swing.event.TableModelListener;
  * @author Hans Stamm
  */
 public class MitarbeiterListView
-    extends AbstractSortableCreateOrUpdateOrDeleteListPanelView<MitarbeiterListPanel> {
+    extends AbstractCreateOrUpdateOrDeleteListPanelView<MitarbeiterListPanel> {
 
   private final JButton buttonExportieren;
   private final JButton buttonEmail;
@@ -24,7 +24,7 @@ public class MitarbeiterListView
 
   public MitarbeiterListView(
       TableModel<?, ?> tableModel, ActionListener closeListener, ActionListener zurueckListener) {
-    super(tableModel, new MitarbeiterListPanel(), closeListener);
+    super(tableModel, new MitarbeiterListPanel(), true, closeListener);
     this.buttonExportieren = listPanel.getBtnExportieren();
     this.buttonEmail = listPanel.getBtnEmail();
     this.buttonAlleSelektieren = listPanel.getBtnAlleSelektieren();

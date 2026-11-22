@@ -7,11 +7,10 @@ import java.awt.event.ActionListener;
 /**
  * @author Hans Stamm
  */
-public class CodeListView
-    extends AbstractSortableCreateOrUpdateOrDeleteListPanelView<CodeListPanel> {
+public class CodeListView extends AbstractCreateOrUpdateOrDeleteListPanelView<CodeListPanel> {
 
   public CodeListView(
       TableModel<?, ?> tableModel, String panelTitle, ActionListener closeListener) {
-    super(tableModel, new CodeListPanel(panelTitle), closeListener);
+    super(tableModel, new CodeListPanel(panelTitle), true, closeListener);
   }
 }

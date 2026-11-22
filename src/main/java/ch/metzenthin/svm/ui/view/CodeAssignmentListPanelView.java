@@ -12,6 +12,6 @@ public class CodeAssignmentListPanelView
 
   public CodeAssignmentListPanelView(
       TableModel<?, ?> tableModel, String title, ActionListener closeListener) {
-    super(tableModel, new CodeAssignmentListPanel(title), closeListener);
+    super(tableModel, new CodeAssignmentListPanel(title), false, closeListener);
   }
 }

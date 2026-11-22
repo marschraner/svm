@@ -10,11 +10,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowSorter;
+import javax.swing.RowSorter.SortKey;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableRowSorter;
 import lombok.Getter;
 
 /**
@@ -32,7 +36,7 @@ public abstract class AbstractCreateOrDeleteListPanelView<T extends AbstractCrea
   private final JButton buttonAbbrechen;
 
   protected AbstractCreateOrDeleteListPanelView(
-      TableModel<?, ?> tableModel, T listPanel, ActionListener closeListener) {
+      TableModel<?, ?> tableModel, T listPanel, boolean sortable, ActionListener closeListener) {
     super(listPanel.getRootComponent());
     this.rootComponent = listPanel.getRootComponent();
     this.listPanel = listPanel;
@@ -42,6 +46,9 @@ public abstract class AbstractCreateOrDeleteListPanelView<T extends AbstractCrea
     this.buttonLoeschen = listPanel.getBtnLoeschen();
     this.buttonAbbrechen = listPanel.getBtnAbbrechen();
     configTable(this.table, tableModel);
+    if (sortable) {
+      configTableColumnsSort();
+    }
     addButtonAbbrechenActionListener(closeListener);
   }
 
@@ -59,6 +66,22 @@ public abstract class AbstractCreateOrDeleteListPanelView<T extends AbstractCrea
     }
 
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+  }
+
+  private void configTableColumnsSort() {
+    table.setAutoCreateRowSorter(true);
+
+    // Das Setzen der SortKeys muss initial gemacht werden, damit eingefügte Rows am richtigen Ort
+    // einsortiert werden.
+    List<SortKey> sortKeys = tableModel.getSortKeys();
+    if (!sortKeys.isEmpty()) {
+      RowSorter<?> rowSorter = table.getRowSorter();
+      if (rowSorter instanceof TableRowSorter) {
+        // Damit nach dem Ändern oder Löschen von Rows die Tabellen-Sortierung neu berechnet wird.
+        ((TableRowSorter<?>) rowSorter).setSortsOnUpdates(true);
+      }
+      rowSorter.setSortKeys(sortKeys);
+    }
   }
 
   public void configListeners(Runnable mouseListenerAction, Runnable listSelectionListenerAction) {

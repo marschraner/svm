@@ -8,9 +8,9 @@ import java.awt.event.ActionListener;
  * @author Hans Stamm
  */
 public class SemesterListView
-    extends AbstractSortableCreateOrUpdateOrDeleteListPanelView<SemesterListPanel> {
+    extends AbstractCreateOrUpdateOrDeleteListPanelView<SemesterListPanel> {
 
   public SemesterListView(TableModel<?, ?> tableModel, ActionListener closeListener) {
-    super(tableModel, new SemesterListPanel(), closeListener);
+    super(tableModel, new SemesterListPanel(), true, closeListener);
   }
 }

@@ -8,9 +8,9 @@ import java.awt.event.ActionListener;
  * @author Hans Stamm
  */
 public class MaerchenListView
-    extends AbstractSortableCreateOrUpdateOrDeleteListPanelView<MaerchenListPanel> {
+    extends AbstractCreateOrUpdateOrDeleteListPanelView<MaerchenListPanel> {
 
   public MaerchenListView(TableModel<?, ?> tableModel, ActionListener closeListener) {
-    super(tableModel, new MaerchenListPanel(), closeListener);
+    super(tableModel, new MaerchenListPanel(), true, closeListener);
   }
 }
