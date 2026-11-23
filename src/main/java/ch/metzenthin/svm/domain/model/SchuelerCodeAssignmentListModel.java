@@ -32,14 +32,14 @@ public class SchuelerCodeAssignmentListModel
     List<SchuelerCode> schuelerCodes =
         schuelerSchuelerCodeService.findAssignedSchuelerCodesBySchuelerId(schuelerId);
     CodeTableData<SchuelerCode> schuelerCodeTableData = new CodeTableData<>(schuelerCodes, false);
-    return new TableModel<>(schuelerCodeTableData, 0.75, 0.25);
+    return new TableModel<>(schuelerCodeTableData, 0.2, 0.8);
   }
 
   @Override
   public DeleteAssignmentResult eintragLoeschen(int indexOfCodeToBeDeleted) {
     SchuelerCode schuelerCodeToBeRemoved = getSelectedRow(indexOfCodeToBeDeleted);
-    schuelerSchuelerCodeService.deleteSchuelerCodeAssignment(schuelerId, schuelerCodeToBeRemoved);
-    return DeleteAssignmentResult.LOESCHEN_ERFOLGREICH;
+    return schuelerSchuelerCodeService.deleteSchuelerCodeAssignment(
+        schuelerId, schuelerCodeToBeRemoved);
   }
 
   @Override

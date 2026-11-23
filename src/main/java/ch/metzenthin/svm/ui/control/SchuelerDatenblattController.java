@@ -1072,10 +1072,11 @@ public class SchuelerDatenblattController implements SchuelerCodesZurueckListene
 
   @Override
   public void onSchuelerCodesZurueck() {
+    setLabelSchuelerCodesValue();
     nextPanelListener.actionPerformed(
         new ActionEvent(
             new Object[] {datenblattRootComponent, "Datenblatt"},
             ActionEvent.ACTION_PERFORMED,
-            "Datenblatt"));
+            "Zurück von Schüler-Codes zu Datenblatt"));
   }
 }

@@ -20,7 +20,7 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
   @Serial private static final long serialVersionUID = 1L;
 
   private final transient SchuelerSuchenTableData schuelerSuchenTableData;
-  private final SvmContext svmContext;
+  private final transient SvmContext svmContext;
 
   public SchuelerSuchenTableModel(
       SvmContext svmContext, SchuelerSuchenTableData schuelerSuchenTableData) {
@@ -61,7 +61,8 @@ public class SchuelerSuchenTableModel extends AbstractTableModel {
   }
 
   public SchuelerDatenblattModel getSchuelerDatenblattModel(int rowIndex) {
-    return schuelerSuchenTableData.getSchuelerDatenblattModel(rowIndex, svmContext);
+    return schuelerSuchenTableData.getSchuelerDatenblattModel(
+        rowIndex, svmContext.getModelFactory());
   }
 
   @Override

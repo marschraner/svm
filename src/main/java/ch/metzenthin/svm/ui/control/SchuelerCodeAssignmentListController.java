@@ -52,7 +52,10 @@ public class SchuelerCodeAssignmentListController
         createSchuelerCodeAssignmentModel.getSaveSuccessfulAndCodeIdOptional();
     Optional<Integer> codeIdOptional = saveSuccessfulAndCodeIdOptional.entityIdOptional();
     if (saveSuccessfulAndCodeIdOptional.saveSuccessful() && codeIdOptional.isPresent()) {
-      insertCreatedObjectToList(codeIdOptional.get());
+      // Alle Daten neu laden, da die UI-Tabelle selber nicht sortiert wird und die Sortierung durch
+      // die Datenbank-Query bestimmt wird. Dadurch ist sichergestellt, dass die Sortierreihenfolge
+      // der Datenbank-Query wieder stimmt.
+      reloadTableData();
     }
   }
 }

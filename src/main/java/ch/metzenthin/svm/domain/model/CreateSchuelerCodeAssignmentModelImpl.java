@@ -35,7 +35,8 @@ public class CreateSchuelerCodeAssignmentModelImpl
   @Override
   public SchuelerCode[] getSelectableCodes() {
     List<SchuelerCode> schuelerCodes =
-        schuelerSchuelerCodeService.findNotAssignedSchuelerCodesBySchuelerId(schuelerId);
+        schuelerSchuelerCodeService.findNotAssignedSelektierbareSchuelerCodesBySchuelerId(
+            schuelerId);
     return schuelerCodes.toArray(new SchuelerCode[0]);
   }
 

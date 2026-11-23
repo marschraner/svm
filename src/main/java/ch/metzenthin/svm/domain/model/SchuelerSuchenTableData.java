@@ -1,6 +1,5 @@
 package ch.metzenthin.svm.domain.model;
 
-import ch.metzenthin.svm.common.SvmContext;
 import ch.metzenthin.svm.common.datatypes.Field;
 import ch.metzenthin.svm.common.datatypes.Gruppe;
 import ch.metzenthin.svm.common.datatypes.Semesterbezeichnung;
@@ -208,8 +207,9 @@ public class SchuelerSuchenTableData {
     return columns.get(columnIndex).toString();
   }
 
-  public SchuelerDatenblattModel getSchuelerDatenblattModel(int rowIndex, SvmContext svmContext) {
-    return new SchuelerDatenblattModelImpl(schuelerList.get(rowIndex), svmContext);
+  public SchuelerDatenblattModel getSchuelerDatenblattModel(
+      int rowIndex, ModelFactory modelFactory) {
+    return modelFactory.createSchuelerDatenblattModel(schuelerList.get(rowIndex));
   }
 
   public int getAnzahlLektionen() {

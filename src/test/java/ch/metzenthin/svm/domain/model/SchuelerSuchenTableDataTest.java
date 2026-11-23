@@ -172,7 +172,8 @@ class SchuelerSuchenTableDataTest {
   @Disabled("Nicht lauffähig, wird umgebaut")
   void testGetSchuelerDatenblattModel() {
     SvmContext svmContext = new SvmContext(null, null);
-    assertNotNull(schuelerSuchenTableData.getSchuelerDatenblattModel(2, svmContext));
+    assertNotNull(
+        schuelerSuchenTableData.getSchuelerDatenblattModel(2, svmContext.getModelFactory()));
   }
 
   private int getColumnIndex(String column) {

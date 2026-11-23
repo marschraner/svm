@@ -12,6 +12,7 @@ import ch.metzenthin.svm.common.utils.Converter;
 import ch.metzenthin.svm.common.utils.SvmProperties;
 import ch.metzenthin.svm.domain.commands.*;
 import ch.metzenthin.svm.persistence.entities.*;
+import ch.metzenthin.svm.service.SchuelerSchuelerCodeService;
 import ch.metzenthin.svm.ui.componentmodel.SchuelerSuchenTableModel;
 import java.sql.Time;
 import java.util.*;
@@ -24,22 +25,25 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
   private final Schueler schueler;
   private final Maercheneinteilung aktuelleMaercheneinteilung;
   private final boolean neusteZuoberst;
-  private final SvmContext svmContext;
+  private final ModelFactory modelFactory;
+  private final SchuelerSchuelerCodeService schuelerSchuelerCodeService;
 
-  public SchuelerDatenblattModelImpl(Schueler schueler, SvmContext svmContext) {
+  public SchuelerDatenblattModelImpl(
+      Schueler schueler,
+      ModelFactory modelFactory,
+      SchuelerSchuelerCodeService schuelerSchuelerCodeService) {
     this.schueler = schueler;
     this.aktuelleMaercheneinteilung =
         determineAktuelleMaercheneinteilung(schueler.getSortedMaercheneinteilungen());
-    this.svmContext = svmContext;
+    this.modelFactory = modelFactory;
+    this.schuelerSchuelerCodeService = schuelerSchuelerCodeService;
     Properties svmProperties = SvmProperties.getSvmProperties();
     neusteZuoberst = !svmProperties.getProperty(SvmProperties.KEY_NEUSTE_ZUOBERST).equals("false");
   }
 
   @Override
   public SchuelerCodeAssignmentListModel createSchuelerCodeAssignmentListModel() {
-    return svmContext
-        .getModelFactory()
-        .createSchuelerCodeAssignmentListModel(schueler.getPersonId());
+    return modelFactory.createSchuelerCodeAssignmentListModel(schueler.getPersonId());
   }
 
   @Override
@@ -335,9 +339,11 @@ public class SchuelerDatenblattModelImpl implements SchuelerDatenblattModel {
 
   @Override
   public String getSchuelerCodesAsString() {
-    if (!schueler.getSchuelerCodes().isEmpty()) {
+    List<SchuelerCode> schuelerCodes =
+        schuelerSchuelerCodeService.findAssignedSchuelerCodesBySchuelerId(schueler.getPersonId());
+    if (!schuelerCodes.isEmpty()) {
       StringBuilder codesSb = new StringBuilder("<html>");
-      for (SchuelerCode schuelerCode : schueler.getSortedSchuelerCodes()) {
+      for (SchuelerCode schuelerCode : schuelerCodes) {
         if (codesSb.length() > 6) {
           codesSb.append("<br>");
         }
